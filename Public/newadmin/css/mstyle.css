@@ -1,0 +1,76 @@
+
+	/*pay-info*/
+.pay-info-wrap .title{ margin-bottom: 10px; }
+.pay-info-wrap .title h3{ font-weight: bold; color: #000; }
+.pay-info-wrap .block{ padding: 15px 0; border-bottom: 1px solid #b6b7b9; }
+.pay-info-wrap .btn-block{ padding: 20px 0; }
+
+	/*goods-checked*/
+.goods-checked{ padding-bottom: 10px!important; }
+.goods-checked .options:after{  content: ""; display: table; clear: both; }
+.goods-checked .options span{ float: left; width: 42%; height: 37px; line-height: 30px; margin-right: 4%; margin-bottom: 10px; background-color: #fff; border: 1px solid #000; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; text-align: center; cursor: pointer; position: relative; }
+.goods-checked .options span:nth-child(2n){ margin-right: 10px; }
+.goods-checked .options span:after{ display: none; content: ""; width: 17px; height: 17px; background: url(/static/images/checked.png) no-repeat center center; position: absolute; right: 0; bottom: 0; }
+.goods-checked .options span i{ font-weight: bold; }
+.goods-checked .options span.on{ border-color: #f0481a; }
+.goods-checked .options span.on:after{ display: block; }
+
+	/*goods-prize*/
+.goods-prize i{ padding: 0 4px; font-weight: bold; font-size: 16px; color: #f0481a; }
+	/*pay-channel*/
+.pay-channel{ padding-bottom: 10px!important; }
+
+	/*pay-channel-list*/
+.pay-channel-list:after{ content: ""; display: table; clear: both; }
+.pay-channel-list .item{ float: left; width: 238px; height: 43px; margin-right: 15px; margin-bottom: 10px; background-color: #fff; border: 1px solid #000; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; cursor: pointer; position: relative; }
+.pay-channel-list .item:after{ display: none; content: ""; width: 17px; height: 17px; background: url(/static/images/checked.png) no-repeat center center; position: absolute; right: 0; bottom: 0; }
+.pay-channel-list .item.on{ border-color: #f0481a; }
+.pay-channel-list .item.on:after{ display: block; }
+.pay-channel-list .pic{ height: 65px; line-height: 39px; left: 0; top: 0; }
+.pay-channel-list .pic img{ height: 80%; }
+.pay-channel-list .prize{ height: 100%; line-height: 39px; position: absolute; right: 15px; top: 0; }
+.pay-channel-list .prize span{ margin-right: 3px; font-weight: bold; font-size: 18px; }
+
+
+.popup{ display: none; position: fixed;}
+.popup .htitle{ height: 46px; line-height: 46px; padding: 0 15px; background-color: #f85251; -webkit-border-radius: 4px 4px 0 0; -moz-border-radius: 4px 4px 0 0; border-radius: 4px 4px 0 0; font-size: 20px; color: #fff;}
+.popup .close{ width: 24px; height: 24px; background: url(/static/agent/images/icon_close.png); cursor: pointer; position: absolute; right: 15px; top: 10px;}
+.popup .content{ background-color: #fff; -webkit-border-radius: 0 0 4px 4px; -moz-border-radius: 0 0 4px 4px; border-radius: 0 0 4px 4px;}
+	/*pop_mask*/
+.popup_mask{ width: 100%; background: #000; opacity: 0.5; filter: alpha(opacity=50); position: fixed; top: 0; bottom: 0; z-index: 99;}
+
+/*扫码*/
+.scanCode .htitle{ height: 46px; line-height: 46px; padding: 0 15px; background-color: #f85251; font-size: 20px; color: #fff; text-align: center;}
+.scanCode .title{ padding: 14px 0; border-bottom: 1px solid #ccc;}
+.scanCode .title p{ text-align: center; color: #717171;}
+.scanCode .title .price{ margin-bottom: 10px; font-size: 18px;}
+.scanCode .title .pay{ font-size: 24px;}
+.scanCode .title .price .diamond{ color: #479be3;}
+.scanCode .title .price .num,
+.scanCode .title .pay .num{ color: #f85251;}
+.scanCode .code{ height: 320px; padding: 10px 40px 20px 115px; }
+.scanCode .pic{ display: inline-block; width: 172px; padding: 14px; margin-bottom: 10px; border: 1px solid #ccc;}
+.scanCode .pic img{ width: 100%;}
+.scanCode .note{ width: 342px; padding-left: 10px; height: 48px; font-size: 16px; color: #717171;}
+
+
+/*result-tip-wrap*/
+.result-tip-wrap{ text-align: center; }
+.result-tip-wrap .pic,
+.result-tip-wrap .note{ margin-bottom: 15px; }
+.result-tip-wrap .btn{ padding: 0 15px; }
+
+.result-tip-wrap{ padding: 10px 0 40px; }
+
+
+/*.btn{ display: inline-block;
+	  width: 245px; height: 44px;
+	  line-height: 44px; 
+	  background-color: #fb9c07; 
+	  margin-top: 20px; 
+	  -webkit-border-radius: 4px;
+	  -moz-border-radius: 4px;
+	  border-radius: 4px;
+	  text-align: center; 
+     font-size: 16px; color: #fff; 
+ }*/

@@ -1,0 +1,52 @@
+<include file="Public/base"/>		
+<style>
+.end select { border: 1px solid #ccc; border-radius: 0.1rem; display: block; height: 0.78rem; line-height: 0.78rem;padding-left: 0.2rem;}
+</style>
+        <div class="search-wrap">
+		 <div class="search-condition">  
+                <div class="item">
+
+                    <table class="table">
+				    <tbody>
+						<tr>
+	                            <th>消耗前金币</th>
+	                            <th>消耗金币</th>
+	                            <th>消耗后金币</th>
+                                <th>消耗原因</th>
+                                <th>所在游戏房间</th>
+                                <th>消耗时间</th>
+						</tr>
+         <volist name="_data" id="_data">
+		         <tr>
+                                    <td>{$_data['money'] - $_data['changemoney']}</td>
+                                    <td>{$_data.changemoney}</td>
+                                    <td>{$_data.money}</td>
+                                    <td>{$_data.reason|moneyChange}</td>
+                                    <td><if condition="($_data.rname eq '')">游戏大厅<else/>{$_data.rname}</if></td>
+                                    <td>{$_data.time|date="Y-m-d H:i:s",###}</td>
+                                    </tr>
+
+        </volist>
+
+
+                    </tbody>
+                </table>
+                   
+   {$_page}
+
+		
+				</div>
+            </div>
+        </div>
+
+
+
+
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台<!--<br>微信客服：wwdbqp--></span></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

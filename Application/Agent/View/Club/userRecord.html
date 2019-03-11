@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-cn" style="font-size: 59.375px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <title>棋牌运营平台</title>
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/index.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/index.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/common.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/search.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/mstyle.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/common.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/agency.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/information.css">
+    
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/ajax.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/sky.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+
+    <script type="text/javascript">
+    //ajax post
+        function ajax_post(the){
+            layer.confirm('您确定要做此操作吗？', {
+            btn: ['确定','取消'] //按钮
+            }, function(){
+                var that = $(the);
+                var url= $(the).attr('action');
+                var cs = $(the).serialize();
+                 $.ajax({
+                    url:url,
+                    data:cs,
+                    type:'POST',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                parent.location.reload();
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                        }
+                    });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+
+        //get方法ajax提交
+        function ajax_get(the){
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                var url = $(the).attr('href');
+                $.ajax({
+                    url:url,
+                    type:'GET',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                window.location.href=data.url;
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+        /*管理员-编辑*/
+        function admin_edit(title,url,id,w,h){
+            layer_show(title,url,w,h);
+        }
+
+        //get方法ajax提交 应该要这个提示我要在复制一遍
+        function club_action(the,k=0){
+            var tips = ['您确定要删除该成员吗?','您确定要设置该成员为管理员吗']
+            // console.log(tips[k])
+            layer.confirm(tips[k], {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                var url = $(the).attr('href');
+                $.ajax({
+                    url:url,
+                    type:'get',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                window.location.href=data.url;
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+</script>
+
+</head>
+<body>
+    <div class="panel panel-index">
+        <div class="nav-wrap">
+            <div class="nav">
+                <a href="{:U('Club/index')}"></a>
+                <h1>棋牌代理运营平台</h1>
+            </div>
+        </div>
+        <div class="welcome-wrap">
+            <div class="avator"><a href="{:U('index/index')}"><img src="__PUBLIC__/newadmin/img/avator.png"></a></div>
+            <div class="brief">
+                <p class="username">欢迎你！{$agent.username}
+                    <span style="color:#f08200;font-size:16px;"></span>
+                </p>
+            </div>
+
+        </div>
+        <div class="search-wrap">
+            <div class="tab-container">
+                            <div class="information-basic">
+                       <div class="nav-wrap">
+                            <div class="nav" style="background-color: #fb9c07;">
+                                <h1>个人战绩</h1>
+                            </div>
+                        </div>
+
+                            <div class="item item-tel">
+                                <label>总对局:</label>
+                                <p>{$data['allCount']|default=0} 总胜局: {$data['winCount']|default=0} 胜率: {$data['win']|default=0}%</p>
+                            </div>
+
+                            <div class="item item-tel">
+                                <label>金币对局: </label>
+                                <p>{$data['money']|default=0}  胜局: {$data['moneyVictory']|default=0}  积分输赢: {$data['moneyDetermined']|default=0} 缴纳服务费: {$data['moneyPump']|default=0} 金币</p>
+                            </div>
+
+                             <div class="item item-tel">
+                                <label>积分对局:</label>
+                                <p>{$data['score']|default=0}  胜局: {$data['scoreVictory']|default=0}  金币输赢: {$data['scoreDetermined']|default=0}</p>
+                            </div>
+                            
+                            <div class="item item-tel">
+                                <label>VIP对局:</label>
+                                <p>胜局: {$data['vipVictory']|default=0}  火币输赢: {$data['vipDetermined']|default=0}  缴纳服务费: {$data['vipPump']|default=0} 金币</p>
+                            </div>
+
+        <div class="tab-nav">
+          <a href="" class="on">俱乐部列表</a>
+        </div>
+            </div>
+                <div class="search-condition">
+
+
+
+                <div class="item">
+  <div class="table-responsive">
+                                   
+
+      <table class="table table-bordered" style="width:100%">
+        <thead>
+          <tr>
+            <th>房间号</th>
+            <th>时间</th>
+            <th>房间类型</th>
+            <th>游戏类型</th>
+            <th>人数</th>
+            <th>局数</th>
+            <th>胜局</th>
+            <th>输赢</th>
+            <th>服务费</th>
+          </tr>
+        </thead>
+        <tbody>
+           <volist name="_data" id="_data">
+                                                            <tr class="even pointer">
+                                                                <td>{$_data.passwd}</td>
+                                                                <td>{$_data.time|date='Y-m-d H:i:s',###}</td>
+                                                                <td>
+                                                                    <switch name="_data.roomtype" >
+                                                                        <case value="1">积分房</case>
+                                                                        <case value="2">金币房</case>
+                                                                        <case value="3">VIP房</case>
+                                                                        <default />金币场
+                                                                    </switch>
+                                                                </td>
+                                                                <td>{$_data.roomname}</td>
+                                                                <td>{$_data.user_count|default=0}</td>
+                                                                <td>{$_data.playcount}</td>
+                                                                <td>{$_data.victory|default=0}</td>
+                                                                <td>{$_data.score}</td>
+                                                                <td>
+                                                                    <if condition="$_data['roomtype'] eq 1">
+                                                                        积分房无服务费
+                                                                    <else />
+                                                                        {$_data.pump|default=0}
+                                                                    </if>
+                                                                </td>
+                                                            </tr>
+             </volist>
+        </tbody>
+      </table>
+       {$_page}
+    </div><!-- /.table-responsive -->
+                   
+
+                </div>
+            </div>
+        </div>
+  <div class="index-wrap">
+        <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台</span></p>
+        </div>
+  </div>
+
+</body>
+</html>

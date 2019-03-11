@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>{$config.title}</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/common.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/home/swiper/css/swiper.min.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/home/swiper/swiper.css">
+  </head>
+  <body>
+      <nav class="nav">
+          <div class="head_title"><img style="display: none;" src="{$img.logo}" class="img_logo">{$config.title}</div>
+          <div class="head_nav">
+            <ul>
+            <volist name="menu" id="menu">
+              <li <if condition="$menu['link_url'] eq $linkurl"> class="active" </if>><a href="{:U($menu['link_url'])}">{$menu.menu_name}</a></li>
+            </volist>
+            </ul>
+          </div>
+      </nav>
+      <div class="ding"></div>
+      <div class="swiper_div">
+        <div class="swiper-container" id="swiper-container_m">
+            <div class="swiper-wrapper">
+            <volist name="banner" id="banner">
+                <div class="swiper-slide"><img src="{$banner.img_url}" alt="" class="banner_img_m"></div>
+            </volist>
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+      </div>
+      <div class="content_div">
+      <block name="content"></block>
+      </div>
+      <footer>
+        <p>地址：{$config.address}&emsp;&emsp;联系方式：{$config.phone}</p>
+        <p>{$config.beian}</p>
+      </footer>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="__PUBLIC__/home/swiper/js/swiper.min.js"></script>
+    <script src="__PUBLIC__/home/swiper/swiper.js"></script>
+  </body>
+</html>

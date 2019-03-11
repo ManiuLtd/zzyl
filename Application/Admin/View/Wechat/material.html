@@ -1,0 +1,193 @@
+<extend name="Public/base"/>
+<block name="body">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="tabs-container">
+                    <ul class="nav nav-tabs">
+                        <li <if condition="I('type') eq 'image' or I('type') eq ''"> class="active" </if>><a  href="{:U('material',array('type'=>'image'))}#tab-1" aria-expanded="true"> 图片素材</a>
+                        </li>
+                        <li <if condition="I('type') eq 'music'"> class="active" </if>><a href="{:U('material',array('type'=>'music'))}#tab-2" aria-expanded="false">语音素材</a>
+                        </li>
+                        <li <if condition="I('type') eq 'video'"> class="active" </if>><a href="{:U('material',array('type'=>'video'))}#tab-3" aria-expanded="false">视频素材</a>
+                        </li>
+                        <li <if condition="I('type') eq 'news'"> class="active" </if>><a href="{:U('material',array('type'=>'news'))}#tab-4" aria-expanded="false">图文素材</a>
+                        </li>
+                        <!-- <li class=""><a data-toggle="tab" href="#tab-5" aria-expanded="false">图文素材</a> -->
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-1" class="tab-pane <if condition="I('type') eq 'image' or I('type') eq '' "> active </if>">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                       <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('图片添加','{:U('imgAdd')}','2','800','500')"  style="text-decoration:none"> 添加图片</a>
+                                    </div>
+                                </div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Adminmenu"></th>
+                                                <th>标题</th>
+                                                <th>mediaId</th>
+                                                <th>添加时间</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <volist name="image" id="list">
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" value="{$list.id}" name="id[]">
+                                                </td>
+                                                <td>{$list.title}</td>
+                                                <td>{$list.media_id}</td>
+                                                <td>{$list.addtime|date="Y-m-d H:i:s",###}</td>
+                                                <td>
+                                                     <a href="{:U('materialDel',array('mediaid'=>$list['media_id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-info  dim ">群发</a>
+                                                    <a href="{:U('materialDel',array('mediaid'=>$list['media_id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim ">删除</a>
+                                                </td>
+                                            </tr>
+                                          </volist>  
+                                        </tbody>
+                                    </table>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-2" class="tab-pane <if condition="I('type') eq 'music'"> active </if>">
+                            <div class="panel-body">
+                                <div class="table-responsive ">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                       <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('语音添加','{:U('musicAdd')}','2','800','500')"  style="text-decoration:none"> 添加语音</a>
+                                    </div>
+                                </div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Adminmenu"></th>
+                                                <th>标题</th>
+                                                <th>试听</th>
+                                                <th>mediaId</th>
+                                                <th>添加时间</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <volist name="music" id="list">
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" value="{$list.id}" name="id[]">
+                                                </td>
+                                                <td>{$list.title}</td>
+                                                <td><audio controls src="{$list.local}">
+                                                      您的浏览器不支持 audio 标签。
+                                                    </audio></td>
+                                                <td>{$list.media_id}</td>
+                                                <td>{$list.addtime|date="Y-m-d H:i:s",###}</td>
+                                                <td>
+                                                     <a href="{:U('materialDel',array('mediaid'=>$list['media_id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-info  dim ">群发</a>
+                                                    <a href="{:U('materialDel',array('mediaid'=>$list['media_id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim ">删除</a>
+                                                </td>
+                                            </tr>
+                                          </volist>  
+                                        </tbody>
+                                    </table>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-3" class="tab-pane <if condition="I('type') eq 'video'"> active </if>">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                       <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('菜单添加','{:U('videoAdd')}','2','800','500')"  style="text-decoration:none"> 添加视频</a>
+                                    </div>
+                                </div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Adminmenu"></th>
+                                                <th>标题</th>
+                                                <th>播放</th>
+                                                <th>mediaId</th>
+                                                <th>添加时间</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <volist name="video" id="list">
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" value="{$list.id}" name="id[]">
+                                                </td>
+                                                <td>{$list.title}</td>
+                                                <td>暂不支持播放</td>
+                                                <td>{$list.media_id}</td>
+                                                <td>{$list.addtime|date="Y-m-d H:i:s",###}</td>
+                                                <td>
+                                                     <a href="{:U('materialDel',array('mediaid'=>$list['media_id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-info  dim ">群发</a>
+                                                    <a href="{:U('materialDel',array('mediaid'=>$list['media_id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim ">删除</a>
+                                                </td>
+                                            </tr>
+                                          </volist>  
+                                        </tbody>
+                                    </table>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-4" class="tab-pane <if condition="I('type') eq 'news'"> active </if>">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                       <a href="{:U('newsAdd')}" class="btn btn-sm btn-success"  style="text-decoration:none"> 添加图文</a>
+                                    </div>
+                                </div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Adminmenu"></th>
+                                                <th>标题</th>
+                                                <th>类型</th>
+                                                <th>mediaId</th>
+                                                <th>添加时间</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <volist name="news" id="list">
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" value="{$list.id}" name="id[]">
+                                                </td>
+                                                <td>{$list.title}</td>
+                                                <td>{$list['multiple']?'多图文':'单图文'}</td>
+                                                <td>{$list.media_id}</td>
+                                                <td>{$list.addtime|date='Y-m-d H:i:s',###}</td>
+                                                <td>{$list.type|applosType}</td>
+                                                <td>
+                                                    <a href="{:U('materialDel',array('mediaid'=>$list['media_id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-info  dim ">发送</a>
+                                                    <a href="{:U('newsUpdate',array('id'=>$list['id']))}" class="btn btn-outline btn-info  dim ">编辑</a>
+                                                    <a href="{:U('newsDel',array('mediaid'=>$list['media_id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim ">删除</a>
+                                                </td>
+                                            </tr>
+                                          </volist>  
+                                        </tbody>
+                                    </table>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+    </div>
+</div>
+</block>

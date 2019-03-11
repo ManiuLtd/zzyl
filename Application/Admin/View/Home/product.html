@@ -1,0 +1,73 @@
+<extend name="Public/base"/>
+<block name="body">
+
+	<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>管理</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <div class="col-sm-3" style="width:100px;margin-left:0px;">
+                                <div class="input-group">
+                                    <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('发布','{:U('add_product')}','2','600','600')"  style="text-decoration:none"> 发布</a>
+                                </div>
+                            </div>
+                            <form action="{:U()}">
+                                <div class="col-sm-5" style="width:150px;margin-left:0px;">
+                                    <div class="">
+                                        <select name="type" id="" class="form-control">
+                                            <option value="">类型</option>
+                                            <volist name="type" id="v">
+                                                <option value="{$v.type}" <if condition="$v.type eq $_GET['type']">selected="selected"</if>>{$v.typeName}</option>
+                                            </volist>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3" style="width:100px;margin-left:0px;">
+                                    <div class="input-group">
+                                        <button class="btn btn-sm btn-success"> 搜索</button>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>名称</th>
+                                        <th>描述</th>
+                                        <th>图片</th>
+                                        <th>下载地址</th>
+                                        <th>添加时间</th>
+                                        <th>类型</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>{$_data.name}</td>
+                                        <td>{$_data.desc}</td>
+                                        <td><img src="{$_data.img_url}" style="height:50px;"></td>
+                                        <td>{$_data.link_url}</td>
+                                        <td>{$_data.create_time|date="Y-m-d",###}</td>
+                                        <td>{$_data.typeName}</td>
+                                        <td>
+                                            <a class="btn btn-outline btn-info  dim " onclick="admin_edit('编辑','{:U('product_edit',array('id'=>$_data['id']))}','2','600','700')"  style="text-decoration:none">编辑</i></a>
+                                            <a href="{:U('del_product',array('id'=>$_data['id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim ">删除</i></a>
+                                        </td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

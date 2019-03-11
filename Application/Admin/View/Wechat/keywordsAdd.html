@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    
+    <script type="text/javascript">
+    //ajax post
+        function ajax_post(the){
+            layer.confirm('您确定要做此操作吗？', {
+            btn: ['确定','取消'] //按钮
+            }, function(){
+                var that = $(the);
+                var url= $(the).attr('action');
+                var cs = $(the).serialize();
+                 $.ajax({
+                    url:url,
+                    data:cs,
+                    type:'POST',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                parent.location.reload();
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                        }
+                    });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+</script>
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">       
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>添加关键字</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" action="{:U('keywordsUpdate')}" onsubmit="return ajax_post(this);">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">关键字</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="keywords">
+                                </div>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">消息类型</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control sel" name="type">
+                                        <option value="text">文字</option> 
+                                        <option value="news">图文</option> 
+                                        <option value="image">图片</option> 
+                                        <option value="music">声音</option> 
+                                        <option value="video">视频</option> 
+                                    </select>
+                                </div>
+                            </div>
+    
+                            <!-- 文本 -->
+                            <div class="form-group text t" style="display: block;">
+                                <label class="col-sm-2 control-label">规则内容</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="content" id="" cols="90" rows="10"></textarea>
+                                </div>
+                            </div>
+                            <!-- 文本 -->
+
+                            <!-- 图文 -->
+                            <div class="form-group news t" style="display: none">
+                                <label class="col-sm-2 control-label">选取图文</label>
+                                <div class="col-sm-10">
+                                    <select  class="form-control material">
+                                        <option value="0">请选择图文素材</option> 
+                                        <volist name="news" id="news">
+                                            <option value="{$news.id}">{$news['multiple']?"[单图文]":"[多图文]"}{$news.title}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- 图文 -->
+    
+                            <!-- 图片 -->
+<!--                             <div class="form-group img t"  style="display: none;">
+                                <label class="control-label col-sm-2">图片地址</label>
+                                <div class="col-sm-10">
+                                  <div class="input-group">
+                                    <span class="input-group-addon"><button style="width: 100%;height: 100%;">选择素材</button></span>
+                                    <input type="text" class="form-control images" name="images_media_id" value="" placeholder="请输入图片地址">
+                                  </div>
+                                </div>
+                              </div> -->
+
+                            <div class="form-group img t" style="display: none;">
+                                <label class="col-sm-2 control-label">选取素材</label>
+                                <div class="col-sm-10">
+                                   <select  name="" class="form-control material" id="">
+                                    <option value="0">请选择图片素材</option>
+                                    <volist name="image" id="image">
+                                       <option value="{$image.id}">{$image.title}</option>
+                                    </volist>
+                                   </select>
+                                </div>
+                            </div>
+                            <!-- 图片 -->
+    
+                            <!-- 音乐 -->
+
+          <!--                   <div class="form-group music t" style="display: none;">
+                                <label class="col-sm-2 control-label">声音地址</label>
+                                <div class="col-sm-10">
+                                     <div class="input-group">
+                                        <span class="input-group-addon"><button style="width: 100%;height: 100%;">选择素材</button></span>
+                                        <input type="text" class="form-control mm" name="music_media_id" value="" placeholder="请输入声音地址media_id">
+                                    </div>
+                                </div>
+                            </div> -->
+
+                             <div class="form-group music t" style="display: none;">
+                                <label class="col-sm-2 control-label">选取声音</label>
+                                <div class="col-sm-10">
+                                    <select name="" class="form-control material" id="">
+                                        <option value="0">请选择声音素材</option>   
+                                        <volist name="music" id="music">
+                                           <option value="{$music.id}">{$music.title}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- 音乐 -->
+                
+                            <!-- 视频 -->
+                            <!-- <div class="form-group video t" style="display: none;">
+                                <label class="col-sm-2 control-label">视频标题</label>
+                                <div class="col-sm-10">
+                                   <input type="text" class="form-control" name="video_title" value="" placeholder="请输入视频标题">
+                                </div>
+                            </div>
+    
+                            
+                            <div class="form-group video t" style="display: none;">
+                                <label class="col-sm-2 control-label">视频描述</label>
+                                <div class="col-sm-10">
+                                   <textarea name="video_desc" class="form-control" id="" cols="30" rows="10" placeholder="请输入视频描述"></textarea>
+                                </div>
+                            </div>
+ -->
+              <!--               <div class="form-group video t" style="display: none;">
+                                <label class="col-sm-2 control-label">视频地址</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><button style="width: 100%;height: 100%;">选择素材</button></span>
+                                        <input type="text" class="form-control v" name="video_media_id" value="" placeholder="请输入视频地址">
+                                    </div>
+                                </div>
+                            </div> -->
+    
+                            <div class="form-group video t" style="display: none;">
+                                <label class="col-sm-2 control-label">选取视频</label>
+                                <div class="col-sm-10">
+                                    <select name="" class="form-control" id="">
+                                        <option value="0">请选择视频</option>
+                                        <volist name="video" id="video">
+                                           <option value="{$video.id}">{$video.title}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- 视频 -->
+                            
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <input type="hidden" name="mid" value="0">
+                                    <button class="btn btn-primary" type="submit">保存内容</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/layui/layui.js"></script>
+</body>
+<script>
+    $('.sel').change(function(){
+        var type = $(this).val()
+        switch(type){
+            case 'text':
+            $('.t').hide()
+            $('.text').show()
+            break;
+
+            case  'news':
+            $('.t').hide()
+            $('.news').show()
+            break;
+
+            case 'image':
+            $('.t').hide()
+            $('.img').show()
+            break;
+
+            case 'music':
+            $('.t').hide()
+            $('.music').show()
+            break;
+
+            case 'video':
+            $('.t').hide()
+            $('.video').show()
+            break;
+        }
+    })
+
+    $(".material").change(function(){
+        $('input[type=hidden]').val($(this).val())
+    })
+
+// layui.use('upload', function(){
+//   var $ = layui.jquery
+//   ,upload = layui.upload;
+  
+//   //普通图片上传
+//   var uploadInst = upload.render({
+//     elem: '#test1'
+//     ,url: '{:U("Wechat/uploads2",array("materialUplaods"=>1,"type"=>"image","t"=>1))}'
+//     ,done: function(res){
+//         if(res.status == 0){
+//             layer.msg('上传失败')
+//         } else {
+//             $('.images').val(res.data)
+//         }
+//     }
+
+//     })
+
+
+//   //音乐上传
+//   var uploadInst = upload.render({
+//     elem: '#music'
+//     ,url: '{:U("Wechat/uploads2",array("materialUplaods"=>1,"type"=>"music","t"=>1))}'
+//     ,done: function(res){
+//         if(res.status == 0){
+//             layer.msg('上传失败')
+//         } else {
+//             $('.mm').val(res.data)
+//         }
+//     }
+
+//     })
+
+//   //视频上传
+//   var uploadInst = upload.render({
+//     elem: '#v'
+//     ,url: '{:U("Wechat/uploads2",array("materialUplaods"=>1,"type"=>"video","t"=>1))}'
+//     ,done: function(res){
+//         if(res.status == 0){
+//             layer.msg('上传失败')
+//         } else {
+//             $('.v').val(res.data)
+//         }
+//     }
+
+//     })
+
+
+//   })
+</script>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html style="font-size: 59.375px;" lang="zh-cn">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <title>棋牌运营平台-个人信息 </title>
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/index.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/index.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/common.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/search.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/mstyle.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/common.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/agency.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/information.css">
+    <link href="__PUBLIC__/admin/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/ajax.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/sky.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/jquery.min.js"></script>
+
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+
+    <script type="text/javascript">
+        //ajax post
+        function ajax_post(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var that = $(the);
+                var url = $(the).attr('action');
+                var cs = $(the).serialize();
+                $.ajax({
+                    url: url,
+                    data: cs,
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                parent.location.reload();
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+
+        //get方法ajax提交
+        function ajax_get(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var url = $(the).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                window.location.href = data.url;
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+        /*管理员-编辑*/
+        function admin_edit(title, url, id, w, h) {
+            layer_show(title, url, w, h);
+        }
+
+        //get方法ajax提交 应该要这个提示我要在复制一遍
+        function club_action(the, k=0) {
+            var tips = ['您确定要删除该成员吗?', '您确定要设置该成员为管理员吗']
+            // console.log(tips[k])
+            layer.confirm(tips[k], {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var url = $(the).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                window.location.href = data.url;
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+    </script>
+
+
+</head>
+<body>
+
+<style>
+    /*.information-basic .item label{width:2.64rem;}*/
+</style>
+
+<div class="panel panel-information">
+    <div class="nav-wrap">
+        <div class="nav">
+            <a href="javascript:;" onclick="history.go(-1)"></a>
+            <h1>俱乐部战绩</h1>
+        </div>
+    </div>
+
+
+    <div class="information-basic">
+
+
+        <div class="item item-tel">
+            <label>总对战次数:</label>
+            <p>{$count.total|default=0} &nbsp;&nbsp;总参与人数:{$count.totalUser|default=0}</p>
+        </div>
+
+        <div class="item item-tel">
+            <label>积分对战次数: </label>
+            <p>{$count.score|default=0} &nbsp;&nbsp;参与人数:{$count.scoreUserCount|default=0}</p>
+        </div>
+
+        <div class="item item-tel">
+            <label>金币对战次数:</label>
+            <p>{$count.money|default=0} &nbsp;&nbsp;参与人数:{$count.moneyUserCount|default=0} &nbsp;&nbsp;总收取金币:{$count.moneyPumpCount|default=0}</p>
+        </div>
+
+        <div class="item item-tel">
+            <label>VIP对战次数:</label>
+            <p>{$count.vip|default=0} &nbsp;&nbsp;参与人数:{$count.vipUserCount|default=0} &nbsp;&nbsp;总收取火币:{$count.vipPumpCount|default=0}</p>
+        </div>
+        <div class="search-condition">
+            <form>
+                <div class="time">
+                    <div class="start">
+                        <i>开始时间</i>
+                        <input name="start" onchange="checkSdata(this,'2018-05-01')" type="date" value="{$start}">
+
+                    </div>
+                    <span class="line">-</span>
+                    <div class="end">
+                        <i>结束时间</i>
+                        <input name="stop" onchange="checkSdata(this,'2018-05-01')" type="date" value="{$stop}">
+                    </div>
+
+                   <!-- <div class="end">
+                        <i>昵称</i>
+                        <input type="text"
+                               style=" border: 1px solid #ccc; border-radius: 0.1rem; height: 0.78rem; line-height: 0.78rem; padding-left: 0.2rem; width: 90px;"
+                               name="search" placeholder="昵称/ID">
+                    </div>-->
+                    <button class="btn-search" type="submit" style="top:32px">搜索</button>
+                </div>
+            </form>
+
+
+        </div>
+
+
+
+    </div>
+
+    <div class="search-condition">
+        <div class="item">
+            <div class="table-responsive">
+                <table class="table table-bordered" style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th>房间号</th>
+                        <th>时间</th>
+                        <th>房间类型</th>
+                        <th>游戏类型</th>
+                        <th>人数</th>
+                        <th>局数</th>
+                        <th>参与用户</th>
+                        <th>抽水方式</th>
+                        <th>服务费</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <volist name="recordList" id="recordList">
+                        <tr>
+                            <td>{$recordList.passwd}</td>
+                            <td>{$recordList.time|date='Y-m-d H:i:s',###}</td>
+                            <td>
+                                <switch name="recordList.roomtype">
+                                    <case value="1">积分房</case>
+                                    <case value="2">金币房</case>
+                                    <case value="3">VIP房</case>
+                                    <default/>
+                                    金币场
+                                </switch>
+                            </td>
+                            <td>{$recordList.name}</td>
+                            <td>{$recordList.user_count}</td>
+                            <td>{$recordList.playcount}</td>
+                            <td>{$recordList.user}</td>
+                            <td>
+                                <switch name="recordList.roomtiptype">
+                                    <case value="1">收取所有大赢家 {$recordList.roomtipyypenums}%</case>
+                                    <case value="2">收取最大的大赢家 {$recordList.roomtiptypenums}%</case>
+                                    <default/>
+                                    不收小费
+                                </switch>
+                            </td>
+                            <td>
+                                <switch name="recordList.roomtype">
+                                    <case value="1">积分不收取服务费</case>
+                                    <default/>
+                                    {$recordList.pump_money|default=0}
+                                </switch>
+
+
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div><!-- /.table-responsive -->
+
+
+        </div>
+    </div>
+    <div class="index-wrap">
+        <div class="footer-note">
+            <p style="text-align:center"><span>棋牌运营平台</span></p>
+        </div>
+    </div>
+
+
+</body>
+</html>

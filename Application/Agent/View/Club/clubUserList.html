@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-cn" style="font-size: 59.375px;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <title>棋牌运营平台</title>
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/index.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/index.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/common.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/search.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/mstyle.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/common.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/agency.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/information.css">
+
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/ajax.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/sky.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/h-ui/edit.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+
+    <script type="text/javascript">
+        //ajax post
+        function ajax_post(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var that = $(the);
+                var url = $(the).attr('action');
+                var cs = $(the).serialize();
+                $.ajax({
+                    url: url,
+                    data: cs,
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                parent.location.reload();
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+
+        //get方法ajax提交
+        function ajax_get(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var url = $(the).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                window.location.href = data.url;
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+        /*管理员-编辑*/
+        function admin_edit(title, url, id, w, h) {
+            layer_show(title, url, w, h);
+        }
+
+
+        //get方法ajax提交 应该要这个提示我要在复制一遍
+        function club_action(the, k) {
+            var tips = ['您确定要删除该成员吗？', '您确定要解散该俱乐部吗？', '您确定要设置该成员为管理员吗？', '您确定要撤销该成员的管理员身份吗？']
+            // console.log(tips[k])
+            layer.confirm(tips[k], {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var url = $(the).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                window.location.href = data.url;
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+    </script>
+
+</head>
+<body>
+<div class="panel panel-index">
+    <div class="nav-wrap">
+        <div class="nav">
+            <a href="{:U('Club/index')}"></a>
+            <h1>棋牌代理运营平台</h1>
+        </div>
+    </div>
+    <div class="welcome-wrap">
+        <div class="avator"><a href="{:U('index/index')}"><img src="__PUBLIC__/newadmin/img/avator.png"></a></div>
+        <div class="brief">
+            <p class="username">欢迎你！{$agent.username}
+                <span style="color:#f08200;font-size:16px;"></span>
+            </p>
+        </div>
+
+    </div>
+    <div class="search-wrap">
+        <div class="tab-container">
+            <div class="tab-nav">
+                <a href="" class="on">俱乐部列表</a>
+            </div>
+        </div>
+        <div class="search-condition">
+            <div class="item">
+                <div class="table-responsive">
+                    <table class="table table-bordered" style="width:100%">
+                        <thead>
+                        <tr>
+                            <th>用户ID</th>
+                            <th>用户昵称</th>
+                            <th>身份</th>
+                            <th>操作</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="_data" id="_data">
+                            <tr>
+                                <td>{$_data.userID}</td>
+                                <td>{$_data.userName}</td>
+                                <td>
+                                    <switch name="_data.status">
+                                        <case value="1">群主</case>
+                                        <case value="2">管理员</case>
+                                        <default/>
+                                        普通用户
+                                    </switch>
+
+                                </td>
+                                <td>
+                                    <if condition="($_data.status neq 1)">
+                                        <a href="{:U('delClubUser',array('userID'=>$_data['userID'],'friendsGroupID'=>$_data['friendsGroupID']))}"
+                                           onclick="return club_action(this,0);" class="btn btn-danger btn-xs">删除用户</a>
+                                        <else/>
+                                        <a href="{:U('dismissClub',array('friendsGroupID'=>$_data['friendsGroupID']))}"
+                                           onclick="return club_action(this,1);"
+                                           class="btn btn-danger btn-xs">解散俱乐部</a>
+                                    </if>
+                                    <if condition="($_data.status eq 2)">
+                                        <a href="{:U('setClubAdministrators',array('userid'=>$_data['userID'],'friendsgroupid'=>$_data['friendsGroupID'],'type'=>0))}"
+                                           class="btn btn-success btn-xs"
+                                           onclick="return club_action(this,3);">解除管理员</a>
+                                        <a class="btn btn-sm btn-primary btn-xs" href="javascript:;"
+                                           onclick="admin_edit('设置管理员权限','{:U('clubManagerPower',array('userID'=>$_data['userID'],'friendsGroupID'=>$_data['friendsGroupID']))}','2','640','300')"
+                                           style="text-decoration:none">设置管理员权限</a>
+                                        <elseif condition="($_data.status eq 0)"/>
+                                        <a href="{:U('setClubAdministrators',array('userid'=>$_data['userID'],'friendsgroupid'=>$_data['friendsGroupID'],'type'=>1))}"
+                                           class="btn btn-success btn-xs"
+                                           onclick="return club_action(this,2);">设为管理员</a>
+                                    </if>
+                               <!--     <a class="btn btn-sm btn-primary btn-xs"
+                                       href="{:U('userRecord',array('userid'=>$_data['userid'],'friendsgroupid'=>$_data['friendsgroupid']))}"
+                                       style="text-decoration:none">个人战绩</a>
+                                    <a href="{:U('clubRechargeInfo',array('userid'=>$_data['userid'],'friendsgroupid'=>$_data['friendsgroupid']))}"
+                                       style="text-decoration:none" class="btn btn-info btn-xs">兑换记录</a>
+                                    <if condition="($_data._sort neq 2)">
+                                        <a href="{:U('delClubUser',array('userid'=>$_data['userid'],'friendsgroupid'=>$_data['friendsgroupid']))}"
+                                           onclick="return club_action(this);" class="btn btn-danger btn-xs">删除用户</a>
+                                    </if>
+                                    <if condition="($_data._sort eq 1)">
+                                        <a href="{:U('setClubAdministrators',array('userid'=>$_data['userid'],'friendsgroupid'=>$_data['friendsgroupid'],'type'=>1))}"
+                                           class="btn btn-success btn-xs"
+                                           onclick="return club_action(this,1);">解除管理员</a>
+                                        <elseif condition="($_data._sort eq 0)"/>
+                                        <a href="{:U('setClubAdministrators',array('userid'=>$_data['userid'],'friendsgroupid'=>$_data['friendsgroupid'],'type'=>0))}"
+                                           class="btn btn-success btn-xs"
+                                           onclick="return club_action(this,1);">设为管理员</a>
+                                    </if>-->
+                                </td>
+
+                            </tr>
+                        </volist>
+                        </tbody>
+
+
+                    </table>
+                </div><!-- /.table-responsive -->
+
+                {$_page}
+            </div>
+        </div>
+    </div>
+    <div class="index-wrap">
+        <div class="footer-note">
+            <p style="text-align:center"><span>棋牌运营平台</span></p>
+        </div>
+    </div>
+
+</body>
+</html>

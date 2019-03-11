@@ -1,0 +1,148 @@
+<extend name="Public/base"/>
+<block name="body">
+
+	<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>vip房间列表</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <!-- <form action="{:U()}" method="get">
+                            <div class="col-sm-5 m-b-xs" style="width: 8%;">
+                                <select class="input-sm form-control input-s-sm inline" name="type">
+                                    <option value="0">请选择</option>
+                                    <option value="1">充值人ID</option>
+                                    <option value="2">充值人昵称</option>
+                                    <option value="3">绑定代理邀请码</option>
+                                    <option value="4">绑定代理账号</option>
+                                    <option value="5">绑定代理游戏ID</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3" style="width: 15%;margin-left: -20px;">
+                                <div class="input-group">
+                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control" name="search"> <span class="input-group-btn">
+                                  
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width:8%;margin-left: -40px;">
+                                <div class="input-group">
+                                    充值时间
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width: 15%;margin-left: -60px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker1" name="start">
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width:4%;margin-left: -40px;">
+                                <div class="input-group">
+                                    至
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width: 15%;margin-left: -40px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker2" name="stop">
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width: 6%;margin-left:-40px;">
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                </div>
+                            </div>
+                            </form> -->
+                            <div class="col-sm-3" style="width:100px;margin-left:0px;">
+                                <div class="input-group">
+                                   <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('添加vip房间号','{:U('vipRoomAdd')}','2','800','800')"  style="text-decoration:none"> 添加vip房间号</a>
+                                </div>
+                            </div>
+                            <!-- <div class="col-sm-3" style="width: 6%;margin-left:-20px;">
+                            <form action="{:U('Public/disabled')}" method="post" onsubmit="return ajax_post(this);" >
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-danger"> 批量禁用</button>
+                                </div>
+                            </div>  -->
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+
+                                        <!-- <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Agentmember"><input type="hidden" name="disabled" value="1"></th> -->
+                                       
+                                        <th>房间号</th>
+                                        <th>房间密码</th>
+                                        <th>所属游戏</th>
+                                        <th>房间有效期</th>
+                                        <th>分配代理ID</th>
+                                        <th>代理管理有效期</th>
+                                        <th>代理是否可以修改房间密码</th>
+                                        <th>房间号创建时间</th>
+                                        <th>房间状态</th>
+                                        <th>代理分配状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                       <!--  <td>
+                                            <input type="checkbox" value="{$_data.id}" name="id[]">
+                                        </td> -->
+                                       
+                                        <td>{$_data.roomid}</td>
+                                        <td>{$_data.roompassword}</td>
+                                        <td>{$_data.game}</td>
+                                        <td>{$_data.roombegintime|date="Y-m-d",###} 至 {$_data.roomendtime|date="Y-m-d",###}</td>
+                                        <td><font color="red">{$_data.agentid|default="未分配管理代理"}</font></td>
+                                        <td><if condition="($_data.agentid neq '')">{$_data.bindbegintime|date="Y-m-d",###} 至 {$_data.bindendtime|date="Y-m-d",###}</if></td>
+                                        <td>
+                                            <if condition="($_data.canchangepassword eq '')">
+                                            <elseif condition="($_data.canchangepassword eq 0)"/>
+                                            <font color="red">无权限</font>
+                                            <elseif condition="($_data.canchangepassword eq 1)"/>
+                                            <font color="green">有权限</font>
+                                            </if>
+                                        </td>
+                                        <td>{$_data.createtime|date="Y-m-d",###}</td>
+                                        <td>
+                                            <?php if(time() > $_data['roomendtime']){
+                                                echo "<font color='red'>已过期</font>"; 
+                                            }else{
+                                                echo "<font color='green'>正常</font>"; 
+                                            };?>
+                                        </td>
+                                        <td>
+                                        <if condition="($_data.agentid neq '')">
+                                            <?php if(time() > $_data['bindendtime']){
+                                                echo "<font color='red'>代理分配已失效</font>"; 
+                                            }else{
+                                                echo "<font color='green'>正常</font>"; 
+                                            };?>
+                                        </if>
+                                        </td>
+                                        <td>
+                                            <!--如果房间没有分配代理-->
+                                            <if condition="($_data.agentid eq '')">
+                                            <a href="{:U('vipRoomDel',array('id'=>$_data['id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim ">删除</i></a>
+                                            <else/>
+                                            <a href="{:U('relieveBind',array('id'=>$_data['id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim ">解除</i></a>
+                                            
+                                            </if>
+                                            <a onclick="admin_edit('分配房间','{:U('roomBind',array('id'=>$_data['id']))}','2','800','500')"  style="text-decoration:none" class="btn btn-outline btn-info  dim ">分配</i></a>
+                                            <a onclick="admin_edit('编辑房间','{:U('vipRoomEdit',array('id'=>$_data['id']))}','2','500','500')"  style="text-decoration:none" class="btn btn-outline btn-info  dim ">编辑</i></a>
+                                        </td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

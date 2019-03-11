@@ -1,0 +1,120 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        .top{width: 6%;margin-left:-20px};
+        @media (max-width: 768px){
+             .top{margin-left:0px};
+             .ibox{width: 1000px;}
+        }
+</style>
+	<div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>系统菜单</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <!-- <div class="col-sm-5 m-b-xs" style="width: 8%;">
+                                <select class="input-sm form-control input-s-sm inline">
+                                    <option value="0">请选择</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3" style="width: 15%;margin-left: -20px;">
+                                <div class="input-group">
+                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
+                                  
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width:4%;margin-left: -40px;">
+                                <div class="input-group">
+                                    时间
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width: 15%;margin-left: -30px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker1">
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width:4%;margin-left: -40px;">
+                                <div class="input-group">
+                                    至
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width: 15%;margin-left: -40px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker2">
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width: 6%;margin-left:-40px;">
+                                <div class="input-group">
+                                   <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                </div>
+                            </div> -->
+                            <div class="col-sm-3" style="width:100px;">
+                                <div class="input-group">
+                                   <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('菜单添加','{:U('menu_add')}','2','800','500')"  style="text-decoration:none"> 添加菜单</a>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu">
+                            <form action="{:U('Public/del_record')}" method="post" onsubmit="return ajax_post(this);" >
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-danger"> 批量删除</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+
+                                        <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Adminmenu"></th>
+                                        <th>ID</th>
+                                        <th>菜单名称</th>
+                                        <th>链接地址</th>
+                                        <th>是否隐藏</th>
+                                        <th>排序</th>
+                                        <th>pid</th>
+                                        <th>图标</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+
+                                        <td>
+                                            <input type="checkbox" value="{$_data.id}" name="id[]">
+                                        </td>
+                                        <td>{$_data.id}</td>
+                                        <td>{$_data.menu_name}</td>
+                                        <td>{$_data.link_url}</td>
+                                        <td>
+                                        	<if condition="($_data.hide eq 0)">
+                                        		<font color="green">否</font>
+                                        	<elseif condition="($_data.hide eq 1)"/>
+                                        		<font color="red">是</font>
+                                        	</if>
+                                        </td>
+                                        <td>{$_data.level}</td>
+                                        <th>{$_data.pid}</th>
+                                        <td>
+                                        	{$_data.icon}
+                                        </td>
+                                        <td>
+                                        	<a class="btn btn-outline btn-info  dim " href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('菜单编辑','{:U('menu_edit',array('id'=>$_data['id']))}','2','800','500')" class="ml-5" style="text-decoration:none"><i class="fa fa-paste"></i></a>
+                                        	<a href="{:U('Public/del_record',array('id'=>$_data['id'],'model'=>'admin_menu'))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim "><i class="fa fa-times"></i></a>
+                                        </td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

@@ -1,0 +1,61 @@
+<include file="Public/base"/>
+<div class="search-wrap">
+    <div class="search-condition" style="padding-bottom: 20px">
+        <form method="get" id="form1">
+            <div class="time">
+                <div class="end">
+                    <i>统计类型</i>
+                    <select id="stat_type" name="time_type">
+                        <option value="">全部排名</option>
+                        <option value="day">日排名</option>
+                        <option value="week">周排名</option>
+                        <option value="month">月排名</option>
+                    </select>
+                </div>
+                <button class="btn-search" type="submit" style="top:32px">搜索</button>
+            </div>
+        </form>
+        <div class="item">
+            <p>前十名用户</p>
+            <table class='table' style='margin-top:20px;'>
+                <tr>
+                    <th>游戏ID</th>
+                    <th>昵称</th>
+                    <th>总业绩</th>
+                    <th>排名</th>
+                </tr>
+                <volist name="list" id="v">
+                    <tr>
+                        <td >{$v.recharge_userid}</td>
+                        <td >{$v.name}</td>
+                        <td >{$v.commission}</td>
+                        <td >{$v.rownum}</td>
+                    </tr>
+                </volist>
+
+            </table>
+
+        </div>
+
+        <div class="item">
+            <table class='table' style='margin-top:20px;'>
+                <p>自己的排名</p>
+                <tr>
+                    <th colspan='5' style='width:80%'>总业绩:{$userInfo.commission|default=0}</th>
+                    <th colspan='5'>第{$userInfo.rownum|default=0}名</th>
+                </tr>
+            </table>
+            <p style="color: #666;padding:20px 0 0 20px;">排名按照各位代理的业绩情况排名</p>
+            <p style="color: #666;padding:20px 0 0 20px;">排名数据按照日,周,月，时间可能与实时数据略有偏差。</p>
+        </div>
+    </div>
+</div>
+
+<div class="index-wrap">
+    <div class="footer-note">
+        <p style="text-align:center"><span>棋牌运营平台</span></p>
+    </div>
+</div>
+</div>
+</body>
+</html>

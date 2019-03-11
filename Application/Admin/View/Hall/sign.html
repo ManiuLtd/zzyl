@@ -1,0 +1,111 @@
+<extend name="Public/base"/>
+<block name="body">
+<style>
+    .t1{margin-left: -17px;}
+    .t2{margin-left: -130px;}
+    .t3{margin-left: -90px;}
+    .t4{margin-left: -5px;}
+    .t5{margin-left: -170px;}
+    /*.t6{margin-left: -135px;}*/
+    .t7{margin-left: -150px;}
+    @media (max-width: 768px){
+        .top-menu{margin-left: 0px;}
+        .t6{margin-top: 5px;}
+    }
+</style>
+	<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>签到记录</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                            <div class="col-sm-5 m-b-xs" style="width: 200px;">
+                                <select class="input-sm form-control input-s-sm inline" name="type">
+                                    <option value="0">请选择</option>
+                                    <option value="1" <if condition="$type eq 1"> selected </if>>用户ID</option>
+                                    <option value="2" <if condition="$type eq 2"> selected </if>>用户昵称</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3 top-menu t1" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control" name="search" value="{$search}"> <span class="input-group-btn">
+                                  
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t2" style="width: 200px;">
+                                <div class="input-group">
+                                    签到时间
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t3" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker1" name="start" value="{$start|date='Y-m-d H:i',###}">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t4" style="width: 200px;">
+                                <div class="input-group">
+                                    至
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t5" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker2" name="stop" value="{$stop|date='Y-m-d H:i',###}">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t6" style="width: 100px;">
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-primary"> 搜索玩家</button> </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t6" style="width:100px;">
+                                <div class="input-group">
+                                   <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('签到奖励配置','{:U('sign_config')}','2','1000','800')"  style="text-decoration:none"> 签到奖励配置</a>
+                                </div>
+                            </div>
+                            </form>
+
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>用户ID</th>
+                                        <th>昵称</th>
+                                        <th>签到时间</th>
+                                        <th>签到领取物品</th>
+                                        <th>累计签到次数</th>
+                                        
+                                        <th>累计签到获得金币数</th>
+                                        <?php if (C('IS_SHOW_JEWELS')) { ?>
+                                        <th>累计签到获得钻石数</th>
+                                        <?php } ?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td><a  onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')"  style="text-decoration:none"><font color="#1AB394">{$_data.userid}</font></a></td>
+                                        <td><a  onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')"  style="text-decoration:none"><font color="#1AB394">{$_data.username}</font></a></td>
+                                        <td>{$_data.signtime|date="Y-m-d H:i:s",###}</td>
+                                        <td><if condition="($_data.prizetype eq 1)">获得金币{$_data.num}<elseif condition="($_data.prizetype eq 2)"/>获得钻石{$_data.num}</if></td>
+                                        <td>{$_data.total_count}</td>
+                                        <td>{$_data.total_get_money}</td>
+                                        <?php if (C('IS_SHOW_JEWELS')) { ?>
+                                        <td>{$_data.total_get_jewels}</td>
+                                        <?php } ?>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

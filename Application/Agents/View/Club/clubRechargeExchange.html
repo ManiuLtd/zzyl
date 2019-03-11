@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-cn" style="font-size: 59.375px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <title>棋牌运营平台</title>
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/index.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/index.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/common.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/search.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/mstyle.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/common.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/agency.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/information.css">
+    
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/ajax.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/sky.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript">
+    //ajax post
+        function ajax_post(the){
+            layer.confirm('您确定要做此操作吗？', {
+            btn: ['确定','取消'] //按钮
+            }, function(){
+                var that = $(the);
+                var url= $(the).attr('action');
+                var cs = $(the).serialize();
+                 $.ajax({
+                    url:url,
+                    data:cs,
+                    type:'POST',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                parent.location.reload();
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                        }
+                    });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+
+        //get方法ajax提交
+        function ajax_get(the){
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                var url = $(the).attr('href');
+                $.ajax({
+                    url:url,
+                    type:'GET',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                window.location.href=data.url;
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+        /*管理员-编辑*/
+        function admin_edit(title,url,id,w,h){
+            layer_show(title,url,w,h);
+        }
+</script>
+</head>
+<body>
+    <div class="panel panel-index">
+        <div class="nav-wrap">
+            <div class="nav">
+                <a href="{:U('Club/index')}"></a>
+                <h1>棋牌代理运营平台</h1>
+            </div>
+        </div>
+        <div class="welcome-wrap">
+            <div class="avator"><a href="{:U('index/index')}"><img src="__PUBLIC__/newadmin/img/avator.png"></a></div>
+            <div class="brief">
+                <p class="username">欢迎你！{$agent.username}
+                    <span style="color:#f08200;font-size:16px;"></span>
+                </p>
+            </div>
+
+        </div>
+
+
+
+        <div class="search-wrap">
+            <div class="tab-container">
+        <div class="tab-nav">
+          <a href="" class="on">俱乐部列表</a>
+        </div>
+            </div>
+                <div class="search-condition">
+                <div class="item">
+  <div class="table-responsive">
+      <table class="table table-bordered" style="width: 100%">
+        <thead>
+          <tr>
+                                                        <th>用户</th>
+                                                        <th>总充值</th>
+                                                        <th>总兑换</th>
+                                                        <th>总收取服务费</th>
+                                                        <th>最后兑换时间</th>
+                                                        <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+                                                <volist name="list" id="list">
+                                                      <tr>
+                                                            <td>{$list.name}</td>
+                                                            <td>{$list.recharge|default=0}</td>
+                                                            <td>{$list.exchange|default=0}</td>
+                                                            <td>{$list.firecoinpump|default=0}</td>
+                                                            <td>
+                                                                <if condition="($list.exchange_time eq '')">
+                                                                    暂时没有充值记录
+                                                                <else />
+                                                                    {$list.exchange_time|date='Y-m-d H:i:s',###}
+                                                                </if>
+                                                            </td>
+                                                            <td>
+                                                                <a href="{:U('clubRecharge',array('friendsgroupid'=>$list['friendsgroupid'],'userid'=>$list['userid']))}"   style="text-decoration:none" class="btn btn-sm btn-info">充值</a>
+                                                                <a href="{:U('clubExchange',array('friendsgroupid'=>$list['friendsgroupid'],'userid'=>$list['userid']))}"   style="text-decoration:none" class="btn btn-sm btn-success">兑换</a>
+                                                                <a href="{:U('clubRechargeInfo',array('friendsgroupid'=>$list['friendsgroupid'],'userid'=>$list['userid']))}"   style="text-decoration:none"  class="btn btn-sm btn-info">详细</a>
+                                                            </td>
+                                                      </tr>
+                                                </volist>
+        </tbody>
+      </table>
+    </div><!-- /.table-responsive -->
+                   
+{$_page}
+                </div>
+            </div>
+        </div>
+  <div class="index-wrap">
+        <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台</span></p>
+        </div>
+  </div>
+</body>
+</html>

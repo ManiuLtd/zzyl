@@ -1,0 +1,164 @@
+<extend name="Public/base"/>
+<block name="body">
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>实物兑换数据统计</h5>
+                    </div>
+                    <div class="ibox-content" style="">
+                    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                    <div id="main" style="height:400px;width: 60%;margin:20px auto;" ></div>
+                    <div id="main2" style="height:400px;width: 60%;margin:20px auto;" ></div>
+                     <div style="width: 60%;margin:30px auto;">
+                     <h3><font color="black">实物兑换数据</font></h3>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td style="width:300px;height:50px;text-align: center;"><h4>兑换总次数：<font color="red">{$count}</font></h4></td>
+                                <td style="width:300px;height:50px;text-align: center;"><h4>兑换消耗总金币：<font color="red">{$money}</font></h4></td>
+                                <td style="width:300px;height:50px;text-align: center;"><h4>兑换增加房卡：<font color="red">{$jewels}</font></h4></td>
+                            </tr>
+                            <tr>
+                                <td style="width:300px;height:50px;text-align: center;"><h4>单个用户兑换最最多次数：<font color="red">{$maxc.c}</font></h4></td>
+                                <td style="width:300px;height:50px;text-align: center;"><h4>单个用户兑换获得最多金币：<font color="red">{$user_max_money}</font></h4></td>
+                                <td style="width:300px;height:50px;text-align: center;"><h4>单个用户兑换次数最多用户ID：<font color="red">{$maxc.userid}</font></h4></td>
+                            </tr>
+                           
+                        </table>
+                    </div> 
+                        <!-- ECharts单文件引入 -->
+                        <script src="__PUBLIC__/echarts/echarts.js"></script>
+                        <script type="text/javascript">
+                               // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        option = {
+    title: {
+        text: '兑换日统计图'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['兑换消耗金币数','实物兑换次数']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ["{$data7[0]['date']}","{$data7[1]['date']}","{$data7[2]['date']}","{$data7[3]['date']}","{$data7[4]['date']}","{$data7[5]['date']}","{$data7[6]['date']}",]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+       {
+            name:'兑换消耗金币数',
+            type:'line',
+            stack: '总量',
+            data:["{$data7[0]['money']}","{$data7[1]['money']}","{$data7[2]['money']}","{$data7[3]['money']}","{$data7[4]['money']}","{$data7[5]['money']}","{$data7[6]['money']}",]
+        },
+        {
+            name:'实物兑换次数',
+            type:'line',
+            stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top'
+                }
+            },
+            data:["{$data7[0]['count']}","{$data7[1]['count']}","{$data7[2]['count']}","{$data7[3]['count']}","{$data7[4]['count']}","{$data7[5]['count']}","{$data7[6]['count']}",]
+        },
+    ]
+};
+       
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+
+          // 基于准备好的dom，初始化echarts实例
+        var myChart2 = echarts.init(document.getElementById('main2'));
+
+        // 指定图表的配置项和数据
+        var option = {
+    title: {
+        text: '兑换月数据统计图'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['兑换消耗金币数','实物兑换次数']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ["{$data12[0]['date']}","{$data12[1]['date']}","{$data12[2]['date']}","{$data12[3]['date']}","{$data12[4]['date']}","{$data12[5]['date']}","{$data12[6]['date']}","{$data12[7]['date']}","{$data12[8]['date']}","{$data12[9]['date']}","{$data12[10]['date']}","{$data12[11]['date']}",]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name:'兑换消耗金币数',
+            type:'line',
+            stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top'
+                }
+            },
+            data:["{$data12[0]['money']}","{$data12[1]['money']}","{$data12[2]['money']}","{$data12[3]['money']}","{$data12[4]['money']}","{$data12[5]['money']}","{$data12[6]['money']}","{$data12[7]['money']}","{$data12[8]['money']}","{$data12[9]['money']}","{$data12[10]['money']}","{$data12[11]['money']}",],
+
+        },
+        {
+            name:'实物兑换次数',
+            type:'line',
+            stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'bottom'
+                }
+            },
+            data:["{$data12[0]['count']}","{$data12[1]['count']}","{$data12[2]['count']}","{$data12[3]['count']}","{$data12[4]['count']}","{$data12[5]['count']}","{$data12[6]['count']}","{$data12[7]['count']}","{$data12[8]['count']}","{$data12[9]['count']}","{$data12[10]['count']}","{$data12[11]['count']}",],
+            
+        },
+       
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart2.setOption(option);
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

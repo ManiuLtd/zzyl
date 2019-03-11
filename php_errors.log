@@ -1,0 +1,1 @@
+[08-Mar-2019 17:26:00 PRC] PHP Fatal error:  Cannot redeclare Admin\Controller\ClubController::clubUserList() in D:\phpStudy\PHPTutorial\vhost\huo.qq\PHP\Application\Admin\Controller\ClubController.class.php on line 1032

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/pace/pace.min.js"></script>
+        <!-- 全局js -->
+    
+    <script type="text/javascript">
+    //ajax post
+        function ajax_post(the){
+            layer.confirm('您确定要做此操作吗？', {
+            btn: ['确定','取消'] //按钮
+            }, function(){
+                var that = $(the);
+                var url= $(the).attr('action');
+                var cs = $(the).serialize();
+                 $.ajax({
+                    url:url,
+                    data:cs,
+                    type:'POST',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                parent.location.reload();
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                        }
+                    });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+</script>
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">       
+        <div class="row" style="width: 100%;">
+                <div class="col-sm-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                               <h4>反馈回复</h4>
+                        </div>
+                        <div class="panel-body">
+                            <form action="{:U()}" method="post" class="form form-horizontal"  onsubmit="return ajax_post(this);">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">常用回复：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+            <span class="select-box" style="width:150px;" >
+            <input type="hidden" name="id" value="{$id}">
+                <select class="select" name="msg" size="1" id="msg" onchange="get_msg(this)">
+                    <option value="">选择常用回复语</option>
+                    <volist name="arr" id="arr">
+                        <option value="{$arr.msg}">{$arr.msg}</option>
+                    </volist>
+                </select>
+            </span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">回复内容：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <textarea name="c_content" cols="" rows="" class="textarea"  placeholder="请输入回复内容" ></textarea>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <button type="submit" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"><i class="icon-ok"></i> 确定</button>
+            </div>
+        </div>
+    </form>
+                        </div>
+                </div>
+            </div>
+
+    </div>
+
+</body>
+<script type="text/javascript">
+    function get_msg(the){
+    var msg = $(the).val();
+    $('.textarea').val(msg);
+}
+</script>
+</html>

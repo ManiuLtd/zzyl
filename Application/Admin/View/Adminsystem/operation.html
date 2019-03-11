@@ -1,0 +1,93 @@
+<extend name="Public/base"/>
+<block name="body">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>系统操作日志</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                                <div class="col-sm-5 m-b-xs" style="width: 10%;">
+                                    <select class="input-sm form-control input-s-sm inline" name="type">
+                                        <option value="0">请选择</option>
+                                        <option value="1"
+                                        <if condition="$type eq 1"> selected</if>
+                                        >操作用户名</option>
+                                        <option value="2"
+                                        <if condition="$type eq 2"> selected</if>
+                                        >操作动作</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3" style="width: 15%;margin-left: -20px;">
+                                    <div class="input-group">
+                                        <input type="text" placeholder="请输入关键词" class="input-sm form-control"
+                                               name="search" value="{$search}"> <span class="input-group-btn"/>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3" style="width:4%;margin-left: -40px;">
+                                    <div class="input-group">
+                                        时间
+                                    </div>
+                                </div>
+                                <div class="col-sm-3" style="width: 15%;margin-left: -30px;">
+                                    <div class="input-group">
+                                        <input type="text" class="input-sm form-control" id="datetimepicker1"
+                                               name="start" value="{$start|date='Y-m-d H:i',###}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3" style="width:4%;margin-left: -40px;">
+                                    <div class="input-group">
+                                        至
+                                    </div>
+                                </div>
+                                <div class="col-sm-3" style="width: 15%;margin-left: -40px;">
+                                    <div class="input-group">
+                                        <input type="text" class="input-sm form-control" id="datetimepicker2"
+                                               name="stop" value="{$stop|date='Y-m-d H:i',###}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3" style="width: 6%;margin-left:-40px;">
+                                    <div class="input-group">
+                                        <button type="submit" class="btn btn-sm btn-primary">搜索</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3" style="width: 6%;margin-left:0px;">
+                                    <div class="input-group">
+                                        <a href="{:U('operation_del')}" class="btn btn-sm btn-danger"
+                                           onclick="return ajax_get(this);">清除所有日志</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+
+                                    <!--                                   <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Adminmenu"></th> -->
+                                    <th>操作用户名</th>
+                                    <th>操作动作</th>
+                                    <th>操作时间</th>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>{$_data.username}</td>
+                                        <td>{$_data._action}</td>
+                                        <td>{$_data._time|date="Y-m-d H:i:s",###}</td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

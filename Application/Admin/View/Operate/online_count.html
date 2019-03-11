@@ -1,0 +1,151 @@
+<extend name="Public/base"/>
+<block name="body">
+            <style>
+        @media (max-width: 768px){
+          /*.panel-body{border:2px solid red;}*/
+          .ibox{width: 1000px;}
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>在线用户统计</h5>
+                    </div>
+                    <div class="ibox-content" style="">
+                    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                    <div id="main" style="height:400px;width: 60%;margin:20px auto;" ></div>
+                    <div id="main2" style="height:400px;width: 60%;margin:20px auto;" ></div>
+                    <!-- <div id="main3" style="height:400px;width: 60%;margin:20px auto;" ></div> -->
+                     <div style="width: 60%;margin:30px auto;">
+                     <!-- <h3><font color="black">平台在线用户统计</font></h3> -->
+                        <!-- <table class="table table-bordered">
+                            <tr>
+                                <td style="width:300px;height:50px;text-align: center;"><h4>目前在线用户数：<font color="red" class="online_count">{$online_now.count|default=0}</font></h4></td>
+                                <td style="width:300px;height:50px;text-align: center;"><h4>目前最长在线时长：<font color="red" class="online_time">{$online_now.time}小时</font></h4></td>
+                                <td style="width:300px;height:50px;text-align: center;"><h4>目前最长在线用户名：<font color="red" class="online_username">{$online_now.username|default=0}</font></h4></td>
+                            </tr>
+                            <tr>
+                                <td style="width:300px;height:50px;text-align: center;"><h4>日最多在线人数：<font color="red" class="online_date">{$max_online_count|default=0}</font></h4></td>
+                                <td style="width:300px;height:50px;text-align: center;"><h4>最多在线人数日期：<font color="red" class="max_online_date">{$max_online_date|default=0}</font></h4></td>
+                            </tr>
+                        </table> -->
+                    </div> 
+                        <!-- ECharts单文件引入 -->
+                        <script src="__PUBLIC__/echarts/echarts.js"></script>
+                        <script type="text/javascript">
+                               // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+    title: {
+        text: '在线用户日统计图'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['最近7天在线用户',]
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ["{$data7[0]['date']}","{$data7[1]['date']}","{$data7[2]['date']}","{$data7[3]['date']}","{$data7[4]['date']}","{$data7[5]['date']}","{$data7[6]['date']}",]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name:'最近7天在线用户',
+            type:'line',
+            stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top'
+                }
+            },
+
+            data:["{$data7[0]['num']}","{$data7[1]['num']}","{$data7[2]['num']}","{$data7[3]['num']}","{$data7[4]['num']}","{$data7[5]['num']}","{$data7[6]['num']}",]
+        },
+       
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+
+          // 基于准备好的dom，初始化echarts实例
+        var myChart2 = echarts.init(document.getElementById('main2'));
+
+        // 指定图表的配置项和数据
+        var option = {
+    title: {
+        text: '在线用户月数据统计图'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['最近12个月在线用户',]
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ["{$data12[0]['date']}","{$data12[1]['date']}","{$data12[2]['date']}","{$data12[3]['date']}","{$data12[4]['date']}","{$data12[5]['date']}","{$data12[6]['date']}","{$data12[7]['date']}","{$data12[8]['date']}","{$data12[9]['date']}","{$data12[10]['date']}","{$data12[11]['date']}",]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name:'最近12个月在线用户',
+            type:'line',
+            stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top'
+                }
+            },
+
+            data:["{$data12[0]['num']}","{$data12[1]['num']}","{$data12[2]['num']}","{$data12[3]['num']}","{$data12[4]['num']}","{$data12[5]['num']}","{$data12[6]['num']}","{$data12[7]['num']}","{$data12[8]['num']}","{$data12[9]['num']}","{$data12[10]['num']}","{$data12[11]['num']}",]
+        },
+       
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart2.setOption(option);
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

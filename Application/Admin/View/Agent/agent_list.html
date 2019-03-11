@@ -1,0 +1,62 @@
+<extend name="Public/base"/>
+<block name="body">
+<style>
+    .t1{margin-left: -17px;}
+    .t2{margin-left: -20px;}
+    .t3{margin-left: -160px;}
+    .t4{margin-left: -10px;}
+    .t5{margin-left: -160px;}
+    .t7{margin-left: -135px;}
+    .t8{margin-left: -110px;}
+    @media (max-width: 768px){
+        .top-menu{margin-left: 0px;}
+        .t6{margin-top: 5px;}
+    }
+</style>
+	<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>代理排行榜</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+
+                                        <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Agentmember"><input type="hidden" name="disabled" value="1"></th>
+                                        <th>排行榜</th>
+                                        <th>用户ID</th>
+                                        <th>昵称</th>
+                                        <th>链成员数</th>
+                                        <th>链充值金额</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data" key="k">
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" value="{$_data.id}" name="id[]">
+                                        </td>
+                                        <td>第{$k}名</td>
+                                        <td>{$_data.userid}</td>
+                                        <td>{$_data.username}</td>
+                                        <td>{$_data.count|default=0}</td>
+                                        <td>{$_data['money']/100}</td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

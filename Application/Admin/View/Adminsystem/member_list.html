@@ -1,0 +1,80 @@
+<extend name="Public/base"/>
+<block name="body">
+
+	<div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>管理用户</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <div class="col-sm-3" style="width:100px;">
+                                <div class="input-group">
+                                   <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('管理用户添加','{:U('user_add')}','2','800','500')"  style="text-decoration:none"> 添加管理用户</a>
+                                </div>
+                            </div>
+                            <!-- <div class="col-sm-3" style="width: 6%;margin-left:0px;">
+                            <form action="{:U('Public/del_record')}" method="post" onsubmit="return ajax_post(this);" >
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-danger"> 批量禁用</button>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+
+                                        <!-- <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Adminmenu"></th> -->
+                                        <th>用户名</th>
+                                        <th>昵称</th>
+                                        <th>手机号</th>
+                                        <th>所在分组</th>
+                                        <th>添加时间</th>
+                                        <th>登录次数</th>
+                                        <th>最后登录时间</th>
+                                        <th>最后登录IP地址</th>
+                                        <th>账号状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <!-- <td>
+                                            <input type="checkbox" value="{$_data.id}" name="id[]">
+                                        </td> -->
+                                        <td>{$_data.username}</td>
+                                        <td>{$_data.nickname}</td>
+                                        <td>{$_data.phone}</td>
+                                        <td>{$_data.group_name}</td>
+                                        <td>{$_data.register_time|date="Y-m-d",###}</td>
+                                        <td>{$_data.login_count}</td>
+                                        <td>{$_data.last_login_time|date="Y-m-d H:i:s",###}</td>
+                                        <td>{$_data.last_login_ip}</td>
+                                        <td>
+                                        	<if condition="($_data.disabled eq 0)">
+                                        		<font color="green">正常</font>
+                                        	<elseif condition="($_data.disabled eq 1)"/>
+                                        		<font color="red">已禁用</font>
+                                        	</if>
+                                        </td>
+                                        <td>
+                                        	<a class="btn btn-outline btn-info  dim " href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('用户编辑','{:U('user_edit',array('id'=>$_data['id']))}','2','800','500')" class="ml-5" style="text-decoration:none"><i class="fa fa-paste"></i></a>
+                                        	<a href="{:U('user_del',array('id'=>$_data['id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim "><i class="fa fa-times"></i></a>
+                                            <if condition="($_data.disabled eq 0)"> <a title="禁用" href="{:U('disabled',array('id'=>$_data['id'],'disabled'=>1))}" onclick="return ajax_get(this)" class="btn btn-outline btn-warning  dim ">禁用</a></if><if condition="($_data.disabled eq 1)"><a title="解禁" href="{:U('disabled',array('id'=>$_data['id'],'disabled'=>0))}" onclick="return ajax_get(this)" class="btn btn-outline btn-info  dim ">解禁</a></if>
+                                        </td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

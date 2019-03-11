@@ -1,0 +1,141 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        .top-menu {
+            margin-left: -20px;
+        }
+
+        @media (max-width: 768px) {
+            .top-menu {
+                margin-top: 5px;
+                margin-left: 0px;
+            }
+        }
+
+        select.input-sm {
+            padding: 0px 0px;
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>房间管理</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                                <div class="col-sm-3" style="width:100px;margin-left:0px;">
+                                    <div class="input-group">
+                                        房间类型：
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 m-b-xs" style="width: 150px;">
+                                    <select class="input-sm form-control input-s-sm inline" name="roomid">
+                                        <option value="0">请选择</option>
+                                        <volist name="room" id="room">
+                                            <option value="{$room['roomid']}">{$room.name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3" style="width: 200px;margin-left: 0px;">
+                                    <div class="input-group">
+                                        <input type="text" placeholder="请输入房间号" class="input-sm form-control"
+                                               name="passwd"> <span class="input-group-btn">
+
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3 top-menu" style="width: 100px;">
+                                    <div class="input-group">
+                                        <button type="submit" class="btn btn-sm btn-primary"> 搜索</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <form>
+                                    <!--<div class="col-sm-3" style="width:100px;margin-left:0px;">-->
+                                        <!--<div class="input-group">-->
+                                            <!--<a href="{:U('',array('type'=>1))}" class="btn btn-sm btn-info">正在进行中</a>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <div class="col-sm-3" style="width:100px;margin-left:0px;">
+                                        <div class="input-group">
+                                            <a href="{:U('',array('type'=>2))}" class="btn btn-sm btn-danger">已结束</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3" style="width:100px;margin-left:0px;">
+                                        <div class="input-group">
+                                            <a href="{:U('',array('type2'=>'jewels'))}"
+                                               class="btn btn-sm btn-info">房卡场</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3" style="width:100px;margin-left:0px;">
+                                        <div class="input-group">
+                                            <a href="{:U('',array('type2'=>'money'))}"
+                                               class="btn btn-sm btn-danger">金币场</a>
+                                        </div>
+                                    </div>
+                                    <!--	<div class="col-sm-3" style="width:100px;margin-left:0px;">
+                                                        <div class="input-group">
+                                       <a href="{:U('del_private_room')}" class="btn btn-sm btn-danger" onclick="return ajax_get(this);">清除开房列表</a>
+                                                       </div>
+                                                    </div>-->
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>房间号</th>
+                                    <th>游戏类型</th>
+                                    <th>房间类型</th>
+                                    <th>创建时间</th>
+                                    <th>开始时间</th>
+                                    <th>结束时间</th>
+                                    <th>所有玩家</th>
+                                    <th>房间状态</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>
+                                            <if condition="($_data.passwd eq 'aa')">金币场
+                                                <else/>
+                                                {$_data.passwd}
+                                            </if>
+                                        </td>
+                                        <td>{$_data.gname}</td>
+                                        <td>{$_data.rname}</td>
+                                        <td>
+                                            <if condition="($_data.createtime eq 0)">金币场无创建时间
+                                                <else/>
+                                                {$_data.createtime|date="Y-m-d H:i:s",###}
+                                            </if>
+                                        </td>
+                                        <td>{$_data.begintime|date="Y-m-d H:i:s",###}</td>
+                                        <td>
+                                            <if condition="($_data.finishedtime eq 0)">未结束
+                                                <else/>
+                                                {$_data.finishedtime|date="Y-m-d H:i:s",###}
+                                            </if>
+                                        </td>
+                                        <td>{$_data.user}</td>
+                                        <td>
+                                            <if condition="($_data.finishedtime eq 0)">进行中
+                                                <else/>
+                                                已结束
+                                            </if>
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

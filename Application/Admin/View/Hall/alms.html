@@ -1,0 +1,141 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        .t1 {
+            margin-left: -17px;
+        }
+
+        .t2 {
+            margin-left: -130px;
+        }
+
+        .t3 {
+            margin-left: -90px;
+        }
+
+        .t4 {
+            margin-left: -5px;
+        }
+
+        .t5 {
+            margin-left: -170px;
+        }
+
+        /*.t6{margin-left: -135px;}*/
+        .t7 {
+            margin-left: -150px;
+        }
+
+        @media (max-width: 768px) {
+            .top-menu {
+                margin-left: 0px;
+            }
+
+            .t6 {
+                margin-top: 5px;
+            }
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>领取救济金记录</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                                <div class="col-sm-5 m-b-xs" style="width: 200px;">
+                                    <select class="input-sm form-control input-s-sm inline" name="type">
+                                        <option value="0">请选择</option>
+                                        <option value="1"
+                                        <if condition="$type eq 1">selected="selected"</if>
+                                        >用户ID</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 top-menu t1" style="width: 200px;">
+                                    <div class="input-group">
+                                        <input type="text" placeholder="请输入关键词" class="input-sm form-control"
+                                               name="search" value="{$search}"> <span class="input-group-btn">
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t2" style="width: 200px;">
+                                    <div class="input-group">
+                                        领取时间
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t3" style="width: 200px;">
+                                    <div class="input-group">
+                                        <input type="text" class="input-sm form-control" id="datetimepicker1"
+                                               name="start" value="{$start|date='Y-m-d H:i',###}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t4" style="width: 200px;">
+                                    <div class="input-group">
+                                        至
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t5" style="width: 200px;">
+                                    <div class="input-group">
+                                        <input type="text" class="input-sm form-control" id="datetimepicker2"
+                                               name="stop" value="{$stop|date='Y-m-d H:i',###}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width: 100px;">
+                                    <div class="input-group">
+                                        <button type="submit" class="btn btn-sm btn-primary"> 搜索玩家</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width: 100px;">
+                                    <div class="input-group">
+                                        <a href="javascript:;" class="btn btn-sm btn-success"
+                                           onclick="admin_edit('配置','{:U('alms_config')}','2','500','500')"
+                                           style="text-decoration:none"> 领取配置</a>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>用户ID</th>
+                                    <th>用户昵称</th>
+                                    <th>领取金币数</th>
+                                    <th>领取时间</th>
+                                    <th>累计领取次数</th>
+                                    <th>累计领取金币数</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>
+                                            <a onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')"
+                                               style="text-decoration:none"><font color="#1AB394">{$_data.userid}</font></a>
+                                        </td>
+                                        <td>
+                                            <a onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')"
+                                               style="text-decoration:none"><font
+                                                    color="#1AB394">{$_data.name}</font></a>
+                                        </td>
+                                        <td>{$_data.money}</td>
+                                        <td>{$_data.time|date="Y-m-d H:i:s",###}</td>
+                                        <td>{$_data.total_count|default=0}</td>
+                                        <td>{$_data.total_get_money|default=0}</td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

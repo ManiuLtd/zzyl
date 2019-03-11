@@ -1,0 +1,56 @@
+<extend name="Public/base"/>
+<block name="body">
+
+	<div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>系统菜单</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <div class="col-sm-3" style="width:500px;">
+                                <div class="input-group">
+                                   <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('菜单添加','{:U('menu_add')}','2','800','500')"  style="text-decoration:none"> 添加菜单</a>&nbsp;&nbsp;&nbsp;
+                                  <a href="{:U('updateWxMenu')}" onclick="return ajax_get(this)" class="btn btn-sm btn-info">更新菜单</i></a>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width: 6%;margin-left:-20px;">
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+
+                                        <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Adminmenu"></th>
+                                        <th>菜单名称</th>
+                                        <th>类型</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_menu" id="menu">
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" value="{$menu.id}" name="id[]">
+                                        </td>
+                                        <td>{$menu._name}</td>
+                                        <td>{$menu.type}</td>
+                                        <td>
+                                        	<a class="btn btn-outline btn-info  dim " href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('菜单编辑','{:U('menu_update',array('id'=>$menu['id']))}','2','800','500')" class="ml-5" style="text-decoration:none">编辑</a>
+                                        	<a href="{:U('menu_del',array('id'=>$menu['id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim ">删除</i></a>
+                                        </td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

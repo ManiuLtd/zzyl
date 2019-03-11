@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
+    <link href="__PUBLIC__/page/page.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css"  media="all">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/hplus.js?v=4.1.0"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/contabs.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/h-ui/edit.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/pace/pace.min.js"></script>
+    <script src="__PUBLIC__/datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript">
+    //ajax post
+        function ajax_post(the){
+            layer.confirm('您确定要做此操作吗？', {
+            btn: ['确定','取消'] //按钮
+            }, function(){
+                var that = $(the);
+                var url= $(the).attr('action');
+                var cs = $(the).serialize();
+                 $.ajax({
+                    url:url,
+                    data:cs,
+                    type:'POST',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                window.location.href=data.url;
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                        }
+                    });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+</script>
+</head>
+<body class="gray-bg">
+    <?php $is_show_jewels = C('IS_SHOW_JEWELS');?>
+    <div class="wrapper wrapper-content animated fadeInRight">       
+        <div class="row" >
+                <div class="col-sm-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                               <h4>分享配置</h4>
+                        </div>
+                        <div class="panel-body">
+                        <form action="{:U()}" method="post" enctype="multipart/form-data">
+                            <div style="width: 50%;float: left;">活动开始时间: <input  type="text" class="input-sm form-control" style="width: 50%;display: inline;"  id="datetimepicker1" name="share_begin_time" value="{$config.share_begin_time|date='Y-m-d H:i:s',###}"> </div> 
+                            <div style="width: 50%;float: left;">活动结束时间: <input  type="text" class="input-sm form-control" style="width: 50%;display: inline;"  id="datetimepicker2" name="share_end_time" value="{$config.share_end_time|date='Y-m-d H:i:s',###}"> </div>
+                            <br><br><br>
+                            分享奖励时间间隔： <input type="number" name="share_interval" class="input-sm form-control" value="{$config.share_interval}" style="width: 10%;display: inline;">&emsp;天 <br><br><br>
+                            分享奖励金币： <input type="number" step="0.01" name="share_send_money" class="input-sm form-control" value="{$config.share_send_money}" style="width: 10%;display: inline;">&emsp;个 &emsp;&emsp;&emsp;
+                            <if condition="1 == $is_show_jewels">
+                            分享奖励房卡： <input type="number" name="share_send_jewels" class="input-sm form-control" value="{$config.share_send_jewels}" style="width: 10%;display: inline;">&emsp;张 
+                            </if>
+                            <br><br><br>
+                            分享链接： <input type="text" name="share_url" class="input-sm form-control" value="{$config.share_url}" style="width: 50%;display: inline;"> <br><br><br>
+                            分享奖励平台： <select class="form-control" name="share_address" id="share_address" style="width: 20%;display: inline;">
+                                <option value="1">微信好友</option>
+                                <option value="2">微信朋友圈</option>
+                                <option value="3">QQ好友</option>
+                                <option value="4">QQ空间</option>
+                            </select>
+                            <br><br><br>
+<!--                             上传图片1： <button type="button" class="layui-btn layui-btn-success layui-btn-sm" id="test1">上传图片</button><br><br><br>
+                            目前图片1： <img class="test1" src="{$config.share_img1}" style="width: 20%;"> <br><br><br>   
+                            上传图片2： <button type="button" class="layui-btn layui-btn-success layui-btn-sm" id="test2">上传图片</button><br><br><br>
+                            目前图片2： <img class="test2" src="{$config.share_img2}" style="width: 20%;"> <br><br><br>   
+                            上传图片3： <button type="button" class="layui-btn layui-btn-success layui-btn-sm" id="test3">上传图片</button><br><br><br>
+                            目前图片3： <img class="test3" src="{$config.share_img3}" style="width: 20%;"> <br><br><br>   
+                            上传图片4： <button type="button" class="layui-btn layui-btn-success layui-btn-sm" id="test4">上传图片</button><br><br><br>
+                            目前图片4： <img class="test4" src="{$config.share_img4}" style="width: 20%;"> <br><br><br>   
+                            上传图片5： <button type="button" class="layui-btn layui-btn-success layui-btn-sm" id="test5">上传图片</button><br><br><br>
+                            目前图片5： <img class="test5" src="{$config.share_img5}" style="width: 20%;"> <br><br><br>    -->
+                            
+                            <input type="hidden" name="share_img1" value="{$config.share_img1}">
+                            <input type="hidden" name="share_img2" value="{$config.share_img2}">
+                            <input type="hidden" name="share_img3" value="{$config.share_img3}">
+                            <input type="hidden" name="share_img4" value="{$config.share_img4}">
+                            <input type="hidden" name="share_img5" value="{$config.share_img5}">
+                            <input type="submit" value="发布分享奖励活动" class="btn btn-sm btn-success">  
+                        </form>
+                        </div>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+    <!-- 全局js -->
+    
+    
+    <script type="text/javascript">
+	$("#share_address option[value='{$config.share_address}']").attr("selected", "selected");
+        $('#datetimepicker1').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii'
+        });
+        $('#datetimepicker2').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii'
+        });
+
+        layui.use('upload', function(){
+          var $ = layui.jquery
+          ,upload = layui.upload;
+          
+          //普通图片上传
+          var uploadInst = upload.render({
+            elem: '#test1'
+            ,url: '{:U("uploadImg")}'
+            ,done: function(res){
+              //如果上传失败
+              if(res.status){
+                layer.msg('上传成功');
+                $('.test1').attr('src',res.data)
+                $('input[name=share_img1]').val(res.data)
+              } else {
+                layer.msg('上传失败');
+              }
+            }
+          });
+
+                    //普通图片上传
+          var uploadInst = upload.render({
+            elem: '#test2'
+            ,url: '{:U("uploadImg")}'
+            ,done: function(res){
+              if(res.status){
+                layer.msg('上传成功');
+                $('.test2').attr('src',res.data)
+                $('input[name=share_img2]').val(res.data)
+              } else {
+                layer.msg('上传失败');
+              }
+            }
+          });
+
+                    //普通图片上传
+          var uploadInst = upload.render({
+            elem: '#test3'
+            ,url: '{:U("uploadImg")}'
+            ,done: function(res){
+              if(res.status){
+                layer.msg('上传成功');
+                $('.test3').attr('src',res.data)
+                $('input[name=share_img3]').val(res.data)
+              } else {
+                layer.msg('上传失败');
+              }
+            }
+          });
+
+                    //普通图片上传
+          var uploadInst = upload.render({
+            elem: '#test4'
+            ,url: '{:U("uploadImg")}'
+            ,done: function(res){
+              if(res.status){
+                layer.msg('上传成功');
+                $('.test4').attr('src',res.data)
+                $('input[name=share_img4]').val(res.data)
+              } else {
+                layer.msg('上传失败');
+              }
+            }
+          });
+
+          //普通图片上传
+          var uploadInst = upload.render({
+            elem: '#test5'
+            ,url: '{:U("uploadImg")}'
+            ,done: function(res){
+              if(res.status){
+                layer.msg('上传成功');
+                $('.test5').attr('src',res.data)
+                $('input[name=share_img5]').val(res.data)
+              } else {
+                layer.msg('上传失败');
+              }
+            }
+          });
+
+        })
+
+    </script>
+</body>
+</html>

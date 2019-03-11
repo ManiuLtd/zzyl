@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/page/page.css" rel="stylesheet" type="text/css"/>
+    <link href="__PUBLIC__/datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css"/>
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/h-ui/edit.js"></script>
+    <script src="__PUBLIC__/datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"
+            type="text/javascript"></script>
+    <script type="text/javascript">
+        function ajax_post(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var that = $(the);
+                var url = $(the).attr('action');
+                var cs = $(the).serialize();
+                $.ajax({
+                    url: url,
+                    data: cs,
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                parent.location.reload();
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+        //get方法ajax提交
+        function ajax_get(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var url = $(the).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                window.location.href = data.url;
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+        /*管理员-编辑*/
+        function admin_edit(title, url, id, w, h) {
+            layer_show(title, url, w, h);
+        }
+    </script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5></h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>发送内容</th>
+                            <th>发送时间</th>
+                            <th>消耗钻石</th>
+                            <th>累计发送次数</th>
+                            <th>累计消耗钻石</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="_data" id="_data">
+                            <tr>
+                                <td>{$_data.content}</td>
+                                <td>{$_data.reqtime|date="Y-m-d H:i:s",###}</td>
+                                <td>{$_data.cost}</td>
+                                <td>{$_data.total_count}</td>
+                                <td>{$_data.total_cost_jewels}</td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                    </form>
+                </div>
+                <div class="page">{$_page}</div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    $('#datetimepicker1').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii'
+    });
+    $('#datetimepicker2').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii'
+    });
+</script>
+</html>

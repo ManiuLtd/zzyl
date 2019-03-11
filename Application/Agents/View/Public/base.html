@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <title>棋牌运营平台 </title>
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/page/page.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/index.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/index.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/common.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/search.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/mstyle.css">
+    <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/invite.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/common.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/agency.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/information.css">
+    
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/ajax.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/sky.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript">
+      function ajax_post(the){
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                var that = $(the);
+                var url= $(the).attr('action');
+                var cs = $(the).serialize();
+                $.ajax({
+                    url:url,
+                    data:cs,
+                    type:'POST',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                window.location.href=data.url;
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+       //get方法ajax提交
+        function ajax_get(the){
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                var url = $(the).attr('href');
+                $.ajax({
+                    url:url,
+                    type:'GET',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                window.location.href=data.url;
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+
+</script>
+
+</head>
+<body>
+
+    <div class="panel panel-index">
+        <div class="nav-wrap">
+            <div class="nav">
+                <a class="" href="{:U('index/index')}"></a>
+                                <h1>棋牌运营平台</h1>
+            </div>
+        </div>
+         <div class="welcome-wrap">
+<!--             <div class="avator">
+                <a href="{:U('index')}">
+                    <img src="__PUBLIC__/newadmin/img/avator.png">
+                </a>
+            </div> -->
+            <div class="brief">
+                <p class="username" >欢迎你！{$agent.username}
+                    <span style="color:#f08200;font-size:16px;">
+                        （ <if condition="($agent.agent_level eq 1)">
+                        一级代理
+                        <elseif condition="($agent.agent_level eq 2)"/>
+                        二级代理
+                        <elseif condition="($agent.agent_level eq 3)"/>
+                        三级代理
+                        </if>）
+                      </span>
+                </p>
+                <p class="txt" style="margin-top:6px;"><span style="position: absolute;margin-left:160px">本月业绩：<i>{$mperformance}</i></span>今日业绩：<i>{$performance}</i></p>
+                <p class="txt" style="margin-top:6px;"><span style="position: absolute;margin-left:160px">未提现：<i>{$agent.balance}</i></span>返利额度：<i>
+                                <if condition="($agent.agent_level eq 1)">
+                                60%
+                                <elseif condition="($agent.agent_level eq 2)"/>
+                                50%
+                                <elseif condition="($agent.agent_level eq 3)"/>
+                                40%
+                                </if></i>  </p>
+            </div>
+        </div>
+
+
+
+

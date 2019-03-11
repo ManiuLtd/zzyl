@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    
+    <script type="text/javascript">
+    //ajax post
+        function ajax_post(the){
+            layer.confirm('您确定要做此操作吗？', {
+            btn: ['确定','取消'] //按钮
+            }, function(){
+
+                var that = $(the);
+                var url= $(the).attr('action');
+                var cs = $(the).serialize();
+                 $.ajax({
+                    url:url,
+                    data:cs,
+                    type:'POST',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                parent.location.reload();
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                        }
+                    });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+</script>
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">       
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>
+                            当前用户身份：
+                            {$user.status_desc}&nbsp;&nbsp;&nbsp;&nbsp;
+                        </h5>
+                        <if condition="$user.status == 2">
+                            <h5>赢钱上限:</h5>
+                            {$info.moneyLimit}
+                        </if>
+                    </div>
+                    <div class="ibox-title">
+                        <h5>
+                            封号时间：
+                            {$user.time}
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" action="{:U()}" onsubmit="return ajax_post(this);">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">操作类型</label>
+                                <div class="col-sm-10"> 
+                                    设置&emsp;<input type="radio" name="type" value="1" checked>
+                                    &emsp;&emsp;
+                                    取消&emsp;<input type="radio" name="type" value="0" >       
+                                </div>
+                            </div>
+                            <input type="hidden" name="userid" value="{$userid}">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">身份类型</label>
+                                <div class="col-sm-10"> 
+                                    <p>超端&emsp;&emsp;<input type="radio" name="statusValue" value="1" onclick="setNone(this)"></p>
+                                    <p>赢玩家&emsp;<input type="radio" name="statusValue" value="2" onclick="setAmount()"></p>
+                                    <p id="setAmount" style="display: none;">赢钱上限&emsp;<input type="number" style="width:50px;" name="moneyLimit" value="0" step="1">&emsp;金币</p>
+                                    <p>输玩家&emsp;<input type="radio" name="statusValue" value="4" onclick="setNone(this)"></p>
+                                    <p>封号&emsp;&emsp;<input type="radio" name="statusValue" value="8" onclick="selectDate()"></p>
+                                    <p id="selectDate" style="display: none;">封号时长&emsp;<input type="number" style="width:50px;" name="otherValue" value="-1" step="0.001">&emsp;天</p>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit">设置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript">
+        function selectDate()
+        {
+            var radio_ary = document.getElementsByName("type");
+            for (var i = 0; i < radio_ary.length; i++) {
+                if (radio_ary[i].checked == true) {
+                    if(radio_ary[i].value == '1'){
+                        document.getElementById('selectDate').style.display = 'block';
+                        document.getElementById('setAmount').style.display = 'none';
+                    }
+                }
+            }
+        }
+
+        function setAmount()
+        {
+            var radio_ary = document.getElementsByName("type");
+            for (var i = 0; i < radio_ary.length; i++) {
+                if (radio_ary[i].checked == true) {
+                    if(radio_ary[i].value == '1'){
+                        document.getElementById('setAmount').style.display = 'block';
+                        document.getElementById('selectDate').style.display = 'none';
+                    }
+                }
+            }
+        }
+
+
+        function setNone(the)
+        {
+            if($(the).val() != 8 || $(the).val() == 2){
+                document.getElementById('selectDate').style.display = 'none';
+            }
+            if($(the).val() != 2 || $(the).val() == 8){
+                document.getElementById('setAmount').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

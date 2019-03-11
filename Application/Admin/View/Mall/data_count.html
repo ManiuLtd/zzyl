@@ -1,0 +1,218 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        @media (max-width: 768px) {
+            /*.panel-body{border:2px solid red;}*/
+            .ibox {
+                width: 1000px;
+            }
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>充值数据统计</h5>
+                    </div>
+                    <div class="ibox-content" style="">
+                        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                        <div id="main" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div id="main2" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div id="main3" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div style="width: 60%;margin:30px auto;">
+                            <h3><font color="black">平台充值统计</font></h3>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>平台充值总数：<font
+                                            color="red">{$recharge_all}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>平台收入总数：<font
+                                            color="red">{$plat_all}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>当月充值总数：<font
+                                            color="red">{$month_recharge_all}</font></h4></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>当月收入总数：<font
+                                            color="red">{$month_plat_all}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单次充值最多金额：<font
+                                            color="red">{$recharge_max}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>最大单人充值金额总数：<font
+                                            color="red">{$user_recharge_max}</font></h4></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>今日充值总数：<font
+                                            color="red">{$today_recharge_all}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>今日单次最多充值金额：<font
+                                            color="red">{$today_recharge_max}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>今日充值人数：<font
+                                            color="red">{$user_count}</font></h4></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- ECharts单文件引入 -->
+                        <script src="__PUBLIC__/echarts/echarts.js"></script>
+                        <script type="text/javascript">
+
+                            var week = ["{$data7[0]}", "{$data7[1]}", "{$data7[2]}", "{$data7[3]}", "{$data7[4]}", "{$data7[5]}"
+                                , "{$data7[6]}",];
+
+                            var year = ["{$data12[0]}", "{$data12[1]}", "{$data12[2]}", "{$data12[3]}", "{$data12[4]}", "{$data12[5]}"
+                                , "{$data12[6]}", "{$data12[7]}", "{$data12[8]}", "{$data12[9]}", "{$data12[10]}", "{$data12[11]}",];
+                            // 基于准备好的dom，初始化echarts实例
+                            var myChart = echarts.init(document.getElementById('main'));
+
+                            // 指定图表的配置项和数据
+                            var option = {
+                                title: {
+                                    text: '充值7日数据统计图'
+                                },
+                                tooltip: {
+                                    trigger: 'axis'
+                                },
+                                legend: {
+                                    data: ['最近7日充值金额',]
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '4%',
+                                    bottom: '3%',
+                                    containLabel: true
+                                },
+                                toolbox: {
+                                    feature: {
+                                        saveAsImage: {}
+                                    }
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    boundaryGap: false,
+                                    data: week
+                                },
+                                yAxis: {
+                                    type: 'value'
+                                },
+                                series: [
+                                    {
+                                        name: '今日充值金额',
+                                        type: 'line',
+                                        stack: '总量',
+                                        label: {
+                                            normal: {
+                                                show: true,
+                                                position: 'top'
+                                            }
+                                        },
+                                        data: ["{$recharge_data7['num'][0]}","{$recharge_data7['num'][1]}","{$recharge_data7['num'][2]}","{$recharge_data7['num'][3]}","{$recharge_data7['num'][4]}","{$recharge_data7['num'][5]}",
+                                            "{$recharge_data7['num'][6]}",]
+                                    },
+
+                                ]
+                            };
+
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart.setOption(option);
+
+
+                            // 基于准备好的dom，初始化echarts实例
+                            var myChart2 = echarts.init(document.getElementById('main2'));
+
+                            // 指定图表的配置项和数据
+                            var option = {
+                                title: {
+                                    text: '充值12月数据统计图'
+                                },
+                                tooltip: {
+                                    trigger: 'axis'
+                                },
+                                legend: {
+                                    data: ['最近12月充值金额',]
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '4%',
+                                    bottom: '3%',
+                                    containLabel: true
+                                },
+                                toolbox: {
+                                    feature: {
+                                        saveAsImage: {}
+                                    }
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    boundaryGap: false,
+                                    data: year
+                                },
+                                yAxis: {
+                                    type: 'value'
+                                },
+                                series: [
+                                    {
+                                        name: '当月充值金额',
+                                        type: 'line',
+                                        stack: '总量',
+                                        label: {
+                                            normal: {
+                                                show: true,
+                                                position: 'top'
+                                            }
+                                        },
+                                        areaStyle: {normal: {}},
+                                        data: ["{$recharge_data12['num'][0]}","{$recharge_data12['num'][1]}","{$recharge_data12['num'][2]}","{$recharge_data12['num'][3]}","{$recharge_data12['num'][4]}","{$recharge_data12['num'][5]}",
+                                            "{$recharge_data12['num'][6]}","{$recharge_data12['num'][7]}","{$recharge_data12['num'][8]}","{$recharge_data12['num'][9]}","{$recharge_data12['num'][10]}","{$recharge_data12['num'][11]}",]
+                                    },
+
+                                ]
+                            };
+
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart2.setOption(option);
+
+
+                            // 基于准备好的dom，初始化echarts实例
+                            var myChart3 = echarts.init(document.getElementById('main3'));
+                            option = {
+                                title: {
+                                    text: '充值用户分布图',
+                                    subtext: '',
+                                    x: 'center'
+                                },
+                                tooltip: {
+                                    trigger: 'item',
+                                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                                },
+                                legend: {
+                                    orient: 'vertical',
+                                    left: 'left',
+                                    data: ['普通用户', '一级代理用户', '二级代理用户', '三级代理用户',]
+                                },
+                                series: [
+                                    {
+                                        name: '',
+                                        type: 'pie',
+                                        radius: '55%',
+                                        center: ['50%', '60%'],
+                                        data: [
+                                            {value: "{$user_recharge}", name: '普通用户'},
+                                            {value: "{$level1_recharge}", name: '一级代理用户'},
+                                            {value: "{$level2_recharge}", name: '二级代理用户'},
+                                            {value: "{$level3_recharge}", name: '三级代理用户'},
+                                        ],
+                                        itemStyle: {
+                                            emphasis: {
+                                                shadowBlur: 10,
+                                                shadowOffsetX: 0,
+                                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                            }
+                                        }
+                                    }
+                                ]
+                            };
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart3.setOption(option);
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

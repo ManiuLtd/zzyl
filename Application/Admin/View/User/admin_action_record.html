@@ -1,0 +1,112 @@
+<extend name="Public/base"/>
+<block name="body">
+
+	<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>用户管理</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                            <div class="col-sm-5 m-b-xs" style="width: 150px;">
+                                <select class="input-sm form-control input-s-sm inline" name="type">
+                                    <option value="0">请选择</option>
+                                    <option value="1" <if condition="$type eq 1"> selected </if>>后台操作账户</option>
+                                    <option value="2" <if condition="$type eq 2"> selected </if>>被操作玩家ID</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3" style="width: 200px;margin-left: -20px;">
+                                <div class="input-group">
+                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control" name="search" value="{$search}"> <span class="input-group-btn">
+                                  
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width:100px;margin-left: -20px;">
+                                <div class="input-group">
+                                    操作时间
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width: 200px;margin-left: -30px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker1" name="start" value="{$start|date='Y-m-d H:i',###}">
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width:50px;margin-left: -20px;">
+                                <div class="input-group">
+                                    至
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width: 200px;margin-left: -20px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker2" name="stop" value="{$stop|date='Y-m-d H:i',###}">
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width: 100px;margin-left:-20px;">
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                </div>
+                            </div>
+                            </form>
+                            <div>
+                                充值金币数:{$recharge_money_num|default=0}   &emsp;&emsp;&emsp;&emsp;   提取金币数:{$pos_money_num|default=0}&emsp;&emsp;&emsp;&emsp;
+				充值房卡数:{$recharge_jewels_num|default=0}   &emsp;&emsp;&emsp;&emsp;   提取房卡数:{$pos_jewels_num|default=0}
+                            </div>
+                            <!-- <div class="col-sm-3" style="width: 100px;margin-left:-20px;">
+                            <form action="{:U('examine_pass')}" method="post" onsubmit="return ajax_post(this);" >
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-info"> 批量转账</button>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+
+                                       <!--  <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Agentapplypos"><input type="hidden" name="status" value="1"></th> -->
+                                        <th>后台操作账户</th>
+                                        <th>操作类型</th>
+                                        <th>操作时间</th>
+                                        <th>描述</th>
+                                        <th>被操作玩家ID</th>
+                                        <th>资源类型</th>
+                                        <th>资源数量</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>{$_data.adminuser}</td>
+                                        <td>
+                                            <if condition="($_data.actiontype eq 1)">
+                                                充值
+                                            <elseif condition="($_data.actiontype eq 2)"/>
+                                                提取
+                                            </if>    
+                                        </td>
+                                        <td>{$_data.actiontime|date="Y-m-d H:i:s",###}</td>
+                                        <td>{$_data.actiondesc}</td>
+                                        <td>{$_data.userid}</td>
+                                        <td>
+                                            <if condition="($_data.resourcetype eq 1)">
+                                                金币
+                                            <elseif condition="($_data.resourcetype eq 2)"/>
+                                                房卡
+                                            </if>
+                                        </td>
+                                        <td>{$_data.resourcenum}</td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

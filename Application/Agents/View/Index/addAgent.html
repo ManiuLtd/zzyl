@@ -1,0 +1,261 @@
+<include file="Public/base"/>
+
+            <div class="search-condition">
+                <div class="item">
+                    <div class="wrapper wrapper-content animated">       
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+<!--                         <h5>添加代理</h5> -->
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" action="{:U()}" onsubmit="return ajax_post(this);">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">代理账号(手机号)</label>
+                                <div class="col-sm-10" id="input1">
+                                    <input type="text" style="width:100%;float: left;" class="form-control" name="username" placeholder="请输入代理账号(手机号)" id="username"><img class="success"  style="display:none;margin-left: 10px;" src="__PUBLIC__/admin/img/success.png"><img class="error" style="display:none;margin-left: 10px;" src="__PUBLIC__/admin/img/error.png"><span class="s1"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">游戏ID</label>
+                                <div class="col-sm-10" id="input2">
+                                    <input type="text" style="width:100%;float: left;" class="form-control" name="userid" placeholder="请输入游戏ID" id="userid"><img class="success" style="display:none;margin-left: 10px;" src="__PUBLIC__/admin/img/success.png"><img class="error" style="display:none;margin-left: 10px;" src="__PUBLIC__/admin/img/error.png"><span class="s1"></span>
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-2 control-label">银行卡</label>
+                                <div class="col-sm-10" id="input3">
+                                    <input type="text" style="width:100%;float: left;" class="form-control" name="bankcard" placeholder="银行卡" id="bankcard"><img  class="success" style="display:none;margin-left: 10px;" src="__PUBLIC__/admin/img/success.png"><img class="error" style="display:none;margin-left: 10px;" src="__PUBLIC__/admin/img/error.png"><span class="s1"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">持卡人姓名</label>
+                                <div class="col-sm-10" id="input4">
+                                    <input type="text" style="width:100%;float: left;" class="form-control" name="real_name" placeholder="请填写银行卡开卡人姓名，防止代理提现不成功" id="real_name"><img class="success"  style="display:none;margin-left: 10px;" src="__PUBLIC__/admin/img/success.png"><img  style="display:none;margin-left: 10px;" class="error" src="__PUBLIC__/admin/img/error.png"><span class="s1"></span>
+                                </div>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">微信</label>
+                                <div class="col-sm-10" id="input5">
+                                    <input type="text" style="width:100%;float: left;" class="form-control" name="wechat" placeholder="微信" id="wechat"><img class="success"  style="display:none;margin-left: 10px;" src="__PUBLIC__/admin/img/success.png"><img class="error"  style="display:none;margin-left: 10px;" src="__PUBLIC__/admin/img/error.png"><span class="s1"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">代理等级</label>
+
+                                <div class="col-sm-10">
+                                    <select class="form-control m-b" name="agent_level" style="width:100%;float: left;">
+                                        <option value="0">请选择代理等级</option>
+                                        <volist name="group" id="group">
+                                        <option value="{$group.id}">{$group.group_name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">登录密码</label>
+                                <div class="col-sm-10" id="input6">
+                                    <input type="password" style="width:100%;float: left;" class="form-control" name="password" placeholder="请输入登录密码" id="password"><img class="success" style="display:none;margin-left: 10px;" src="__PUBLIC__/admin/img/success.png"><img class="error"  style="display:none;margin-left: 10px;" src="__PUBLIC__/admin/img/error.png"><span class="s1"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">确认密码</label>
+                                <div class="col-sm-10" id="input7">
+                                    <input type="password" style="width:100%;float: left;" class="form-control" name="repassword" placeholder="请确认登录密码" id="repassword"><img class="success" style="display:none;margin-left: 10px;" src="__PUBLIC__/admin/img/success.png"><img  class="error" style="display:none;margin-left: 10px;" src="__PUBLIC__/admin/img/error.png"><span class="s1"></span>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button id="b" class="btn btn-primary" type="submit">保存内容</button>
+                                    <a href="javascript:;" onclick="history.go(-1)" class="btn btn-primary" type="button">返回</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+
+
+
+                </div>
+            </div>
+        </div>
+
+<!-- <input id="not_input" value="参数错误，请重试" style="cursor:pointer" type="hidden">
+<input id="p" value="1" type="hidden">
+<input id="type" value="" type="hidden"> -->
+<script type="text/javascript" src="__PUBLIC__/newadmin/js/ajax.js"></script>
+<script src="__PUBLIC__/newadmin/js/ajaxfileupload.js"></script>
+
+<!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript">
+        $('#username').blur(function(){
+            if($('#username').val() == ''){
+                $(this).css('border','1px solid red');  
+                $('#input1 .error').show();
+                $('#input1 .s1').html('<font color="red">&nbsp;请输入用户名</font>');
+                return false;
+            }else{
+                var username = $('#username').val();
+                var myreg = /^1[34578]{1}\d{9}$/;
+        if(!myreg.test(username)){
+                $('#username').css('border','1px solid red');
+                $('#input1 .error').show();
+                $('#input1 .s1').html('<font color="red">&nbsp;格式错误</font>');
+                return false;
+                }
+                //ajax请求判断是否合法
+                ajax_check(username,1,'#username','#input1');
+            }
+        });
+        $('#userid').blur(function(){
+            if($('#userid').val() == ''){
+                $(this).css('border','1px solid red');
+                $('#input2 .error').show();
+                $('#input2 .s1').html('<font color="red">&nbsp;请输入游戏ID</font>');
+                return false;
+            }else{
+                var userid = parseInt($('#userid').val());
+                if(isNaN(userid)){
+                $(this).css('border','1px solid red');
+                $('#input2 .error').show();
+                $('#input2 .s1').html('<font color="red">&nbsp;格式错误</font>');
+                return false;
+                }
+                //ajax请求判断是否合法
+                ajax_check(userid,2,'#userid','#input2');
+            }
+        });
+        $('#bankcard').blur(function(){
+            if($('#bankcard').val() == ''){
+                $(this).css('border','1px solid red');
+                $('#input3 .error').show();
+                $('#input3 .s1').html('<font color="red">&nbsp;请输入银行卡号</font>');
+                return false;
+            }else{
+                var bankcard = parseInt($('#bankcard').val());
+                if(isNaN(bankcard)){
+                $(this).css('border','1px solid red');
+                $('#input3 .error').show();
+                $('#input3 .s1').html('<font color="red">&nbsp;格式错误</font>');
+                return false;
+                }
+                //ajax请求判断是否合法
+               // ajax_check(bankcard,3,'#bankcard','#input3');
+            }
+        });
+        $('#real_name').blur(function(){
+            if($('#real_name').val() == ''){
+                $(this).css('border','1px solid red');
+                $('#input4 .error').show();
+                $('#input4 .s1').html('<font color="red">&nbsp;请输入持卡人姓名</font>');
+                return false;
+            }else{
+                $('#input4 .success').show();
+                $('#input4 .error').hide();
+                $('#input4 .s1').html('<font color="green">&nbsp;输入正确</font>');
+                return false;
+            }
+        });
+        $('#wechat').blur(function(){
+            if($('#wechat').val() == ''){
+                    $(this).css('border','1px solid red');
+                    $('#input5 .error').show();
+                    $('#input5 .s1').html('<font color="red">&nbsp;请输入微信号</font>');
+                    return false;
+            }else{
+                    var wechat = $('#wechat').val();
+                //ajax请求判断是否合法
+                ajax_check(wechat,5,'#wechat','#input5');
+            }
+        });
+        $('#password').blur(function(){
+            if($('#password').val() == ''){
+                $(this).css('border','1px solid red');
+                $('#input6 .error').show();
+                $('#input6 .s1').html('<font color="red">&nbsp;请输入密码</font>');
+                return false;
+            }else{
+                var password = $('#password').val();
+                if(password.length < 6){
+                    $(this).css('border','1px solid red');
+                    $('#input6 .error').show();
+                    $('#input6 .s1').html('<font color="red">&nbsp;密码最低6位数</font>');
+                    return false;
+                 }else{
+                    $('#input6 .success').show();
+                    $('#input6 .error').hide();
+                    $('#input6 .s1').html('<font color="green">&nbsp;输入正确</font>');
+                    return false;
+                 }
+            }
+        });
+        $('#repassword').blur(function(){
+            if($('#repassword').val() == ''){
+                $(this).css('border','1px solid red');
+                $('#input7 .error').show();
+                $('#input7 .s1').html('<font color="red">&nbsp;请再次输入密码</font>');
+                return false;
+            }else{
+                if($('#repassword').val() != $('#password').val()){
+                    $(this).css('border','1px solid red');
+                    $('#input7 .error').show();
+                    $('#input7 .s1').html('<font color="red">&nbsp;两次密码不一致</font>');
+                    return false;
+                 }else{
+                    $('#input7 .success').show();
+                    $('#input7 .error').hide();
+                    $('#input7 .s1').html('<font color="green">&nbsp;输入正确</font>');
+                    return false;
+                 }
+            }
+        });
+        function ajax_check(v,type,id,input){
+            $.ajax({
+                    url:"{:U('ajax_check')}",
+                    data:{v:v,type:type},
+                    type:'GET',
+                    success:function(data){
+                        if(data.status==1){
+                            $(input+' .success').show();
+                            $(input+' .error').hide();
+                            $(id).css('border','1px solid green');
+                            $(input+' .s1').html('<font color="green">&nbsp;输入正确</font>');
+                            return false;
+                        }else{
+                            $(id).css('border','1px solid red');
+                            $(input+' .error').show();
+                            $(input+' .success').hide();
+                            $(input+' .s1').html('<font color="red">&nbsp;已存在</font>');
+                            return false;
+                        }
+                    }
+                });
+        }
+    </script>
+
+
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台<!--<br>微信客服：wwdbqp--></span></p>
+            </div>
+        </div>
+
+    </div>
+
+</body></html>

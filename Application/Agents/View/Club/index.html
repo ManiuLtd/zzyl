@@ -1,0 +1,53 @@
+<include file="Public/base"/>
+        <div class="search-wrap">
+            <div class="tab-container">
+        <div class="tab-nav">
+          <a href="" class="on">俱乐部列表</a>
+        </div>
+            </div>
+                <div class="search-condition">
+                <div class="item">
+  <div class="table-responsive">
+      <table class="table table-bordered" style="width: 100%">
+        <thead>
+          <tr>
+            <th>俱乐部名称</th>
+            <th>俱乐部ID</th>
+            <th>人数</th>
+            <th>公告</th>
+            <th>创建时间</th>
+            <th>推荐</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <volist name="data" id="list">
+              <tr>
+                  <td>{$list.name}</td>
+                  <td>{$list.friendsgroupid}</td>
+                  <td>{$list.peoplecount|default=0}</td>
+                  <td>{$list.notice}</td>
+                  <td>{$list.createtime|date='Y-m-d H:i:s',###}</td>
+                  <td>{$list.hotcount|default=0}</td>
+                  <td>
+                      <a class="btn btn-sm btn-primary" href="{:U('clubUserList',array('id'=>$list['friendsgroupid']))}"  style="text-decoration:none">成员列表</a>
+                      <a class="btn btn-sm btn-info"    href="{:U('clubRecord',array('friendsgroupid'=>$list['friendsgroupid']))}"  style="text-decoration:none">俱乐部战绩</a>
+                      <a class="btn btn-sm btn-success" href="{:U('clubCount',array('friendsgroupid'=>$list['friendsgroupid']))}"   style="text-decoration:none">消耗统计</a>
+                      <a class="btn btn-sm btn-primary" href="{:U('clubRechargeExchange',array('friendsgroupid'=>$list['friendsgroupid']))}"   style="text-decoration:none">兑换与充值</a>
+                  </td>
+              </tr>
+          </volist>
+        </tbody>
+      </table>
+    </div><!-- /.table-responsive -->           
+{$_page}
+                </div>
+            </div>
+        </div>
+  <div class="index-wrap">
+        <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台</span></p>
+        </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        .t1 {
+            margin-left: -17px;
+        }
+
+        .t2 {
+            margin-left: -17px;
+        }
+
+        @media (max-width: 768px) {
+            .top-menu {
+                margin-left: 0px;
+            }
+
+            .t6 {
+                margin-top: 5px;
+            }
+        }
+
+        select.input-sm {
+            padding: 0px 0px;
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form class="layui-form" action="">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label" style="width: 200px;">是否开启俱乐部创建开关</label>
+                                    <div class="layui-input-block">
+                                        <if condition="$switch eq 1">
+                                            <input type="checkbox" name="zzz" lay-skin="switch" checked lay-filter="switchTest"  lay-text="开启|关闭">
+                                         <else/>
+                                            <input type="checkbox" name="zzz" lay-skin="switch" lay-filter="switchTest"  lay-text="开启|关闭">
+                                        </if>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            layui.use(['form','jquery','layer'], function () {
+                var form = layui.form;
+                var jquery = layui.jquery;
+                var layer = layui.layer;
+
+                //监听提交
+                form.on('switch(switchTest)', function (data) {
+                    if(data.elem.checked == true){
+                        var language = '确定开启创建俱乐部的开关吗?'
+                        var type = 1;
+                    }else{
+                        var language = '确定关闭创建俱乐部的开关吗?'
+                        var type = 2;
+                    }
+                    var x=data.elem.checked;
+                    layer.open({
+                        content: language
+                        ,btn: ['确定', '取消']
+                        ,yes: function(index, layero){
+                            data.elem.checked=x;
+                            form.render();
+                            layer.close(index);
+                            //按钮【按钮一】的回调
+                            $.ajax({
+                                url:"{:U('updateSwitchConfig')}",
+                                data:{language:type},
+                                type:'POST',
+                                success:function(data){
+                                    if(data.status==1){
+                                        layer.msg(data.info, {icon: 1});
+                                        var timer = setInterval(function(){
+                                            clearInterval(timer);
+                                            window.location.href=data.url;
+                                        },2000);
+                                    }else{
+                                        layer.msg(data.info, {icon: 2});
+                                    }
+                                }
+                            });
+
+                        }
+                        ,btn2: function(index, layero){
+                            //按钮【按钮二】的回调
+                            data.elem.checked=!x;
+                            form.render();
+                            layer.close(index);
+                            //return false 开启该代码可禁止点击该按钮关闭
+
+                        }
+                        ,cancel: function(){
+                            //右上角关闭回调
+                            data.elem.checked=!x;
+                            form.render();
+                            //return false 开启该代码可禁止点击该按钮关闭
+
+                        }
+                    });
+                    return false;
+                });
+            });
+        </script>
+</block>

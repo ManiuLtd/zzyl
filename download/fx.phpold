@@ -1,0 +1,82 @@
+<?php 
+include '../common/config.php';
+include '../common/db.php';
+$db = new db();
+
+$sql = "select * from web_adminConfig";
+$arr = $db -> getAll($sql);
+$config = [];
+foreach($arr as $k => $v){
+  $config[$arr[$k]['key']] = $arr[$k]['value'];
+}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport" />
+<title>至尊娱乐棋牌</title>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<link rel="stylesheet" type="text/css" href="Font/css/font-awesome.css" />
+<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
+<script type="text/javascript">
+        //定时闪图
+        function shan(){
+          if($('.text2').css('display') == 'block'){
+            $('.text2').css('display','none');
+            // alert($('.text2').css('display'));
+          }else{
+             $('.text2').css('display','block');
+          }
+        }   
+        setInterval("shan()",500);
+    $(document).ready(
+
+        function() {
+            var nowpage = 0;
+            //给最大的盒子增加事件监听
+            $(".container").swipe(
+                {
+                    swipe:function(event, direction, distance, duration, fingerCount) {
+                         if(direction == "up"){
+                            nowpage = nowpage + 1;
+                         }else if(direction == "down"){
+                            nowpage = nowpage - 1;
+                         }
+                         if(nowpage > 2){
+                            nowpage = 2;
+                         }
+                         if(nowpage < 0){
+                            nowpage = 0;
+                         }
+                        $(".container").animate({"top":nowpage * -100 + "%"},400);
+                        $(".page").eq(nowpage).addClass("cur").siblings().removeClass("cur");
+                    }
+                }
+            );
+        }
+    );
+
+</script>
+</head>
+<body onmousewheel="return false;">
+<audio autoplay="autoplay" height="100" width="100"  loop="-1">
+  <source src="./music.mp3" type="audio/mp3" />
+  </audio>
+<h1 class="keTitle">至尊娱乐棋牌</h1>
+<!--效果html开始-->
+<div class="container">
+    <div class="page page0 cur">
+        <div class="button2"> <div class="text2" ><img src="./images/tishi.png"></div><a href="<?php echo $config['anzhuo_packetaddress'];?>"><img src="./images/anzhuo.png"></a>&emsp;&emsp;<a href="<?php echo $config['ios_packetaddress'];?>"><img src="./images/apple.png"></a>
+        </div>
+    </div>
+    <div class="page page1">
+    <div class="button2"> <div class="text2" ><img src="./images/tishi.png"></div><a href="<?php echo $config['anzhuo_packetaddress'];?>"><img src="./images/anzhuo.png"></a>&emsp;&emsp;<a href="<?php echo $config['ios_packetaddress'];?>"><img src="./images/apple.png"></a></div>
+    </div>
+    <div class="page page2">
+    <div class="button2"> <div class="text2" ><img src="./images/tishi.png"></i></div><a href="<?php echo $config['anzhuo_packetaddress'];?>"><img src="./images/anzhuo.png"></a>&emsp;&emsp;<a href="<?php echo $config['ios_packetaddress'];?>"><img src="./images/apple.png"></a></div>
+    </div>
+</div>
+</body>
+</html>

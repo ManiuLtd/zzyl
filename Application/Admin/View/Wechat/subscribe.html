@@ -1,0 +1,154 @@
+<extend name="Public/base"/>
+<block name="body">
+    <div class="wrapper wrapper-content animated fadeInRight">       
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>默认回复</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" action="{:U('subscribe')}" onsubmit="return ajax_post(this);">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">状态</label>
+                                <div class="col-sm-10">
+                                    <label class="radio-inline">
+                                      <input type="radio" name="status" <if condition="$data['status'] eq 1"> checked </if>  value="1"> 启用
+                                    </label>
+                                    <label class="radio-inline">
+                                      <input type="radio" name="status" <if condition="$data['status'] eq 0"> checked </if>  value="0"> 禁用
+                                    </label>
+                                </div>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">消息类型</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control sel" name="type">
+                                        <option value="text" <if condition="$data['type'] eq 'text'"> selected </if>>文字</option> 
+                                        <option value="news" <if condition="$data['type'] eq 'news'"> selected </if>>图文</option> 
+                                        <option value="image" <if condition="$data['type'] eq 'image'"> selected </if>>图片</option> 
+                                        <option value="music" <if condition="$data['type'] eq 'music'"> selected </if>>声音</option> 
+                                        <option value="video" <if condition="$data['type'] eq 'video'"> selected </if>>视频</option> 
+                                    </select>
+                                </div>
+                            </div>
+    
+                            <!-- 文本 -->
+                            <div class="form-group text t" <if condition="($data['type'] eq 'text')"> style="display: block;" <else />  style="display: none;" </if>>
+                                <label class="col-sm-2 control-label">规则内容</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="content" id="" cols="90" rows="10">{$data.content}</textarea>
+                                </div>
+                            </div>
+                            <!-- 文本 -->
+
+                            <!-- 图文 -->
+                            <div class="form-group news t" <if condition="($data.type eq 'news')"> style="display: block"<else />  style="display: none;"  </if>>
+                                <label class="col-sm-2 control-label">选择图文</label>
+                                <div class="col-sm-10">
+                                   <select name="news_mediaid" id="" class="form-control">
+                                    <!-- <option value="0">请选择图文</option> -->
+                                    <volist name="news" id="news">
+                                       <option value="{$news.id}" <if condition="$data['news_mediaid'] eq $news['id']"> selected </if> >{$news['multiple']?"[多图文]":"[单图文]"}{$news.title}</option>
+                                    </volist>
+                                   </select>
+                                </div>
+                            </div>
+                            <!-- 图文 -->
+    
+                            <!-- 图片 -->
+                            <div class="form-group img t" <if condition="$data.type eq 'image'"> style="display: block;"<else />  style="display: none;" </if>>
+                                <label class="col-sm-2 control-label">图片地址</label>
+                                <div class="col-sm-10">
+                                   <select name="image_mediaid" id="" class="form-control">
+                                    <!-- <option value="0">请选择图片</option> -->
+                                    <volist name="image" id="image">
+                                       <option value="{$image.id}" <if condition="$data['image_mediaid'] eq $image['id']"> selected </if> >{$image.title}</option>
+                                    </volist>
+                                   </select>
+                                </div>
+                            </div>
+                        
+                            <!-- 图片 -->
+    
+                            <!-- 音乐 -->
+
+                            <div class="form-group music t" <if condition="$data['type'] eq 'music'"> style="display: block;"<else />  style="display: none;" </if>>
+                                <label class="col-sm-2 control-label">选择声音</label>
+                                <div class="col-sm-10">
+                                   <select name="msuci_mediaid" id="" class="form-control">
+                                        <!-- <option value="0">请选择声音</option> -->
+                                        <volist name="music" id="music">
+                                            <option value="{$music.id}" <if condition="$data['msuci_mediaid'] eq $music['id']"> selected </if>>{$music.title}</option>
+                                        </volist>
+                                   </select>
+                                </div>
+                            </div>
+                
+                            <!-- 视频 -->
+
+                            <div class="form-group video t" <if condition="$data['type'] eq 'video'"> style="display: block;"<else />  style="display: none;" </if>>
+                                <label class="col-sm-2 control-label">视频地址</label>
+                                <div class="col-sm-10">
+                                   <select name="video_mediaid" id="" class="form-control">
+                                        <option value="0">请选择视频</option>
+                                        <volist name="video" id="video">
+                                            <option value="{$video.id}" <if condition="$data['video_mediaid'] eq $video['id']"> selected </if>>{$video.title}</option>
+                                        </volist>
+                                   </select>
+                                </div>
+                            </div>
+    
+                            <!-- 视频 -->
+
+
+
+                            
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <input type="hidden" name="id" value="{$data.id}">
+                                    <button class="btn btn-primary" type="submit">保存内容</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="__PUBLIC__/layui/layui.js"></script>
+    <script>
+    $('.sel').change(function(){
+        var type = $(this).val()
+        switch(type){
+            case 'text':
+            $('.t').hide()
+            $('.text').show()
+            break;
+
+            case  'news':
+            $('.t').hide()
+            $('.news').show()
+            break;
+
+            case 'image':
+            $('.t').hide()
+            $('.img').show()
+            break;
+
+            case 'music':
+            $('.t').hide()
+            $('.music').show()
+            break;
+
+            case 'video':
+            $('.t').hide()
+            $('.video').show()
+            break;
+        }
+    })
+
+</script>
+</block>

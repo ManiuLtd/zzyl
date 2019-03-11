@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
+    <link href="__PUBLIC__/page/page.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css"  media="all">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/hplus.js?v=4.1.0"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/contabs.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/h-ui/edit.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/pace/pace.min.js"></script>
+    <script src="__PUBLIC__/datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript">
+    //ajax post
+        function ajax_post(the){
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                var that = $(the);
+                var url= $(the).attr('action');
+                var cs = $(the).serialize();
+                $.ajax({
+                    url:url,
+                    data:cs,
+                    type:'POST',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                window.location.href=data.url;
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+        //get方法ajax提交
+        function ajax_get(the){
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                var url = $(the).attr('href');
+                $.ajax({
+                    url:url,
+                    type:'GET',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                window.location.href=data.url;
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+        /*管理员-编辑*/
+        function admin_edit(title,url,id,w,h){
+            layer_show(title,url,w,h);
+        }
+    </script>
+      <script type="text/javascript">
+    function change_password(){
+        //页面层
+        layer.open({
+          type: 1,
+          skin: 'layui-layer-rim', //加上边框
+          area: ['300px', '260px'], //宽高
+          content: '<div style="margin-top:10px;"><form class="form-signin" action="{:U('Public/change_password')}" method="post" onsubmit="return ajax_post(this);"><input type="password" id="inputPassword" class="form-control" placeholder="请输入当前密码" name="oldpassword" required><input type="password" style="margin-top:10px;" id="inputPassword" class="form-control" placeholder="新的密码" name="password" required><input style="margin-top:10px;" type="password" id="inputPassword" class="form-control" placeholder="确认密码" name="repassword" required><button style="margin-top:10px;" class="btn btn-lg btn-primary btn-block" type="submit">确认修改</button></form></div>'
+        });
+    }
+  </script>
+  <style type="text/css">
+      .game_info_ul a:hover{
+            background: #FFFFFF;
+      }
+      .game_info_ul a:link,a:visited{
+        color: #A7B1C2;
+      }
+      .game_info_li{
+        background: #FFFFFF;
+        border-radius: 5px;
+      }
+  </style>
+</head>
+<body class="fixed-sidebar full-height-layout gray-bg" >
+    <div id="wrapper">
+        <!--左侧导航开始-->
+        <nav class="navbar-default navbar-static-side" role="navigation" style="overflow-y:scroll;">
+            <div class="nav-close"><i class="fa fa-times-circle"></i>
+            </div>
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <span><img alt="image" class="img-circle" src="__PUBLIC__/admin/img/profile_small.jpg" /></span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="clear">
+                               <span class="block m-t-xs"><strong class="font-bold">{$admin_user.username}</strong></span>
+                                <span class="text-muted text-xs block">{$admin_user.nickname}<b class="caret"></b></span>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs" >
+  <!--                               <li><a class="J_menuItem" href="form_avatar.html">修改头像</a>
+                                </li>
+                                <li><a class="J_menuItem" href="profile.html">个人资料</a>
+                                </li>
+                                <li><a class="J_menuItem" href="contacts.html">联系我们</a>
+                                </li> -->
+                                <li><a class="J_menuItem" onclick="return change_password();">修改密码</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li><a href="{:U('Public/logout')}">安全退出</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="logo-element">后台
+                        </div>
+                    </li>
+                    <volist name="menu" id="menu">
+                    <li <if condition="$parent eq $menu['id']"> class="active"</if>>
+                        <a href="#">
+                            <i class="{$menu.icon}"></i>
+                            <span class="nav-label">{$menu.menu_name}</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                        <volist name="menu.child" id="child">
+                            <li>
+				<if condition="$child['id'] eq 76">
+				
+                                <a onclick="clickUrl(this)"  _href="http://39.108.166.3/agent/public/login.html" <if condition="$menu_name['link_url'] eq $child['link_url']"> style="color:#5A98DE" class="J_menuItem"</if> ><i class="{$child.icon}"></i>{$child.menu_name}</a>
+				<else />
+                                <a onclick="clickUrl(this)"  _href="{:U($child['link_url'])}" <if condition="$menu_name['link_url'] eq $child['link_url']"> style="color:#5A98DE" class="J_menuItem"</if> ><i class="{$child.icon}"></i>{$child.menu_name}</a>
+				</if>
+                            </li>
+                        </volist>
+                        </ul>
+                    </li>
+                    </volist>
+                    <!-- <volist name="menu" id="menu">
+                        <dl id="menu-system">
+                            <dt><font color="white"><i class="Hui-iconfont">&#xe61a;</i>{$menu.menu_name}<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></font></dt>
+                            <dd <if condition="$parent eq $menu['id']"> style="display:block;"</if>>
+                            <ul>
+                                <volist name="menu.child" id="child">
+                                    <li style="margin-left:10px;"><a href="{:U($child['link_url'])}" title="{$child.menu_name}" <if condition="$menu_name['link_url'] eq $child['link_url']"> style="color:#5A98DE"</if>>{$child.menu_name}</a></li>
+                                </volist>
+                            </ul>
+                            </dd>
+                    </volist> -->
+                </ul>
+            </div>
+        </nav>
+        <!--左侧导航结束-->
+        <!--右侧部分开始-->
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                        <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
+                            <div class="form-group">
+                                <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search" id="top-search">
+                            </div>
+                        </form>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li class="dropdown">
+                            
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                <i class="fa fa-bell"></i> 
+                                    <if condition="($news_type eq 0)">
+                                    暂无新消息
+                                    <elseif condition="($news_type eq 1)"/>
+                                    <font color="red">有新的消息</font>
+                                    </if>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-alerts">
+                                <li>
+                                    <a href="{:U('Agent/apply_pos')}">
+                                        <div>
+                                             您有未处理提现申请<if condition="($apply_pos_new eq 0)"><font color="green"><else/><font color="red"></if>{$apply_pos_new}</font>条
+                                           
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="{:U('Hall/feedback')}">
+                                        <div>
+                                             有<font color="red">{$feedback_new}</font>条用户未结束反馈消息
+                                            
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                               <li>
+                                    <a href="{:U('Hall/convert')}">
+                                        <div>
+                                             您有未处理用户实物兑换申请<font color="red">{$convert_new}</font>条
+                                            
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                       <!--  <li class="hidden-xs">
+                            <a href="index_v1.html" class="J_menuItem" data-index="0"><i class="fa fa-cart-arrow-down"></i> 购买</a>
+                        </li> 
+                        <li class="dropdown hidden-xs">
+                            <a class="right-sidebar-toggle" aria-expanded="false">
+                                <i class="fa fa-tasks"></i> 主题
+                            </a>
+                        </li>-->
+                    </ul>
+                </nav>
+            </div>
+            <div class="row content-tabs">
+                <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i>
+                </button>
+                <nav class="page-tabs J_menuTabs">
+                    <div class="page-tabs-content">
+                        <if condition="($menu_name.$menu_name eq '')">
+                            <a href="{:U('Index/index')}" class="active J_menuTab" >首页</a>
+                        </if>
+                        <a href="{:U($menu_name['link_url'])}" class="active J_menuTab" >{$menu_name.menu_name}</a>
+                    </div>
+                </nav>
+                
+                <div class="btn-group roll-nav roll-right">
+                    <a href="{:U('Index/index')}">回到首页
+
+                    </a>
+                    
+                </div>
+                <a href="{:U('Public/logout')}" onclick="return ajax_get(this);" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+            </div>
+            <div class="row J_mainContent" id="content-main" style="min-height:250px;overflow-x:auto;overflow-y:auto;max-height:1000px;">
+            <block name="body" >
+            </block>
+            </div>
+            <div class="footer" style="position: fixed;width: 100%;">
+                <div class="pull-right">&copy; 2014-2015 <a href="http://www.zi-han.net/" target="_blank">zihan's blog</a>
+                </div>
+            </div>
+        </div>
+        <!--右侧部分结束-->
+        <!--右侧边栏开始-->
+        <div id="right-sidebar">
+            <div class="sidebar-container">
+
+                <ul class="nav nav-tabs navs-3">
+
+                    <li class="active">
+                        <a data-toggle="tab" href="#tab-1">
+                            <i class="fa fa-gear"></i> 主题
+                        </a>
+                    </li>
+                    <li class=""><a data-toggle="tab" href="#tab-2">
+                        通知
+                    </a>
+                    </li>
+                    <li><a data-toggle="tab" href="#tab-3">
+                        项目进度
+                    </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane active">
+                        <div class="sidebar-title">
+                            <h3> <i class="fa fa-comments-o"></i> 主题设置</h3>
+                            <small><i class="fa fa-tim"></i> 你可以从这里选择和预览主题的布局和样式，这些设置会被保存在本地，下次打开的时候会直接应用这些设置。</small>
+                        </div>
+                        <div class="skin-setttings">
+                            <div class="title">主题设置</div>
+                            <div class="setings-item">
+                                <span>收起左侧菜单</span>
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="collapsemenu">
+                                        <label class="onoffswitch-label" for="collapsemenu">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="setings-item">
+                                <span>固定顶部</span>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="fixednavbar" class="onoffswitch-checkbox" id="fixednavbar">
+                                        <label class="onoffswitch-label" for="fixednavbar">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="setings-item">
+                                <span>
+                        固定宽度
+                    </span>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="boxedlayout" class="onoffswitch-checkbox" id="boxedlayout">
+                                        <label class="onoffswitch-label" for="boxedlayout">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="title">皮肤选择</div>
+                            <div class="setings-item default-skin nb">
+                                <span class="skin-name ">
+                         <a href="#" class="s-skin-0">
+                             默认皮肤
+                         </a>
+                    </span>
+                            </div>
+                            <div class="setings-item blue-skin nb">
+                                <span class="skin-name ">
+                        <a href="#" class="s-skin-1">
+                            蓝色主题
+                        </a>
+                    </span>
+                            </div>
+                            <div class="setings-item yellow-skin nb">
+                                <span class="skin-name ">
+                        <a href="#" class="s-skin-3">
+                            黄色/紫色主题
+                        </a>
+                    </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-2" class="tab-pane">
+
+                        <div class="sidebar-title">
+                            <h3> <i class="fa fa-comments-o"></i> 最新通知</h3>
+                            <small><i class="fa fa-tim"></i> 您当前有10条未读信息</small>
+                        </div>
+
+                        <div>
+
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="__PUBLIC__/admin/img/a1.jpg">
+
+                                        <div class="m-t-xs">
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star text-warning"></i>
+                                        </div>
+                                    </div>
+                                    <div class="media-body">
+
+                                        据天津日报报道：瑞海公司董事长于学伟，副董事长董社轩等10人在13日上午已被控制。
+                                        <br>
+                                        <small class="text-muted">今天 4:21</small>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="__PUBLIC__/admin/img/a2.jpg">
+                                    </div>
+                                    <div class="media-body">
+                                        HCY48之音乐大魔王会员专属皮肤已上线，快来一键换装拥有他，宣告你对华晨宇的爱吧！
+                                        <br>
+                                        <small class="text-muted">昨天 2:45</small>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="__PUBLIC__/admin/img/a3.jpg">
+
+                                        <div class="m-t-xs">
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star text-warning"></i>
+                                        </div>
+                                    </div>
+                                    <div class="media-body">
+                                        写的好！与您分享
+                                        <br>
+                                        <small class="text-muted">昨天 1:10</small>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="__PUBLIC__/admin/img/a4.jpg">
+                                    </div>
+
+                                    <div class="media-body">
+                                        国外极限小子的炼成！这还是亲生的吗！！
+                                        <br>
+                                        <small class="text-muted">昨天 8:37</small>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="__PUBLIC__/admin/img/a8.jpg">
+                                    </div>
+                                    <div class="media-body">
+
+                                        一只流浪狗被收留后，为了减轻主人的负担，坚持自己觅食，甚至......有些东西，可能她比我们更懂。
+                                        <br>
+                                        <small class="text-muted">今天 4:21</small>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="__PUBLIC__/admin/img/a7.jpg">
+                                    </div>
+                                    <div class="media-body">
+                                        这哥们的新视频又来了，创意杠杠滴，帅炸了！
+                                        <br>
+                                        <small class="text-muted">昨天 2:45</small>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="__PUBLIC__/admin/img/a3.jpg">
+
+                                        <div class="m-t-xs">
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star text-warning"></i>
+                                        </div>
+                                    </div>
+                                    <div class="media-body">
+                                        最近在补追此剧，特别喜欢这段表白。
+                                        <br>
+                                        <small class="text-muted">昨天 1:10</small>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="__PUBLIC__/admin/img/a4.jpg">
+                                    </div>
+                                    <div class="media-body">
+                                        我发起了一个投票 【你认为下午大盘会翻红吗？】
+                                        <br>
+                                        <small class="text-muted">星期一 8:37</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="tab-3" class="tab-pane">
+
+                        <div class="sidebar-title">
+                            <h3> <i class="fa fa-cube"></i> 最新任务</h3>
+                            <small><i class="fa fa-tim"></i> 您当前有14个任务，10个已完成</small>
+                        </div>
+
+                        <ul class="sidebar-list">
+                            <li>
+                                <a href="#">
+                                    <div class="small pull-right m-t-xs">9小时以后</div>
+                                    <h4>市场调研</h4> 按要求接收教材；
+
+                                    <div class="small">已完成： 22%</div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 22%;" class="progress-bar progress-bar-warning"></div>
+                                    </div>
+                                    <div class="small text-muted m-t-xs">项目截止： 4:00 - 2015.10.01</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="small pull-right m-t-xs">9小时以后</div>
+                                    <h4>可行性报告研究报上级批准 </h4> 编写目的编写本项目进度报告的目的在于更好的控制软件开发的时间,对团队成员的 开发进度作出一个合理的比对
+
+                                    <div class="small">已完成： 48%</div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 48%;" class="progress-bar"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="small pull-right m-t-xs">9小时以后</div>
+                                    <h4>立项阶段</h4> 东风商用车公司 采购综合综合查询分析系统项目进度阶段性报告武汉斯迪克科技有限公司
+
+                                    <div class="small">已完成： 14%</div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 14%;" class="progress-bar progress-bar-info"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="label label-primary pull-right">NEW</span>
+                                    <h4>设计阶段</h4>
+                                    <!--<div class="small pull-right m-t-xs">9小时以后</div>-->
+                                    项目进度报告(Project Progress Report)
+                                    <div class="small">已完成： 22%</div>
+                                    <div class="small text-muted m-t-xs">项目截止： 4:00 - 2015.10.01</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="small pull-right m-t-xs">9小时以后</div>
+                                    <h4>拆迁阶段</h4> 科研项目研究进展报告 项目编号: 项目名称: 项目负责人:
+
+                                    <div class="small">已完成： 22%</div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 22%;" class="progress-bar progress-bar-warning"></div>
+                                    </div>
+                                    <div class="small text-muted m-t-xs">项目截止： 4:00 - 2015.10.01</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="small pull-right m-t-xs">9小时以后</div>
+                                    <h4>建设阶段 </h4> 编写目的编写本项目进度报告的目的在于更好的控制软件开发的时间,对团队成员的 开发进度作出一个合理的比对
+
+                                    <div class="small">已完成： 48%</div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 48%;" class="progress-bar"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="small pull-right m-t-xs">9小时以后</div>
+                                    <h4>获证开盘</h4> 编写目的编写本项目进度报告的目的在于更好的控制软件开发的时间,对团队成员的 开发进度作出一个合理的比对
+
+                                    <div class="small">已完成： 14%</div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 14%;" class="progress-bar progress-bar-info"></div>
+                                    </div>
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--右侧边栏结束-->
+    </div>
+
+    <script type="text/javascript">
+        $('#datetimepicker1').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii'
+        });
+        $('#datetimepicker2').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii'
+        });
+        $('.chkall').click(function(){
+            $('input[name="id[]"]').prop('checked',$(this).is(':checked'));
+        });
+	function clickUrl(obj){
+            var url = $(obj).attr('_href')
+            window.location.href=url
+        }
+    </script>
+</body>
+</html>

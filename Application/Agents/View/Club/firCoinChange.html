@@ -1,0 +1,125 @@
+<extend name="Public/base"/>
+<block name="body">
+<style>
+    .t1{margin-left: -17px;}
+    .t2{margin-left: -130px;}
+    .t8{margin-left: -80px;}
+    .t4{margin-left: -120px;}
+    /*.t5{margin-left: -170px;}*/
+    .t6{margin-left: -155px;}
+    /*.t7{margin-left: -150px;}*/
+    /*.t8{margin-left: -120px;}*/
+    @media (max-width: 768px){
+        .top-menu{margin-left: 0px;}
+        .t7{margin-top: 5px;}
+    }
+</style>
+	<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>火币变化日志</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                            <div class="col-sm-5 m-b-xs" style="width: 200px;">
+                                <select class="input-sm form-control input-s-sm inline" name="type">
+                                    <option value="0">请选择</option>
+                                    <option value="1" <if condition="$type eq 1"> selected </if>>用户ID</option>
+                                    <option value="2" <if condition="$type eq 2"> selected </if>>用户名</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3 top-menu t1" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control" name="search" value="{$search}"> <span class="input-group-btn">
+                                  
+                                </div>
+                            </div>
+			    <div class="col-sm-3 top-menu t2" style="width: 200px;">
+                                <div class="input-group">
+                                    变化原因
+                                </div>
+                            </div>
+                           <div class="col-sm-5 top-menu t8" style="width: 200px;">
+                                <select class="input-sm form-control input-s-sm inline" name="type2">
+                                    <option value="0">请选择</option>
+                                    <option value="1" <if condition="$type2 eq 1"> selected </if>>火币充值</option>
+                                    <option value="2" <if condition="$type2 eq 2"> selected </if>>火币提现</option>
+                                    <option value="3" <if condition="$type2 eq 3"> selected </if>>游戏结束</option>
+                                    <option value="4" <if condition="$type2 eq 4"> selected </if>>退出俱乐部</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3 top-menu t3" style="width: 200px;">
+                                <div class="input-group">
+                                    变化时间
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t4" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker1" name="start" value="{$start|date='Y-m-d H:i',###}">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t5" style="width: 200px;">
+                                <div class="input-group">
+                                    至
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t6" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker2" name="stop" value="{$stop|date='Y-m-d H:i',###}">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t7" style="width: 200px;">
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>用户ID</th>
+                                        <th>用户名</th>
+                                        <th>变化前金币</th>
+                                        <th>变化金币</th>
+					                    <th>变化后金币</th>
+                                        <th>原因</th>
+                                        <th>时间</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="_data">
+                                    <tr>
+                                        <td><a  onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')"  style="text-decoration:none"><font color="#1AB394">{$_data.userid}</font></a></td>
+                                        <td><a  onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')"  style="text-decoration:none"><font color="#1AB394">{$_data.name}</font></a></td>
+                                       <td>
+                                            <if condition="$_data['reason'] eq 1">
+                                                {$_data['afterchangemoney'] - $_data['changemoney']}
+                                            <elseif condition="$_data['reason'] eq 2" />
+                                                {$_data['afterchangemoney']+abs($_data['changemoney'])}
+                                            <elseif condition="$_data['reason'] eq 3" />
+                                                {$_data['afterchangemoney'] + $_data['changemoney']}
+                                            <else />
+                                                {:abs($_data['changemoney'])}
+                                            </if>
+                                        </td>
+                                        <td>{$_data.changemoney}</td>
+					                    <td>{$_data['afterchangemoney']}</td>
+                                        <td>{$_data.reason|firCoinChange}</td>
+                                        <td>{$_data.time|date="Y-m-d H:i:s",###}</td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

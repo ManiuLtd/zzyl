@@ -1,0 +1,51 @@
+<extend name="Public/base"/>
+<block name="body">
+
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>游戏列表</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>游戏ID</th>
+                                    <th>游戏名称</th>
+                                    <th>桌子最大人数</th>
+                                    <th>是否可以旁观</th>
+                                    <th>旁观人数</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>{$_data.gameid}</td>
+                                        <td>{$_data.name}</td>
+                                        <td>{$_data.deskpeople}</td>
+                                        <td>
+                                            <if condition="($_data.canwatch eq 1)">
+                                                是
+                                                <else/>
+                                                否
+                                            </if>
+                                        </td>
+                                        <td>{$_data.watchercount}</td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

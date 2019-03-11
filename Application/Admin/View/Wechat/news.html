@@ -1,0 +1,61 @@
+<extend name="Public/base"/>
+<block name="body">
+
+	<div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>图文管理</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <div class="col-sm-3" style="width:100px;">
+                                <div class="input-group">
+                                   <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('添加图文','{:U('newsAdd')}','2','1200','700')"  style="text-decoration:none"> 添加图文</a>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width: 6%;margin-left:-20px;">
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+
+                                        <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Adminmenu"></th>
+                                        <th>标题</th>
+                                        <th>封面显示</th>
+                                        <th>评论显示</th>
+                                        <th>粉丝评论</th>
+                                        <th>添加时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="list">
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" value="{$list.id}" name="id[]">
+                                        </td>
+                                        <td>{$list.title}</td>
+                                        <td>{$list['show_cover']?'显示':'不显示'}</td>
+                                        <td>{$list['need_open_comment']?'是':'否'}</td>
+                                        <td>{$list['only_fans_can_comment']?'粉丝评论':'所有评论'}</td>
+                                        <td>{$list.addtime|date='Y-m-d H:i:s',###}</td>
+                                        <td>
+                                        	<a href="javascript:;" onclick="admin_edit('修改图文','{:U('newsUpdate',array('media_id'=>$list['media_id']))}','2','1200','700')" class="btn btn-outline btn-info  dim ">编辑</a>&nbsp;
+                                            <a href="{:U('materialDel',array('mediaid'=>$list['media_id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim ">删除</a>
+                                        </td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

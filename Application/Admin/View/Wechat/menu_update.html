@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    
+    <script type="text/javascript">
+    //ajax post
+        function ajax_post(the){
+            layer.confirm('您确定要做此操作吗？', {
+            btn: ['确定','取消'] //按钮
+            }, function(){
+                var that = $(the);
+                var url= $(the).attr('action');
+                var cs = $(the).serialize();
+                 $.ajax({
+                    url:url,
+                    data:cs,
+                    type:'POST',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                parent.location.reload();
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                        }
+                    });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+</script>
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">       
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>添加菜单</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" action="{:U('menu_update')}" onsubmit="return ajax_post(this);">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">菜单名称</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="name" value="{$data.name}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">菜单类型</label>
+                                <div class="col-sm-10">
+                                    <select name="pid" class="form-control"  id="">
+                                        <option value="0">一级菜单</option>
+                                        <volist name="_menu" id="_menu">
+                                            <option value="{$_menu['id']}" <if condition="$data['pid'] eq $_menu['id']"> selected </if> >{$_menu.name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-2 control-label">菜单内容</label>
+
+                                <div class="col-sm-10">
+                                    <label><input type="radio" name="type" <if condition="$data['type'] eq 'text'"> checked </if> value="text" id="">文字信息</label>
+                                    <label><input type="radio" name="type" <if condition="$data['type'] eq 'view_limited'"> checked </if> value="view_limited" id="">图文消息</label>
+                                    <label><input type="radio" name="type" <if condition="$data['type'] eq 'media_id'"> checked </if> value="media_id" id="">下发消息</label>
+                                    <!-- <label><input type="radio" name="type" value="keys" id="">关键字</label> -->
+                                    <label><input type="radio" name="type" <if condition="$data['type'] eq 'view'"> checked </if> value="view" id="">跳转网页</label>
+                                    <label><input type="radio" name="type" <if condition="$data['type'] eq 'click'"> checked </if> value="click" id="">事件功能</label>
+                                    <!-- <label><input type="radio" name="type" value="miniprogram" id="">小程序</label> -->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">匹配内容</label>
+
+                                <div class="col-sm-10">
+                                    <textarea name="" id="" cols="60" rows="10" class="form-control" style="resize:none"><switch name="data.type" ><case value="view">{$data['url']}</case><case value="click">{$data['key']}</case><case value="view_limited">{$data['media_id']}</case><case value="media_id">{$data['media_id']}</case><default />{$data['key']}</switch></textarea>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <input type="hidden" name="id" value="{$data['id']}">
+                                    <button class="btn btn-primary" type="submit">保存内容</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script>
+
+        m()
+
+        function m(){
+            var v = $('input[type=radio]:checked').val()
+            var type = {'view':'url','click':'key','view_limited':'media_id','text':'key','media_id':'media_id'}
+            $('textarea').attr('name',type[v])
+        }
+
+        $('input[name=type]').click(function(){
+            var v = $(this).val()
+            var type = {'view':'url','click':'key','view_limited':'media_id','text':'key','media_id':'media_id'}
+            $('textarea').attr('name',type[v])
+        })
+    </script>
+</body>
+</html>

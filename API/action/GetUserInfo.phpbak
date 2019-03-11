@@ -1,0 +1,40 @@
+<?php 
+if(isset($_REQUEST['userID']) && !empty($_REQUEST['userID'])){
+	$userID = intval(m_request('userID',0));
+	$sql = "SELECT * FROM userinfo WHERE userID=".$userID;
+	$userInfo = $db -> getRow($sql);
+	if(!$userInfo){
+		$data['status'] = 0;
+		$data['msg'] = '传递参数错误';
+		exit(return_json($data));
+	}
+	foreach($userInfo as $k => $v){
+		unset($userInfo['userID']);
+		unset($userInfo['passwd']);
+		$userInfo['money'] = intval($userInfo['money']);
+		$userInfo['jewels'] = intval($userInfo['jewels']);
+		$userInfo['roomID'] = intval($userInfo['roomID']);
+		$userInfo['deskIdx'] = intval($userInfo['deskIdx']);	
+	}
+	$data['status'] = 1;
+	$data['msg'] = '请求成功';
+	$data['GetUserInfo'] = $userInfo;
+	exit(return_json($data)); 
+}else{
+	$sql = "SELECT * FROM userinfo";
+	$userInfo = $db -> getAll($sql);
+	foreach($userInfo as $k => $v){
+		unset($userInfo[$k]['userID']);
+		unset($userInfo[$k]['passwd']);
+		$userInfo[$k]['money'] = intval($userInfo[$k]['money']);
+		$userInfo[$k]['jewels'] = intval($userInfo[$k]['jewels']);
+		$userInfo[$k]['roomID'] = intval($userInfo[$k]['roomID']);
+		$userInfo[$k]['deskIdx'] = intval($userInfo[$k]['deskIdx']);
+		
+	}
+	$data['status'] = 1;
+	$data['msg'] = '请求成功';
+	$data['GetUserInfo'] = $userInfo;
+	exit(return_json($data)); 
+}
+ ?>

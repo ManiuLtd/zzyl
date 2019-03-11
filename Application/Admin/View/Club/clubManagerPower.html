@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/h-ui/edit.js"></script>
+    <script src="__PUBLIC__/datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"
+            type="text/javascript"></script>
+    <link href="__PUBLIC__/datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css"/>
+    <link href="__PUBLIC__/page/page.css" rel="stylesheet" type="text/css"/>
+
+    <script type="text/javascript">
+        //ajax post
+        function ajax_post(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var that = $(the);
+                var url = $(the).attr('action');
+                var cs = $(the).serialize();
+                $.ajax({
+                    url: url,
+                    data: cs,
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                parent.location.reload();
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+
+        //get方法ajax提交
+        function ajax_get(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var url = $(the).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                window.location.href = data.url;
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+        /*管理员-编辑*/
+        function admin_edit(title, url, id, w, h) {
+            layer_show(title, url, w, h);
+        }
+    </script>
+    <style>
+        .statistics {
+            width: 100%;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        .statistics p {
+            line-height: 25px;
+        }
+
+        .table-bordered .checkbox-inline input {
+            margin-top: 3px;
+        }
+
+    </style>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>设置管理员权限</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row" style="width:100%;line-height: 30px;">
+                        <form action="{:U()}" method="post">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th class="column-title">管理员ID</th>
+                                    <th class="column-title">管理员昵称</th>
+                                    <th class="column-title">管理员权限</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{$userID}</td>
+                                    <td>{$userName}</td>
+                                    <td>
+                                        <label class="checkbox-inline col-sm-3">
+                                            <input type="checkbox" value="1" name="id[]" class="one_check"
+                                            <if condition="($power & 1) eq 1"> checked="checked"</if>
+                                            >
+                                            删除普通成员
+                                        </label>
+                                        <label class="checkbox-inline col-sm-3">
+                                            <input type="checkbox" value="2" name="id[]" class="one_check"
+                                            <if condition="($power & 2) eq 2"> checked="checked"</if>
+                                            >
+                                            创建、解散牌桌
+                                        </label>
+                                        <label class="checkbox-inline col-sm-3">
+                                            <input type="checkbox" value="4" name="id[]" class="one_check"
+                                            <if condition="($power & 4) eq 4"> checked="checked"</if>
+                                            >
+                                            创建、解散VIP房
+                                        </label>
+                                        <label class="checkbox-inline col-sm-3">
+                                            <input type="checkbox" value="8" name="id[]" class="one_check"
+                                            <if condition="($power & 8) eq 8"> checked="checked"</if>
+                                            >
+                                            充值、回收火币
+                                        </label>
+                                        <label class="checkbox-inline col-sm-3">
+                                            <input type="checkbox" value="16" name="id[]" class="one_check"
+                                            <if condition="($power & 16) eq 16"> checked="checked"</if>
+                                            >
+                                            设置公告、签名、改名
+                                        </label>
+                                        <label class="checkbox-inline col-sm-3">
+                                            <input type="checkbox" value="31" name="all_check" class="all_check"
+                                            <if condition="$power eq 31"> checked="checked"</if>
+                                            >
+                                            全选
+                                        </label>
+                                        <label class="checkbox-inline col-sm-3">
+                                            <input type="checkbox" value="0" name="all_no_check" class="all_no_check"
+                                            <if condition="$power eq 0"> checked="checked"</if>
+                                            >
+                                            全不选
+                                        </label>
+                                        <label class="checkbox-inline col-sm-3">
+                                            <input type="checkbox" value="-1" name="reverse_check" class="reverse_check"
+                                            >
+                                            反选
+                                        </label>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="col-sm-offset-5">
+                                <input type="hidden" name="friendsGroupID" value="{$friendsGroupID}">
+                                <input type="hidden" name="userID" value="{$userID}">
+                                <button class="btn btn-primary" type="submit">确定授权</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    $('#datetimepicker1').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii'
+    });
+    $('#datetimepicker2').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii'
+    });
+    $('.all_check').click(function () {
+        if ($(this).is(':checked')) {
+            $('input[name="id[]"]').prop('checked', true);
+            $('input[name="all_no_check"]').prop('checked', false);
+            $('input[name="reverse_check"]').prop('checked', false);
+        }
+    });
+    $('.all_no_check').click(function () {
+        if ($(this).is(':checked')) {
+            $('input[name="id[]"]').prop('checked', false);
+            $('input[name="all_check"]').prop('checked', false);
+            $('input[name="reverse_check"]').prop('checked', false);
+        }
+    });
+    $('.reverse_check').click(function () {
+        let all_check = true;
+        let all_no_check = true;
+        $('input[name="id[]"]').each(function () {
+            $(this).prop('checked', !$(this).is(':checked'));
+            if (all_check && !$(this).is(':checked')) {
+                all_check = false;
+            }
+            if (all_no_check && $(this).is(':checked')) {
+                all_no_check = false;
+            }
+        });
+        $('input[name="all_check"]').prop('checked', all_check);
+        $('input[name="all_no_check"]').prop('checked', all_no_check);
+    });
+    $('.one_check').click(function () {
+        let all_check = true;
+        let all_no_check = true;
+        $('input[name="id[]"]').each(function () {
+            if (all_check && !$(this).is(':checked')) {
+                all_check = false;
+            }
+            if (all_no_check && $(this).is(':checked')) {
+                all_no_check = false;
+            }
+        });
+        $('input[name="all_check"]').prop('checked', all_check);
+        $('input[name="all_no_check"]').prop('checked', all_no_check);
+        $('input[name="reverse_check"]').prop('checked', false);
+    });
+</script>
+</html>

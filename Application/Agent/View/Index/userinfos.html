@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <title>棋牌运营平台 </title>
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/page/page.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/index.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/index.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/common.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/search.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/mstyle.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/invite.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/common.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/agency.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/information.css">
+    
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/ajax.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/sky.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+<script type="text/javascript">
+      function ajax_post(the){
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                var that = $(the);
+                var url= $(the).attr('action');
+                var cs = $(the).serialize();
+                $.ajax({
+                    url:url,
+                    data:cs,
+                    type:'POST',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                window.location.href=data.url;
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+
+
+
+
+       //get方法ajax提交
+        function ajax_get(the){
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                var url = $(the).attr('href');
+                $.ajax({
+                    url:url,
+                    type:'GET',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                window.location.href=data.url;
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+
+</script>
+
+</head>
+<body>
+
+    <div class="panel panel-index">
+        <div class="nav-wrap">
+            <div class="nav">
+                <a class="" href="{:U('index/index')}"></a>
+                                <h1>棋牌运营平台</h1>
+            </div>
+        </div>
+         <div class="welcome-wrap">
+            <div class="avator">
+                <a href="{:U('index')}">
+                    <img src="__PUBLIC__/newadmin/img/avator.png">
+                </a>
+            </div>
+            <div class="brief">
+                <p class="username" >欢迎你！嘿丶你的益达<span style="color:#f08200;font-size:16px;">（推广员）</span></p>
+                <p class="txt" style="margin-top:6px;"><span style="position: absolute;margin-left:160px">本月业绩：<i>0</i></span>今日业绩：<i>0</i></p>
+                <p class="txt" style="margin-top:6px;"><span style="position: absolute;margin-left:160px">未提现金额：<i>0.00</i></span>返利额度：<i>30%</i>  </p>
+            </div>
+        </div>
+
+        <div class="information-wrap">
+            <div class="tab-container">
+				<div class="tab-nav">
+					<a href="{:U('userinfo',array('userid'=>$usreid))}" >基本信息</a>
+					<a href="{:U(userinfos,array('userid'=>$usreid))}" class="on">个人运营信息</a>
+				</div>
+        </div>
+
+
+            <div class="information-basic">
+       <div class="nav-wrap">
+            <div class="nav" style="background-color: #fb9c07;">
+                <h1>商城统计</h1>
+            </div>
+        </div>
+                <div class="item item-tel">
+                    <label>充值总金额：</label>
+                    <p><if condition="($user.recharge_all_money eq '0.00')">未充值<else/> {$user.recharge_all_money}</if></p>
+                </div>
+
+                <div class="item item-tel">
+                    <label>最近充值金额: </label>
+                    <p><if condition="($user.last_recharge_money eq '0.00')">未充值<else/>{$user.last_recharge_money}</if></p>
+                </div>
+
+
+                <div class="item item-tel">
+                    <label>最近充值时间: </label>
+                    <p><if condition="($user.last_recharge_time eq '')">未充值<else/>{$user.last_recharge_time|date='Y-m-d H:i:s',###}</if></p>
+                </div>
+
+        
+        <div class="nav-wrap">
+            <div class="nav" style="background-color: #fb9c07;">
+                <h1>平台大厅统计</h1>
+            </div>
+        </div>
+            
+                <div class="item item-tel">
+                    <label>分享次数: </label>
+                    <p>{$user.share_count}</p>
+                </div>
+                
+                                <div class="item item-tel">
+                    <label>累计登陆次数: </label>
+                    <p>{$user.login_count}</p>
+                </div>
+
+                                <div class="item item-tel">
+                    <label>累计反馈次数: </label>
+                    <p>{$user.feedback_count}</p>
+                </div>
+
+                                <div class="item item-tel">
+                    <label>发送世界广播次数:</label>
+                    <p> {$user.horn_count|default=0}</p>
+                </div>
+
+                                <div class="item item-tel">
+                    <label>实物兑换次数:</label>
+                    <p> {$user.convert_count}</p>
+                </div>
+
+                                <div class="item item-tel">
+                    <label>发送魔法表情次数: </label>
+                    <p>{$user.magicExpress_count|default=0}</p>
+                </div>
+
+                                <div class="item item-tel">
+                    <label>累计抽奖次数:</label>
+                    <p>{$user.turntable_count} </p>
+                </div>
+
+                                <div class="item item-tel">
+                    <label>累计签到次数: </label>
+                    <p>{$user.sign_count}</p>
+                </div>
+
+        
+        <div class="nav-wrap">
+            <div class="nav" style="background-color: #fb9c07;">
+                <h1>金币房卡统计</h1>
+            </div>
+        </div>
+
+                                              <div class="item item-tel">
+                    <label>累计转赠金币: </label>
+                    <p>{$user.zz_money|default=0}</p>
+                </div>
+                                                <div class="item item-tel">
+                    <label>累计转赠房卡:</label>
+                    <p>{$user.zz_jewels|default=0}</p>
+                </div>
+
+                                                <div class="item item-tel">
+                    <label>累计接收转赠金币: </label>
+                    <p>{$user.zzxh_money|default=0}</p>
+                </div>
+
+                                                <div class="item item-tel">
+                    <label>累计接收转赠房卡:</label>
+                    <p>{$user.zzxh_jewels|default=0}</p>
+                </div>
+
+
+                                                <div class="item item-tel">
+                    <label>累计抽奖获取金币数: </label>
+                    <p>{$user.turntable_get_money|default=0}</p>
+                </div>
+
+                                                <div class="item item-tel">
+                    <label>累计抽奖获取房卡数:</label>
+                    <p>{$user.turntable_get_jewels|default=0}</p>
+                </div>
+
+                                                <div class="item item-tel">
+                    <label>累计签到获取金币数: </label>
+                    <p>{$user.sign_get_money|default=0}</p>
+                </div>
+
+                                                <div class="item item-tel">
+                    <label>累计签到获取房卡数: </label>
+                    <p>{$user.magicExpress|default=0}</p>
+                </div>
+
+                                                <div class="item item-tel">
+                    <label>累计魔法表情消耗金币数: </label>
+                    <p>{$user.magicExpress|default=0}</p>
+                </div>
+
+             
+        <div class="nav-wrap">
+            <div class="nav" style="background-color: #fb9c07;">
+                <h1>金币房卡统计</h1>
+            </div>
+        </div> 
+        
+                                                             <div class="item item-tel">
+                    <label>累计对局数量: </label>
+                    <p>{$user.all_count}</p>
+                </div>
+
+                                                                <div class="item item-tel">
+                    <label>累计胜局数:</label>
+                    <p>{$user.wincount} </p>
+                </div>
+
+
+                                                                <div class="item item-tel">
+                    <label>累计在线时长: </label>
+                    <p>{$user.magicExpress|default=0}小时</p>
+                </div>
+
+            
+
+            </div>
+        </div>
+    </div>
+
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>旺旺棋牌运营平台<!--<br>微信客服：wwdbqp--></span></p>
+            </div>
+        </div>
+
+
+    
+
+<style>
+.information-basic .item label{width:2.64rem;}
+</style>
+</div></body></html>

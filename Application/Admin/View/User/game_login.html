@@ -1,0 +1,130 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        .t1 {
+            margin-left: -17px;
+        }
+
+        .t2 {
+            margin-left: -17px;
+        }
+
+        @media (max-width: 768px) {
+            .top-menu {
+                margin-left: 0px;
+            }
+
+            .t6 {
+                margin-top: 5px;
+            }
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                                <div class="col-sm-5 m-b-xs" style="width: 150px;">
+                                    <select class="input-sm form-control input-s-sm inline" name="type">
+                                        <option value="0">请选择</option>
+                                        <option value="1"
+                                        <if condition="$type eq 1"> selected</if>
+                                        >用户ID</option>
+                                        <option value="2"
+                                        <if condition="$type eq 2"> selected</if>
+                                        >用户昵称</option>
+                                        <option value="3"
+                                        <if condition="$type eq 3"> selected</if>
+                                        >登录IP</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 top-menu t1" style="width: 200px;">
+                                    <div class="input-group">
+                                        <input type="hidden" name="status"
+                                               value="<?php echo $_GET['status']?$_GET['status']:0;?>">
+                                        <input type="text" placeholder="请输入关键词" class="input-sm form-control"
+                                               name="search" value="{$search}"> <span class="input-group-btn">
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t2" style="width:100px;">
+                                    <div class="input-group">
+                                        登录时间
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t3" style="width: 200px;">
+                                    <div class="input-group">
+                                        <input type="text" class="input-sm form-control" id="datetimepicker1"
+                                               name="start" value="{$start|date='Y-m-d H:i',###}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t4" style="width:50px;">
+                                    <div class="input-group">
+                                        至
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t5" style="width: 200px;">
+                                    <div class="input-group">
+                                        <input type="text" class="input-sm form-control" id="datetimepicker2"
+                                               name="stop" value="{$stop|date='Y-m-d H:i',###}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width: 100px;">
+                                    <div class="input-group">
+                                        <button type="submit" class="btn btn-sm btn-primary">搜索</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>游戏ID</th>
+                                    <th>昵称</th>
+                                    <th>性别</th>
+                                    <th>类型</th>
+                                    <th>房间名字</th>
+                                    <th>房间类型</th>
+                                    <th>登录时间</th>
+                                    <th>登录IP</th>
+                                    <th>设备唯一标识</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="_data">
+                                    <tr>
+                                        <td>
+                                            <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['userid']))}','2','1200','800')"
+                                               style="text-decoration:none">
+                                                <font color="#1AB394">{$_data.userid}</font>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['userid']))}','2','1200','800')"
+                                               style="text-decoration:none">
+                                                <font color="#1AB394">{$_data.username}</font>
+                                            </a>
+                                        </td>
+                                        <td>{$_data.sex_name}</td>
+                                        <td>{$login_type_name}</td>
+                                        <td>{$_data.room_name}</td>
+                                        <td>{$_data.room_type_name}</td>
+                                        <td>{$_data.time|date='Y-m-d H:i:s',###}</td>
+                                        <td>{$_data.ip}</td>
+                                        <td>{$_data.macaddr}</td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

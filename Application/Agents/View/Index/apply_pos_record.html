@@ -1,0 +1,68 @@
+<include file="Public/base"/>
+        <div class="search-wrap">
+			      <div class="tab-container">
+
+        <div class="tab-container">
+        <div class="tab-nav">
+          <a href="{:U('apply_pos')}" >个人余额信息</a>
+          <a href="{:U(apply_pos_record)}" class="on">我的提现记录</a>
+        </div>
+        
+            </div>
+
+
+				<div class="tab-nav">
+					<a href="" class="on">提现记录列表</a>
+				</div>
+            </div>
+						            <div class="search-condition">
+
+
+                <div class="item">
+                    <table class="table">
+				    <tbody>
+					<tr>
+               
+                            <th>序列号</th>
+                            <th>申请提款金额</th>
+                            <th>申请前金额</th>
+							<th>申请后余额</th>
+ 	                        <th>申请时间</th>
+                            <th>处理时间</th>
+                            <th>提现状态</th>
+						</tr>
+         <volist name="_data" id="vo">
+		          <tr>
+		          
+		            <td scope="row">{$vo['id']}</td>  
+		            <td>{$vo['apply_amount']}</td>
+		            <td>{$vo['front_balance']}</td>
+		            <td>{$vo['after_balance']}</td>
+                    <td>{$vo.apply_time|date="Y-m-d H:i:s",###}</td>
+                    <td>{$vo.handle_time|date="Y-m-d H:i:s",###}</td>
+                    <td><if condition='$vo.status eq 1'><span style="color:green">已处理</span><else/><span style="color:red;">等待处理</span></if></td>
+
+		          </tr>
+          </volist>
+
+
+                    </tbody>
+                </table>
+                   
+{$_page}
+				                </div>
+            </div>
+        </div>
+
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台</span></p>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+</body></html>

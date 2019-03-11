@@ -1,0 +1,127 @@
+
+<include file="Public/base"/>
+        <div class="information-wrap">
+            <div class="information-basic">
+                <div class="item item-tel">
+                    <label>后台账号登录：</label>
+                    <p>{$my.username}</p>
+                </div>
+
+                <div class="item item-tel">
+                    <label>我的游戏ID：</label>
+                    <p>{$my.userid}</p>
+                </div>
+
+                <div class="item item-tel">
+                    <label>我的代理级别：</label>
+                    <p> 
+			            <if condition="($my.agent_level eq 1)">
+			            一级代理
+			            <elseif condition="($my.agent_level eq 2)"/>
+			            二级代理
+			            <elseif condition="($my.agent_level eq 3)"/>
+			            三级代理
+			            </if>
+                    </p>
+                </div>
+	                <div class="item item-code">
+	                    <label>我的邀请码：</label>
+						<p>{$my.agentid}</p>
+						<p style="display:none"><input value="2591263" id="invite_code" style=" border: 1px solid #ccc; border-radius: 0.1rem; height: 0.78rem; line-height: 0.78rem; padding-left: 0.2rem; width: 150px;" type="text"></p>
+					</div>
+
+					<div class="item item-lvl">
+						<label>上级代理账号：</label>
+						<p>{$my.superior_username}</p>
+					</div>
+
+
+					<div class="item item-lvl">
+						<label>上级代理邀请码：</label>
+						<p>{$my.superior_agentid}</p>
+					</div>
+
+					<div class="item item-username">
+						<label>微信账号：</label>
+						<p>{$my.wechat}</p>
+					</div>
+
+					<div class="item item-username">
+						<label>银行卡号：</label>
+						<p>{$my.bankcard}</p>
+					</div>
+								
+                    <div class="item item-username">
+						<label>邮箱：</label>
+						<p>{$my.email}</p>
+					</div>
+                    
+                     <div class="item item-username">
+						<label>我的账户余额：</label>
+						<p>{$my.balance}</p>
+					</div>
+                    
+
+                    <div class="item item-username">
+						<label>直属收入：</label>
+						<p>{$my.under_money}</p>
+					</div>
+
+					<div class="item item-username">
+						<label>非直属收入：</label>
+						<p>{$my.not_under_money}</p>
+					</div>
+                    
+                    <div class="item item-username">
+						<label>账号状态：</label>
+						<p>  <if condition="($my.disabled eq 0)">
+					          <font color="green">正常</font>
+					          <elseif condition="($my.disabled eq 1)"/>
+					          <font color="red">禁用</font>
+					          </if>
+                        </p>
+					</div>
+                  
+                    <div class="item item-username">
+						<label>成为代理时间：</label>
+						<p>{$my.register_time|date="Y-m-d H:i:s",###}</p>
+					</div>
+
+                  	<div class="item item-username">
+						<label>登录次数：</label>
+						<p>{$my.login_count}</p>
+					</div>
+                    
+                     <div class="item item-username">
+						<label>最后登录时间：</label>
+						<p>{$my.last_login_time|date="Y-m-d H:i:s",###}</p>
+					</div>
+
+                    <div class="item item-username">
+						<label>最后登录IP：</label>
+						<p>{$my.last_login_ip}</p>
+					</div>
+
+                    <div class="item item-username">
+						<label>最后登录地址：</label>
+						<p>{$my.last_login_address}</p>
+					</div>
+        </div>
+    </div>
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台</span></p>
+            </div>
+        </div>
+
+    
+
+
+
+<style>
+.information-basic .item label{width:2.64rem;}
+</style>
+
+
+
+</div></body></html>

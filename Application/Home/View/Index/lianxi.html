@@ -1,0 +1,25 @@
+<extend name="Public/base"/>
+<block name="content">
+<center><h2>联系我们</h2><h4><font color="gray">CONTACT US</font></h4></center><hr>
+        <div class="lianxi_left">
+          <div>
+            <p>联系电话：{$config.phone}</p>
+            <p>邮箱账号：{$config.email}</p>
+            <p>QQ：{$config.qq}</p>
+            <p>地址:{$config.address}</p>
+          </div>
+          <div>
+            <img src="{$img.qrcode}" style="margin-right: 5%">
+            <font size="4">微信二维码，扫描加关注。</font>
+          </div>
+        </div>
+        <div class="lianxi_right">
+        <center><h3>在线留言</h3></center><hr>
+          <form action="{:U('online_msg')}" method="post">
+             <input type="text" class="form-control" name="name" placeholder="请输入您的姓名" style="width:60%;margin-left: 20%;"><br>
+             <input type="text" class="form-control" name="phone" placeholder="请输入您的联系电话" style="width:60%;margin-left: 20%;"><br>
+             <textarea class="font" placeholder="请输入留言内容" name="content" style="width:60%;"></textarea>
+             <input type="submit" class="btn btn-success" value="提交" style="width:60%;margin-top: 10px;">
+          </form>
+        </div>
+</block>

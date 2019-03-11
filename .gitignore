@@ -1,0 +1,12 @@
+logs/
+.project
+.settings
+.buildpath
+.idea/workspace.xml
+.idea/webServers.xml
+ .idea/deployment.xml
+Uploads/
+plat_version.txt
+test_plat_version.txt
+test_version.txt
+version.txt

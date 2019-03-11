@@ -1,0 +1,187 @@
+<extend name="Public/base"/>
+<block name="body">
+        <style>
+        @media (max-width: 768px){
+          /*.panel-body{border:2px solid red;}*/
+          .ibox{width: 1000px;}
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>世界广播数据统计</h5>
+                    </div>
+                    <div class="ibox-content" style="">
+                    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                    <div id="main" style="height:400px;width: 60%;margin:20px auto;" ></div>
+                    <div id="main2" style="height:400px;width: 60%;margin:20px auto;" ></div>
+                     <div style="width: 60%;margin:30px auto;">
+                     <h3><font color="black">世界广播数据统计</font></h3>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td style="width:300px;height:50px;text-align: center;"><h4>发送总次数：<font color="red">{$count}</font></h4></td>
+                                <!-- <td style="width:300px;height:50px;text-align: center;"><h4>领取救济金增加金币数：<font color="red">{$JbCount}</font></h4></td> -->
+                                <!-- <td style="width:300px;height:50px;text-align: center;"><h4>兑换增加钻石：<font color="red">{$jewels}</font></h4></td> -->
+                            </tr>
+                            <tr>
+                                <td style="width:300px;height:50px;text-align: center;"><h4>单个用户发送最多次数：<font color="red">{$max}</font></h4></td>
+                                <!-- <td style="width:300px;height:50px;text-align: center;"><h4>单个用户兑换获得最多金币：<font color="red">{$user_max_money}</font></h4></td>
+                                <td style="width:300px;height:50px;text-align: center;"><h4>单个用户兑换次数最多用户ID：<font color="red">{$maxc.userid}</font></h4></td> -->
+                            </tr>
+                           
+                        </table>
+                    </div> 
+                        <!-- ECharts单文件引入 -->
+                        <script src="__PUBLIC__/echarts/echarts.js"></script>
+                        <script type="text/javascript">
+                               // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        option = {
+    title: {
+        text: '最近七日发送次数'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+         data:['发送总数','累计消耗钻石数']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data:[ 
+        <volist name="d" id="d">
+        "{$d|date='m-d',###}",
+        </volist>]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+       {
+            name:'发送总数',
+            type:'line',
+            stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top'
+                }
+            },
+            data:[<volist name="day" id="dayCount">
+        "{$dayCount|default='0'}",
+        </volist>]
+        },{
+            name:'累计消耗钻石数',
+            type:'line',
+            stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'bottom'
+                }
+            },
+            data:[<volist name="jewels" id="j">
+        "{$j|default='0'}",
+        </volist>]
+        },
+        
+    ]
+};
+       
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+
+          // 基于准备好的dom，初始化echarts实例
+        var myChart2 = echarts.init(document.getElementById('main2'));
+
+        // 指定图表的配置项和数据
+        var option = {
+    title: {
+        text: '最近一年发送次数'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['发送次数','累计消耗钻石数']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: [<volist name="year" id="yearCount">
+        "{$yearCount['month']}",
+        </volist>]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name:'发送次数',
+            type:'line',
+            stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top'
+                }
+            },
+            data:[<volist name="year" id="yearCount">
+        "{$yearCount['yearCount']|default='0'}",
+        </volist>],
+
+        },{
+            name:'累计消耗钻石数',
+            type:'line',
+            stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'bottom'
+                }
+            },
+            data:[<volist name="jewelsYear" id="y">
+        "{$y|default='0'}",
+        </volist>]
+        },
+       
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart2.setOption(option);
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

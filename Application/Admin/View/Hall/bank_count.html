@@ -1,0 +1,232 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        @media (max-width: 768px) {
+            /*.panel-body{border:2px solid red;}*/
+            .ibox {
+                width: 1000px;
+            }
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>银行数据统计</h5>
+                    </div>
+                    <div class="ibox-content" style="">
+                        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                        <div id="main" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div id="main2" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div style="width: 60%;margin:30px auto;">
+                            <h3><font color="black">抽奖数据</font></h3>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>用户存金币总次数：<font
+                                            color="red">{$Save_count}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>用户存金币最大金币：<font
+                                            color="red">{$max_Save_count}</font></h4></td>
+
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>用户取金币总次数：<font
+                                            color="red">{$Withdraw_count}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>用户取金币最大金币：<font
+                                            color="red">{$max_Withdraw_count}</font></h4></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>用户转金币总次数：<font
+                                            color="red">{$Transfer_conut}</font></h4></td>
+                                    </td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>用户转金币最大金币：<font
+                                            color="red">{$max_Transfer_count}</font></h4></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- ECharts单文件引入 -->
+                        <script src="__PUBLIC__/echarts/echarts.js"></script>
+                        <script type="text/javascript">
+                            var week = ["{$data7[0]}", "{$data7[1]}", "{$data7[2]}", "{$data7[3]}", "{$data7[4]}", "{$data7[5]}"
+                                , "{$data7[6]}",];
+
+                            var year = ["{$data12[0]}", "{$data12[1]}", "{$data12[2]}", "{$data12[3]}", "{$data12[4]}", "{$data12[5]}"
+                                , "{$data12[6]}", "{$data12[7]}", "{$data12[8]}", "{$data12[9]}", "{$data12[10]}", "{$data12[11]}",];
+                            // 基于准备好的dom，初始化echarts实例
+                            var myChart = echarts.init(document.getElementById('main'));
+
+                            // 指定图表的配置项和数据
+                            option = {
+                                title: {
+                                    text: '银行7天数据统计图'
+                                },
+                                tooltip: {
+                                    trigger: 'axis'
+                                },
+                                legend: {
+                                    data: ['银行日存金币数', '银行日取金币数', '银行日转金币数']
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '4%',
+                                    bottom: '3%',
+                                    containLabel: true
+                                },
+                                toolbox: {
+                                    feature: {
+                                        saveAsImage: {}
+                                    }
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    boundaryGap: false,
+                                    data: week
+                                },
+                                yAxis: {
+                                    type: 'value'
+                                },
+                                series: [
+                                    {
+                                        name: '银行日存金币数',
+                                        type: 'line',
+                                        stack: '总量',
+                                        label: {
+                                            normal: {
+                                                show: true,
+                                                position: 'left'
+                                            }
+                                        },
+
+                                        data: ["{$bank_data7['money'][0]}", "{$bank_data7['money'][1]}", "{$bank_data7['money'][2]}", "{$bank_data7['money'][3]}", "{$bank_data7['money'][4]}", "{$bank_data7['money'][5]}", "{$bank_data7['money'][6]}",]
+                                    },
+
+                                    {
+                                        name: '银行日取金币数',
+                                        type: 'line',
+                                        stack: '总量',
+                                        label: {
+                                            normal: {
+                                                show: true,
+                                                position: 'right'
+                                            }
+                                        },
+
+                                        data: ["{$bank_data7['c_money'][0]}", "{$bank_data7['c_money'][1]}", "{$bank_data7['c_money'][2]}", "{$bank_data7['c_money'][3]}", "{$bank_data7['c_money'][4]}", "{$bank_data7['c_money'][5]}", "{$bank_data7['c_money'][6]}",]
+                                    },
+
+                                    {
+                                        name: '银行日转金币数',
+                                        type: 'line',
+                                        stack: '总量',
+                                        label: {
+                                            normal: {
+                                                show: true,
+                                                position: 'top'
+                                            }
+                                        },
+
+                                        data: ["{$bank_data7['z_money'][0]}", "{$bank_data7['z_money'][1]}", "{$bank_data7['z_money'][2]}", "{$bank_data7['z_money'][3]}", "{$bank_data7['z_money'][4]}", "{$bank_data7['z_money'][5]}", "{$bank_data7['z_money'][6]}",]
+                                    },
+
+                                ]
+                            };
+
+
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart.setOption(option);
+
+
+                            // 基于准备好的dom，初始化echarts实例
+                            var myChart2 = echarts.init(document.getElementById('main2'));
+
+                            // 指定图表的配置项和数据
+                            var option = {
+                                title: {
+                                    text: '银行12月数据统计图'
+                                },
+                                tooltip: {
+                                    trigger: 'axis'
+                                },
+                                legend: {
+                                    data: ['银行月存金币数', '银行月取金币数', '银行月转金币数']
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '4%',
+                                    bottom: '3%',
+                                    containLabel: true
+                                },
+                                toolbox: {
+                                    feature: {
+                                        saveAsImage: {}
+                                    }
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    boundaryGap: false,
+                                    data: year
+                                },
+                                yAxis: {
+                                    type: 'value'
+                                },
+                                series: [
+                                    {
+                                        name: '银行月存金币数',
+                                        type: 'line',
+                                        stack: '总量',
+                                        label: {
+                                            normal: {
+                                                show: true,
+                                                position: 'left'
+                                            }
+                                        },
+
+                                        data: ["{$bank_data12['money'][0]}", "{$bank_data12['money'][1]}", "{$bank_data12['money'][2]}", "{$bank_data12['money'][3]}", "{$bank_data12['money'][4]}", "{$bank_data12['money'][5]}"
+                                            , "{$bank_data12['money'][6]}", "{$bank_data12['money'][7]}", "{$bank_data12['money'][8]}", "{$bank_data12['money'][9]}", "{$bank_data12['money'][10]}", "{$bank_data12['money'][11]}",]
+
+                                    },
+
+                                    {
+                                        name: '银行月取金币数',
+                                        type: 'line',
+                                        stack: '总量',
+
+                                        label: {
+                                            normal: {
+                                                show: true,
+                                                position: 'right'
+                                            }
+                                        },
+                                        data: ["{$bank_data12['c_money'][0]}", "{$bank_data12['c_money'][1]}", "{$bank_data12['c_money'][2]}", "{$bank_data12['c_money'][3]}", "{$bank_data12['c_money'][4]}", "{$bank_data12['c_money'][5]}"
+                                            , "{$bank_data12['c_money'][6]}", "{$bank_data12['c_money'][7]}", "{$bank_data12['c_money'][8]}", "{$bank_data12['c_money'][9]}", "{$bank_data12['c_money'][10]}", "{$bank_data12['c_money'][11]}",]
+
+                                    },
+
+                                    {
+                                        name: '银行月转金币数',
+                                        type: 'line',
+                                        stack: '总量',
+
+                                        label: {
+                                            normal: {
+                                                show: true,
+                                                position: 'top'
+                                            }
+                                        },
+                                        data: ["{$bank_data12['z_money'][0]}", "{$bank_data12['z_money'][1]}", "{$bank_data12['z_money'][2]}", "{$bank_data12['z_money'][3]}", "{$bank_data12['z_money'][4]}", "{$bank_data12['z_money'][5]}"
+                                            , "{$bank_data12['z_money'][6]}", "{$bank_data12['z_money'][7]}", "{$bank_data12['z_money'][8]}", "{$bank_data12['z_money'][9]}", "{$bank_data12['z_money'][10]}", "{$bank_data12['z_money'][11]}",]
+
+                                    },
+
+
+                                ]
+                            };
+
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart2.setOption(option);
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

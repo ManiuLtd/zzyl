@@ -1,0 +1,112 @@
+<extend name="Public/base"/>
+<block name="body">
+       <style>
+        @media (max-width: 768px){
+          /*.panel-body{border:2px solid red;}*/
+          .ibox{width: 1000px;}
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>代理数据统计</h5>
+                    </div>
+                    <div class="ibox-content" style="">
+                    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                    <div id="main" style="height:400px;width: 60%;margin:20px auto;" ></div>
+
+                    <div style="width: 60%;margin:30px auto;">
+                        <table style="border:1px solid black;">
+                            <tr>
+                                <td style="width:300px;height:50px;text-align: center;"><h3>代理总数：<font color="red">{$level_count}</font></h3></td>
+                                <td style="width:300px;height:50px;text-align: center;"><h3>用户充值总数：<font color="red">{$user_recharge_sum}</font></h3></td>
+                                <td style="width:300px;height:50px;text-align: center;"><h3>代理余额总数：<font color="red">{$member_balance_sum}</font></h3></td>
+                                <td style="width:300px;height:50px;text-align: center;"><h3>代理提现总数：<font color="red">{$member_pos_sum}</font></h3></td>
+                            </tr>
+                        </table>
+                    </div>
+                        <!-- ECharts单文件引入 -->
+                        <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+                        <script type="text/javascript">
+                            // 路径配置
+                            require.config({
+                                paths: {
+                                    echarts: 'http://echarts.baidu.com/build/dist'
+                                }
+                            });
+                            // 使用
+                            require(
+                                [
+                                    'echarts',
+                                    'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+                                ],
+                                function (ec) {
+                                    // 基于准备好的dom，初始化echarts图表
+                                    var myChart = ec.init(document.getElementById('main')); 
+                                    
+                                    option = {
+                        title : {
+                            text: '代理人数统计折线图',
+                            subtext: ''
+                        },
+                        tooltip : {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data:['代理人数']
+                        },
+                        toolbox: {
+                            show : true,
+                            feature : {
+                                mark : {show: true},
+                                dataView : {show: true, readOnly: false},
+                                magicType : {show: true, type: ['line', 'bar']},
+                                restore : {show: true},
+                                saveAsImage : {show: true}
+                            }
+                        },
+                        calculable : true,
+                        xAxis : [
+                            {
+                                type : 'category',
+                                data : ['']
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value'
+                            }
+                        ],
+                        series : [
+                            {
+                                name:'代理人数',
+                                type:'bar',
+                                data:[{$level1_count}],
+                                markPoint : {
+                                    data : [
+                                        {type : 'max', name: '最大值'},
+                                        {type : 'min', name: '最小值'}
+                                    ]
+                                },
+                                markLine : {
+                                    data : [
+                                        {type : 'average', name: '平均值'}
+                                    ]
+                                }
+                            },
+                            
+                        ]
+                    };
+                                        
+                                    // 为echarts对象加载数据 
+                                    myChart.setOption(option); 
+                                }
+                            );
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

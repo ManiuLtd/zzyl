@@ -1,0 +1,110 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        .t1{margin-left: -17px;}
+        .t2{margin-left: -17px;}
+        /*.t3{margin-left: -130px;}
+        .t4{margin-left: -12px;}
+        .t5{margin-left: -170px;}*/
+        @media (max-width: 768px){
+            .top-menu{margin-left: 0px;}
+            .t6{margin-top: 5px;}
+        }
+</style>
+	<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>好友俱乐部</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                            <div class="col-sm-5 m-b-xs" style="width: 150px;">
+                                <select class="input-sm form-control input-s-sm inline" name="type">
+                                    <option value="0">请选择</option>
+                                    <option value="1">俱乐部名称</option>
+                                    <option value="2">俱乐部ID</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3 top-menu t1" style="width: 200px;">
+                                <div class="input-group">
+                                <input type="hidden" name="status" value="<?php echo $_GET['status']?$_GET['status']:0;?>">
+                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control" name="search"> <span class="input-group-btn">
+                                  
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t2" style="width:100px;">
+                                <div class="input-group">
+                                    创建时间
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t3" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker1" name="start">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t4" style="width:50px;">
+                                <div class="input-group">
+                                    至
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t5" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker2" name="stop">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t6" style="width: 100px;">
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                </div>
+                            </div>
+                            <a href="{:U('userClub',array('time'=>'today'))}" style="color:white;" class="btn btn-sm btn-primary">今天</a>
+                            <a href="{:U('userClub',array('time'=>'tomorrow'))}" style="color:white;" class="btn btn-sm btn-primary">昨天</a>
+                            <a href="{:U('userClub',array('time'=>'week'))}" style="color:white;" class="btn btn-sm btn-primary">上周</a>
+                            <a href="{:U('userClub',array('time'=>'todayWeek'))}" style="color:white;" class="btn btn-sm btn-primary">本周</a>
+                            <a href="{:U('userClub',array('time'=>'month'))}" style="color:white;" class="btn btn-sm btn-primary">当月</a>
+                            </form>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>俱乐部ID</th>
+                                        <th>俱乐部名称</th>
+                                        <th>创建者</th>
+                                        <th>人数</th>
+                                        <th>公告</th>
+                                        <th>创建时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="list">
+                                    <tr>
+                                        <td>{$list.friendsgroupid}</td>
+                                        <td>{$list.name}</td>
+                                        <td>{$list.username}</td>
+                                        <td>{$list.peoplecount|default=0}</td>
+                                        <td>{$list.notice}</td>
+                                        <td>{$list.createtime|date='Y-m-d H:i:s',###}</td>
+                                        <td>
+                                            <a class="btn btn-sm btn-primary" href="javascript:;" onclick="admin_edit('成员列表','{:U('clubMember',array('friendsgroupid'=>$list['friendsgroupid']))}','2','1200','800')"  style="text-decoration:none">成员列表</a>
+                                            <a class="btn btn-sm btn-info" href="javascript:;" onclick="admin_edit('战绩','{:U('clubRecord',array('friendsgroupid'=>$list['friendsgroupid']))}','2','1200','800')"  style="text-decoration:none">战绩</a>
+                                            <a class="btn btn-sm btn-success" href="javascript:;" onclick="admin_edit('统计','{:U('clubCount',array('friendsgroupid'=>$list['friendsgroupid']))}','2','1200','800')"  style="text-decoration:none">统计</a>
+                                            <a class="btn btn-sm btn-primary" href="javascript:;" onclick="admin_edit('提成','{:U('clubMoney',array('friendsgroupid'=>$list['friendsgroupid']))}','2','1200','800')"  style="text-decoration:none">提成</a>
+                                            <a class="btn btn-sm btn-primary" href="{:U('csv_data',array('friendsgroupid'=>$list['friendsgroupid']))}" style="text-decoration:none">战绩导出</a>
+                                        </td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/h-ui/edit.js"></script>
+    <script type="text/javascript">
+        //ajax post
+        function ajax_post(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var that = $(the);
+                var url = $(the).attr('action');
+                var cs = $(the).serialize();
+                $.ajax({
+                    url: url,
+                    data: cs,
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                parent.location.reload();
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+
+        //get方法ajax提交
+        function ajax_get(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var url = $(the).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                window.location.href = data.url;
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+        /*管理员-编辑*/
+        function admin_edit(title, url, id, w, h) {
+            layer_show(title, url, w, h);
+        }
+    </script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row"
+    <if condition="$user_operation eq 1"> style="width: 85%;float: left;
+        <else>
+            style="width: 100%;float: left;
+    </if>
+</div>
+<div class="col-sm-12">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h4>基本信息</h4>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped table-bordered table-hover">
+                <tr>
+                    <td>ID: {$user.userid}</td>
+                    <td>昵称: {$user.name}</td>
+                    <td>性别: {$user.sex_name}</td>                    
+                    <td>代理账号余额: {$user.agent_balance|default="0.00"}</td>
+                    <td>金币: {$user.money|default=0}</td>
+                </tr>
+                <tr>
+                    <td>用户类型:{$user.user_type_name}
+                    </td>
+                    <td>我的邀请码: {$user.agent_id|default="无"}</td>
+                    <td>名下代理数: {$user.agent_count|default="无"}</td>
+                    <td>绑定邀请码: {$user.bind_agent_id|default="无"}</td>
+                    <td>绑定代理ID: {$user.bind_agent_userid|default="无"}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">注册时间: {$user.registerTime|date='Y-m-d H:i:s',###}</td>
+                    <td>注册IP: {$user.registerIP|default="0.0.0.0"}</td>
+                    <td>最近登录时间: {$user.last_login_time|date="Y-m-d H:i:s",###}</td>
+                    <td>最近登录IP: {$user.logonIP|default="0.0.0.0"}</td>
+                </tr>
+                <tr>
+                    <td>最近充值金额: {$user.last_recharge_money|default="0.00"}</td>
+                    <td>在线状态: {$user.online_status_name}</td>
+                    <?php if (C('IS_SHOW_JEWELS')) { ?>
+                    <td>钻石: <?php echo $user['jewels'];?></td>
+                    <?php }?>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-sm-12">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h4>个人运营信息</h4>
+        </div>
+        <div class="panel-body">
+            <h3>充值统计</h3>
+            <table class="table table-striped table-bordered table-hover">
+                <tr>
+                    <td>充值总金额:{$user.recharge_money}
+                    </td>
+                    <td>最近充值金额: {$user.last_recharge_money}
+                    </td>
+                    <if condition="$user.last_recharge_time eq 0">
+                        <td>最近充值时间: 无</td>
+                        <else/>
+                        <td>最近充值时间: {$user.last_recharge_time|date='Y-m-d H:i:s',###}</td>
+                    </if>
+                </tr>
+            </table>
+        </div>
+        <div class="panel-body">
+            <h3>平台大厅统计</h3>
+            <table class="table table-striped table-bordered table-hover">
+                <tr>
+                    <td>累计登陆次数: {$user.login_count|default=0}</td>
+                    <td>累计签到次数: {$user.sign_count|default=0}</td>
+                    <td>累计抽奖次数: {$user.turntable_count|default=0}</td>
+                    <td>领取补助次数: {$user.support_count|default=0}</td>
+                </tr>
+                <tr>
+                    <td>发送世界广播次数: {$user.horn_count|default=0}</td>
+                    <td>分享次数: {$user.share_count|default=0}</td>
+                    <td>累计反馈次数: {$user.feedback_count|default=0}</td>
+                    <td>打赏好友次数: {$user.friend_reward_count|default=0}</td>
+                </tr>
+            </table>
+        </div>
+        <?php $is_show_jewels = C('IS_SHOW_JEWELS');?>
+        <div class="panel-body">
+            <h3>金币<?php if (C('IS_SHOW_JEWELS')) { ?>钻石<?php }?>统计</h3>
+            <table class="table table-striped table-bordered table-hover">
+                <tr>
+                    <td>累计签到获取金币数: {$user.sign_get_money|default=0}</td>
+                    <td>累计抽奖获取金币数: {$user.turntable_get_money|default=0}</td>
+                    <td>累计分享获取金币数: {$user.share_get_money|default=0}</td>
+                    <td>累计领取打赏金币数: {$user.friend_reward_get_money|default=0}</td>
+                </tr>
+                
+                <tr>
+                    <td>累计转赠金币数: {$user.give_cost_money|default=0}</td>
+                    <td>累计接收转赠金币数: {$user.give_get_money|default=0}</td>
+                    <td>累计领取补助金币数: {$user.support_get_money|default=0}</td>
+                    <if condition="1 == $is_show_jewels">
+                    <td>累计转赠钻石数: {$user.give_cost_jewels|default=0}</td>
+                    </if>
+                </tr>
+                <if condition="1 == $is_show_jewels">
+                <tr>
+                    <td>累计分享获取钻石数: {$user.share_get_jewels|default=0}</td>
+                    <td>累计签到获取钻石数: {$user.sign_get_jewels|default=0}</td>
+                    <td>累计抽奖获取钻石数: {$user.turntable_get_jewels|default=0}</td>
+                    <td>累计接收转赠钻石数: {$user.give_get_jewels|default=0}</td>
+                </tr>
+                </if>
+            </table>
+        </div>
+        <div class="panel-body">
+            <h3>游戏统计</h3>
+            <table class="table table-striped table-bordered table-hover">
+                <tr>
+                    <td>累计对局数量: {$user.all_count}</td>
+                    <td>累计胜局数: {$user.win_count}</td>
+                    <td>累计在线时长: {$user.all_online_time}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+<if condition="$user_operation eq 1">
+    <div class="row" style="width: 15%;float:right;margin-right: 5px;">
+        <div class="panel panel-success">
+            <div class="panel-heading" style="width: 100%;">
+                操作
+            </div>
+            <div class="panel-body">
+                <a class="btn btn-info btn-outline"
+                   onclick="admin_edit('充值','{:U('User/user_recharge',array('userid'=>$user['userid']))}','2','600','500')"
+                   style="text-decoration:none">充值</a><br><br>
+                <a class="btn btn-info btn-outline"
+                   onclick="admin_edit('提取','{:U('User/user_pos',array('userid'=>$user['userid']))}','2','600','500')"
+                   style="text-decoration:none">提取</a><br><br>
+
+                <if condition="($user['status'] & 1) eq 1">
+                    <a href="{:U('User/cancel_supper_user',array('userid'=>$user['userid']))}"
+                       onclick="return ajax_get(this)" class="btn btn-danger btn-outline">取消超端</a><br><br>
+                    <else/>
+                    <a href="{:U('User/set_supper_user',array('userid'=>$user['userid']))}"
+                       onclick="return ajax_get(this)" class="btn btn-info btn-outline">添加超端</a><br><br>
+                </if>
+
+                <a class="btn btn-info btn-outline"
+                   onclick="admin_edit('发送个人邮件','{:U('User/personal_send_email',array('userid'=>$user['userid']))}','2','600','500')"
+                   style="text-decoration:none">发送个人邮件</a><br><br>
+
+                <if condition="$user['bind_agent_id'] neq '无'">
+                    <a class="btn btn-danger btn-outline"
+                       href="{:U('User/remove_bind',array('userid'=>$user['userid']))}"
+                       onclick="return ajax_get(this)" style="text-decoration:none">解绑邀请码</a><br><br>
+                    <else/>
+                    <a class="btn btn-info btn-outline"
+                       onclick="admin_edit('绑定邀请码','{:U('User/bind_code',array('userid'=>$user['userid']))}','2','500','300')"
+                       style="text-decoration:none">绑定邀请码</a><br><br>
+                </if>
+
+                <a class="btn btn-info btn-outline"
+                   onclick="admin_edit('设置玩家身份','{:U('User/set_user_status',array('userID'=>$user['userid']))}','2','1100','700')"
+                   style="text-decoration:none">设置玩家身份</a><br><br>
+
+                <a class="btn btn-info btn-outline"
+                   onclick="admin_edit('金币变化记录','{:U('Operate/money_change_record',array('type'=>1, 'search' => $user['userid'], 'isHideNavbar' => $leftBar))}','2','1100','700')"
+                   style="text-decoration:none">金币变化记录</a><br><br>
+
+                <!--                <a class="btn btn-info btn-outline"
+                                   href="{:U('User/clearRoom',array('userid'=>$user['userid']))}"
+                                   onclick="return ajax_get(this)" style="text-decoration:none">离开房间</a><br><br>-->
+
+                <!--<a class="btn btn-info btn-outline"-->
+                <!--onclick="admin_edit('充值记录','{:U('User/personal_recharge_record',array('userid'=>$user['userid']))}','2','1100','700')"-->
+                <!--style="text-decoration:none">充值记录</a><br><br>-->
+
+                <!--<a class="btn btn-info btn-outline"-->
+                <!--onclick="admin_edit('金币变化记录','{:U('User/personal_money_change',array('userID'=>$user['userid']))}','2','1100','700')"-->
+                <!--style="text-decoration:none">金币变化日志</a><br><br>-->
+
+                <!--<a class="btn btn-info btn-outline"-->
+                <!--onclick="admin_edit('钻石变化记录','{:U('User/personal_jewels_change',array('userID'=>$user['userid']))}','2','1100','700')"-->
+                <!--style="text-decoration:none">钻石变化日志</a><br><br>-->
+
+                <!--<a class="btn btn-info btn-outline"-->
+                <!--onclick="admin_edit('个人对局游戏记录','{:U('User/personal_game_record',array('userID'=>$user['userid']))}','2','1100','700')"-->
+                <!--style="text-decoration:none">个人对局游戏记录</a><br><br>-->
+
+
+                <!--<a class="btn btn-info btn-outline"-->
+                <!--onclick="admin_edit('个人钻石游戏记录','{:U('User/personal_game_jewsels_record',array('userID'=>$user['userid']))}','2','1100','700')"-->
+                <!--style="text-decoration:none">个人钻石游戏记录</a><br><br>-->
+
+                <!--<a class="btn btn-info btn-outline"-->
+                <!--onclick="admin_edit('签到记录','{:U('User/personal_sign_record',array('userID'=>$user['userid']))}','2','1100','700')"-->
+                <!--style="text-decoration:none">签到记录</a><br><br>-->
+
+                <!--<a class="btn btn-info btn-outline"-->
+                <!--onclick="admin_edit('抽奖记录','{:U('User/personal_turntable_record',array('userID'=>$user['userid']))}','2','1100','700')"-->
+                <!--style="text-decoration:none">抽奖记录</a><br><br>-->
+
+                <!--<a class="btn btn-info btn-outline"-->
+                <!--onclick="admin_edit('分享记录','{:U('User/personal_share_record',array('userID'=>$user['userid']))}','2','1100','700')"-->
+                <!--style="text-decoration:none">分享记录</a><br><br>-->
+
+                <!--<a class="btn btn-info btn-outline"-->
+                <!--onclick="admin_edit('转赠记录','{:U('User/personal_given_record',array('userID'=>$user['userid']))}','2','1100','700')"-->
+                <!--style="text-decoration:none">转赠记录</a><br><br>-->
+
+                <!--<a class="btn btn-info btn-outline"-->
+                <!--onclick="admin_edit('银行操作记录','{:U('User/personal_bank_record',array('userID'=>$user['userid']))}','2','1100','700')"-->
+                <!--style="text-decoration:none">银行操作记录</a><br><br>-->
+
+                <!--<a class="btn btn-info btn-outline"-->
+                <!--onclick="admin_edit('世界广播记录','{:U('User/personal_radio_record',array('userID'=>$user['userid']))}','2','1100','700')"-->
+                <!--style="text-decoration:none">世界广播记录</a><br><br>-->
+
+                <!--<a class="btn btn-info btn-outline"-->
+                <!--onclick="admin_edit('登录记录','{:U('User/personal_login_record',array('userID'=>$user['userid']))}','2','1100','700')"-->
+                <!--style="text-decoration:none">登录记录</a><br><br>-->
+                <!--<if condition="$user.agent_id neq '无'">-->
+                <!--<a class="btn btn-info btn-outline"-->
+                <!--onclick="admin_edit('代理信息','{:U('User/agentinfo',array('userID'=>$user['userid']))}','2','1100','700')"-->
+                <!--style="text-decoration:none">代理信息</a><br><br>-->
+                <!--</if>-->
+                <!--<if condition="$user.agent_id neq '无'">-->
+                <!--<a class="btn btn-info btn-outline"-->
+                <!--onclick="admin_edit('代理收入明细','{:U('User/bill_detail',array('userID'=>$user['userid']))}','2','1100','700')"-->
+                <!--style="text-decoration:none">代理收入明细</a><br><br>-->
+                <!--</if>-->
+            </div>
+        </div>
+    </div>
+</if>
+</div>
+</div>
+</div>
+
+</body>
+</html>

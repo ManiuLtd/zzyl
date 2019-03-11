@@ -1,0 +1,245 @@
+<extend name="Public/base"/>
+<block name="body">
+<style>
+    .t1{margin-left: -17px;}
+    .t2{margin-left: -130px;}
+    .t8{margin-left: -80px;}
+    .t4{margin-left: -120px;}
+    /*.t5{margin-left: -170px;}*/
+    .t6{margin-left: -155px;}
+    /*.t7{margin-left: -150px;}*/
+    /*.t8{margin-left: -120px;}*/
+    @media (max-width: 768px){
+        .top-menu{margin-left: 0px;}
+        .t7{margin-top: 5px;}
+    }
+</style>
+	<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>金币变化日志</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                            <div class="col-sm-5 m-b-xs" style="width: 200px;">
+                                <select class="input-sm form-control input-s-sm inline" name="type">
+                                    <option value="0">请选择</option>
+                                    <option value="1">用户ID</option>
+                                    <option value="2">用户名</option>
+                                    <option value="3">昵称</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3 top-menu t1" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control" name="search"> <span class="input-group-btn">
+                                  
+                                </div>
+                            </div>
+			    <div class="col-sm-3 top-menu t2" style="width: 200px;">
+                                <div class="input-group">
+                                    变化原因
+                                </div>
+                            </div>
+                           <div class="col-sm-5 top-menu t8" style="width: 200px;">
+                                <select class="input-sm form-control input-s-sm inline" name="type2">
+                                    <option value="0">请选择</option>
+                                    <option value="1">银行存钱</option>
+                                    <option value="2">银行取钱</option>
+                                    <option value="3">转赠消耗</option>
+                                    <option value="4">转赠获得</option>
+                                    <option value="5">领取补助</option>
+                                    <option value="6">平台签到</option>
+                                    <option value="7">平台充值</option>
+                                    <option value="8">平台提现</option>
+                                    <option value="9">平台转盘</option>
+                                    <option value="10">平台分享</option>
+                                    <option value="11">砸金蛋消耗</option>
+                                    <option value="12">砸金蛋获得</option>
+                                    <option value="13">平台代理</option>
+                                    <option value="14">游戏结束</option>
+                                    <option value="15">魔法表情消耗</option>
+                                    <option value="16">开局消耗</option>
+                                    <option value="17">好友打赏</option>
+				                    <option value="18">游戏大结算</option>
+                                    <option value="19">游戏AA支付</option>
+                                    <option value="20">发送世界广播</option>
+                                    <option value="21">平台提现返还</option>
+                                    <option value="22">注册</option>
+                                    <option value="23">机器人取钱</option>
+                                    <option value="24">猜拳游戏转增</option>
+                                    <option value="25">好友邀请</option>
+                                    <option value="26">创建房间消耗</option>
+                                    <option value="27">大结算没有生成战绩返还</option>
+                                    <option value="28">系统更新</option>
+                                    <option value="29">绑定手机和微信号</option>
+                                    <option value="30">领取邮件</option>
+                                    <option value="31">代理提成</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3 top-menu t3" style="width: 200px;">
+                                <div class="input-group">
+                                    变化时间
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t4" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker1" name="start">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t5" style="width: 200px;">
+                                <div class="input-group">
+                                    至
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t6" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker2" name="stop">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t7" style="width: 200px;">
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>用户ID</th>
+                                        <th>用户名</th>
+                                        <th>昵称</th>
+                                        <th>变化前金币</th>
+                                        <th>变化金币</th>
+					<th>变化后金币</th>
+                                        <th>原因</th>
+                                        <th>所在房间</th>
+                                        <th>时间</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td><a  onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')"  style="text-decoration:none"><font color="#1AB394">{$_data.userid}</font></a></td>
+                                        <td><a  onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')"  style="text-decoration:none"><font color="#1AB394">{$_data.account}</font></a></td>
+                                        <td><a  onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')"  style="text-decoration:none"><font color="#1AB394">{$_data.name}</font></a></td>
+                                        <td>{$_data['money'] - $_data['changemoney']}</td>
+                                        <td>{$_data.changemoney}</td>
+					<td>{$_data.money}</td>
+                                        <td>
+                                            <?php 
+                                                switch($_data['reason']){
+                                                    case 1:
+                                                    echo "银行存钱";
+                                                    break;
+                                                    case 2:
+                                                    echo "银行取钱";
+                                                    break;
+                                                    case 3:
+                                                    echo "转赠消耗";
+                                                    break;
+                                                    case 4:
+                                                    echo "转赠获得";
+                                                    break;
+                                                    case 5:
+                                                    echo "领取补助";
+                                                    break;
+                                                    case 6:
+                                                    echo "签到获取";
+                                                    break;
+                                                    case 7:
+                                                    echo "平台充值";
+                                                    break;
+                                                    case 8:
+                                                    echo "平台提现";
+                                                    break;
+                                                    case 9:
+                                                    echo "大转盘";
+                                                    break;
+                                                    case 10:
+                                                    echo "平台分享";
+                                                    break;
+                                                    case 11:
+                                                    echo "砸金蛋消耗";
+                                                    break;
+                                                    case 12:
+                                                    echo "砸金蛋获得";
+                                                    break;
+                                                    case 13:
+                                                    echo "绑定邀请码";
+                                                    break;
+                                                    case 14:
+                                                    echo "游戏输赢";
+                                                    break;
+                                                    case 15:
+                                                    echo "魔法表情消耗";
+                                                    break;
+                                                    case 16:
+                                                    echo "开局消耗";
+                                                    break;
+                                                    case 17:
+                                                    echo "好友打赏";
+                                                    break;
+                                                    case 18:
+                                                    echo "游戏大结算";
+                                                    break;
+                                                    case 19:
+                                                    echo "游戏大结算AA支付";
+                                                    break;
+                                                    case 20:
+                                                    echo "发送世界广播";
+                                                    break;
+                                                    case 21:
+                                                    echo "平台提现返还";
+                                                    break;
+                                                    case 22:
+                                                    echo "注册";
+                                                    break;
+                                                    case 23:
+                                                    echo "机器人取钱";
+                                                    break;
+                                                    case 24:
+                                                    echo "猜拳游戏转增";
+                                                    break;
+                                                    case 25:
+                                                    echo "好友邀请";
+                                                    break;
+                                                    case 26:
+                                                    echo "创建房间消耗";
+                                                    break;
+                                                    case 27:
+                                                    echo "大结算没有生成战绩返还";
+                                                    break;
+                                                    case 28:
+                                                    echo "系统更新";
+                                                    break;
+                                                    case 29:
+                                                    echo "绑定手机和微信号";
+                                                    break;
+                                                    case 30:
+                                                    echo "领取邮件";
+                                                    break;
+                                                    case 31:
+                                                    echo "代理提成";
+                                                    break;
+                                                }
+                                            ?>
+                                        </td>
+                                        <td><if condition="($_data.rname eq '')">游戏大厅<else/>{$_data.rname}</if></td>
+                                        <td>{$_data.time|date="Y-m-d H:i:s",###}</td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

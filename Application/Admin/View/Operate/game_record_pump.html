@@ -1,0 +1,55 @@
+<extend name="Public/base"/>
+<block name="body">
+
+	<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>游戏抽水统计</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <div class="col-sm-3" style="width:100px;margin-left:0px;">
+                                <div class="input-group">
+                                   <if condition="($_GET.type eq '')">
+                                   <a href="{:U('',array('type'=>1))}" class="btn btn-sm btn-info" >今天抽水</a>
+                                   <else/>
+                                   <a href="{:U('')}" class="btn btn-sm btn-success" >所有游戏抽水</a>
+                                   </if>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>游戏名称</th>
+                                        <th>一级代理抽水</th>
+                                        <th>二级代理抽水</th>
+                                        <th>三级代理抽水</th>
+                                        <th>平台抽水</th>
+                                        <th>总抽水</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="game" id="game">
+                                    <tr>
+                                        <td>{$game.name}</td>
+                                        <td>{$game.pump.pump1|leavetwo=###}</td>
+                                        <td>{$game.pump.pump2|leavetwo=###}</td>
+                                        <td>{$game.pump.pump3|leavetwo=###}</td>
+                                        <td>{$game.pump.platform_pump|leavetwo=###}</td>
+                                        <td>{$game.pump.pump_money|leavetwo=###}</td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

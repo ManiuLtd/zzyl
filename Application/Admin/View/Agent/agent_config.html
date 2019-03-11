@@ -1,0 +1,37 @@
+<extend name="Public/base"/>
+<block name="body">
+       <style>
+
+        #box{width:100%;}
+        .b{width: 35%;margin: 50px auto;}
+        @media (max-width: 768px){
+          /*.panel-body{border:2px solid red;}*/
+          #box{width: 800px;}
+          .b{width: 60%;}
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" id="box">
+        <div class="row" >
+                <div class="col-sm-12">  
+                    <div class="b"> 
+                    <form action="{:U('')}" method="post" onsubmit="return ajax_post(this);">           
+                    <volist name="config" id="config"> 
+                     <if condition="$config['key']=='agent_notice'">
+                         <font size="3">{$config._desc}:</font>
+                         <input type="text" id="{$config.key}" name="{$config.key}" class="form-control" value="{$config.value}" style="width:400px;display: inline;float: right;"><br><br> <br>
+
+                         <else/>
+                         <font size="3">{$config._desc}:</font>
+                         <input type="number" id="{$config.key}" name="{$config.key}" class="form-control" value="{$config.value}" style="width:70px;display: inline;float: right;"><br><br> <br>
+
+                     </if>
+
+
+                    </volist>
+                    <button type="submit" class="btn btn-success btn-outline">确认修改</button>
+                    </form>
+                    </div>
+                </div>
+            </div>
+    </div>
+</block>

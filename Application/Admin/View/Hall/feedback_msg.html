@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/admin/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/admin/js/hplus.js?v=4.1.0"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/contabs.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/h-ui/edit.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/pace/pace.min.js"></script>
+    <script src="__PUBLIC__/datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"
+            type="text/javascript"></script>
+    <script type="text/javascript">
+        //ajax post
+        function ajax_post(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var that = $(the);
+                var url = $(the).attr('action');
+                var cs = $(the).serialize();
+                $.ajax({
+                    url: url,
+                    data: cs,
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                parent.location.reload();
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+
+        //get方法ajax提交
+        function ajax_get(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var url = $(the).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                parent.location.reload();
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+        /*管理员-编辑*/
+        function admin_edit(title, url, id, w, h) {
+            layer_show(title, url, w, h);
+        }
+    </script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row" style="width: 100%;">
+        <div class="col-sm-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h4>反馈详情</h4>
+                </div>
+                <div class="panel-body">
+                    <div style="width: 80%;margin:20px auto;">
+                        <span style="background:green;border-radius:5px;color:white;">用户反馈消息</span>
+                        <div style="border-radius:10px;border:1px green solid;padding:10px 10px;">
+                            <font size="4">
+                                用户ID:&emsp;<font color="green">{$f.userID}</font>&emsp;&emsp;用户名:&emsp;<font
+                                    color="green">{$f.username}</font><br>
+                                反馈时间：&emsp;<font color="green">{$f.f_time|date="Y-m-d H:i:s",###}</font><br>
+                                反馈内容:&emsp;<font color="green">{$f.content}</font><br>
+                            </font>
+                        </div>
+                        <br>
+                        <br>
+                        <span style="background:#DD514C;border-radius:5px;color:white;">反馈消息回复</span>
+                        <div style="border-radius:10px;border:1px #DD514C solid;padding:10px 10px;">
+                            <font size="4">
+                                <volist name="msg" id="msg">
+                                    <p>
+                                        <if condition="($msg.c_type eq 1)">系统：
+                                            <elseif condition="($msg.c_type eq 2)"/>
+                                            用户：
+                                        </if>
+                                        {$msg.c_content}<span style="float: right;">回复时间：{$msg.c_time|date="Y-m-d H:i:s",###}</span>
+                                    </p>
+                                </volist>
+                            </font>
+                        </div>
+                        <br>
+                        <div>
+                            <if condition="($f.read_type neq 3)">
+                                <button class="btn btn-success radius" style="width:45%;"
+                                        onclick="admin_edit('内容回复','{:U('feedback_callback',array('id'=>$f['id']))}','4','','510')"
+                                        style="text-decoration:none">回复用户
+                                </button> &emsp;&emsp;<a href="{:U('feedback_over',array('id'=>$f['id']))}"
+                                                         class="btn btn-danger radius" style="width:45%;"
+                                                         onclick="return ajax_get(this)">结束反馈</a>
+                            </if>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+</body>
+</html>

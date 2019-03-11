@@ -1,0 +1,185 @@
+<extend name="Public/base" />
+<block name="body">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="col-sm-12">
+            <div class="tabs-container">
+                <div class="tabs-left">
+                    <ul class="nav nav-tabs">
+                        <volist name="tab" id="tab" key="i">
+                            <li <if condition="$i eq 1"> class="active" </if> ><a class="len" data-toggle="tab" href="#tab-{$i}"> 图文{:newsNum($i)}</a>
+                        </li>
+                        </volist>
+                    </ul>
+                    <div class="tab-content ">
+                        <volist name="data" id="data" key="i">
+                        <div id="tab-{$i}" class="tab-pane <if condition='$i eq 1'> active </if>">
+                            <form method="post" class="form-horizontal item-{$i}">
+                            <div class="panel-body">
+                                <div class="wrapper wrapper-content animated fadeInRight">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="ibox float-e-margins">
+                                                <div class="ibox-content">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">标题{$i}</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" name="title" placeholder="请输入标题" value="{$data.title}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">作者</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" name="author" placeholder="请输入作者昵称" value="{$data.author}">
+                                                            </div>
+                                                        </div>
+                                                        <!-- 视频 -->
+                                                        <div class="form-group video">
+                                                            <label class="col-sm-2 control-label">图文摘要</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" name="digest" value="{$data.digest}" placeholder="图文消息的摘要，仅有单图文消息才有摘要，多图文此处为空">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group video">
+                                                            <label class="col-sm-2 control-label">来源url</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" name="source_url" value="{$data.source_url}" placeholder="图文消息的原文地址，即点击“阅读原文”后的URL">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group video">
+                                                            <label class="col-sm-2 control-label">封面图片</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control t{$i}" name="thumb_media_id" value="{$data.thumb_media_id}" placeholder="请输入封面图片mediaID">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group video">
+                                                            <label class="col-sm-2 control-label">上传封面图片</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="file" name="img" id="test{$i}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group img t music video">
+                                                            <label class="col-sm-2 control-label">是否显示封面</label>
+                                                            <div class="col-sm-10">
+                                                                <select name="show_cover" class="form-control" id="">
+                                                                    <option value="1" <if condition="$data['show_cover'] eq 1"> selected </if> >显示</option>
+                                                                    <option value="0" <if condition="$data['show_cover'] eq 0"> selected </if> >不显示</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group img t music video">
+                                                            <label class="col-sm-2 control-label">是否打开评论</label>
+                                                            <div class="col-sm-10">
+                                                                <select name="need_open_comment" class="form-control" id="">
+                                                                    <option value="1" <if condition="$data['need_open_comment'] eq 1"> selected </if> >是</option>
+                                                                    <option value="0" <if condition="$data['need_open_comment'] eq 0"> selected </if> >否</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group img t music video">
+                                                            <label class="col-sm-2 control-label">是否粉丝才可评论</label>
+                                                            <div class="col-sm-10">
+                                                                <select name="only_fans_can_comment"  class="form-control" id="">
+                                                                    <option value="1" <if condition="$data['only_fans_can_comment'] eq 1"> selected </if> >粉丝</option>
+                                                                    <option value="0" <if condition="$data['only_fans_can_comment'] eq 1"> selected </if> >所有人</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group video">
+                                                            <label class="col-sm-2 control-label">内容</label>
+                                                            <div class="col-sm-10">
+                                                                <script id="container{$i}" style="height: 400px" name="content" type="text/plain">{$data.content|html_entity_decode}</script>
+                                                            </div>
+                                                        </div>
+                                                        <div class="hr-line-dashed"></div>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-4 col-sm-offset-2">
+                                                                <input type="hidden" name="id" value="{$data.id}">
+                                                                <button class="btn btn-primary" onclick="postData()" type="button">保存并提交</button>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </volist>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/layui/layui.js"></script>
+
+    <script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ueditor/lang/zh-cn/zh-cn.js"></script>
+    
+    <script>
+
+        // 接收数据
+        function postData(){
+            // alert(1)
+            var dataJson = [];
+            // $('.item').each(function(index, element) {
+            //     dataJson.push($(this).serializeArray());
+            // });
+
+            for(i=1;i<={$len};i++){
+               dataJson.push($('.item-'+i).serializeArray());
+            }
+
+            $.post('{:U("newsUpdate")}',{'data':JSON.stringify(dataJson)},function(data){
+                if(data.status){
+                    layer.msg('更新成功')
+                    setTimeout(function(){
+                        window.location.href=data.url
+                    },1200)
+                } else {
+                    layer.msg(data.info)
+                }
+            })
+        }
+
+        for(var i=1;i<={$len};i++){
+            console.log(i)
+            var ue = UE.getEditor('container'+i);
+        }
+         
+        
+        
+
+        layui.use('upload', function(){
+          var $ = layui.jquery
+          ,upload = layui.upload;
+            
+        for(var i=1;i<={$len};i++){
+          //普通图片上传
+          var uploadInst = upload.render({
+            elem: '#test'+i
+            ,url: '{:U("Wechat/uploads2",array("materialUplaods"=>1,"type"=>"thumb","t"=>1))}'
+            ,done: function(res){
+                if(res.status == 0){
+                    layer.msg('上传失败')
+                } else {
+                    layer.msg('上传成功')
+                    $('.t'+i).val(res.data)
+                }
+            }
+        })
+      }
+
+
+
+
+      })
+
+    </script>
+   
+
+
+
+</block>

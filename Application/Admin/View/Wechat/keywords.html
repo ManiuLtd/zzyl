@@ -1,0 +1,70 @@
+<extend name="Public/base"/>
+<block name="body">
+
+	<div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>关键字管理</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <div class="col-sm-3" style="width:100px;">
+                                <div class="input-group">
+                                   <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('添加关键字','{:U('keywordsAdd')}','2','800','600')"  style="text-decoration:none"> 添加关键字</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+
+                                        <!-- <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Adminmenu"></th> -->
+                                        <th>id</th>
+                                        <th>关键字</th>
+                                        <th>回复类型</th>
+                                        <th>添加时间</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="list">
+                                    <tr>
+                                        <!-- <td>
+                                            <input type="checkbox" value="{$_data.id}" name="id[]">
+                                        </td> -->
+                                        <td>{$list.id}</td>
+                                        <td>{$list.keywords}</td>
+                                        <td>{:applosType($list['type'])}</td>
+                                        <td>{$list.addtime|date='Y-m-d H:i:s',###}</td>
+                                        <td>
+                                        	<if condition="($list.status eq 0)">
+                                        		<font color="red">已禁用</font>
+                                        	<elseif condition="($list.status eq 1)"/>
+                                        		<font color="green">正常</font>
+                                        	</if>
+                                        </td>
+                                        <td>
+                                        	<a class="btn btn-outline btn-info  dim " href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('编辑','{:U('keywordsUpdate',array('id'=>$list['id']))}','2','800','500')" class="ml-5" style="text-decoration:none">编辑</a>
+                                        	<a href="{:U('keywordsDel',array('id'=>$list['id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim ">删除</a>
+                                            <if condition="($list.status eq 1)"> 
+                                                <a title="禁用" href="{:U('keywordsStatus',array('id'=>$list['id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-warning  dim ">禁用</a>
+                                            <else />
+                                                <a title="解禁" href="{:U('keywordsStatus',array('id'=>$_data['id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-info  dim ">启用</a>
+                                            </if>
+                                        </td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

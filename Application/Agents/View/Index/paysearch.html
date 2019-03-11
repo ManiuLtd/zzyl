@@ -1,0 +1,100 @@
+<include file="Public/base"/>
+        <div class="search-wrap">
+                  <div class="tab-container">
+                <div class="tab-nav">
+                    <a href="" class="on">账单清单</a>
+                </div>
+            </div>
+                                    <div class="search-condition">
+            <form method="get" id="form1">
+                <div class="time">
+                    <div class="start">
+                        <i>开始时间</i>
+                        <input type="date" name="start" id="sdate" onchange="checkSdata(this,'2018-05-01')">
+                    </div>
+                    <span class="line">-</span>
+                    <div class="end">
+                        <i>结束时间</i>
+                        <input type="date" name="end" id="edate" onchange="checkSdata(this,'2018-05-01')">
+                    </div>
+                                                            <div class="end" style="padding-left:10px">
+                                            <i>会员ID</i>
+                        <input type="text" style=" border: 1px solid #ccc; border-radius: 0.1rem; height: 0.7rem; line-height: 0.78rem; padding-left: 0.2rem; width:70px;" name="search" id="user_id" value="">
+                    </div>
+                    <br/>
+                        <button  class="btn-search" type="submit" style="top:36px">搜索</button>  
+                </div>
+            </form>
+
+                <div class="item">
+                     <div class="table-responsive">
+      <table class="table table-bordered" style="width: 100%">
+        <thead>
+          <tr>
+            <th colspan="9">基本信息</th>
+            <th colspan="2">直属销售</th>
+            <th colspan="2">非直属销售</th>
+          </tr>
+          <tr>
+            <th>代理账号</th>
+            <th>代理等级</th>
+            <th>操作前余额</th>
+            <th>操作金额</th>
+            <th>操作后余额</th>
+            <th>描述</th>
+            <th>时间</th>
+            <th>行为者ID</th>
+            <th>行为者昵称</th>
+            <th>总额</th>
+            <th>提成</th>
+            <th>总额</th>
+            <th>提成</th>
+          </tr>
+        </thead>
+        <tbody>
+        <volist name="_data" id="_data">
+          <tr>
+            <th scope="row">{$_data.username}</th>
+            <td>
+              <if condition="($_data.agent_level eq 1)">
+              一级代理
+              <elseif condition="($_data.agent_level eq 2)"/>
+              二级代理
+              <elseif condition="($_data.agent_level eq 3)"/>
+              三级代理
+              </if>
+            </td>  
+            <td>{$_data.front_balance}</td>
+            <td>{$_data.handle_money}</td>
+            <td>{$_data.after_balance}</td>
+            <td>{$_data._desc}</td>
+            <td>{$_data.make_time|date="Y-m-d H:i:s",###}</td>
+            <td>{$_data.make_userid}</td>
+            <td>{$_data.make_name}</td>
+            <td>{$_data.amount}</td>
+            <td>{$_data.commission}</td>
+            <td>{$_data.under_amount}</td>
+            <td>{$_data.under_commission}</td>
+          </tr>
+          </volist>
+        </tbody>
+      </table>
+    </div><!-- /.table-responsive -->
+                   
+{$_page}
+                                </div>
+            </div>
+        </div>
+
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台</span></p>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+</body></html>

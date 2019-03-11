@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/h-ui/edit.js"></script>
+    <script src="__PUBLIC__/datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"
+            type="text/javascript"></script>
+    <link href="__PUBLIC__/datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css"/>
+    <link href="__PUBLIC__/page/page.css" rel="stylesheet" type="text/css"/>
+
+    <script type="text/javascript">
+        //ajax post
+        function ajax_post(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var that = $(the);
+                var url = $(the).attr('action');
+                var cs = $(the).serialize();
+                $.ajax({
+                    url: url,
+                    data: cs,
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                parent.location.reload();
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+
+        //get方法ajax提交
+        function ajax_get(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var url = $(the).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                window.location.href = data.url;
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+        /*管理员-编辑*/
+        function admin_edit(title, url, id, w, h) {
+            layer_show(title, url, w, h);
+        }
+    </script>
+    <style>
+        .count {
+            border: 1px solid #ccc;
+            padding-top: 20px;
+        }
+
+        .count p {
+            text-indent: 20px;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>俱乐部战绩</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row" style="width:100%;line-height: 30px;">
+                        <form action="{:U()}" method="get">
+                            <div class="col-sm-3 top-menu t3" style="width: 132px;">
+                                <div class="input-group">
+                                    <select name="roomType" id="" class="form-control">
+                                        <option value="0">所有房</option>
+                                        <if condition="C('IS_SHOW_NOTHING')">
+                                        <option value="2"
+                                        <if condition="$roomType eq 2">selected</if>
+                                        >金币房</option>
+                                        <option value="1"
+                                        <if condition="$roomType eq 1">selected</if>
+                                        >积分房</option>
+                                        </if>
+                                        <option value="3"
+                                        <if condition="$roomType eq 3">selected</if>
+                                        >VIP房</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t2" style="width:100px;">
+                                <div class="input-group">
+                                    开始时间
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t3" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control" id="datetimepicker1" name="start"
+                                           value="{$start|date='Y-m-d H:i',###}">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t4" style="width:50px;">
+                                <div class="input-group">
+                                    至
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t5" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control" id="datetimepicker2" name="stop"
+                                           value="{$stop|date='Y-m-d H:i',###}">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t6" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="hidden" name="friendsGroupID" value="{$friendsGroupID}">
+                                    <button type="submit" class="btn btn-sm btn-primary"> 搜索</button>
+                                    </span>
+                                    &nbsp;&nbsp; <a target="_blank"
+                                                    href="{:U('csv_data',array('friendsGroupID'=>$friendsGroupID,'start'=>$start,'stop'=>$stop))}"
+                                                    class="btn btn-sm btn-primary"> 导出</a> </span>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="table-responsive">
+                        <div class="tabs-container">
+                            <!-- 选项卡 -->
+                            <ul class="nav nav-tabs count">
+                                <if condition="C('IS_SHOW_NOTHING')">
+                                <p>总对战次数:{$count.total|default=0} </p>
+                                <p>积分对战次数:{$count.score|default=0}</p>
+                                <p>金币对战次数:{$count.money|default=0} | 总收取金币:{$count.moneyPumpCount|default=0}</p>
+                                </if>
+                                <p>VIP对战次数:{$count.vip|default=0} | 总收取火币:{$count.vipPumpCount|default=0}</p>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="tab-1" class="tab-pane active">
+                                    <div class="panel-body">
+                                        <div class="col-lg-12">
+                                        </div>
+
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th class="column-title">房间号</th>
+                                                <th class="column-title">时间</th>
+                                                <th class="column-title">房间类型</th>
+                                                <th class="column-title">游戏类型</th>
+                                                <th class="column-title">人数</th>
+                                                <th class="column-title">局数</th>
+                                                <th class="column-title">参与用户</th>
+                                                <th class="column-title">抽水方式</th>
+                                                <th class="column-title">服务费</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <volist name="recordList" id="recordList">
+                                                <tr>
+                                                    <td>{$recordList.passwd}</td>
+                                                    <td>{$recordList.time|date='Y-m-d H:i:s',###}</td>
+                                                    <td>
+                                                        <switch name="recordList.roomtype">
+                                                            <case value="1">积分房</case>
+                                                            <case value="2">金币房</case>
+                                                            <case value="3">VIP房</case>
+                                                            <default/>
+                                                            金币场
+                                                        </switch>
+                                                    </td>
+                                                    <td>{$recordList.name}</td>
+                                                    <td>{$recordList.user_count}</td>
+                                                    <td>{$recordList.realplaycount}/{$recordList.playcount}</td>
+                                                    <td>{$recordList.user}</td>
+                                                    <td>{$recordList.pumptype}</td>
+                                                    <td>
+                                                        <switch name="recordList.roomtiptype">
+                                                            <case value="0">无</case>
+                                                            <default/>
+                                                            {$recordList.pump_money|default=0}
+                                                        </switch>
+                                                    </td>
+                                                </tr>
+                                            </volist>
+                                            </tbody>
+                                        </table>
+                                        {$recordPage}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+    $('#datetimepicker1').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii'
+    });
+    $('#datetimepicker2').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii'
+    });
+    $('.chkall').click(function () {
+        $('input[name="id[]"]').prop('checked', $(this).is(':checked'));
+    });
+</script>
+</html>

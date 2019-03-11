@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/layui/css/layui.css" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/layui/layui.js"></script>
+
+    <script type="text/javascript">
+        //ajax post
+        function ajax_post(the) {
+            var that = $(the);
+            var url = $(the).attr('action');
+            var cs = $(the).serialize();
+            $.ajax({
+                url: url,
+                data: cs,
+                type: 'POST',
+                beforeSend: function () {
+                    showload();
+                },
+                success: function (data) {
+                    if(data.status==1){
+                        layer.msg(data.info, {icon: 1});
+                        var timer = setInterval(function(){
+                            clearInterval(timer);
+                            window.location.href=data.url;
+                        },2000);
+                    }else{
+                        error(data)
+                    }
+                }
+            });
+            return false;
+        }
+        function error(data){
+            layer.msg(data.info, {icon: 2});
+            layer.close(l);
+            $("#b").attr('disabled',false)
+        }
+
+        function showload(){
+            $("#b").attr('disabled',true)
+            l = layer.load();
+        }
+
+        function hideload(){
+            layer.close(l);
+            $("#b").attr('disabled',false)
+            layer.msg('添加成功', {icon: 1});
+            var timer = setInterval(function(){
+                clearInterval(timer);
+                parent.location.reload();
+            },2000);
+
+        }
+
+    </script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>添加配置信息</h5>
+                </div>
+                <div class="ibox-content">
+                    <form method="post" class="form-horizontal" action="{:U('',['cation'=>'add'])}" onsubmit="return ajax_post(this);">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">支付类型</label>
+                            <!-- <div class="col-sm-10" id="input1">
+                                <input type="text" style="width:50%;float: left;" class="form-control" name="type"
+                                       placeholder="请输入支付类型" id="type">
+                            </div> -->
+                            <div>                                
+                                <select name="type">
+                                    <option value="0">请选择</option>
+                                    <volist name="payTypeList" id="pay">
+                                        <option value="{$pay.type}" <if condition="($config['type'] eq $pay['type'])"> selected</if> >{$pay.typeName}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">名字</label>
+                            <div class="col-sm-10" id="input2">
+                                <input type="text" style="width:50%;float: left;" class="form-control" name="name"
+                                       placeholder="备注" id="name"> 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">回调服务器公钥</label>
+                            <div class="col-sm-10" id="input2">
+                                <input type="text" style="width:50%;float: left;" class="form-control" name="callback_server_PK"
+                                       placeholder="如：支付宝公钥" id="callback_server_PK">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">合作伙伴身份</label>
+                            <div class="col-sm-10" id="input2">
+                                <input type="text" style="width:50%;float: left;" class="form-control" name="parnetID"
+                                       placeholder="如：支付宝账号id" id="parnetID">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">应用ID</label>
+                            <div class="col-sm-10" id="input3">
+                                <input type="text" style="width:50%;float: left;" class="form-control"
+                                       name="app_id" placeholder="app_id" id="app_id">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商户ID</label>
+                            <div class="col-sm-10" id="input9">
+                                <input type="text" style="width:50%;float: left;" class="form-control"
+                                       name="mch_id" placeholder="mch_id" id="mch_id">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">私钥</label>
+                            <div class="col-sm-10" id="input4">
+                                <input type="text" style="width:50%;float: left;" class="form-control" name="private_key"
+                                       placeholder="请输入私钥" id="private_key">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">公钥</label>
+                            <div class="col-sm-10" id="input5">
+                                <input type="text" style="width:50%;float: left;" class="form-control" name="public_key"
+                                       placeholder="请输入公钥" id="public_key">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">回调地址</label>
+                            <div class="col-sm-10" id="input6">
+                                <input type="text" style="width:50%;float: left;" class="form-control" name="notify_url"
+                                       placeholder="请输入回调地址" id="notify_url">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">成功返回页面</label>
+                            <div class="col-sm-10" id="input7">
+                                <input type="text" style="width:50%;float: left;" class="form-control" name="return_url"
+                                       placeholder="请输入成功返回页面" id="return_url">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">版本</label>
+                            <div class="col-sm-10" id="input8">
+                                <input type="text" style="width:50%;float: left;" class="form-control" name="version"
+                                       placeholder="版本" id="version">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">是否是第三方</label>
+                            <div class="col-sm-10">
+                                <select class="form-control m-b" name="third" style="width:50%;float: left;">
+                                    <option value="0">否</option>
+                                    <option value="1">是</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">状态</label>
+                            <div class="col-sm-10">
+                                <select class="form-control m-b" name="status" style="width:50%;float: left;">
+                                    <option value="0">禁止</option>
+                                    <option value="1">开启</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button id="b" class="btn btn-primary" type="submit">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+<!-- 自定义js -->
+<script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+<!-- iCheck -->
+<script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+<script type="text/javascript">
+    // 上传图片
+    layui.use('upload', function(){
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            ,url: "{:U('api/upload_img',['path'=>goods])}" //上传接口
+            ,done: function(res){
+                //上传完毕回调
+                var id = this.item.attr('id');
+                $("#"+id).parent('.input-group-btn').parent('.input-group').parent('.form-group').find('.imgs').html('<img src="'+res.url+'" width="40" data-toggle="popover-img" title="" data-content="<img src='+res.url+' width=\'100%\'/>" />');
+                $("#"+id).parent('.input-group-btn').parent('.input-group').parent('.form-group').find(".form-control").val(res.url);
+
+                $('[data-toggle="popover-img"]').popover({
+                    'html': true,
+                    'placement': 'right',
+                    'trigger': 'hover'
+                });
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<extend name="Public/base"/>
+<block name="body">
+
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>用户ID</th>
+                                    <th>用户昵称</th>
+                                    <th>用户名</th>
+                                    <th>性别</th>
+                                    <th>钻石</th>
+                                    <th>金币</th>
+                                    <th>银行金币</th>
+                                    <th>充值金额</th>
+                                    <th>账号类型</th>
+                                    <th>绑定代理用户ID</th>
+                                    <th>绑定邀请码</th>
+                                    <th>绑定代理用户昵称</th>
+                                    <th>注册时间</th>
+                                    <th>注册IP</th>
+                                    <th>上次登录时间</th>
+                                    <th>上次登录IP</th>
+                                    <th>登录次数</th>
+                                    <th>今天在线时长</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>
+                                            <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['userid']))}','2','1200','800')"
+                                               style="text-decoration:none">
+                                                <font color="#1AB394">{$_data.userid}</font>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['userid']))}','2','1200','800')"
+                                               style="text-decoration:none">
+                                                <font color="#1AB394">{$_data.name}</font>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['userid']))}','2','1200','800')"
+                                               style="text-decoration:none">
+                                                <font color="#1AB394">{$_data.account}</font>
+                                            </a>
+                                        </td>
+                                        <td>{$_data.sex_name|default="保密"}</td>
+                                        <td>{$_data.jewels|default=0}</td>
+                                        <td>{$_data.money|default=0}</td>
+                                        <td>{$_data.bankMoney|default=0}</td>
+                                        <td>{$_data.recharge_money|default=0}</td>
+                                        <td>{$_data.user_type_name|default="普通用户"}</td>
+                                        <if condition="$_data.bind_agent_id neq '无'">
+                                            <td>
+                                                <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['bind_agent_userid']))}','2','1200','800')"
+                                                   style="text-decoration:none">
+                                                    <font color="#1AB394">{$_data.bind_agent_userid}</font>
+                                                </a></td>
+                                            <td>
+                                                <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['bind_agent_userid']))}','2','1200','800')"
+                                                   style="text-decoration:none">
+                                                    <font color="#1AB394">{$_data.bind_agent_id}</font>
+                                                </a></td>
+                                            <td>
+                                                <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['bind_agent_userid']))}','2','1200','800')"
+                                                   style="text-decoration:none">
+                                                    <font color="#1AB394">{$_data.bind_agent_username}</font>
+                                                </a></td>
+                                            <else/>
+                                            <td>{$_data.bind_agent_userid|default="无"}</td>
+                                            <td>{$_data.bind_agent_id|default="无"}</td>
+                                            <td>{$_data.bind_agent_username|default="无"}</td>
+                                        </if>
+                                        <td>{$_data.registerTime|date="Y-m-d H:i:s",###}</td>
+                                        <td>{$_data.registerIP|default="0.0.0.0"}</td>
+                                        <td>{$_data.last_login_time|date="Y-m-d H:i:s",###}</td>
+                                        <td>{$_data.logonIP|default="0.0.0.0"}</td>
+                                        <td>{$_data.login_lobby_count|default=0}</td>
+                                        <td>{$_data.today_online_time|default="0分钟"}</td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

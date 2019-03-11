@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/layui/css/layui.css" rel="stylesheet">
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/layui/layui.js"></script>
+
+    <script type="text/javascript">
+        //ajax post
+        function ajax_post(the) {
+            var buyGoods = $("#buyGoods").val();
+            if (buyGoods ==''){
+                layer.msg('商品名称不能为空!')
+                return false
+            }
+
+            var that = $(the);
+            var url = $(the).attr('action');
+            var cs = $(the).serialize();
+            $.ajax({
+                url: url,
+                data: cs,
+                type: 'POST',
+                beforeSend: function () {
+                    showload();
+                },
+                success: function (data) {
+                    layer.closeAll();
+                    $("#b").attr('disabled',false)
+                    if(data.status==1){
+                        layer.msg(data.info, {icon: 1});
+                        var timer = setInterval(function(){
+                            clearInterval(timer);
+                            window.location.href=data.url;
+                        },2000);
+                    }else{
+                        layer.msg(data.info, {icon: 2});
+                    }
+                }
+            });
+            return false;
+        }
+        function error(data){
+            layer.msg(data.info, {icon: 2});
+            layer.close(l);
+            $("#b").attr('disabled',false)
+        }
+
+        function showload(){
+            $("#b").attr('disabled',true)
+            l = layer.load();
+        }
+
+        function hideload(){
+            layer.close(l);
+            $("#b").attr('disabled',false)
+            layer.msg('添加成功', {icon: 1});
+            var timer = setInterval(function(){
+                clearInterval(timer);
+                parent.location.reload();
+            },2000);
+
+        }
+
+    </script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>添加代理</h5>
+                </div>
+                <div class="ibox-content">
+                    <form method="post" class="form-horizontal" action="{:U()}" onsubmit="return ajax_post(this);">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品名称</label>
+                            <div class="col-sm-10" id="input1">
+                                <input type="text" style="width:50%;float: left;" class="form-control" name="buyGoods"
+                                       placeholder="请输入商品名称" id="buyGoods">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品类型</label>
+                            <div class="col-sm-10">
+                                <select class="form-control m-b" name="buyType" style="width:50%;float: left;">
+                                    <option value="0">请选择</option>
+                                    <option value="1">金币</option>
+                                    <option value="2">房卡</option>
+                                    <option value="3">道具</option>
+                                    <option value="4">实物</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品数量</label>
+                            <div class="col-sm-10" id="input2">
+                                <input type="text" style="width:50%;float: left;" class="form-control" name="buyNum"
+                                       placeholder="请输入商品数量" id="buyNum">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">消耗资源</label>
+                            <div class="col-sm-10" id="input3">
+                                <input type="text" style="width:50%;float: left;" class="form-control"
+                                       name="consumeGoods" placeholder="消耗资源" id="consumeGoods">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">消耗类型</label>
+                            <div class="col-sm-10" id="input4">
+                                <select class="form-control m-b" name="consumeType" style="width:50%;float: left;">
+                                    <option value="10">请选择</option>
+                                    <option value="0">人民币</option>
+                                    <option value="1">金币</option>
+                                    <option value="2">房卡</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">消耗数量</label>
+                            <div class="col-sm-10" id="input5">
+                                <input type="text" style="width:50%;float: left;" class="form-control" name="consumeNum"
+                                       placeholder="请输入消耗数量" id="consumeNum">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">是否上架</label>
+                            <div class="col-sm-10">
+                                <select class="form-control m-b" name="disabled" style="width:50%;float: left;">
+                                    <option value="0">否</option>
+                                    <option value="1">是</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">是否上新</label>
+                            <div class="col-sm-10">
+                                <select class="form-control m-b" name="is_New" style="width:50%;float: left;">
+                                    <option value="0">否</option>
+                                    <option value="1">是</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">是否最热</label>
+                            <div class="col-sm-10">
+                                <select class="form-control m-b" name="is_Hot" style="width:50%;float: left;">
+                                    <option value="0">否</option>
+                                    <option value="1">是</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">appleID</label>
+                            <div class="col-sm-10" id="input6">
+                                <input type="text" style="width:50%;float: left;" class="form-control" name="appleID"
+                                       placeholder="请输入appleID" id="appleID">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品图片</label>
+                            <div class="input-group col-sm-6" style="padding-left: 15px;float: left" >
+                                <input class="form-control" style="width:50%;float: left;" name="goods_img" id="goods_img"  type="text">
+                                    <span class="input-group-btn col-sm-2">
+                                        <button id="test1" type="button" class="btn layui-btn" style="height: 34px; line-height: 34px;"><i class="layui-icon"></i>上传图片</button><input class="layui-upload-file" name="file" type="file">
+                                    </span>
+                            </div>
+                            <div class="col-sm-3 imgs" style="float: left">
+                                    <!--<img  src="" style="width:40px; height: 40px;" data-toggle="popover-img" title="" data-content="width='100%'/>" data-original-title="">-->
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button id="b" class="btn btn-primary" type="submit">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+<!-- 自定义js -->
+<script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+<!-- iCheck -->
+<script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+<script type="text/javascript">
+    // 上传图片
+    layui.use('upload', function(){
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            ,url: "{:U('api/upload_img',['path'=>goods])}" //上传接口
+            ,done: function(res){
+                //上传完毕回调
+                var id = this.item.attr('id');
+                $("#"+id).parent('.input-group-btn').parent('.input-group').parent('.form-group').find('.imgs').html('<img src="'+res.url+'" width="40" data-toggle="popover-img" title="" data-content="<img src='+res.url+' width=\'100%\'/>" />');
+                $("#"+id).parent('.input-group-btn').parent('.input-group').parent('.form-group').find(".form-control").val(res.url);
+
+                $('[data-toggle="popover-img"]').popover({
+                    'html': true,
+                    'placement': 'right',
+                    'trigger': 'hover'
+                });
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
+    });
+</script>
+</body>
+</html>

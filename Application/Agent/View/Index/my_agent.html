@@ -1,0 +1,143 @@
+<include file="Public/base"/>
+        <div class="search-wrap">
+			      <div class="tab-container">
+				<div class="tab-nav">
+					<a href="" class="on">我的下级代理</a>
+				</div>
+            </div>
+						            <div class="search-condition">
+			<form>
+
+                <div class="time">
+
+                <!-- <if condition="$level neq 3">
+						      <a type="button" href="{:U('addAgent')}"  class="btn btn-info">添加代理</a>
+				    &nbsp;&nbsp;
+						      <a type="button" href="{:U('agent_list')}"  class="btn btn-info">审核列表</a>
+				</if>
+-->
+                    &nbsp;&nbsp;
+                    <div class="end">
+                        <i>玩家ID</i>
+                        <input style=" border: 1px solid #ccc; border-radius: 0.1rem; height: 0.68rem; line-height: 0.78rem; padding-left: 0.2rem; width: 90px;" name="userid" value="{$userid}"  type="text">
+                    </div>
+						<button  class="btn-search" type="submit" style="top:32px">搜索</button>  
+                </div>
+               
+			</form>
+
+
+                <div class="item">
+  <div class="table-responsive">
+       <!--<p style="margin-top:5px;"><b>二维码绑定: {$qrcodeCount|default=0}   邀请码绑定:{$agentCount|default=0}</b></p>-->
+      <table class="table table-bordered" style="width: 100%">
+        <thead>
+        
+          <tr>
+            <th>代理账号</th>
+            <th>昵称</th>
+            <th>邀请码</th>
+            <th>游戏ID</th>
+
+            <th>会员数</th>
+            <th>下级代理数</th>
+            <th>可提现金额</th>
+            <th>已提现金额</th>
+            <th>分成比率</th>
+            <th>调整比率</th>
+            <!-- <th>类别</th> -->
+          </tr>
+        </thead>
+        <tbody>
+        <volist name="_data" id="my_agent">
+          <tr>
+            <th scope="row">{$my_agent.username}</th>
+            <td>{$my_agent.name}</td>
+            <!--<td>{$my_agent.agentid}</td>-->
+            <td><a href="{:U('userinfo',array('userid'=>$my_agent['userid']))}">{$my_agent.agentid}</a></td>
+              <td>{$my_agent.userid}</td>
+            <td>{$my_agent.user_count}</td>
+            <td>{$my_agent.agent_count}</td>
+            <td>{$my_agent.balance}</td>
+            <td>{$my_agent.history_pos_money}</td>
+            <td>{$my_agent.commission_rate}%</td>
+            <td><a href="javascript:;" style="border: 1px solid green;" onclick="change_password({$my_agent.userid})">go</a></td>
+
+        <!-- <td>
+            <if condition="($my_agent['agent_level'] eq 1)">
+                手下一级级代理
+              <elseif condition="($my_agent['agent_level'] eq 2)"/>
+              手下二级代理
+              <elseif condition="($my_agent['agent_level'] eq 3)"/>
+              手下三级代理
+              </if>
+            </td>     -->     
+</tr>
+          </volist>
+        </tbody>
+      </table>
+    </div><!-- /.table-responsive -->
+                   
+{$_page}
+				                </div>
+            </div>
+        </div>
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台</span></p>
+            </div>
+        </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    function change_password(lowerUserID){
+        config = {
+            'lowerUserID' : lowerUserID,
+            'myCommissionRate' : "<?php echo $myCommissionRate;?>"
+        }
+        //页面层
+        layer.open({
+          type: 1,
+          skin: 'layui-layer-rim', //加上边框
+          area: ['300px', '260px'], //宽高
+          content: '<div style="margin-top:10px;"><form class="form-signin" action="{:U('Agent/edit')}" method="post" onsubmit="return ajax_post(this);"><input type="text" style="margin-top:10px;" id="inputPassword" class="form-control" placeholder="分成比率" name="commissionRate" required><button style="margin-top:10px;" class="btn btn-lg btn-primary btn-block" type="submit">确认修改</button></form></div>'
+        });
+    }
+    function ajax_post(the){
+        var commissionRate = $('input[name=commissionRate]').val();
+        var betweenRate = config.myCommissionRate - commissionRate;
+        layer.confirm('该玩家分成比率为' + commissionRate + '%,佣差为' + betweenRate + '%,您确定要做此操作吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var that = $(the);
+            var url= $(the).attr('action');
+            var cs = $(the).serialize();
+            cs = cs + '&lowerUserID=' + config.lowerUserID;
+            console.log('cs', cs);
+            $.ajax({
+                url:url,
+                data:cs,
+                type:'POST',
+                success:function(data){
+                    // data = JSON.parse(data);
+                    console.log('data', data);
+                    if(1 == data.status){
+                        layer.msg(data.info, {icon: 1});
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 2000);
+                    }else{
+                        layer.msg(data.info, {icon: 2});
+                    }
+                }
+            });
+        }, function(){
+            layer.msg('取消成功', {
+                time: 1500, //20s后自动关闭
+            });
+            return false;
+        });
+        return false;
+    }
+</script>

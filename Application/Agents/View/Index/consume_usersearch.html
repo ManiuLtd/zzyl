@@ -1,0 +1,77 @@
+<include file="Public/base"/>		
+<style>
+.end select { border: 1px solid #ccc; border-radius: 0.1rem; display: block; height: 0.78rem; line-height: 0.78rem;padding-left: 0.2rem;}
+</style>
+
+        <div class="search-wrap">
+			            <div class="tab-container">
+				<div class="tab-nav">
+					<a href="{:U(consume_usersearch)}" class="on">我的会员消耗</a>
+					<a href="{:U(consume_agentsearch)}" >我的三级代理消耗</a>
+				</div>
+            </div>
+						            <div class="search-condition">
+						<form>
+
+                <div class="time">
+					<div class="end">
+                        <i>会员昵称</i>
+                        <input style=" border: 1px solid #ccc; border-radius: 0.1rem; height: 0.78rem; line-height: 0.78rem; padding-left: 0.2rem; width: 90px;" name="username"  type="text">
+                    </div>
+
+                    <div class="end">
+                        <i>会员ID</i>
+                        <input style=" border: 1px solid #ccc; border-radius: 0.1rem; height: 0.78rem; line-height: 0.78rem; padding-left: 0.2rem; width: 90px;" name="userid"  type="text">
+                    </div>
+
+
+						<button  class="btn-search" type="submit" style="top:32px">搜索</button>
+                </div>
+
+			</form>
+       
+										                 
+			</form>
+                <div class="item">
+
+
+                    <table class="table">
+				    <tbody>
+						<tr>
+	                            <th>账号ID</th>
+	                            <th>账号昵称</th>
+	                            <th>消耗类型</th>
+						</tr>
+        <volist name="_data" id="my_user">
+		          <tr>
+		            <th scope="row">{$my_user.userid}</th>
+		            <td><a href="{:U('userinfo',array('userid'=>$my_user['userid']))}" style="color:#23527c;">{$my_user.username}</a></td>  
+		            <td>
+		            	<a href="{:U('money_consume',array('userID'=>$my_user['userid']))}" class="btn btn-info"  style="top:32px">金币</a>
+                        <a href="{:U('jewels_consume',array('userID'=>$my_user['userid']))}" class="btn btn-info"  style="top:32px">房卡</a>
+		            </td>
+		          </tr>
+        </volist>
+
+
+                    </tbody>
+                </table>
+                   
+   {$_page}
+
+		
+				</div>
+            </div>
+        </div>
+
+
+
+
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台<!--<br>微信客服：wwdbqp--></span></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<extend name="Public/base"/>
+<block name="body">
+
+	<div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>用户管理</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <div class="col-sm-3" style="width:100px;">
+                                <div class="input-group">
+                                <!--    <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('管理用户添加','{:U('user_add')}','2','800','500')"  style="text-decoration:none"> 添加管理用户</a> -->
+                                </div>
+                            </div>
+                            <!-- <div class="col-sm-3" style="width: 6%;margin-left:0px;">
+                            <form action="{:U('Public/del_record')}" method="post" onsubmit="return ajax_post(this);" >
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-danger"> 批量禁用</button>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+
+                                        <!-- <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Adminmenu"></th> -->
+                                        <th>头像</th>
+                                        <th>昵称</th>
+                                        <th>备注</th>
+                                        <th>性别</th>
+                                        <th>地区</th>
+                                        <th>关注时间</th>
+                                        <th>更新时间</th>
+                                        <th>关注状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="list">
+                                    <tr>
+                                        <!-- <td>
+                                            <input type="checkbox" value="{$_data.id}" name="id[]">
+                                        </td> -->
+                                        <td><img width="50" src="{$list.headimgurl}"></td>
+                                        <td>{$list.nickname}</td>
+                                        <td>{$list.remark|default='无'}</td>
+                                        <td>{$list['sex'] ? '男':'女'}</td>
+                                        <td>{$list['province']}{$list['city']}</td>
+                                        <td>{$list.subscribe_time|date='Y-m-d H:i:s',###}</td>
+                                        <td><if condition="$list['update_time'] eq 0 "> 无更新 <else />{$list.update_time|date='Y-m-d H:i:s',###}</if></td>
+                                        <td>{$list['subscribe']?"已关注":"未关注"}</td>
+                                        <td>
+                                            <a title="发消息" onclick="admin_edit('发消息','{:U('toUser',array('openid'=>$list['openid']))}','2','800','500')" class="btn btn-outline btn-info  dim ">发消息</a>
+                                            <if condition="$list['batchblock'] eq 0">
+                                                <a title="拉入黑名单" href="{:U('batchBlock',array('openid'=>$list['openid']))}" onclick="return ajax_get(this)"  class="btn btn-outline btn-danger  dim ">拉入黑名单</a>
+                                            <else />
+                                                <a title="取消黑名单" href="{:U('batchunblock',array('openid'=>$list['openid']))}" onclick="return ajax_get(this)"  class="btn btn-outline btn-danger  dim ">取消黑名单</a>
+                                             </if>
+
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

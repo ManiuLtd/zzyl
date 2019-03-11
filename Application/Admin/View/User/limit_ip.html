@@ -1,0 +1,82 @@
+<extend name="Public/base"/>
+<block name="body">
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>userID</th>
+                                    <th>用户昵称</th>
+                                    <th>用户身份状态</th>
+                                    <th>封号时长</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody class="dataBox">
+
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            var str = '';
+            str += '<tr>'
+            str += '<td colspan="19" align="center">正在获取...</td>'
+            str += '</tr>'
+            $('.dataBox').append(str)
+
+            $.ajax({
+                url: '{:U("get_limit_ip")}',
+                type: 'post',
+                data: {},
+                dataType: 'json',
+                success: function (res) {
+                    $('.dataBox').children('tr').remove();
+                    var str = ''
+                    if (res.status) {
+                        $.each(res.data, function (k, v) {
+                            str += '<tr>'
+                            str += '<td><a onclick=' + v.info_url + '  style="text-decoration:none"><font color="#1AB394">' + v.userID + '</a></font></td>'
+                            str += '<td><a onclick=' + v.info_url + '  style="text-decoration:none"><font color="#1AB394">' + v.name + '</a></font></td>'
+                            str += '<td>' + v.status_desc + '</td>'
+                            str += '<td>' + v.time + '</td>'
+                            str += '<td><a class="btn btn-info btn-outline" onclick=' + v.edit_url + ' style="text-decoration:none">编辑</a></td>'
+                            str += '</tr>'
+                        })
+
+                        $('.dataBox').append(str)
+                    } else {
+                        $('.dataBox').children('tr').remove();
+                        var str = '';
+                        str += '<tr>'
+                        str += '<td colspan="19" align="center">暂时没有限制玩家</td>'
+                        str += '</tr>'
+                        $('.dataBox').append(str)
+                    }
+                },
+                error: function () {
+                    $('.dataBox').children('tr').remove();
+                    var str = '';
+                    str += '<tr>'
+                    str += '<td colspan="19" align="center">玩家信息获取失败</td>'
+                    str += '</tr>'
+                    $('.dataBox').append(str)
+                }
+
+            })
+        })
+    </script>
+</block>

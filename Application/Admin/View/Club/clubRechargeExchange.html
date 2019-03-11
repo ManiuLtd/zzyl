@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/h-ui/edit.js"></script>
+    <script src="__PUBLIC__/datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"
+            type="text/javascript"></script>
+    <link href="__PUBLIC__/datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css"/>
+    <link href="__PUBLIC__/page/page.css" rel="stylesheet" type="text/css"/>
+
+    <script type="text/javascript">
+        //ajax post
+        function ajax_post(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var that = $(the);
+                var url = $(the).attr('action');
+                var cs = $(the).serialize();
+                $.ajax({
+                    url: url,
+                    data: cs,
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                parent.location.reload();
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+
+        //get方法ajax提交
+        function ajax_get(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var url = $(the).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                window.location.href = data.url;
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+        /*管理员-编辑*/
+        function admin_edit(title, url, id, w, h) {
+            layer_show(title, url, w, h);
+        }
+    </script>
+</head>
+<body class="gray-bg">
+<style>
+    select.input-sm {
+        padding: 0px 0px;
+    }
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>兑换与充值</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row" style="width:100%;line-height: 30px;">
+                        <form action="{:U()}" method="get">
+                            <div class="col-sm-5 m-b-xs" style="width: 150px;">
+                                <select class="input-sm form-control input-s-sm inline" name="type">
+                                    <option value="1"
+                                    <if condition="$type eq 1"> selected</if>
+                                    >用户昵称</option>
+                                    <option value="2"
+                                    <if condition="$type eq 2"> selected</if>
+                                    >用户ID</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3 top-menu t1" style="width: 180px;">
+                                <div class="input-group">
+                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control" name="search"
+                                           value="{$search}"> <span class="input-group-btn">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t2" style="width:100px;">
+                                <div class="input-group">
+                                    开始时间
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t3" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control" id="datetimepicker1" name="start"
+                                           value="{$start|date='Y-m-d H:i',###}">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t4" style="width:50px;">
+                                <div class="input-group">
+                                    至
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t5" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control" id="datetimepicker2" name="stop"
+                                           value="{$stop|date='Y-m-d H:i',###}">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t6" style="width: 80px;">
+                                <div class="input-group">
+                                    <input type="hidden" name="friendsGroupID" value="{$friendsGroupID}">
+                                    <button type="submit" class="btn btn-sm btn-primary"> 搜索</button>
+                                    </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="table-responsive">
+                        <div class="tabs-container">
+                            <div class="tab-content">
+
+                                <p>总充值:{$totalRecharge|default=0} 总兑换:{$totalExcharge|default=0}</p>
+                                <div class="panel-body">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th class="column-title">用户ID</th>
+                                            <th class="column-title">用户昵称</th>
+                                            <th class="column-title">总充值</th>
+                                            <th class="column-title">总兑换</th>
+                                            <th class="column-title">总收取服务费</th>
+                                            <th class="column-title">最后兑换时间</th>
+                                            <th class="column-title">操作</th>
+                                            <th class="column-title">详细记录</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <volist name="list" id="list">
+                                            <tr>
+                                                <td>{$list.userID}</td>
+                                                <td>{$list.name}</td>
+                                                <td>{$list.recharge|default=0}</td>
+                                                <td>{$list.exchange|default=0}</td>
+                                                <td>{$list.firecoinpump|default=0}</td>
+                                                <td>
+                                                    <if condition="($list.exchange_time eq '')">
+                                                        暂时没有充值记录
+                                                        <else/>
+                                                        {$list.exchange_time|date='Y-m-d H:i:s',###}
+                                                    </if>
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:;"
+                                                       onclick="admin_edit('充值','{:U('clubRecharge',array('friendsGroupID'=>$list['friendsGroupID'],'userID'=>$list['userID']))}','2','600','400')"
+                                                       style="text-decoration:none"
+                                                       class="btn btn-sm btn-success">充值</a>
+
+                                                    <a href="javascript:;"
+                                                       onclick="admin_edit('兑换','{:U('clubExchange',array('friendsGroupID'=>$list['friendsGroupID'],'userID'=>$list['userID']))}','2','600','400')"
+                                                       style="text-decoration:none"
+                                                       class="btn btn-sm btn-success">兑换</a>
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:;"
+                                                       onclick="admin_edit('充值兑换记录','{:U('clubRechargeInfo',array('friendsGroupID'=>$list['friendsGroupID'],'userID'=>$list['userID']))}','2','1000','500')"
+                                                       style="text-decoration:none"
+                                                       class="btn btn-sm btn-info">充值兑换记录</a>
+                                                </td>
+                                            </tr>
+                                        </volist>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- 选项卡 -->
+                        </div>
+                        <div class="page">{$page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript">
+    $('#datetimepicker1').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii'
+    });
+    $('#datetimepicker2').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii'
+    });
+    $('.chkall').click(function () {
+        $('input[name="id[]"]').prop('checked', $(this).is(':checked'));
+    });
+</script>
+</html>

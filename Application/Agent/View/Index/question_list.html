@@ -1,0 +1,81 @@
+<include file="Public/base"/>
+			        <div class="assign-card-wrap"> 
+            <div class="assign-card assign-agency">
+                <div class="tab-container">
+                    <div class="tab-nav">
+                        <a href="{:U('question')}" >举报/反馈</a>
+                        <a href="{:U('question_list')}" class="on">举报/反馈记录</a>
+                    </div>
+
+                    <div class="tab-main">
+                        <div class="card-record">
+                            <table class="table">
+						    <tr>
+                                <th>类型</th>
+    							<th>问题标题</th>
+    							<th>时间</th>
+    							<th>处理状态</th>
+							</tr>
+
+
+
+             <volist name="res" id="res">
+                  <tr>
+                    <td scope="row">{$res.title}</td>
+                    <td >
+                            <if condition="($res.type eq 1)">玩家举报 
+                            <elseif condition="($res.type eq 2)"/>代理举报
+                            <elseif condition="($res.type eq 3)"/> 建议反馈
+                            <elseif condition="($res.type eq 4)"/>Bug反馈
+                            <else/>其他问题
+                            </if>
+                    </td> 
+                    <td>{$res.time|date="Y-m-d H:i:s",###}</td>
+                    <td>
+                        <if condition="($res.status eq 1)">
+                            <span style="color:red">正在处理中</span>
+                         <else/><span style="color:green">已处理 <a style="margin-left: 0.2rem;" onclick="see({$res['id']})">查看</a></span>
+                     </if>
+                    </td>
+           
+                  </tr>
+          </volist>
+{$page}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台</span></p>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+<script type="text/javascript">
+    function see(id){
+        //页面层
+        $.ajax({
+            url:"{:U('question_see')}",
+            data:{id:id},
+            type:'post',
+            dataType:'json',
+            success:function (res) {
+                layer.open({
+                    title:'反馈信息',
+                    type: 1,
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['300px', '260px'], //宽高
+                    content: '<div style="margin-top:10px;">'+res.data.reply+'</div>'
+                });
+            }
+        })
+
+    }
+</script>
+</html>

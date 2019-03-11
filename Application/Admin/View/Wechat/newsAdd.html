@@ -1,0 +1,319 @@
+<extend name="Public/base" />
+<block name="body">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="col-sm-12">
+            <div class="tabs-container">
+                <div class="tabs-left">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a class="len" data-toggle="tab" href="#tab-1"> 图文一 <i onclick="addNewsNav()" class="fa fa-plus-circle"></i></a>
+                        </li>
+                    </ul>
+                    <form method="post" class="form-horizontal item-1">
+                    <div class="tab-content ">
+                        <div id="tab-1" class="tab-pane active">
+                            <div class="panel-body">
+                                <div class="wrapper wrapper-content animated fadeInRight">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="ibox float-e-margins">
+                                                <div class="ibox-content">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">标题</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" name="title" placeholder="请输入标题">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">作者</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" name="author" placeholder="请输入作者昵称">
+                                                            </div>
+                                                        </div>
+                                                        <!-- 视频 -->
+                                                        <div class="form-group video">
+                                                            <label class="col-sm-2 control-label">图文摘要</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" name="digest" value="" placeholder="图文消息的摘要，仅有单图文消息才有摘要，多图文此处为空">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group video">
+                                                            <label class="col-sm-2 control-label">来源url</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" name="source_url" value="" placeholder="图文消息的原文地址，即点击“阅读原文”后的URL">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group video">
+                                                            <label class="col-sm-2 control-label">封面图片</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control t1" name="thumb_media_id" value="" placeholder="请输入封面图片mediaID">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group video">
+                                                            <label class="col-sm-2 control-label">上传封面图片</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="file" name="img" id="test1">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group img t music video">
+                                                            <label class="col-sm-2 control-label">是否显示封面</label>
+                                                            <div class="col-sm-10">
+                                                                <select name="show_cover" class="form-control" id="">
+                                                                    <option value="1">显示</option>
+                                                                    <option value="0">不显示</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group img t music video">
+                                                            <label class="col-sm-2 control-label">是否打开评论</label>
+                                                            <div class="col-sm-10">
+                                                                <select name="need_open_comment" class="form-control" id="">
+                                                                    <option value="1">是</option>
+                                                                    <option value="0">否</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group img t music video">
+                                                            <label class="col-sm-2 control-label">是否粉丝才可评论</label>
+                                                            <div class="col-sm-10">
+                                                                <select name="only_fans_can_comment"  class="form-control" id="">
+                                                                    <option value="1">粉丝</option>
+                                                                    <option value="0">所有人</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group video">
+                                                            <label class="col-sm-2 control-label">内容</label>
+                                                            <div class="col-sm-10">
+                                                                <script id="container" style="height: 400px" name="content" type="text/plain"></script>
+                                                            </div>
+                                                        </div>
+                                                        <div class="hr-line-dashed"></div>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-4 col-sm-offset-2">
+                                                                <button class="btn btn-primary" onclick="postData()" type="button">保存并提交</button>
+                                                            </div>
+                                                        </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/layui/layui.js"></script>
+
+    <script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ueditor/lang/zh-cn/zh-cn.js"></script>
+    
+    <script>
+        var len = 1;
+        // 添加多图文 导航
+        function addNewsNav(){
+    
+           if(len >= 8){
+                layer.msg('只能添加八个图文')
+                return false
+           }
+
+           len+=1;
+
+           var newNum = {2:"二",3:"三",4:"四",5:"五",6:"六",7:"七",8:"八"} 
+           // 导航
+           var label = "<li class=''><a class='len' data-toggle='tab' href='#tab-"+len+"' > 图文"+newNum[len]+" <i id="+len+" onclick='delNewsNav(this)' class='fa fa-minus-circle'></i></a></li>";
+           $('.nav-tabs').append(label) 
+
+           // 表单
+           var form =  '<div id="tab-'+len+'" class="tab-pane">'
+                            +'<form method="post" class="form-horizontal item-'+len+'">'
+                            +'<div class="panel-body">'
+                                 +'<div class="wrapper wrapper-content animated fadeInRight">'
+                                     +'<div class="row">'
+                                         +'<div class="col-sm-12">'
+                                             +'<div class="ibox float-e-margins">'
+                                                 +'<div class="ibox-content">'
+                                                         +'<div class="form-group">'
+                                                             +'<label class="col-sm-2 control-label">标题</label>'
+                                                             +'<div class="col-sm-10">'
+                                                                 +'<input type="text" class="form-control" name="title" placeholder="请输入标题">'
+                                                             +'</div>'
+                                                         +'</div>'
+                                                         +'<div class="form-group">'
+                                                             +'<label class="col-sm-2 control-label">作者</label>'
+                                                             +'<div class="col-sm-10">'
+                                                                 +'<input type="text" class="form-control" name="author" placeholder="请输入作者昵称">'
+                                                             +'</div>'
+                                                         +'</div>'
+                                                         +'<div class="form-group video">'
+                                                             +'<label class="col-sm-2 control-label">图文摘要</label>'
+                                                             +'<div class="col-sm-10">'
+                                                                +'<input type="text" class="form-control" name="digest" value="" placeholder="图文消息的摘要，仅有单图文消息才有摘要，多图文此处为空">'
+                                                             +'</div>'
+                                                        +'</div>'
+                                                         +'<div class="form-group video">'
+                                                             +'<label class="col-sm-2 control-label">来源url</label>'
+                                                             +'<div class="col-sm-10">'
+                                                                 +'<input type="text" class="form-control" name="source_url" value="" placeholder="图文消息的原文地址，即点击“阅读原文”后的URL">'
+                                                             +'</div>'
+                                                         +'</div>'
+                                                         +'<div class="form-group video">'
+                                                             +'<label class="col-sm-2 control-label">封面图片</label>'
+                                                             +'<div class="col-sm-10">'
+                                                                 +'<input type="text" class="form-control t'+len+'" name="thumb_media_id" value="" placeholder="请输入封面图片mediaID">'
+                                                             +'</div>'
+                                                         +'</div>'
+                                                         +'<div class="form-group video">'
+                                                             +'<label class="col-sm-2 control-label">上传封面图片</label>'
+                                                             +'<div class="col-sm-10">'
+                                                                +'<input type="file" name="img" id="test'+len+'">'
+                                                             +'</div>'
+                                                         +'</div>'
+                                                         +'<div class="form-group img t music video">'
+                                                             +'<label class="col-sm-2 control-label">是否显示封面</label>'
+                                                             +'<div class="col-sm-10">'
+                                                                 +'<select name="show_cover" class="form-control" id="">'
+                                                                     +'<option value="1">显示</option>'
+                                                                     +'<option value="0">不显示</option>'
+                                                                 +'</select>'
+                                                             +'</div>'
+                                                         +'</div>'
+                                                         +'<div class="form-group img t music video">'
+                                                            +'<label class="col-sm-2 control-label">是否打开评论</label>'
+                                                             +'<div class="col-sm-10">'
+                                                                 +'<select name="need_open_comment"  class="form-control" id="">'
+                                                                     +'<option value="1">是</option>'
+                                                                     +'<option value="0">否</option>'
+                                                                 +'</select>'
+                                                             +'</div>'
+                                                         +'</div>'
+                                                         +'<div class="form-group img t music video">'
+                                                             +'<label class="col-sm-2 control-label">是否粉丝才可评论</label>'
+                                                             +'<div class="col-sm-10">'
+                                                                 +'<select name="only_fans_can_comment"  class="form-control" id="">'
+                                                                     +'<option value="1">粉丝</option>'
+                                                                     +'<option value="0">所有人</option>'
+                                                                 +'</select>'
+                                                             +'</div>'
+                                                        +'</div>'
+                                                         +'<div class="form-group video">'
+                                                             +'<label class="col-sm-2 control-label">内容</label>'
+                                                             +'<div class="col-sm-10">'
+                                                                 +'<script id="container'+len+'" style="height: 400px" name="content" type="text/plain"><\/script>'
+                                                             +'</div>'
+                                                        +' </div>'
+                                                         +'<div class="hr-line-dashed"></div>'
+                                                         +'<div class="form-group">'
+                                                             +'<div class="col-sm-4 col-sm-offset-2">'
+                                                                 +'<button class="btn btn-primary" id="submit" onclick="postData()" type="button">保存并提交</button>'
+                                                             +'</div>'
+                                                         +'</div>'
+                                                 +'</div>'
+                                             +'</div>'
+                                         +'</div>'
+                                        +'</form>'
+                                     +'</div>'
+                                 +'</div>'
+                            +'</div>'
+                         +'</div>'
+
+                var url = "{:U("Wechat/uploads2",array("materialUplaods"=>1,"type"=>"thumb","t"=>1))}"
+                $('.tab-content').append(form)
+                $('.con').append("<script>var ue = UE.getEditor('container"+len+"');<\/script>")
+                $('.con').append("<script>layui.use('upload', function(){"+
+                          +"var \\$ = layui.jquery"
+                          +",upload = layui.upload;"
+                          +"var uploadInst = upload.render({"
+                            +"elem: '#test"+len+"'"
+                            +",url: '"+url+"'"
+                            +",done: function(res){"
+                                +"if(res.status == 0){"
+                                    +"layer.msg('上传失败')"
+                                +"} else {"
+                                    +"layer.msg('上传成功')\\n"
+                                    +"$('.t"+len+"').val(res.data)"
+                                +"}"
+                            +"}"
+                        +"})"       
+
+                      +"})<\/script>")
+
+        }
+
+        // 接收数据
+        function postData(){
+            // alert(1)
+            var dataJson = [];
+            // $('.item').each(function(index, element) {
+            //     dataJson.push($(this).serializeArray());
+            // });
+
+            for(i=1;i<=len;i++){
+               dataJson.push($('.item-'+i).serializeArray());
+            }
+
+            $.post('{:U("newsAdd")}',{'data':JSON.stringify(dataJson)},function(data){
+                if(data.status){
+                    layer.msg('添加成功')
+                    setTimeout(function(){
+                        window.location.href=data.url
+                    },1200)
+                } else {
+                    layer.msg(data.info)
+                }
+            })
+        }
+
+        // 删除图文
+        function delNewsNav(obj){
+            if(!confirm('确认删除？')) return false;
+            var id = $(obj).attr('id')
+            $("a[href=#tab-"+id+"]").parents('li').remove();
+            $("div [id='tab-"+id+"']").remove();
+            var active = $(obj).parents('li').attr('class')
+            if(active == 'active'){
+                $('a[href="#tab-1"]').parents('li').addClass('active')
+                $("div [id='tab-1']").addClass('active')
+            }
+        }   
+
+        var ue = UE.getEditor('container'); 
+
+
+
+        layui.use('upload', function(){
+          var $ = layui.jquery
+          ,upload = layui.upload;
+          
+          //普通图片上传
+          var uploadInst = upload.render({
+            elem: '#test1'
+            ,url: '{:U("Wechat/uploads2",array("materialUplaods"=>1,"type"=>"thumb","t"=>1))}'
+            ,done: function(res){
+                if(res.status == 0){
+                    layer.msg('上传失败')
+                } else {
+                    layer.msg('上传成功')
+                    $('.t1').val(res.data)
+                }
+            }
+        })
+
+
+      })
+
+    </script>
+
+    <p class='con'></p>
+   
+
+
+
+</block>

@@ -1,0 +1,149 @@
+<include file="Public/base"/>
+        <div class="search-wrap">
+			      <div class="tab-container">
+				<div class="tab-nav">
+					<a href="#" class="on">我的手下的三级代理</a>
+				</div>
+            </div>
+						            <div class="search-condition">
+			<form>
+
+                <div class="time">
+
+                 <if condition="$level neq 3">
+						      <a type="button" href="{:U('addAgent')}"  class="btn btn-info">添加代理</a><!-- onclick="admin_edit('添加代理','{:U('addAgent')}','2','800','600')" -->
+				    &nbsp;&nbsp;
+						      <a type="button" href="{:U('my_agent')}"  class="btn btn-info">我的代理</a>
+				</if>
+
+
+                </div>
+               
+
+
+
+
+			</form>
+
+
+                <div class="item">
+                  <div class="table-responsive">
+      <table class="table table-bordered">
+              <thead>
+                  <tr>
+
+                      <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Agentmember"><input type="hidden" name="disabled" value="1"></th>
+                      <th>ID</th>
+                      <th>游戏ID</th>
+                      <th>游戏昵称</th>
+                      <th>后台账号(手机号)</th>
+                      <th>邀请码</th>
+                      <th>金币数</th>
+                      <th>房卡数</th>
+                      <th>代理等级</th>
+                      <th>上级邀请码</th>
+                      <th>上级代理昵称</th>
+                      <th>余额</th>
+                      <th>提交时间</th>
+                      <th>审核状态</th>
+                  </tr>
+              </thead>
+              <tbody>
+              <volist name="_data" id="_data">
+                  <tr>
+                      <td>
+                          <input type="checkbox" value="{$_data.id}" name="id[]">
+                      </td>
+                      <td>{$_data.id}</td>
+                      <td>{$_data.userid}</td>
+                      <td>{$_data.gamename}</td>
+                      <td>{$_data.username}</td>
+                      <td>{$_data.agentid}</td>
+                      <td>{$_data.money}</td>
+                      <td>{$_data.jewels}</td>
+                      <td>
+                          <if condition="($_data.agent_level eq 1)">
+                          一级代理
+                          <elseif condition="($_data.agent_level eq 2)"/>
+                          二级代理
+                          <elseif condition="($_data.agent_level eq 3)"/>
+                          三级代理
+                          </if>
+                      </td>
+                      <td>{$_data.superior_agentid}</td>
+                      <td>{$_data.superior_username}</td>
+                   
+                      <td>{$_data.balance}</td>
+                      <td>{$_data.register_time|date="Y-m-d H:i:s",###}</td>
+                      <td><switch name="_data['status']"> <case value="0">审核已通过</case> <case value="1">未审核</case> <default />审核未通过</switch></td>
+                  </tr>
+                </volist>  
+              </tbody>
+          </table>
+    </div><!-- /.table-responsive -->
+				                </div>
+            </div>
+        </div>
+
+<!-- <input id="not_input" value="参数错误，请重试" style="cursor:pointer" type="hidden">
+<input id="p" value="1" type="hidden">
+<input id="type" value="" type="hidden"> -->
+<script type="text/javascript" src="__PUBLIC__/newadmin/js/ajax.js"></script>
+<script src="__PUBLIC__/newadmin/js/ajaxfileupload.js"></script>
+
+
+<script>
+
+
+</script>
+
+
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>旺旺棋牌运营平台<!--<br>微信客服：wwdbqp--></span></p>
+            </div>
+        </div>
+<link rel="stylesheet" href="__PUBLIC__/newadmin/css/agency.css">
+
+<style>
+.tipp { color: grey; font-size: 0.24rem;line-height: 1.4; }
+</style>
+
+<div class="popup popup-agency-confirm" id="tipbody" style="display: none;width:380px;">
+	<a href="javascript:;" class="popup-btn-close" onclick="closemsg();"></a>
+	<div class="main">
+		<div class="tip">
+			<p id="tipcontent"></p>
+		</div>
+		<div class="btns">
+			<a href="javascript:;" class="btn-ok" id="btn-ok" onclick="closemsg();">确认</a>
+		</div>
+	</div>
+</div>
+<div class="popup-mask" id="tipdiv" style="display: none;"></div>	
+
+<script>
+function showmsg($msg) {
+	$("#tipcontent").html($msg);
+	$('#tipbody').fadeIn();
+	$('#tipdiv').fadeIn();
+}
+function closemsg() {
+	$('#tipbody').fadeOut();
+	$('#tipdiv').fadeOut();
+}
+function checkSdata(obj, sdate) {
+	if (CompareDate(sdate,obj.value))
+	{
+		obj.value = sdate;
+	}
+}
+function CompareDate(d1,d2)
+{
+  return ((new Date(d1.replace(/-/g,"\/"))) > (new Date(d2.replace(/-/g,"\/"))));
+}
+</script>
+
+    </div>
+
+</body></html>

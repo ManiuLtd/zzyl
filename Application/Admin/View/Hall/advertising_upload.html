@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css"  media="all">
+  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+<div class="layui-upload-drag" id="advertising_upload">
+  <i class="layui-icon"></i>
+  <p>点击上传，或将文件拖拽到此处</p>
+</div>
+
+ 
+          
+<script src="__PUBLIC__/layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+layui.use('upload', function(){
+  var $ = layui.jquery
+  ,upload = layui.upload;
+  //拖拽上传
+  upload.render({
+    elem: '#advertising_upload'
+    ,url: "{:U('advertising_upload')}"
+    ,method:'post'
+    ,data:{id:"{$id}"}
+    ,done: function(res){
+      if(res.status){
+        layer.msg(res.info, {icon: 1});
+        var timer = setInterval(function(){
+                                clearInterval(timer);
+                                parent.location.reload();
+                            },2000);
+        return false;
+      }else{
+        return layer.msg(res.info, {icon: 1});
+        return false;
+      }
+     
+      
+    }
+  });
+  
+});
+</script>
+
+</body>
+</html>

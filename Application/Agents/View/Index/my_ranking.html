@@ -1,0 +1,44 @@
+<include file="Public/base"/>
+        <div class="search-wrap">
+            <div class="search-condition" style="padding-bottom: 20px">
+			<form method="get" id="form1">
+                <div class="time">
+                    <div class="end">
+                        <i>统计类型</i>
+						<select id="stat_type" name="time_type">
+							<option value="">全部排名</option>
+							<option value="day">日排名</option>
+							<option value="week">周排名</option>
+							<option value="month">月排名</option>
+						</select>
+                    </div>
+
+                    <button  class="btn-search" type="submit" style="top:32px">搜索</button>
+                </div>
+			</form>
+				                <div class="item">
+						<table class='table' style='margin-top:20px;'>
+							<tr>
+								<th colspan='5' style='width:80%'>总业绩:{$ranks.num}</th>
+								<th colspan='5'>第{$ranks.sort}名</th>
+							</tr>
+							<tr>
+					
+                   
+
+                </table>
+                <p style="color: #666;padding:20px 0 0 20px;">排名按照各位代理的业绩情况排名</p>
+                <p style="color: #666;padding:20px 0 0 20px;">排名数据按照日,周,月，时间可能与实时数据略有偏差。</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台</span></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<extend name="Public/base"/>
+<block name="body">
+
+	<div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>客服管理</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <div class="col-sm-3" style="width:100px;">
+                                <div class="input-group">
+                                    <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('添加客服','{:U('addKf')}','2','800','500')"  style="text-decoration:none"> 添加客服</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>头像</th>
+                                        <th>账号</th>
+                                        <th>昵称</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="list">
+                                    <tr>
+                                        <td><img width="50" src="{$list.file}"></td>
+                                        <td>{$list.username}</td>
+                                        <td>{$list.nickname}</td>
+                                        <td>
+                                            <if condition="$list['invite_status'] eq 0">
+                                            <a title="编辑" onclick="admin_edit('发消息','{:U('updateKf',array('username'=>$list['username']))}','2','800','500')" class="btn btn-outline btn-info  dim ">编辑</a>
+                                                <a href="{:U('invite_wx',array('username'=>$list['username'],'weixin'=>$list['invite_wx']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-success  dim ">发送绑定邀请</a>
+                                            <else />
+                                                <a href="javascript:;" class="btn btn-outline btn-success  dim ">已绑定邀请</a>
+                                            </if>
+                                            <a href="{:U('delKf',array('username'=>$list['username']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim ">删除</a>
+
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

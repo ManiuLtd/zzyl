@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/Public/page/page.css" rel="stylesheet">
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/h-ui/edit.js"></script>
+
+    <script type="text/javascript">
+        //ajax post
+        function ajax_post(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var that = $(the);
+                var url = $(the).attr('action');
+                var cs = $(the).serialize();
+                $.ajax({
+                    url: url,
+                    data: cs,
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                parent.location.reload();
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+
+        //get方法ajax提交
+        function ajax_get(the) {
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var url = $(the).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function () {
+                                clearInterval(timer);
+                                window.location.href = data.url;
+                            }, 2000);
+                        } else {
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function () {
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+        /*管理员-编辑*/
+        function admin_edit(title, url, id, w, h) {
+            layer_show(title, url, w, h);
+        }
+    </script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h4>基本信息&nbsp;&nbsp;&nbsp;<a href="{:U('execl',array('userid'=>$userid))}"
+                                                 class="btn btn-sm btn-success">导出Excel</a></h4>
+                </div>
+
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th colspan="9">基本信息</th>
+                                <th colspan="2">直属销售</th>
+                                <th colspan="2">非直属销售</th>
+                            </tr>
+                            <tr>
+                                <th>代理账号</th>
+                                <th>代理等级</th>
+                                <th>操作前余额</th>
+                                <th>操作金额</th>
+                                <th>操作后余额</th>
+                                <th>描述</th>
+                                <th>时间</th>
+                                <th>行为者ID</th>
+                                <th>行为者昵称</th>
+                                <th>总额</th>
+                                <th>提成</th>
+                                <th>总额</th>
+                                <th>提成</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="_data" id="_data">
+                                <tr>
+                                    <th scope="row">{$_data.username}</th>
+                                    <td>{$_data.agent_level_name}</td>
+                                    <td>{$_data.front_balance}</td>
+                                    <td>{$_data.handle_money}</td>
+                                    <td>{$_data.after_balance}</td>
+                                    <td>{$_data._desc}</td>
+                                    <td>{$_data.make_time|date="Y-m-d H:i:s",###}</td>
+                                    <td>{$_data.make_userid}</td>
+                                    <td>{$_data.make_name}</td>
+                                    <td>{$_data.amount}</td>
+                                    <td>{$_data.commission}</td>
+                                    <td>{$_data.under_amount}</td>
+                                    <td>{$_data.under_commission}</td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                    </div><!-- /.table-responsive -->
+                    <div class="page">{$_page}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

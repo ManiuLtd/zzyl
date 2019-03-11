@@ -1,0 +1,66 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        @media (max-width: 768px) {
+            /*.panel-body{border:2px solid red;}*/
+            .ibox {
+                width: 1000px;
+            }
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>金币统计</h5>
+                    </div>
+                    <div class="ibox-content" style="">
+                        <div style="width: 60%;margin:30px auto;">
+                            <h3><font color="black">金币统计</font></h3>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>总抽水：
+                                            <a class="btn btn-info btn-outline" disabled="disabled" onclicks="admin_edit('金币变化记录','{:U('Commission/moneyChangeRecord',array('isHideNavbar' => $configLeftBar))}','2','1100','700')" style="text-decoration:none"><font color="red">{$getSumNotOnlyCommission}</font>
+                                            </a>                                     
+                                        </h4>
+                                    </td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>总抽水(已分佣)：
+                                            <a class="btn btn-info btn-outline" onclick="admin_edit('金币变化记录','{:U('Commission/moneyChangeRecord',array('isHideNavbar' => $configLeftBar))}','2','1100','700')" style="text-decoration:none"><font color="red">{$sum}</font>
+                                            </a>                                     
+                                        </h4>
+                                    </td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>代理抽水：
+                                            <a class="btn btn-info btn-outline" onclick="admin_edit('金币变化记录','{:U('Commission/moneyChangeRecord',array('isHideNavbar' => $configLeftBar, 'searchUserType' => 1))}','2','1100','700')" style="text-decoration:none"><font color="red">{$agentSum}</font>
+                                            </a>   
+                                        </h4>
+                                    </td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>平台抽水：
+                                            <a class="btn btn-info btn-outline" onclick="admin_edit('金币变化记录','{:U('Commission/moneyChangeRecord',array('isHideNavbar' => $configLeftBar, 'searchUserType' => 2))}','2','1100','700')" style="text-decoration:none"><font color="red">{$operatorSum}</font>
+                                            </a>   
+                                        </h4>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>后台历史充值总额：<a class="btn btn-info btn-outline" onclick="admin_edit('金币变化记录','<?php echo U('Operate/money_change_record',array('isHideNavbar' => $configLeftBar, 'searchUserType' => 2,'reason' => $configRecourceBackRecharge));?>','2','1100','700')" style="text-decoration:none"><font color="red">{$allBackRechargeMoney}</font></a></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>后台历史提取总额：<a  class="btn btn-info btn-outline" onclick="admin_edit('金币变化记录','<?php echo U('Operate/money_change_record',array('isHideNavbar' => $configLeftBar, 'searchUserType' => 2,'reason' => $configRecourceBackUnRecharge));?>','2','1100','700')" style="text-decoration:none"><font color="red">{$allBackUnRechargeMoney}</font></a></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>签到总额：<a class="btn btn-info btn-outline" onclick="admin_edit('金币变化记录','<?php echo U('Operate/money_change_record',array('isHideNavbar' => $configLeftBar, 'searchUserType' => 2,'reason' => $configRecourceSign));?>','2','1100','700')" style="text-decoration:none"><font color="red">{$allSignMoney}</font></a></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>开房消耗总额：<a class="btn btn-info btn-outline" onclick="admin_edit('金币变化记录','{:U('Operate/money_change_record',array('isHideNavbar' => $configLeftBar, 'searchUserType' => 2,'reason' => 1))}','2','1100','700')" style="text-decoration:none"><font color="red">{$allCreateRoomMoney}</font></a></h4></td>
+                                </tr>
+                                <tr>                                    
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>支付充值总额：
+                                            <a class="btn btn-info btn-outline" onclick="admin_edit('金币变化记录','<?php echo U('Operate/money_change_record',array('isHideNavbar' => $configLeftBar, 'searchUserType' => 2,'reason' => $configPayRecharge));?>','2','1100','700')" style="text-decoration:none"><font color="red">{$allPayRechargeMoney}</font>
+                                            </a>   
+                                    </h4></td>                       
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>奖池统计：
+                                            <a class="btn btn-info btn-outline" onclick="admin_edit('金币变化记录','<?php echo U('RewardsPool/rewardsPool',array('isHideNavbar' => $configLeftBar, 'searchUserType' => 2,'reason' => $configRecourceChangeReasonCreateRoom));?>','2','1100','700')" style="text-decoration:none"><font color="red">{$allRobotMoney}</font>
+                                            </a>   
+                                    </h4></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

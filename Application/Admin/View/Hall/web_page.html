@@ -1,0 +1,90 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        @media (max-width: 768px){
+          /*.panel-body{border:2px solid red;}*/
+          #box{width: 1000px;}
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row" >
+                <div class="col-sm-12">
+                    <div class="panel panel-info" id="box">
+                        <div class="panel-heading">
+                               <h4>游戏常用参数</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-striped table-bordered table-hover" id="my-info">
+                                <tr>
+                                    <th>参数标识</th>
+                                    <th>参数值</th>
+                                    <th>参数描述</th>
+                                    <th>编辑</th>
+                                </tr>
+                                <volist name="_data1" id="_data1">
+                                <tr>
+                                <form action="{:U('game_config_edit')}" method="post" onsubmit="return ajax_post(this);">
+                                    <td>
+                                        {$_data1.key}
+                                    </td>
+                                   
+                                    <td><input type="text" name="value" class="form-control" value="{$_data1.value}"></td>
+                                    <td><input type="text" name="desc" class="form-control" value="{$_data1.desc}"></td>
+
+
+                                    <input type="hidden" name="id" value="{$_data1.id}">
+                                    <td><button type="submit" class="btn btn-success btn-outline">确认修改</button></td>
+                                    </form>
+                                </tr>
+                                </volist>
+                            </table>
+                        </div>
+                        <div class="page">{$_page}</div>
+                </div>
+            </div>
+           
+        </div>
+        <div class="row" >
+              <!--  <div class="col-sm-12">
+                    <div class="panel panel-success" id="box">
+                        <div class="panel-heading">
+                               跳转页面管理 <span style=""><a  class="btn btn-danger" onclick="admin_edit('添加页面','{:U('html_add')}','2','800','800')"  style="text-decoration:none">添加页面</a></span>
+
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-striped table-bordered table-hover" id="my-info">
+                                <tr>
+                                    <th>文件名称</th>
+                                    <th>文件位置</th>
+                                    <th>创建时间</th>
+                                    <th>编辑</th>
+                                </tr>
+                                <volist name="file_all" id="file_all">
+                                <tr>
+                                    <td>
+                                        {$file_all.file_name}
+                                    </td>
+                                    <td>
+                                       {$file_all.file_url}
+                                    </td>
+                                    <td>
+                                        {$file_all.create_time|date="Y-m-d H:i:s",###}
+                                    </td>
+                                    
+
+                                    <td>
+                                    <a  class="btn btn-info dim" onclick="admin_edit('预览','{:U('html_view',array('file_name'=>$file_all['file_name']))}','2','800','800')"  style="text-decoration:none">预览</a>
+
+                                            <a href="{:U('html_del',array('file_name'=>$file_all['file_name']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim "><i class="fa fa-times"></i></a>
+                                    </td>
+                                    
+                                </tr>
+                                </volist>
+                            </table>
+                        </div>
+                </div>
+            </div>-->
+           
+        </div>
+        </div>
+</block>

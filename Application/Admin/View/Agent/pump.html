@@ -1,0 +1,115 @@
+<extend name="Public/base"/>
+<block name="body">
+<style>
+    .t1{margin-left: -17px;}
+    .t2{margin-left: -20px;}
+    .t3{margin-left: -160px;}
+    .t4{margin-left: -10px;}
+    .t5{margin-left: -160px;}
+    .t7{margin-left: -125px;}
+    .t8{margin-left: -120px;}
+    .t9{margin-left: -95px;}
+    .t10{margin-left: -80px;}
+    @media (max-width: 768px){
+        .top-menu{margin-left: 0px;}
+        .t6{margin-top: 5px;}
+    }
+</style>
+	<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>抽水分成明细    <!-- &emsp;&emsp;<font color="red">平台抽水总金币数：{$pump}&emsp;&emsp;代理可提现抽水金币数:{$pump_all.pump_money}&emsp;&emsp;代理已提取流水金币数:{$pump_all.pump_pos_money}&emsp;&emsp;已提取流水金币对应人民币：{$pump_all.pump_rmb}.00</font> --></h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                            <div class="col-sm-5 m-b-xs" style="width: 200px;">
+                                <select class="input-sm form-control input-s-sm inline" name="type">
+                                    <option value="0">请选择</option>
+                                    <option value="1">用户ID</option>
+                                    <option value="2">绑定代理账号</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3 top-menu t1" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control" name="search"> <span class="input-group-btn">
+                                  
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t2" style="width: 200px;">
+                                <div class="input-group">
+                                    时间
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t3" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker1" name="start">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t4" style="width: 200px;">
+                                <div class="input-group">
+                                    至
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t5" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker2" name="stop">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t6" style="width: 200px;">
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                </div>
+                            </div>
+                            </form>
+
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>消耗时间</th>
+                                        <th>用户ID</th>
+                                        <th>昵称</th>
+                                        <th>代理级别</th>
+                                        <th>消耗金币数</th>
+                                        <th>消耗金币类型</th>
+                                        <th>绑定邀请码</th>
+                                        <th>绑定代理账号</th>
+                                        <th>绑定代理类型</th>
+                                        <th>一级收益</th>
+                                        <th>二级收益</th>
+                                        <th>三级收益</th>
+                                        <th>平台奖池说收入</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>{$_data.create_time|date='Y-m-d H:i:s',###}</td>
+                                        <td>{$_data.userid}</td>
+                                        <td>{$_data.name}</td>
+                                        <td>{$_data.agent_level|agentlevel}</td>
+                                        <td>{$_data.pump_money|default=0}金币</td>
+                                        <td>{$_data.roomname}</td>
+                                        <td>{$_data.bind_agentid}</td>
+                                        <td>{$_data.bind_agentname}</td>
+                                        <td>{$_data.agent_level|agentlevel}</td>
+                                        <td>{$_data.pump1}</td>
+                                        <td>{$_data.pump2}</td>
+                                        <td>{$_data.pump3}</td>
+                                        <td>{$_data.sr}</td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

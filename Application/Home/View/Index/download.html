@@ -1,0 +1,14 @@
+<extend name="Public/base"/>
+<block name="content">
+  <h3>游戏列表</h3><hr>
+      <volist name="product" id="product">
+        <div style="margin:20px 20px;">
+          <img src="{$product.img_url}" style="width:8%;margin-right: 2%;">
+          <font size="5">{$product.name}</font>
+          <br>
+          <br>
+          <p>游戏介绍：{$product.desc}</p><br>
+          <a class="btn btn-success" href="{$product.link_url}">点击下载</a>
+        </div>
+      </volist>
+</block>

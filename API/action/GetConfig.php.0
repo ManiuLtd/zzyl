@@ -1,0 +1,16 @@
+<?php 
+//获取所有的游戏数据
+$sql = "select * from otherConfig";
+$otherConfig = $db ->getAll($sql);
+$config = [];
+$config = $otherConfig[0];
+$sql ="select * from web_gameconfig where id=1";
+$kefu = $db->getRow($sql);
+$config[$kefu['key']]=$kefu['value'];
+foreach($config as $k => &$v){
+	if($k != 'kefu_phone_1'){
+		$v = (int)$v;
+	}
+}
+exit(return_json($config));
+?>

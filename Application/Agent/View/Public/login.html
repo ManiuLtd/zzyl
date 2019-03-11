@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>代理管理后台</title>
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript">
+        function ajax_post(the){
+            var that = $(the);
+            var url= $(the).attr('action');
+            var cs = $(the).serialize();
+            $.ajax({
+                url:url,
+                data:cs,
+                type:'POST',
+                success: function(data){
+                    if(data.status==1){
+                        layer.msg(data.info);
+                        var timer = setInterval(function(){
+                            clearInterval(timer);
+                            window.location.href=data.url;
+                        },2000);
+                    }else{
+                        layer.msg(data.info);
+                    }
+                }
+            });
+            return false;
+        }
+    </script>
+  </head>
+  <body>
+  <div class="container" style="width: 300px;margin-top: 150px;">
+      <form class="form-signin" action="{:U()}" method="post" onsubmit="return ajax_post(this);">
+        <h3 class="form-signin-heading"><center>代理管理平台</center></h2>
+        <br>
+        <label for="inputEmail" class="sr-only">后台登录账号</label>
+        <input type="text"  class="form-control" placeholder="后台登录账号" name="username" required autofocus>
+        <br>
+        <label for="inputPassword" class="sr-only">后台登录密码</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="后台登录密码" name="password" required>
+        <br>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">登&emsp;录</button>
+      </form>
+    </div> <!-- /container -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/layer/2.4/layer.js"></script>
+  </body>
+</html>

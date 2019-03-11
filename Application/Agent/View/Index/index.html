@@ -1,0 +1,272 @@
+<!-- 
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <title>棋牌运营平台 </title>
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/page/page.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/index.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/index.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/common.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/search.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/mstyle.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/invite.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/common.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/agency.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/information.css">
+    
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/ajax.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/sky.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+<script type="text/javascript">
+      function ajax_post(the){
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                var that = $(the);
+                var url= $(the).attr('action');
+                var cs = $(the).serialize();
+                $.ajax({
+                    url:url,
+                    data:cs,
+                    type:'POST',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                window.location.href=data.url;
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+       //get方法ajax提交
+        function ajax_get(the){
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                var url = $(the).attr('href');
+                $.ajax({
+                    url:url,
+                    type:'GET',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                window.location.href=data.url;
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+
+
+</script>
+
+</head>
+<body>
+
+    <div class="panel panel-index">
+        <div class="nav-wrap">
+            <div class="nav">
+                <a class="home" href="{:U('index/index')}"></a>
+                                <h1>棋牌运营平台</h1>
+            </div>
+        </div>
+         <div class="welcome-wrap">
+            {$headInfoHtml}
+        </div> -->
+            <include file="Public/base"/>
+
+        <div class="dmsg">最新公告：<a href="javascript:;">{$agent_notice}</a></div>
+
+
+        <div class="index-wrap">
+            <div class="list">
+               <div class="item">
+                    <a href="{:U('info')}" >
+                        <span class="icon icon-account"></span>
+                        <span class="txt">基本信息</span>
+                        <i class="tip">邀请码 <b>[{$my.agentid}]</b></i>                    
+                    </a>
+                </div>
+                <?php if (false) { ?>
+                <div class="item">
+                    <a href="{:U('my_ranking')}">
+                        <span class="icon icon-search"></span>
+                        <span class="txt">业绩排名</span>
+                       <!-- <i class="tip"><b>第{$ranks.sort}</b>名</i>      -->
+                    </a>
+                </div>
+                <?php } ?>
+                
+                <div class="item">
+                    <a href="{:U('my_user')}">
+                        <span class="icon icon-agency"></span>
+                        <span class="txt">我的会员</span>
+                       <!-- <i class="tip"><b>{$num}</b>人</i>        -->
+                    </a>
+                </div>
+                
+                <div class="item">
+                    <a href="{:U('my_agent')}">
+                        <span class="icon icon-agency"></span>
+                        <span class="txt">我的下级代理</span>
+                       <!-- <i class="tip"><b>{$agent_num}</b>人</i>-->
+                    </a>
+                </div>
+
+                <?php if (false) { ?>
+                <div class="item">
+                    <a href="{:U('rank_analysis')}">
+                        <span class="icon icon-search"></span>
+                        <span class="txt">业绩分析</span>                   
+                    </a>
+                </div>
+                <?php } ?>
+                 
+                <div class="item">
+                    <a href="{:U('paysearch')}">
+                        <span class="icon icon-search"></span>
+                        <span class="txt">业绩流水</span>
+                    </a>
+                </div>
+                <?php if ($canGrowLow) { ?>
+                <div class="item">
+                    <a href="{:U('Index/agent_inviteplayer')}">
+                        <span class="icon icon-search"></span>
+                        <span class="txt">我的推广二维码</span>
+                    </a>
+                </div>
+                <?php } ?>
+
+                <?php if (false) { ?>
+                <div class="item">
+                    <a href="{:U('ordersearch')}">
+                        <span class="icon icon-search"></span>
+                        <span class="txt">充值查询</span>                   
+                    </a>
+                </div>
+                <?php } ?>
+
+<!--
+                <div class="item">
+                    <a href="{:U('consume_usersearch')}">
+                        <span class="icon icon-search"></span>
+                        <span class="txt">消耗查询</span>
+                    </a>
+                </div>-->
+
+
+                <div class="item">
+                    <a href="{:U('Club/index')}">
+                        <span class="icon icon-agency"></span>
+                        <span class="txt">我的俱乐部</span>
+                    </a>
+                </div>
+
+
+                <div class="item">
+                    <a href="{:U('apply_pos')}">
+                        <span class="icon icon-count-charge"></span>
+                        <span class="txt">提现</span>
+                    </a>
+                </div>
+                
+                <div class="item">
+                    <a onclick="return change_password();">
+                        <span class="icon icon-agency"></span>
+                        <span class="txt">修改密码</span>
+                                          
+                    </a>
+                </div>
+                 
+<!--                 <div class="item">
+                    <a href="{:U('inviteplayer')}">
+                        <span class="icon icon-invite"></span>
+                        <span class="txt">游戏二维码</span>
+                    </a>
+                </div>
+                
+                <div class="item">
+                    <a href="{:U('agent_inviteplayer')}">
+                        <span class="icon icon-invite"></span>
+                        <span class="txt">代理二维码</span>
+                    </a>
+                </div> -->
+
+                <?php if (false) { ?>
+                <div class="item">
+                    <a href="{:U('question')}">
+                        <span class="icon icon-qu"></span>
+                        <span class="txt">举报/反馈</span>
+                    </a>
+                </div>
+                <?php } ?>
+
+                <div class="item">
+                    <a href="{:U('dlgz')}">
+                        <span class="icon icon-qu"></span>
+                        <span class="txt">代理规则</span>
+                    </a>
+                </div>
+ 
+
+                <div class="item">
+                    <a href="{:U('Public/logout')}" onclick="return ajax_get(this);">
+                        <span class="icon icon-rules"></span>
+                        <span class="txt">退出后台</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+                
+
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台</span></p>
+            </div>
+        </div>
+
+
+
+    </div>
+</body>
+ <script type="text/javascript">
+    function change_password(){
+        //页面层
+        layer.open({
+          type: 1,
+          skin: 'layui-layer-rim', //加上边框
+          area: ['300px', '260px'], //宽高
+          content: '<div style="margin-top:10px;"><form class="form-signin" action="{:U('Index/change_password')}" method="post" onsubmit="return ajax_post(this);"><input type="password" id="inputPassword" class="form-control" placeholder="请输入当前密码" name="oldpassword" required><input type="password" style="margin-top:10px;" id="inputPassword" class="form-control" placeholder="新的密码" name="password" required><input style="margin-top:10px;" type="password" id="inputPassword" class="form-control" placeholder="确认密码" name="repassword" required><button style="margin-top:10px;" class="btn btn-lg btn-primary btn-block" type="submit">确认修改</button></form></div>'
+        });
+    }
+  </script>
+</html>

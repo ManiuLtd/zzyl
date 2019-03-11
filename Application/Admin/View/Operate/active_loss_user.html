@@ -1,0 +1,150 @@
+<extend name="Public/base"/>
+<block name="body">
+        <style>
+        @media (max-width: 768px){
+          /*.panel-body{border:2px solid red;}*/
+          .ibox{width: 1000px;}
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>活跃玩家与流失玩家数</h5>
+                    </div>
+                    <div class="ibox-content" style="">
+                    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                    <div id="main" style="height:400px;width: 60%;margin:20px auto;" ></div>
+                  <!--  <div id="main2" style="height:400px;width: 60%;margin:20px auto;" ></div> -->
+                        <!-- ECharts单文件引入 -->
+                        <script src="__PUBLIC__/echarts/echarts.js"></script>
+                        <script type="text/javascript">
+                               // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        option = {
+    title: {
+        text: '日统计图'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['活跃玩家','流失玩家']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ["{$data7[0]['date']}","{$data7[1]['date']}","{$data7[2]['date']}","{$data7[3]['date']}","{$data7[4]['date']}","{$data7[5]['date']}","{$data7[6]['date']}",]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+       {
+            name:'活跃玩家',
+            type:'line',
+            stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top'
+                }
+            },
+
+            data:["{$data7[0]['active_count']}","{$data7[1]['active_count']}","{$data7[2]['active_count']}","{$data7[3]['active_count']}","{$data7[4]['active_count']}","{$data7[5]['active_count']}","{$data7[6]['active_count']}",]
+        },
+        {
+            name:'流失玩家',
+            type:'line',
+            stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top'
+                }
+            },
+
+            data:["{$data7[0]['loss_count']}","{$data7[1]['loss_count']}","{$data7[2]['loss_count']}","{$data7[3]['loss_count']}","{$data7[4]['loss_count']}","{$data7[5]['loss_count']}","{$data7[6]['loss_count']}",]
+        },
+    ]
+};
+       
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+
+          // 基于准备好的dom，初始化echarts实例
+        var myChart2 = echarts.init(document.getElementById('main2'));
+
+        // 指定图表的配置项和数据
+        var option = {
+    title: {
+        text: '月统计图'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['活跃玩家','流失玩家']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ["{$data12[0]['date']}","{$data12[1]['date']}","{$data12[2]['date']}","{$data12[3]['date']}","{$data12[4]['date']}","{$data12[5]['date']}","{$data12[6]['date']}","{$data12[7]['date']}","{$data12[8]['date']}","{$data12[9]['date']}","{$data12[10]['date']}","{$data12[11]['date']}",]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name:'活跃玩家',
+            type:'line',
+            stack: '总量',
+            data:["{$data12[0]['active_count']}","{$data12[1]['active_count']}","{$data12[2]['active_count']}","{$data12[3]['active_count']}","{$data12[4]['active_count']}","{$data12[5]['active_count']}","{$data12[6]['active_count']}","{$data12[7]['active_count']}","{$data12[8]['active_count']}","{$data12[9]['active_count']}","{$data12[10]['active_count']}","{$data12[11]['active_count']}",],
+
+        },
+        {
+            name:'流失玩家',
+            type:'line',
+            stack: '总量',
+            data:["{$data12[0]['loss_count']}","{$data12[1]['loss_count']}","{$data12[2]['loss_count']}","{$data12[3]['loss_count']}","{$data12[4]['loss_count']}","{$data12[5]['loss_count']}","{$data12[6]['loss_count']}","{$data12[7]['loss_count']}","{$data12[8]['loss_count']}","{$data12[9]['loss_count']}","{$data12[10]['loss_count']}","{$data12[11]['loss_count']}",],
+            
+        },
+       
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart2.setOption(option);
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

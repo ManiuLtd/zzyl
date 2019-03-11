@@ -1,0 +1,82 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        .t2 {
+            width: 6%;
+            margin-left: -20px;
+        }
+
+        @media (max-width: 768px) {
+            /*.panel-body{border:2px solid red;}*/
+            .t1 {
+                margin-left: 0px;
+            }
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>公告管理</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <div class="col-sm-3" style="width:100px;margin-left:0px;">
+                                <div class="input-group">
+                                    <a href="javascript:;" class="btn btn-sm btn-success"
+                                       onclick="admin_edit('发布公告','{:U('send_notice')}','2','600','600')"
+                                       style="text-decoration:none"> 发布公告</a>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 t1 t2">
+                                <form action="{:U('notice_del')}" method="post" onsubmit="return ajax_post(this);">
+                                    <div class="input-group">
+                                        <button type="submit" class="btn btn-sm btn-danger"> 批量删除</button>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th><input type="checkbox" value="" class="chkall"></th>
+                                    <th>公告标题</th>
+                                    <th>公告内容</th>
+                                    <th>播放间隔(秒)</th>
+                                    <th>播放次数(秒)</th>
+                                    <th>公告发送时间</th>
+                                    <th>公告结束时间</th>
+                                    <th>公告类型</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" value="{$_data.id}" name="id[]">
+                                        </td>
+                                        <td>{$_data.title}</td>
+                                        <td>{$_data.content}</td>
+                                        <td>{$_data.interval}</td>
+                                        <td>{$_data.times}</td>
+                                        <td>{$_data.begin_time|date="Y-m-d H:i:s",###}</td>
+                                        <td>{$_data.end_time|date="Y-m-d H:i:s",###}</td>
+                                        <td>{$_data.type_name}</td>
+                                        <td>
+                                            <a href="{:U('notice_del',array('id'=>$_data['id']))}"
+                                               onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim ">删除</i></a>
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

@@ -1,0 +1,161 @@
+<extend name="Public/base"/>
+<block name="body">
+<style>
+        .t1{margin-left: -17px;}
+        .t2{margin-left: -17px;}
+        .t3{margin-left: -20px;}
+        .t4{margin-left: -5px;}
+        .t5{margin-left: -10px;}
+        .t7{margin-left: -40px;}
+        .t8{margin-left: -30px;}
+        .t9{margin-left: -30px;}
+        @media (max-width: 768px){
+            .top-menu{margin-left: 0px;}
+            .t6{margin-top: 5px;}
+        }
+    .input-group a{
+        color: #ffffff;
+    }
+
+    .layui-layer-input{
+        width: 300px;
+        height: 250px;
+    }
+</style>
+	<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5><if condition="($status eq '')">反馈(未处理)<elseif condition="($status eq 1)"/>反馈(已处理)</if></h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                            <div class="col-sm-5 m-b-xs" style="width: 150px;">
+                                <select class="input-sm form-control input-s-sm inline" name="type">
+                                    <option value="0">请选择</option>
+                                    <option value="1">游戏ID</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3 top-menu t1" style="width: 200px;">
+                                <div class="input-group">
+                                <input type="hidden" name="status" value="<?php echo $_GET['status']?$_GET['status']:0;?>">
+                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control" name="search"> <span class="input-group-btn">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t2" style="width:100px;">
+                                <div class="input-group">
+                                    申请时间
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t3" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker1" name="start">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t4" style="width:50px;">
+                                <div class="input-group">
+                                    至
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t5" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker2" name="stop">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t6" style="width: 100px;">
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                </div>
+                            </div>
+                            </form>
+                            <div class="col-sm-3 top-menu t7" style="width:100px;">
+                                <div class="input-group">
+                                   <a href="{:U('',array('status'=>1))}" class="btn btn-sm btn-danger" >未处理</a>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t8" style="width:100px;">
+                                <div class="input-group">
+                                   <a href="{:U('',array('status'=>2))}" class="btn btn-sm btn-success" >已处理</a>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t9" style="width: 100px;">
+                            <form action="{:U('examine_pass')}" method="post" onsubmit="return ajax_post(this);" >
+
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+
+                                        <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Agentapplypos"><input type="hidden" name="status" value="1"></th>
+                                        <th>ID</th>
+                                        <th>游戏ID</th>
+                                        <th>标题</th>
+                                        <th>内容</th>
+                                        <th>反馈时间</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" value="{$_data.id}" name="id[]">
+                                        </td>
+                                        <td>{$_data.id}</td>
+                                        <td>{$_data.userid}</td>
+                                        <td>{$_data.title}</td>
+                                        <td>{$_data.content}</td>
+                                        <td>{$_data.time|date="Y-m-d H:i:s",###}</td>
+                                        <td>
+                                            <if condition="$_data['status']==1">
+                                                未处理
+                                                <else/>
+                                                已处理
+                                            </if>
+                                        </td>
+                                        <td>
+                                        <if condition="$_data['status']==1">
+                                            <a href="javascript:;" class="btn btn-sm btn-success" onclick="reply({$_data['id']})"> 回复</a>
+                                        </if>
+                                        </td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                        <script>
+                            function reply(id) {
+                                layer.prompt({
+                                    title: '亲输入回复内容',
+                                    formType: 2
+                                }, function(pass, index){
+                                    $.ajax({
+                                        url:"{:U('reply')}",
+                                        data:{id:id,pass:pass},
+                                        type:'post',
+                                        dataType:'json',
+                                        success:function (rec) {
+                                            layer.confirm(rec.msg, {
+                                                btn: ['确定'] //按钮
+                                            }, function(){
+                                                location.reload();
+                                            });
+                                        }
+                                    })
+                                    layer.close(index);
+                                });
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

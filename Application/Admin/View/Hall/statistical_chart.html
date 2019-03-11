@@ -1,0 +1,1198 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        @media (max-width: 768px) {
+            .ibox {
+                width: 1000px;
+            }
+        }
+    </style>
+    <?php $is_show_jewels = C('IS_SHOW_JEWELS');?>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <!--签到数据统计-->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>签到数据统计</h5>
+                    </div>
+                    <div class="ibox-content" style="">
+                        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                        <div id="main" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div id="main2" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div style="width: 60%;margin:30px auto;">
+                            <h3><font color="black">签到数据</font></h3>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>签到总次数：<font color="red">{$sign_count|default=0}</font>
+                                    </h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>累计签到金币数：<font
+                                            color="red">{$sign_all_money|default=0}</font></h4><
+                                            <if condition="1 == $is_show_jewels">/td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>累计签到钻石数：<font
+                                            color="red">{$sign_all_jewels|default=0}</font></h4></td>
+                                        </if>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户签到最多次数：<font
+                                            color="red">{$sign_max_user_count|default=0}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户签到累计获得最多金币：<font
+                                            color="red">{$sign_user_max_money|default=0}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户签到累计获得最多钻石：<font
+                                            color="red">{$sign_user_max_jewels|default=0}</font></h4></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>签到最多次数用户ID：<font
+                                            color="red">{$sign_max_user_id|default="还没有人签到"}</font></h4></td>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--分享数据统计-->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>分享数据统计</h5>
+                    </div>
+                    <div class="ibox-content" style="">
+                        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                        <div id="main3" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div id="main4" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div style="width: 60%;margin:30px auto;">
+                            <h3><font color="black">分享数据</font></h3>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>分享总次数：<font color="red">{$share_count|default=0}</font>
+                                    </h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>累计分享金币数：<font
+                                            color="red">{$share_all_money|default=0}</font></h4><
+                                            <if condition="1 == $is_show_jewels">/td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>累计分享钻石数：<font
+                                            color="red">{$share_all_jewels|default=0}</font></h4></td>
+                                        </if>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户分享最多次数：<font
+                                            color="red">{$share_max_user_count|default=0}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户分享累计获得最多金币：<font
+                                            color="red">{$share_user_max_money|default=0}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户分享累计获得最多钻石：<font
+                                            color="red">{$share_user_max_jewels|default=0}</font></h4></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>分享最多次数用户ID：<font
+                                            color="red">{$share_max_user_id|default="还没有人分享"}</font></h4></td>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--救济金数据统计-->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>救济金数据统计</h5>
+                    </div>
+                    <div class="ibox-content" style="">
+                        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                        <div id="main5" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div id="main6" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div style="width: 60%;margin:30px auto;">
+                            <h3><font color="black">救济金数据</font></h3>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>领取救济金总次数：<font
+                                            color="red">{$support_count|default=0}</font>
+                                    </h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>累计领取金币数：<font
+                                            color="red">{$support_all_money|default=0}</font></h4></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户领取救济金最多次数：<font
+                                            color="red">{$support_max_user_count|default=0}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户领取救济金累计获得最多金币：<font
+                                            color="red">{$support_user_max_money|default=0}</font></h4></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>领取救济金最多次数用户ID：<font
+                                            color="red">{$support_max_user_id|default="还没有人领取救济金"}</font></h4></td>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--转增数据统计-->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>转赠数据统计</h5>
+                    </div>
+                    <div class="ibox-content" style="">
+                        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                        <div id="main7" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div id="main8" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div style="width: 60%;margin:30px auto;">
+                            <h3><font color="black">转赠数据</font></h3>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>转赠总次数：<font color="red">{$give_count|default=0}</font>
+                                    </h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>累计转赠金币数：<font
+                                            color="red">{$give_all_money|default=0}</font></h4><
+                                            <if condition="1 == $is_show_jewels">/td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>累计转赠钻石数：<font
+                                            color="red">{$give_all_jewels|default=0}</font></h4></td>
+                                        </if>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户转赠最多次数：<font
+                                            color="red">{$give_max_user_count|default=0}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户累计转赠最多金币：<font
+                                            color="red">{$give_user_max_money|default=0}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户累计转赠最多钻石：<font
+                                            color="red">{$give_user_max_jewels|default=0}</font></h4></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>转赠最多次数用户ID：<font
+                                            color="red">{$give_max_user_id|default="还没有人转赠"}</font></h4></td>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--抽奖数据统计-->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>抽奖数据统计</h5>
+                    </div>
+                    <div class="ibox-content" style="">
+                        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                        <div id="main9" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div id="main10" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div style="width: 60%;margin:30px auto;">
+                            <h3><font color="black">抽奖数据</font></h3>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>抽奖总次数：<font color="red">{$turn_count|default=0}</font>
+                                    </h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>累计抽奖金币数：<font
+                                            color="red">{$turn_all_money|default=0}</font></h4><
+                                            <if condition="1 == $is_show_jewels">/td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>累计抽奖钻石数：<font
+                                            color="red">{$turn_all_jewels|default=0}</font></h4></td>
+                                        </if>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户抽奖最多次数：<font
+                                            color="red">{$turn_max_user_count|default=0}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户累计抽奖最多金币：<font
+                                            color="red">{$turn_user_max_money|default=0}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户累计抽奖最多钻石：<font
+                                            color="red">{$turn_user_max_jewels|default=0}</font></h4></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>抽奖最多次数用户ID：<font
+                                            color="red">{$turn_max_user_id|default="还没有人抽奖"}</font></h4></td>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--世界广播数据统计-->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>世界广播数据统计</h5>
+                    </div>
+                    <div class="ibox-content" style="">
+                        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                        <div id="main11" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div id="main12" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div style="width: 60%;margin:30px auto;">
+                            <h3><font color="black">世界广播数据</font></h3>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>世界广播总次数：<font
+                                            color="red">{$horn_count|default=0}</font>
+                                    </h4></td>
+                                    <if condition="1 == $is_show_jewels">
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>累计发送世界广播消耗钻石数：<font
+                                            color="red">{$horn_all_cost|default=0}</font></h4></td>
+                                        </if>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户发送世界广播最多次数：<font
+                                            color="red">{$horn_max_user_count|default=0}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户累计发送世界广播消耗最多钻石：<font
+                                            color="red">{$horn_user_max_cost|default=0}</font></h4></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>世界广播最多次数用户ID：<font
+                                            color="red">{$horn_max_user_id|default="还没有人发送世界广播"}</font></h4></td>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--反馈数据统计-->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>反馈数据统计</h5>
+                    </div>
+                    <div class="ibox-content" style="">
+                        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                        <div id="main13" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div id="main14" style="height:400px;width: 60%;margin:20px auto;"></div>
+                        <div style="width: 60%;margin:30px auto;">
+                            <h3><font color="black">反馈数据</font></h3>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>反馈总次数：<font color="red">{$feed_count}</font>
+                                    </h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>已处理反馈：<font color="red">{$feed_close_count}</font>
+                                    </h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>未处理反馈：<font color="red">{$feed_no_close_count}</font>
+                                    </h4></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>单个用户反馈最多次数：<font
+                                            color="red">{$feed_max_user_count}</font></h4></td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>反馈次数最多用户ID：<font
+                                            color="red">{$feed_max_user_id}</font></h4></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- ECharts单文件引入 -->
+    <script src="__PUBLIC__/echarts/echarts.js"></script>
+    <script type="text/javascript">
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        // 指定图表的配置项和数据
+
+        var week = ["{$data7[0]}", "{$data7[1]}", "{$data7[2]}", "{$data7[3]}", "{$data7[4]}", "{$data7[5]}"
+            , "{$data7[6]}",];
+
+        var year = ["{$data12[0]}", "{$data12[1]}", "{$data12[2]}", "{$data12[3]}", "{$data12[4]}", "{$data12[5]}"
+            , "{$data12[6]}", "{$data12[7]}", "{$data12[8]}", "{$data12[9]}", "{$data12[10]}", "{$data12[11]}",];
+
+        option = {
+            title: {
+                text: '签到7天数据统计图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['签到增加金币数', '签到增加钻石数']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: week
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '签到增加金币数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'left'
+                        }
+                    },
+                    data: ["{$sign_data7['money'][0]}", "{$sign_data7['money'][1]}", "{$sign_data7['money'][2]}", "{$sign_data7['money'][3]}", "{$sign_data7['money'][4]}", "{$sign_data7['money'][5]}", "{$sign_data7['money'][6]}",]
+
+                },
+                {
+                    name: '签到增加钻石数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'right'
+                        }
+                    },
+                    data: ["{$sign_data7['jewels'][0]}", "{$sign_data7['jewels'][1]}", "{$sign_data7['jewels'][2]}", "{$sign_data7['jewels'][3]}", "{$sign_data7['jewels'][4]}", "{$sign_data7['jewels'][5]}", "{$sign_data7['jewels'][6]}",]
+
+                },
+            ]
+        };
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        // 基于准备好的dom，初始化echarts实例
+        var myChart2 = echarts.init(document.getElementById('main2'));
+
+        // 指定图表的配置项和数据
+        var option2 = {
+            title: {
+                text: '签到12月数据统计图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['签到增加金币数', '签到增加钻石数']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: year
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '签到增加金币数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'left'
+                        }
+                    },
+
+                    data: ["{$sign_data12['money'][0]}", "{$sign_data12['money'][1]}", "{$sign_data12['money'][2]}", "{$sign_data12['money'][3]}", "{$sign_data12['money'][4]}", "{$sign_data12['money'][5]}"
+                        , "{$sign_data12['money'][6]}", "{$sign_data12['money'][7]}", "{$sign_data12['money'][8]}", "{$sign_data12['money'][9]}", "{$sign_data12['money'][10]}", "{$sign_data12['money'][11]}",]
+
+                },
+                {
+                    name: '签到增加钻石数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'right'
+                        }
+                    },
+                    data: ["{$sign_data12['jewels'][0]}", "{$sign_data12['jewels'][1]}", "{$sign_data12['jewels'][2]}", "{$sign_data12['jewels'][3]}", "{$sign_data12['jewels'][4]}", "{$sign_data12['jewels'][5]}"
+                        , "{$sign_data12['jewels'][6]}", "{$sign_data12['jewels'][7]}", "{$sign_data12['jewels'][8]}", "{$sign_data12['jewels'][9]}", "{$sign_data12['jewels'][10]}", "{$sign_data12['jewels'][11]}",]
+
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart2.setOption(option2);
+
+
+        //分享统计
+        var myChart3 = echarts.init(document.getElementById('main3'));
+        // 指定图表的配置项和数据
+        var option3 = {
+            title: {
+                text: '分享7天数据统计图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['最近7天分享次数']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: week
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '最近7天分享次数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    },
+                    data: ["{$share_data7['count'][0]}", "$share_data7['count'][1]}", "$share_data7['count'][2]}", "$share_data7['count'][3]}", "$share_data7['count'][4]}", "$share_data7['count'][5]}"
+                        , "$share_data7['count'][6]}",]
+
+                },
+
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart3.setOption(option3);
+
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart4 = echarts.init(document.getElementById('main4'));
+        // 指定图表的配置项和数据
+        var option4 = {
+            title: {
+                text: '分享12月数据统计图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['最近12个月分享次数',]
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: year
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '最近12个月分享次数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    },
+                    data: ["{$share_data12['count'][0]}", "$share_data12['count'][1]}", "$share_data12['count'][2]}", "$share_data12['count'][3]}", "$share_data12['count'][4]}", "$share_data12['count'][5]}"
+                        , "$share_data12['count'][6]}", "$share_data12['count'][7]}", "$share_data12['count'][8]}", "$share_data12['count'][9]}", "$share_data12['count'][10]}", "$share_data12['count'][11]}",]
+                }
+
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart4.setOption(option4);
+
+        //领取救济金
+        // 基于准备好的dom，初始化echarts实例
+        var myChart5 = echarts.init(document.getElementById('main5'));
+
+        // 指定图表的配置项和数据
+        option5 = {
+            title: {
+                text: '救济金7天数据统计图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['领取金币数']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: week
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '领取总数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    },
+
+                    data: ["{$support_data7['money'][0]}", "{$support_data7['money'][1]}", "{$support_data7['money'][2]}", "{$support_data7['money'][3]}", "{$support_data7['money'][4]}", "{$support_data7['money'][5]}"
+                        , "{$support_data7['money'][6]}",]
+
+                },
+            ]
+        };
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart5.setOption(option5);
+
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart6 = echarts.init(document.getElementById('main6'));
+
+        // 指定图表的配置项和数据
+        var option6 = {
+            title: {
+                text: '救济金12月数据统计图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['领取金币数']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: year
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '领取总数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    },
+                    data: ["{$support_data12['money'][0]}", "{$support_data12['money'][1]}", "{$support_data12['money'][2]}", "{$support_data12['money'][3]}", "{$support_data12['money'][4]}", "{$support_data12['money'][5]}"
+                        , "{$support_data12['money'][6]}", "{$support_data12['money'][7]}", "{$support_data12['money'][8]}", "{$support_data12['money'][9]}", "{$support_data12['money'][10]}", "{$support_data12['money'][11]}",]
+
+                },
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart6.setOption(option6);
+
+
+        var myChart7 = echarts.init(document.getElementById('main7'));
+
+        // 指定图表的配置项和数据
+        option7 = {
+            title: {
+                text: '转赠7天数据统计图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['转赠金币数', '转赠钻石数',]
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: week
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '转赠金币数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'left'
+                        }
+                    },
+                    data: ["{$give_data7['money'][0]}", "{$give_data7['money'][1]}", "{$give_data7['money'][2]}", "{$give_data7['money'][3]}", "{$give_data7['money'][4]}", "{$give_data7['money'][5]}"
+                        , "{$give_data7['money'][6]}",]
+
+                },
+                {
+                    name: '转赠钻石数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'right'
+                        }
+                    },
+                    data: ["{$give_data7['jewels'][0]}", "{$give_data7['jewels'][1]}", "{$give_data7['jewels'][2]}", "{$give_data7['jewels'][3]}", "{$give_data7['jewels'][4]}", "{$give_data7['jewels'][5]}"
+                        , "{$give_data7['jewels'][6]}",]
+
+                },
+            ]
+        };
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart7.setOption(option7);
+
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart8 = echarts.init(document.getElementById('main8'));
+
+        // 指定图表的配置项和数据
+        var option8 = {
+            title: {
+                text: '转赠12月数据统计图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['转赠金币数', '转赠钻石数']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: year
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '转赠金币数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'left'
+                        }
+                    },
+                    data: ["{$give_data12['money'][0]}", "{$give_data12['money'][1]}", "{$give_data12['money'][2]}", "{$give_data12['money'][3]}", "{$give_data12['money'][4]}", "{$give_data12['money'][5]}"
+                        , "{$give_data12['money'][6]}", "{$give_data12['money'][7]}", "{$give_data12['money'][8]}", "{$give_data12['money'][9]}", "{$give_data12['money'][10]}", "{$give_data12['money'][11]}",]
+                },
+                {
+                    name: '转赠钻石数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'right'
+                        }
+                    },
+                    data: ["{$give_data12['jewels'][0]}", "{$give_data12['jewels'][1]}", "{$give_data12['jewels'][2]}", "{$give_data12['jewels'][3]}", "{$give_data12['jewels'][4]}", "{$give_data12['jewels'][5]}"
+                        , "{$give_data12['jewels'][6]}", "{$give_data12['jewels'][7]}", "{$give_data12['jewels'][8]}", "{$give_data12['jewels'][9]}", "{$give_data12['jewels'][10]}", "{$give_data12['jewels'][11]}",]
+                },
+
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart8.setOption(option8);
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart9 = echarts.init(document.getElementById('main9'));
+
+        // 指定图表的配置项和数据
+        option9 = {
+            title: {
+                text: '抽奖7天数据统计图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['抽奖增加金币数', '抽奖增加钻石数']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: week
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '抽奖增加金币数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'left'
+                        }
+                    },
+                    data: ["{$turn_data7['money'][0]}", "{$turn_data7['money'][1]}", "{$turn_data7['money'][2]}", "{$turn_data7['money'][3]}", "{$turn_data7['money'][4]}", "{$turn_data7['money'][5]}"
+                        , "{$turn_data7['money'][6]}",]
+                },
+                {
+                    name: '抽奖增加钻石数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'right'
+                        }
+                    },
+                    data: ["{$turn_data7['jewels'][0]}", "{$turn_data7['jewels'][1]}", "{$turn_data7['jewels'][2]}", "{$turn_data7['jewels'][3]}", "{$turn_data7['jewels'][4]}", "{$turn_data7['jewels'][5]}"
+                        , "{$turn_data7['jewels'][6]}",]
+                },
+            ]
+        };
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart9.setOption(option9);
+
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart10 = echarts.init(document.getElementById('main10'));
+
+        // 指定图表的配置项和数据
+        var option10 = {
+            title: {
+                text: '抽奖12月数据统计图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['抽奖增加金币数', '抽奖增加钻石数']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: year
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '抽奖增加金币数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'left'
+                        }
+                    },
+
+                    data: ["{$turn_data12['money'][0]}", "{$turn_data12['money'][1]}", "{$turn_data12['money'][2]}", "{$turn_data12['money'][3]}", "{$turn_data12['money'][4]}", "{$turn_data12['money'][5]}"
+                        , "{$turn_data12['money'][6]}", "{$turn_data12['money'][7]}", "{$turn_data12['money'][8]}", "{$turn_data12['money'][9]}", "{$turn_data12['money'][10]}", "{$turn_data12['money'][11]}",]
+
+                },
+                {
+                    name: '抽奖增加钻石数',
+                    type: 'line',
+                    stack: '总量',
+
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'right'
+                        }
+                    },
+                    data: ["{$turn_data12['jewels'][0]}", "{$turn_data12['jewels'][1]}", "{$turn_data12['jewels'][2]}", "{$turn_data12['jewels'][3]}", "{$turn_data12['jewels'][4]}", "{$turn_data12['jewels'][5]}"
+                        , "{$turn_data12['jewels'][6]}", "{$turn_data12['jewels'][7]}", "{$turn_data12['jewels'][8]}", "{$turn_data12['jewels'][9]}", "{$turn_data12['jewels'][10]}", "{$turn_data12['jewels'][11]}",]
+
+                },
+
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart10.setOption(option10);
+
+        //        时间广播
+        var myChart11 = echarts.init(document.getElementById('main11'));
+
+        // 指定图表的配置项和数据
+        option11 = {
+            title: {
+                text: '世界广播7天数据统计图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['发送总数', '累计消耗钻石数']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: week
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '发送总数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'left'
+                        }
+                    },
+                    data: ["{$horn_data7['count'][0]}", "{$horn_data7['count'][1]}", "{$horn_data7['count'][2]}", "{$horn_data7['count'][3]}", "{$horn_data7['count'][4]}", "{$horn_data7['count'][5]}"
+                        , "{$horn_data7['count'][6]}",]
+                },
+                {
+                    name: '累计消耗钻石数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'left'
+                        }
+                    },
+                    data: ["{$horn_data7['cost'][0]}", "{$horn_data7['cost'][1]}", "{$horn_data7['cost'][2]}", "{$horn_data7['cost'][3]}", "{$horn_data7['cost'][4]}", "{$horn_data7['cost'][5]}"
+                        , "{$horn_data7['cost'][6]}",]
+                }
+
+            ]
+        };
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart11.setOption(option11);
+
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart12 = echarts.init(document.getElementById('main12'));
+
+        // 指定图表的配置项和数据
+        var option12 = {
+            title: {
+                text: '世界广播12月数据统计图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['发送次数', '累计消耗钻石数']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: year
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '发送次数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    },
+                    data: ["{$horn_data12['count'][0]}", "{$horn_data12['count'][1]}", "{$horn_data12['count'][2]}", "{$horn_data12['count'][3]}", "{$horn_data12['count'][4]}", "{$horn_data12['count'][5]}"
+                        , "{$horn_data12['count'][6]}", "{$horn_data12['count'][7]}", "{$horn_data12['count'][8]}", "{$horn_data12['count'][9]}", "{$horn_data12['count'][10]}", "{$horn_data12['count'][11]}",]
+
+                }, {
+                    name: '累计消耗钻石数',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'bottom'
+                        }
+                    },
+                    data: ["{$horn_data12['cost'][0]}", "{$horn_data12['cost'][1]}", "{$horn_data12['cost'][2]}", "{$horn_data12['cost'][3]}", "{$horn_data12['cost'][4]}", "{$horn_data12['cost'][5]}"
+                        , "{$horn_data12['cost'][6]}", "{$horn_data12['cost'][7]}", "{$horn_data12['cost'][8]}", "{$horn_data12['cost'][9]}", "{$horn_data12['cost'][10]}", "{$horn_data12['cost'][11]}",]
+
+                },
+
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart12.setOption(option12);
+
+        var myChart13 = echarts.init(document.getElementById('main13'));
+
+        // 指定图表的配置项和数据
+        var option13 = {
+            title: {
+                text: '反馈7天数据统计图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['最近7天反馈数量',]
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: week
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '最近7天反馈数量',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    },
+                    data: ["{$feed_data7['count'][0]}", "{$feed_data7['count'][1]}", "{$feed_data7['count'][2]}", "{$feed_data7['count'][3]}", "{$feed_data7['count'][4]}", "{$feed_data7['count'][5]}"
+                        , "{$feed_data7['count'][6]}",]
+                },
+
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart13.setOption(option13);
+
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart14 = echarts.init(document.getElementById('main14'));
+
+        // 指定图表的配置项和数据
+        var option14 = {
+            title: {
+                text: '反馈12月数据统计图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['最近12个月反馈数量',]
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: year
+
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '最近12个月反馈数量',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    },
+                    data: ["{$feed_data12['count'][0]}", "{$feed_data12['count'][1]}", "{$feed_data12['count'][2]}", "{$feed_data12['count'][3]}", "{$feed_data12['count'][4]}", "{$feed_data12['count'][5]}"
+                        , "{$feed_data12['count'][6]}", "{$feed_data12['count'][7]}", "{$feed_data12['count'][8]}", "{$feed_data12['count'][9]}", "{$feed_data12['count'][10]}", "{$feed_data12['count'][11]}",]
+
+                },
+
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart14.setOption(option14);
+
+    </script>
+
+</block>

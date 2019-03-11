@@ -1,0 +1,131 @@
+<include file="Public/base"/>
+        <div class="search-wrap">
+			      <div class="tab-container">
+				<div class="tab-nav">
+					<a href="" class="on">vip房间管理</a>
+				</div>
+            </div>
+						            <div class="search-condition">
+
+
+                <div class="item">
+                              <div class="table-responsive">
+                                  <table class="table table-bordered" style="width: 100%">
+                                    <thead>
+                                      <tr>
+                                        <th>房间号</th>
+                                        <th>房间密码</th>
+                                        <th>所属游戏</th>
+                                        <th>房间失效时间</th>
+                                        <th>房间创建时间</th>
+                                        <th>房间状态</th>
+                                        <th>管理结束时间</th>
+                                        <th>管理状态</th>
+                                        <th>修改密码</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                    <volist name="_data" id="_data">
+                                      <tr>
+                                        <th scope="row">{$_data.roomid}</th>
+                                        <td>{$_data.roompassword}</td>
+                                        <td>{$_data.game}</td>
+                                        <td>{$_data.roomendtime|date="Y-m-d H:i:s",###}</td>
+                                        <td>{$_data.createtime|date="Y-m-d H:i:s",###}</td>
+                                        <td>
+                                          <?php 
+                                            if(time() < $_data['roomendtime']){
+                                              echo "<font color='green'>正常</font>";
+                                            }else{
+                                              echo "<font color='red'>已过期</font>";
+                                            }
+                                          ?>
+                                        </td>
+                                        <td>
+                                          {$_data.bindendtime|date="Y-m-d H:i:s",###}
+                                        </td>
+                                        <td>
+                                        <?php
+                                          if(time()<$_data['bindendtime']){
+                                            echo "<font color='green'>正常</font>";
+                                          }else{
+                                              echo "<font color='red'>已过期</font>";
+                                            }
+                                        ?>
+                                        </td>
+                                        <td>
+                                          <if condition="($_data.canchangepassword eq 0)">
+                                            <font color="red">无权限</font>
+                                          <else/>
+                                          <a onclick="admin_edit('编辑房间','{:U('change_room_password',array('id'=>$_data['id']))}','2','500','200')"  style="text-decoration:none;" class="btn btn-outline btn-info  dim ">编辑</i></a>
+                                          </if>
+                                        </td>
+                                      </tr>
+                                      </volist>
+                                    </tbody>
+                                  </table>
+                                </div><!-- /.table-responsive -->
+                   
+{$_page}
+				    </div>
+            </div>
+        </div>
+<script type="text/javascript" src="__PUBLIC__/newadmin/js/ajax.js"></script>
+<script src="__PUBLIC__/newadmin/js/ajaxfileupload.js"></script>
+
+
+<script>
+
+
+</script>
+
+
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>旺旺棋牌运营平台<!--<br>微信客服：wwdbqp--></span></p>
+            </div>
+        </div>
+<link rel="stylesheet" href="__PUBLIC__/newadmin/css/agency.css">
+
+<style>
+.tipp { color: grey; font-size: 0.24rem;line-height: 1.4; }
+</style>
+
+<div class="popup popup-agency-confirm" id="tipbody" style="display: none;width:380px;">
+	<a href="javascript:;" class="popup-btn-close" onclick="closemsg();"></a>
+	<div class="main">
+		<div class="tip">
+			<p id="tipcontent"></p>
+		</div>
+		<div class="btns">
+			<a href="javascript:;" class="btn-ok" id="btn-ok" onclick="closemsg();">确认</a>
+		</div>
+	</div>
+</div>
+<div class="popup-mask" id="tipdiv" style="display: none;"></div>	
+
+<script>
+function showmsg($msg) {
+	$("#tipcontent").html($msg);
+	$('#tipbody').fadeIn();
+	$('#tipdiv').fadeIn();
+}
+function closemsg() {
+	$('#tipbody').fadeOut();
+	$('#tipdiv').fadeOut();
+}
+function checkSdata(obj, sdate) {
+	if (CompareDate(sdate,obj.value))
+	{
+		obj.value = sdate;
+	}
+}
+function CompareDate(d1,d2)
+{
+  return ((new Date(d1.replace(/-/g,"\/"))) > (new Date(d2.replace(/-/g,"\/"))));
+}
+</script>
+
+    </div>
+
+</body></html>

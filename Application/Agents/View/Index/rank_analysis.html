@@ -1,0 +1,145 @@
+<include file="Public/base"/>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+ <div class="table-responsive">
+      <table class="table table-bordered" style="width: 100%">
+        <thead>
+          <tr>
+            <th>最近七天业绩图</th>
+          </tr>
+
+          <tr>
+          	<td> <div id="main" style="height:200px;width:90%;" ></div></td>
+          </tr>
+        </thead>
+        <tbody>
+         
+        </tbody>
+      </table>
+    </div><!-- /.table-responsive --> 
+
+
+
+ <div class="table-responsive">
+      <table class="table table-bordered" style="width: 100%">
+        <thead>
+          <tr>
+            <th>最近十个月业绩图</th>
+          </tr>
+
+          <tr>
+          	<td><div id="main2" style="height:200px;width:90%;"></div></td>
+          </tr>
+        </thead>
+        <tbody>
+         
+        </tbody>
+      </table>
+    </div><!-- /.table-responsive --> 
+
+
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台</span></p>
+            </div>
+        </div>
+    </div>
+<script src="__PUBLIC__/echarts/echarts.js"></script>
+<script type="text/javascript">
+	
+ var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+    title: {
+        text: '日统计图'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['最近7天业绩额度',]
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ["{$data7[0]['date']}","{$data7[1]['date']}","{$data7[2]['date']}","{$data7[3]['date']}","{$data7[4]['date']}","{$data7[5]['date']}","{$data7[6]['date']}",]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name:'最近7天业绩额度',
+            type:'line',
+            stack: '总量',
+            data:["{$data7[0]['num']}","{$data7[1]['num']}","{$data7[2]['num']}","{$data7[3]['num']}","{$data7[4]['num']}","{$data7[5]['num']}","{$data7[6]['num']}",]
+        },
+       
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+
+ // 基于准备好的dom，初始化echarts实例
+        var myChart2 = echarts.init(document.getElementById('main2'));
+
+        // 指定图表的配置项和数据
+        var option = {
+    title: {
+        text: '月统计图'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['最近十个月业绩额度',]
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ["{$data12[0]['date']}","{$data12[1]['date']}","{$data12[2]['date']}","{$data12[3]['date']}","{$data12[4]['date']}","{$data12[5]['date']}","{$data12[6]['date']}","{$data12[7]['date']}","{$data12[8]['date']}","{$data12[9]['date']}","{$data10[12]['date']}","{$data12[11]['date']}",]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name:'最近10个月业绩额度',
+            type:'line',
+            stack: '总量',
+            data:["{$data12[0]['num']}","{$data12[1]['num']}","{$data12[2]['num']}","{$data12[3]['num']}","{$data12[4]['num']}","{$data12[5]['num']}","{$data12[6]['num']}","{$data12[7]['num']}","{$data12[8]['num']}","{$data12[9]['num']}","{$data12[10]['num']}","{$data12[11]['num']}",]
+        },
+       
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart2.setOption(option);
+
+</script>
+</body>
+</html>

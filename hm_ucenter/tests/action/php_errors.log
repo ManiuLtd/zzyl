@@ -1,0 +1,6 @@
+[03-Dec-2018 03:21:19 UTC] PHP Fatal error:  Uncaught Error: Class 'FunctionHelper' not found in D:\phpStudy\PHPTutorial\vhost\huo.qq\PHP\hm_ucenter\helper\LogHelper.php:78
+Stack trace:
+#0 D:\phpStudy\PHPTutorial\vhost\huo.qq\PHP\hm_ucenter\helper\LogHelper.php(297): LogHelper::writeLog('WEB_EXCEPTION', 'err:syntax erro...')
+#1 [internal function]: LogHelper::handleException(Object(ParseError))
+#2 {main}
+  thrown in D:\phpStudy\PHPTutorial\vhost\huo.qq\PHP\hm_ucenter\helper\LogHelper.php on line 78

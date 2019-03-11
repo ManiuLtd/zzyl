@@ -1,0 +1,19 @@
+<?php
+namespace config;
+
+/**
+ * 错误配置
+ * Class ErrorConfig
+ */
+final class DynamicConfig {
+	// 错误码
+	const DEBUG_LEVEL = 2; //  0友好提示 1抛出异常 2错误提示
+
+    const WECHAT_APPID = 'wxb885f10fae10b444';
+    const WECHAT_APPSECREDIT = 'bf2c2383fa2bc93e71eb2188a05cfbce';
+    const WECHAT_TOKEN = '';
+    const DEBUG = [
+        'CHECK_REQUEST' => false,
+    ];
+    const CONFIG_CACHE = true;
+}

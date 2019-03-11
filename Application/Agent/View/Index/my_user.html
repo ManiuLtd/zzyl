@@ -1,0 +1,140 @@
+<include file="Public/base"/>
+<style>
+    .btn-search{
+        width: 1.1rem;
+        height: .74rem;
+        line-height: .74rem;
+        background-color: #fb9c07;
+        -webkit-border-radius: .1rem;
+        border-radius: .1rem;
+        font-size: .28rem;
+        color: #fff;
+        text-align: center;
+
+
+    }
+    .end{
+        width: 50%;
+    }
+</style>
+        <div class="search-wrap">
+			      <div class="tab-container">
+				<div class="tab-nav">
+					<a href="" class="on">会员列表</a>
+				</div>
+            </div>
+						            <div class="search-condition">
+			<form>
+                <div class="time" >
+					<div class="end">
+                        <i>昵称</i>
+                        <input style=" border: 1px solid #ccc; border-radius: 0.1rem; height: 0.78rem; line-height: 0.78rem; padding-left: 0.2rem; width: 100%" name="username"  type="text" value="{$username}">
+                    </div>
+                    
+                    <div class="end" style="margin-left: 20px">
+                        <i>玩家id</i>
+                        <input style=" border: 1px solid #ccc; border-radius: 0.1rem; height: 0.78rem; line-height: 0.78rem; padding-left: 0.2rem;width: 100% " name="userid"  type="text" value="{$userid}">
+                    </div>
+
+                </div>
+                <div style="text-align: right;margin-bottom: 20px">
+                    <button  class="btn-search" type="submit" style="top:32px">搜索</button>
+                </div>
+			</form>
+
+                <div class="item">
+                    <table class="table">
+				    <tbody>
+					<tr>
+               
+                            <th>账号ID</th>
+                            <th>账号昵称</th>
+                            <th>绑定时间</th>
+							<th>累计充值金额</th>
+                            <th>带给我的收益</th>
+                            <th>成为代理</th>
+						</tr>
+         <volist name="_data" id="my_user">
+		          <tr>
+		            <th scope="row">{$my_user.userid}</th>
+		            <td ><a href="{:U('userinfo',array('userid'=>$my_user['userid']))}" style="color:#23527c;">{$my_user.username}</a></td>  
+		            <td>{$my_user.bind_time|date="Y-m-d H:i:s",###}</td>
+		            <td>{$my_user.recharge}</td>
+		            <td>{$my_user.c}</td>
+                    <td><a href="javascript:;" style="border: 1px solid green;" onclick="change_password({$my_user.userid})">go</a></td>
+		          </tr>
+          </volist>
+
+
+                    </tbody>
+                </table>
+                   
+{$_page}
+				                </div>
+            </div>
+        </div>
+
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台</span></p>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+</body></html>
+
+<script type="text/javascript">
+    function change_password(bandedUserID){
+        config = {
+            'bandedUserID' : bandedUserID,
+            'myCommissionRate' : <?php echo $commissionRate;?>
+        }
+        //页面层
+        layer.open({
+          type: 1,
+          skin: 'layui-layer-rim', //加上边框
+          area: ['300px', '260px'], //宽高
+          content: '<div style="margin-top:10px;"><form class="form-signin" action="/agent.php/Index/setUser2Agent.html" method="post" onsubmit="return ajax_post(this);"><input type="text" id="inputPassword" class="form-control" placeholder="请输入玩家手机号" name="phone" required><input type="text" style="margin-top:10px;" id="inputPassword" class="form-control" placeholder="分成比率" name="commissionRate" required><button style="margin-top:10px;" class="btn btn-lg btn-primary btn-block" type="submit">确认修改</button></form></div>'
+        });
+    }
+    function ajax_post(the){
+        var commissionRate = $('input[name=commissionRate]').val();
+        var betweenRate = config.myCommissionRate - commissionRate;
+        layer.confirm('该玩家分成比率为' + commissionRate + '%,佣差为' + betweenRate + '%,您确定要做此操作吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var that = $(the);
+            var url= $(the).attr('action');
+            var cs = $(the).serialize();
+            cs = cs + '&bandedUserID=' + config.bandedUserID;
+            console.log('cs', cs);
+            $.ajax({
+                url:url,
+                data:cs,
+                type:'POST',
+                success:function(data){
+                    data = JSON.parse(data);
+                    // console.log('data', JSON.parse(data));
+                    if(0 === data.status){
+                        layer.msg(data.msg, {icon: 1});
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 2000);
+                    }else{
+                        layer.msg(data.msg, {icon: 2});
+                    }
+                }
+            });
+        }, function(){
+            layer.msg('取消成功', {
+                time: 1500, //20s后自动关闭
+            });
+            return false;
+        });
+        return false;
+    }
+</script>

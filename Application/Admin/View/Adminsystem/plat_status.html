@@ -1,0 +1,31 @@
+<extend name="Public/base"/>
+<block name="body">
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:50%;margin:5% auto;">
+        <div class="row" >
+        <font size="5">
+          当前平台服务器状态：
+        
+	<if condition="($status eq 'normal')">
+            <font color="#1AB394">正常服务中~</font>
+          <elseif condition="($status eq 'stop')"/>
+            <font color="red">服务已停止...所有用户不能进入游戏</font>
+          <elseif condition="($status eq 'test')"/>
+            <font color="#F6881B">测试阶段...只有白名单用户才能进入游戏</font> 
+          </if>
+	</font>
+	<br><br>
+        <form action="{:U('')}" method="post" onsubmit="return ajax_post(this);">
+        修改服务器状态： 
+        <select name="status" style="height: 30px;">
+          <option value="none">请选择</option>
+          <option value="normal">正常</option>
+          <option value="stop">停服</option>
+          <option value="test">测试</option>
+        </select>
+        <input type="submit" value="确定" style="height: 30px;width: 50px;">
+        <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('白名单IP','{:U('white')}','2','300','250')"  style="text-decoration:none"> 添加测试白名单IP</a>
+        <a href="javascript:;" class="btn btn-sm btn-info" onclick="admin_edit('白名单列表','{:U('whitelist')}','2','800','800')"   style="text-decoration:none"> 白名单列表</a>
+	</form>
+        </div>
+    </div>
+</block>

@@ -1,0 +1,8 @@
+[27-Feb-2019 19:43:47 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'helper\LogHelper' not found in D:\phpStudy\PHPTutorial\vhost\huo.qq\PHP\hm_ucenter\pay\zhi_fu_bao\notify.php:27
+Stack trace:
+#0 {main}
+  thrown in D:\phpStudy\PHPTutorial\vhost\huo.qq\PHP\hm_ucenter\pay\zhi_fu_bao\notify.php on line 27
+[27-Feb-2019 19:43:48 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'helper\LogHelper' not found in D:\phpStudy\PHPTutorial\vhost\huo.qq\PHP\hm_ucenter\pay\zhi_fu_bao\notify.php:27
+Stack trace:
+#0 {main}
+  thrown in D:\phpStudy\PHPTutorial\vhost\huo.qq\PHP\hm_ucenter\pay\zhi_fu_bao\notify.php on line 27

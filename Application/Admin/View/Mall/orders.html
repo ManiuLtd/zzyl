@@ -1,0 +1,165 @@
+<extend name="Public/base"/>
+<block name="body">
+<style>
+    .t1{margin-left: -17px;}
+    .t2{margin-left: -20px;}
+    .t3{margin-left: -120px;}
+    .t4{margin-left: -10px;}
+    .t5{margin-left: -160px;}
+    .t7{margin-left: -135px;}
+    .t8{margin-left: -125px;}
+    .t9{margin-left: -125px;}
+    .t10{margin-left: -80px;}
+    @media (max-width: 768px){
+        .top-menu{margin-left: 0px;}
+        .t6{margin-top: 5px;}
+    }
+</style>
+	<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>订单记录</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                            <div class="col-sm-5 m-b-xs" style="width: 200px;">
+                                <select class="input-sm form-control input-s-sm inline" name="type">
+                                    <option value="0">请选择</option>
+                                    <option value="1" <if condition="$type eq 1"> selected </if>>玩家ID</option>
+                                    <option value="2" <if condition="$type eq 2"> selected </if>>玩家昵称</option>
+                                    <option value="3" <if condition="$type eq 3"> selected </if>>订单编号</option>
+                                </select>
+                            </div>
+                             <div class="col-sm-5 m-b-xs" style="width: 200px;">
+                                <select class="input-sm form-control input-s-sm inline" name="status">
+                                    <option value="0">订单状态</option>
+                                    <option value="1" <if condition="$status eq 1"> selected </if>>已支付</option>
+                                    <option value="2" <if condition="$status eq 2"> selected </if>>未支付</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3 top-menu t1" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control" name="search" value="{$search}"> <span class="input-group-btn">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t2" style="width: 200px;">
+                                <div class="input-group">
+                                    生成时间
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t3" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker1" name="start" value="{$start|date='Y-m-d H:i',###}">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t4" style="width: 200px;">
+                                <div class="input-group">
+                                    至
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t5" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker2" name="stop" value="{$stop|date='Y-m-d H:i',###}">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t6" style="width: 200px;">
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                </div>
+                            </div>
+                            </form>
+                            <!-- <div class="col-sm-3 top-menu t7" style="width: 200px;">
+                                <div class="input-group">
+                                   <a href="{:U('',array('status'=>1))}"  class="btn btn-sm btn-primary"><font color="white">已支付</font></a>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t8" style="width: 200px;">
+                                <div class="input-group">
+                                   <a href="{:U('',array('status'=>2))}"  class="btn btn-sm btn-danger"><font color="white">未支付</font></a>
+                                </div>
+                            </div> -->
+                            <div class="col-sm-3 top-menu t9" style="width: 200px;">
+                                <div class="input-group">
+                                   <a href="{:U('',array('status'=>3))}"  class="btn btn-sm btn-info"><font color="white">支付成功未发货</font></a>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t10" style="width: 200px;">
+                                <div class="input-group">
+                                   <a href="{:U('',array('status'=>4))}"  class="btn btn-sm btn-danger"><font color="white">生成订单失败</font></a>
+                                </div>
+                            </div>
+			    <!-- <div class="col-sm-3" style="width:100px;margin-left:-40px;">
+                                <div class="input-group">
+                                   <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('代理添加','{:U('member_add')}','2','800','600')"  style="text-decoration:none"> 添加代理</a>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width: 6%;margin-left:-20px;">
+                            <form action="{:U('Public/disabled')}" method="post" onsubmit="return ajax_post(this);" >
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-danger"> 批量禁用</button>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>订单编号</th>
+                                        <th>玩家ID</th>
+                                        <th>玩家昵称</th>
+                                        <th>商品详情</th>
+                                        <th>订单金额</th>
+                                        <th>订单描述</th>
+                                        <th>生成时间</th>
+                                        <th>订单状态</th>
+                                  	<?php if($_GET['status'] == 3) echo "<th>操作</th>"; ?> 
+				   </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                       <!--  <td>
+                                            <input type="checkbox" value="{$_data.id}" name="id[]">
+                                        </td> -->
+                                       
+                                        <td>{$_data.order_sn}</td>
+                                        <td>{$_data.userid}</td>
+                                        <td>{$_data.name}</td>
+                                        <td>
+                                            {$_data.buynum}
+                                            <if condition="($_data.buytype eq 1)">
+                                                金币
+                                            <elseif condition="($_data.buytype eq 2)"/>
+                                                房卡
+                                            </if>
+                                        </td>
+                                        <td><?php
+                                                echo sprintf("%.2f",$_data['consumenum']);
+                                            ?></td>
+                                        <td>{$_data.pay_desc}</td>
+                                        <td>{$_data.create_time|date="Y-m-d H:i:s",###}</td>
+                                        <td>
+                                            <if condition="($_data.status eq 0)">
+                                                <font color="red">未支付</font>
+                                            <elseif condition="($_data.status eq 1)"/>
+                                                <font color="green">已支付</font>
+                                            </if>
+                                        </td>
+					<if condition="($Think.get.status eq 3)">
+                                            <td><a href="{:U('replenishment',array('id'=>$_data['id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim ">补货</i></a></td>
+                                            </if>
+					</tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

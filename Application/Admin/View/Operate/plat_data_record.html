@@ -1,0 +1,170 @@
+<extend name="Public/base"/>
+<block name="body">
+    <div class="wrapper wrapper-content animated fadeInRight">       
+        <div class="row" style="">
+            <div class="col-sm-12">
+                 <div class="row" style="width:100%;line-height: 30px;margin-left: 12%;">
+                        <form action="{:U()}" method="get">
+                            <div class="col-sm-3 top-menu t2" style="width:100px;">
+                                <div class="input-group">
+                                    注册时间
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t3" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker1" name="start" value="{$start|date='Y-m-d H:i',###}">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t4" style="width:50px;">
+                                <div class="input-group">
+                                    至
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t5" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker2" name="stop" value="{$stop|date='Y-m-d H:i',###}">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t6" style="width: 100px;">
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                <div style="margin-left: 10%;">
+                    <div style="width: 600px;height:200px;padding: 10px 10px;float: left;margin-left: 10px;">
+                        <font color="black" size="5">充值数据</font>
+                        <hr>
+                        <ul style="width: 49%;height:200px;line-height:30px;float: left;font-size:15px;color:black;">
+                            <li>玩家在线充值总金额：<font color="red">{$recharge_data[0]|default="0.00"}</font></li>
+                            <li>平台充值净收入金额：<font color="red">{$recharge_data[2]|default="0.00"}</font></li>
+                            <li>系统后台充值金币数：<font color="red">{$recharge_data[5]|default='0'}</font></li>
+                            <li>系统后台充值钻石数：<font color="red">{$recharge_data[6]|default='0'}</font></li>
+                        </ul>
+                        <ul style="width: 49%;line-height:30px;float: left;font-size:15px;color:black;">
+                            <li>玩家在线充值金币数：<font color="red">{$recharge_data[3]|default='0'}</font></li>
+                            <li>玩家在线充值钻石数：<font color="red">{$recharge_data[4]|default='0'}</font></li>
+                            <li>系统后台提取金币数：<font color="red">{$recharge_data[7]|default='0'}</font></li>
+                            <li>系统后台提取钻石数：<font color="red">{$recharge_data[8]|default='0'}</font></li>
+                        </ul>
+                    </div>  
+                    <div style="width:600px;height:200px;padding: 10px 10px;float: left;margin-left: 10px;">
+                        <font color="black" size="5">代理收成数据</font>
+                        <hr>
+                        <ul style="width: 49%;line-height:30px;float: left;font-size:15px;color:black;">
+                            <li>平台代理总人数：<font color="red">{$agent_data[0]|default='0'}</font></li>
+                            <li>代理分成总金额：<font color="red">{$recharge_data[1]|default='0.00'}</font></li>
+                            <li>代理可提现金额：<font color="red">{$agent_data[1]|default='0.00'}</font></li>
+                            <li>代理已提现金额：<font color="red">{$agent_data[2]|default='0.00'}</font></li>
+                        </ul>
+                        <ul style="width: 49%;line-height:30px;float: left;font-size:15px;color:black;">
+                            <li>抽水金币代理分成总额：<font color="red">{$agent_data[3]|default='0'}</font></li>
+                            <li>已提现抽水金币总额：<font color="red">{$agent_data[4]|default='0'}</font></li>
+                            <li>提现抽水折合人民币：<font color="red">{$agent_data[5]|default='0.00'}</font></li>
+                        </ul>
+                    </div>  
+                    <div style="width: 600px;height:200px;padding: 10px 10px;float: left;margin-left: 10px;">
+                        <font color="black" size="5">玩家数据</font>
+                        <hr>
+                        <ul style="width: 49%;height:200px;line-height:30px;float: left;font-size:15px;color:black;">
+                            <li>平台真实玩家数：<font color="red" class="user_count">{$user_data[0]|default='0'}</font></li>
+                            <li>当前在线玩家数：<font color="red" class="user_online_count">{$user_data[2]|default='0'}</font></li>
+                            <li>玩家钻石总数：<font color="red" class="user_jewels">{$user_data[3]|default='0'}</font></li>
+                        </ul>
+                        <ul style="width: 49%;height:200px;line-height:30px;float: left;font-size:15px;color:black;">
+                            <li>玩家身上金币总数：<font color="red" class="all_money">{$user_data[4]|default='0'}</font></li>
+                            <li>玩家银行金币总数：<font color="red" class="user_bank_money">{$user_data[5]|default='0'}</font></li>
+                        </ul>
+                    </div>  
+                    <div style="width: 600px;height:200px;padding: 10px 10px;float: left;margin-left: 10px;">
+                        <font color="black" size="5">平台数据</font>
+                        <hr>
+                        <ul style="width: 49%;height:200px;line-height:30px;float: left;font-size:15px;color:black;">
+                            <li>平台金币总数：<font color="red">{$user_data[8]|default='0'}</font></li>
+                            <li>平台钻石总数：<font color="red">{$user_data[9]|default='0'}</font></li>
+                            <li>平台消耗金币总数：<font color="red">{$plat_data[0]|default='0'}</font></li>
+                            <li>平台消耗钻石总数：<font color="red">{$plat_data[1]|default='0'}</font></li>
+                        </ul>
+                        <ul style="width: 49%;height:200px;line-height:30px;float: left;font-size:15px;color:black;">
+                            <li>已开钻石场总数：<font color="red">{$plat_data[2]|default='0'}</font></li>
+                            <li>游戏输赢金币总数：<font color="red">{$plat_data[3]|default='0'}</font></li>
+                            <li>目前活跃玩家总数：<font color="red">{$plat_data[4]|default='0'}</font></li>
+                        </ul>
+                    </div>  
+                    <div style="width: 600px;height:220px;padding: 10px 10px;float: left;margin-left: 10px;">
+                        <font color="black" size="5">金币统计</font>
+                        <hr>
+                        <ul style="width: 49%;height:200px;line-height:30px;float: left;font-size:15px;color:black;">
+                            <li>玩家签到获得金币：<font color="red">{$money_data[0]|default='0'}</font></li>
+                            <li>玩家抽奖获得金币：<font color="red">{$money_data[1]|default='0'}</font></li>
+               <!--              <li>绑定代理获得金币：</li> -->
+                            <li>领取救济金金币数：<font color="red">{$money_data[2]|default='0'}</font></li>
+                            <li>玩家注册赠送金币：<font color="red">{$money_data[3]|default='0'}</font></li>
+                        </ul>
+                        <ul style="width: 49%;height:200px;line-height:30px;float: left;font-size:15px;color:black;">
+                            <li>魔法表情消耗金币：<font color="red">{$money_data[4]|default='0'}</font></li>
+                            <li>玩家转赠消耗金币：<font color="red">{$money_data[5]|default='0'}</font></li>
+                            <li>实物兑换消耗金币：<font color="red">{$money_data[6]|default='0'}</font></li>
+                            <li>游戏开局消耗金币：<font color="red">{$money_data[7]|default='0'}</font></li>
+                        </ul>
+                    </div>  
+                    <div style="width: 600px;height:220px;padding: 10px 10px;float: left;margin-left: 10px;">
+                        <font color="black" size="5">钻石统计</font>
+                        <hr>
+                        <ul style="width: 49%;height:200px;line-height:30px;float: left;font-size:15px;color:black;">
+                            <li>玩家签到获得钻石：<font color="red">{$jewels_data[0]|default='0'}</font></li>
+                            <li>玩家抽奖获得钻石：<font color="red">{$jewels_data[1]|default='0'}</font></li>
+                            <li>实物兑换获得钻石：<font color="red">{$jewels_data[2]|default='0'}</font></li>
+                            
+                        </ul>
+                        <ul style="width: 49%;height:200px;line-height:30px;float: left;font-size:15px;color:black;">
+                            <li>玩家注册赠送钻石：<font color="red">{$jewels_data[3]|default='0'}</font></li>
+                            <li>发送广播消耗钻石：<font color="red">{$jewels_data[4]|default='0'}</font></li>
+                            <li>游戏开局消耗钻石：<font color="red">{$jewels_data[5]|default='0'}</font></li>
+                        </ul>
+                    </div>  
+                    <div style="width: 1200px;height:220px;padding: 10px 10px;float: left;margin-left: 10px;">
+                        <font color="black" size="5">事件统计</font>
+                        <hr>
+                        <ul style="width: 30%;height:200px;line-height:30px;float: left;font-size:15px;color:black;">
+                            <li>玩家登录总次数：<font color="red">{$count_data[0]|default='0'}</font></li>
+                            <li>玩家反馈总次数：<font color="red">{$count_data[1]|default='0'}</font></li>
+                            <li>玩家分享总次数：<font color="red">{$count_data[2]|default='0'}</font></li>
+                            <li>玩家签到总次数：<font color="red">{$count_data[3]|default='0'}</font></li>
+                        </ul>
+                        <ul style="width: 30%;height:200px;line-height:30px;float: left;font-size:15px;color:black;">
+                            <li>玩家转赠总次数：<font color="red">{$count_data[4]|default='0'}</font></li>
+                            <li>玩家抽奖总次数：<font color="red">{$count_data[5]|default='0'}</font></li>
+                            <li>发送广播总次数：<font color="red">{$count_data[6]|default='0'}</font></li>
+                            <li>魔法表情总次数：<font color="red">{$count_data[7]|default='0'}</font></li>
+                        </ul>
+                        <ul style="width: 30%;height:200px;line-height:30px;float: left;font-size:15px;color:black;">
+                            <li>实物兑换总次数：<font color="red">{$count_data[8]|default='0'}</font></li>
+                            <li>绑定代理用户数：<font color="red">{$count_data[9]|default='0'}</font></li>
+                            <li>领取救济金总次数：<font color="red">{$count_data[10]|default='0'}</font></li>
+                        </ul>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        // 读取redis的数据
+        $(function(){
+            $.ajax({
+                url:"{:U('getRedisData')}",
+                data:{},
+                type:'post',
+                dataType:'json',
+                success:function(res){
+                    $('.user_count').html(res.user_count)
+                    $('.user_online_count').html(res.online_count)
+                    $('.user_jewels').html(res.user_jewels)
+                    $('.all_money').html(res.all_money)
+                    $('.user_bank_money').html(res.user_bank_money)
+                }
+            })
+        })
+    </script>
+</block>

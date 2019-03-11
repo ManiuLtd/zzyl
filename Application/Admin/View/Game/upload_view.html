@@ -1,0 +1,83 @@
+<extend name="Public/base"/>
+<block name="body">
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:50%;margin:5% auto;">
+        <div class="row" >
+        <blockquote class="layui-elem-quote">游戏底包APK上传 <br><br>
+             文件名：anzhuo.apk <br><br>
+            上传文件位置：linux >> /usr/local/nginx/html/download/anzhuo.apk<br><br>
+           <font color="red">请先确定您的游戏下载底包地址是否使用的是七牛云，使用七牛云底包文件地址可在  平台大厅管理 >> 游戏参数管理内修改</font><br>
+           </blockquote>
+                <form action="{:U('upload_file')}" method="post" enctype="multipart/form-data";>
+                  <input type="file" name="file">
+                  <br><br>
+                  <input type="submit" value="确定上传">                  
+                </form>
+           
+          
+
+<!-- <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+  <legend>拖拽上传</legend>
+</fieldset>  -->
+<!--  
+<div class="layui-upload-drag" id="test10">
+  <i class="layui-icon"></i>
+  <p>点击上传，或将文件拖拽到此处</p>
+</div> -->
+
+ 
+
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<!-- <script>
+layui.use('upload', function(){
+  var $ = layui.jquery
+  ,upload = layui.upload;
+  
+  //普通图片上传
+  var uploadInst = upload.render({
+    elem: '#test1'
+    ,url: '/upload/'
+    ,before: function(obj){
+      //预读本地文件示例，不支持ie8
+      obj.preview(function(index, file, result){
+        $('#demo1').attr('src', result); //图片链接（base64）
+      });
+    }
+    ,done: function(res){
+      //如果上传失败
+      if(res.code > 0){
+        return layer.msg('上传失败');
+      }
+      //上传成功
+    }
+    ,error: function(){
+      //演示失败状态，并实现重传
+      var demoText = $('#demoText');
+      demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+      demoText.find('.demo-reload').on('click', function(){
+        uploadInst.upload();
+      });
+    }
+  });
+  
+
+  
+  //拖拽上传
+  upload.render({
+    elem: '#test10'
+    ,url: "{:U('Game/upload_file')}"
+    ,exts:"apk"
+    ,done: function(res){
+      if(res.status){
+        return layer.msg(res.info);
+      }else{
+        return layer.msg(res.info);
+      }
+    }
+  });
+  
+  
+});
+</script> -->
+        </div>
+    </div>
+</block>

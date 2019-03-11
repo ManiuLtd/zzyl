@@ -1,0 +1,141 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        .t1 {
+            margin-left: -17px;
+        }
+
+        .t2 {
+            margin-left: -17px;
+        }
+
+        @media (max-width: 768px) {
+            .top-menu {
+                margin-left: 0px;
+            }
+
+            .t6 {
+                margin-top: 5px;
+            }
+        }
+    </style>
+    <?php $is_show_jewels = C('IS_SHOW_JEWELS');?>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                                <div class="col-sm-3 top-menu t6" style="width: 100px;">
+                                    <div class="input-group">
+                                        <button type="submit" class="btn btn-sm btn-info">所有提现</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width:100px;">
+                                    <div class="input-group">
+                                        <button type="submit" name="is_super" value=true
+                                                class="btn btn-sm btn-info"> 提现中
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width:100px;">
+                                    <div class="input-group">
+                                        <button type="submit" name="is_online" value=true
+                                                class="btn btn-sm btn-info"> 提现完成
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width:100px;">
+                                    <div class="input-group">
+                                        <button type="submit" name="is_jujue" value=true
+                                                class="btn btn-sm btn-info"> 提现拒绝
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>用户ID</th>
+                                    <th>用户昵称</th>
+                                    <th>申请时间</th>
+                                    <th>处理时间</th>
+                                    <th>兑换类型</th>
+                                    <th>状态</th>
+                                    <th>提现金额</th>
+                                    <th>兑换金币</th>
+                                    <th>费率</th>
+                                    <th>提现信息</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>{$_data.userid}</td>
+                                        <td>{$_data.nickname}</td>
+                                        <td>{$_data.create_time}</td>
+                                        <td>{$_data.process_time}</td>
+                                        <td>{$_data.cash_account_type_text}</td>
+
+                                        <if condition="$_data.cash_status eq 1">
+                                            <td>提现中</td>
+                                        <elseif condition="$_data.cash_status eq 2"/>
+                                            <td>提现完成</td>
+                                        <else />
+                                            <td>提现拒绝</td>
+                                        </if>
+                                        <td>{$_data.cash_money}</td>
+                                        <td>{$_data.cash_withdrawal}</td>
+                                        <td>{$_data.cash_rate}</td>
+                                        <td>{$_data.cash_remarks}</td>
+                                        <td>
+                                          <if condition="$_data.cash_status eq 1">
+                                                <a href="javascript:;" class="btn btn-sm btn-danger" onclick="admin_approval('{:U('approval_adopt')}',{$_data['id']})"  > 通过</a>
+                                                <a href="javascript:;" class="btn btn-sm btn-danger" onclick="admin_approval('{:U('approval_refuse')}',{$_data['id']})"  > 拒绝</a>
+                                          </if>
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function admin_approval(url,id){
+            layer.confirm('您确定要做此操作吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                $.ajax({
+                    url:url,
+                    data:{id:id},
+                    type:'POST',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                window.location.href=data.url;
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+    </script>
+</block>

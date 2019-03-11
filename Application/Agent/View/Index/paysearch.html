@@ -1,0 +1,96 @@
+<include file="Public/base"/>
+<style>
+    .search-condition .time {
+        width: 100%;
+        padding: .40rem 0 .3rem;
+    }
+    .end,.start{
+        width: 50%;
+    }
+
+    .search-condition .time input[type=date]{
+        width: 100%;
+
+    }
+</style>
+        <div class="search-wrap">
+                  <div class="tab-container">
+                <div class="tab-nav">
+                    <a href="" class="on">分佣详情</a>
+                </div>
+            </div>
+                                    <div class="search-condition">
+            <form method="get" id="form1">
+                <div class="time">
+                    <div class="start">
+                        <i>开始时间</i>
+                        <input type="date" name="start" value="{$start}" id="sdate" onchange="checkSdata(this,'2018-05-01')">
+                    </div>
+                    <span class="line">-</span>
+                    <div class="end">
+                        <i>结束时间</i>
+                        <input type="date" name="end" value="{$end}" id="edate" onchange="checkSdata(this,'2018-05-01')">
+                    </div>
+
+                </div>
+                <div  class="time">
+                    <div class="end" style="padding-left:10px">
+                        <i>会员ID</i>
+                        <input type="text" style=" border: 1px solid #ccc; border-radius: 0.1rem; height: 0.7rem; line-height: 0.78rem; padding-left: 0.2rem; width:100%;" name="search" id="user_id" value="{$search}">
+                    </div>
+                    <button  class="btn-search" type="submit" style="top:.40rem">搜索</button>
+                </div>
+            </form>
+
+                <div class="item">
+                     <div class="table-responsive">
+      <table class="table table-bordered" style="width: 100%">
+        <thead>
+          <!-- <tr>
+            <th colspan="9">基本信息</th>
+            <th colspan="2">直属销售</th>
+            <th colspan="2">非直属销售</th>
+          </tr> -->
+          <tr>
+            <th>抽水玩家游戏id</th>
+            <th>抽水总额</th>
+            <th>收入类型</th>
+            <th>收取佣金</th>
+            <th>时间</th>
+          </tr>
+        </thead>
+        <tbody>
+        <volist name="_data" id="_data">
+          <tr>
+            <th scope="row">{$_data.recharge_userid}</th>
+            <td>{$_data.recharge_amount}</td>
+              <if condition="$_data.level eq 1">
+                 <td>直属收入</td>
+              <else />
+                 <td>非直属收入</td>
+              </if>
+              <td>{$_data.agent_commission}</td>
+            <td>{$_data.time|date="y-m-d H:i:s",###}</td>
+          </tr>
+          </volist>
+        </tbody>
+      </table>
+    </div><!-- /.table-responsive -->
+                   
+{$_page}
+                                </div>
+            </div>
+        </div>
+
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台</span></p>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+</body></html>

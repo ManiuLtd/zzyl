@@ -1,0 +1,31 @@
+<extend name="Public/base"/>
+<block name="content">
+<div class="company_desc">
+          <h3>公司介绍</h3>
+          <hr>
+            <p>{$config.desc}</p>
+        </div>
+        <div class="game">
+          <div class="game_desc">
+            <h3>热门游戏</h2><hr>
+            <volist name="product" id="product">
+            <div style="margin:10px 10px;">
+            <img src="{$product.img_url}" style="width:15%;margin-right:5%;">
+            <font size="5">{$product.name}</font>
+            <br>
+            <br>
+            <p>游戏介绍：{$product.desc}</p>
+            </div>
+            </volist>
+          </div>
+          <div class="ranking">
+            <h3>胜局榜</h3><hr>
+            <ul>
+              <font color="#79AEFD"><li>&emsp;&emsp;&emsp;用户名&emsp;&emsp;&emsp;&emsp;胜局数</li></font><hr>
+              <volist name="ranking" id="ranking">
+                <li>&emsp;&emsp;&emsp;{$ranking.name}&emsp;&emsp;&emsp;&emsp;{$ranking.wincount}</li><hr>
+              </volist>
+            </ul>
+          </div>
+        </div>
+</block>

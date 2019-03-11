@@ -1,0 +1,75 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+    .t1{margin-left:-20px;}
+    @media (max-width: 768px){
+        .t1{margin-left:0px;}
+    }
+    </style>
+	<div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>系统菜单</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                           
+                            <div class="col-sm-3" style="width:100px;">
+                                <div class="input-group">
+                                   <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('分组添加','{:U('group_add')}','2','800','500')"  style="text-decoration:none"> 添加分组</a>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 t1" style="width: 6%;">
+                            <form action="{:U('Public/disabled')}" method="post" onsubmit="return ajax_post(this);" >
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-danger"> 批量禁用</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+
+                                        <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="admin_group"><input type="hidden" value="1" name="disabled"></th>
+                                        <th>分组名称</th>
+                                        <th>分组描述</th>
+                                        <th>是否禁用</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" value="{$_data.id}" name="id[]">
+                                        </td>
+                                        <td>{$_data.group_name}</td>
+                                        <td>{$_data.desc}</td>
+                                        <td>
+                                        	<if condition="($_data.disabled eq 0)">
+                                        		<font color="green">否</font>
+                                        	<elseif condition="($_data.disabled eq 1)"/>
+                                        		<font color="red">是</font>
+                                        	</if>
+                                        </td>
+                                        <td>
+                                        	<a class="btn btn-outline btn-info  dim " href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('分组编辑','{:U('group_edit',array('id'=>$_data['id']))}','2','800','500')" class="ml-5" style="text-decoration:none"><i class="fa fa-paste"></i></a>
+                                        	<a href="{:U('Public/del_record',array('id'=>$_data['id'],'model'=>'admin_group'))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim "><i class="fa fa-times"></i></a>
+
+                                            <if condition="($_data.disabled eq 0)"> <a title="禁用" href="{:U('Public/disabled',array('id'=>$_data['id'],'disabled'=>1,'model'=>'admin_group'))}" onclick="return ajax_get(this)" class="btn btn-outline btn-warning  dim ">禁用</a></if><if condition="($_data.disabled eq 1)"><a title="解禁" href="{:U('Public/disabled',array('id'=>$_data['id'],'disabled'=>0,'model'=>'admin_group'))}" onclick="return ajax_get(this)" class="btn btn-outline btn-info  dim ">解禁</a></if>
+                                        </td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

@@ -1,0 +1,482 @@
+@charset "utf-8";
+/*等待条*/
+
+#loading {
+	width: 100%;
+	height: 100%;
+	background: url(../img/wsload.gif) no-repeat center center #FFF;
+	background-size: 10%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 999;
+}
+
+/*==============================================================浮层内容*/
+
+#tip {
+	background: rgba(0, 0, 0, 0.3);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: none;
+	z-index: 9999;
+}
+
+#tip .pack {
+	width: 80%;
+	/*min-height: 100px;*/
+	margin: 0 auto;
+	background: #FFF;
+	margin-top: 30%;
+	position: relative;
+	overflow: hidden;
+}
+#tip .pack p {
+	font-size: 18px;
+	text-align: center;
+	color: #666666;
+	line-height: 36px;
+	margin-top: 20px;
+
+}
+#tip .pack h1 {
+	font-size: 24px;
+	text-align: center;
+	color: #666666;
+	line-height: 36px;
+	margin-top: 20px;
+
+}
+#tip .pack a {
+	display: block;
+	width: 100%;
+	position: absolute;
+	bottom: 0px;
+	font-size: 16px;
+	color: #c8161d;
+	height:40px;
+	line-height: 40px;
+	text-align: center;
+	border-top: 1px solid #d6d6d6;
+}
+
+/*弹出框增加*/
+#tip .pack_yl{
+	min-height:200px;
+	margin-top: 45%;
+	border-radius: 10px;
+}
+
+#tip .pack_yl p {
+    font-size: 26px;
+    margin-top:30px;
+    margin-bottom:65px;
+    padding: 0 5%;
+}
+
+
+#tip .pack_yl a {
+    display: block;
+    width: 100%;
+    position: absolute;
+    bottom: 10px;
+    font-size: 26px;
+}
+#tip .pack_yl a img{
+	display: block;
+	width: 53px;
+	line-height: 53px;
+	margin: 0 auto;
+}
+
+
+/*============================砸蛋*/
+
+.zadan{
+	background: url(../img/160615zadan/zd_cion02.png) no-repeat left top;
+	background-size: cover;
+	height: 100vh;
+	min-height: 1690px;
+}
+.zadan .zd_logo {
+	padding-top: 40px;
+	/*margin-bottom: 30px;*/
+}
+
+.zadan .zd_logo img{
+	display: block;
+	margin: 0 auto;
+	
+}
+.zadan .zd_txt{
+	width: 464px;
+	margin: 0 auto;
+	padding-top: 590px;
+	/*margin-left: 18px;*/
+}
+.zhongliang .zd_txt .mom_4g{
+	position: absolute;
+	bottom: -25px;
+	left: 0;
+}
+.zadan .zd_txt input{
+	display: block;
+	width: 464px;
+	height: 70px;
+	line-height: 70px;
+	margin: 0 auto;
+	font-size: 30px;
+	border-radius: 10px;
+	border:1px solid #c1c1c1;
+	padding-left: 10px;
+	box-sizing: border-box;
+	margin-bottom: 10px;
+}
+
+.zadan .zd_txt a{
+	display: block;
+	width: 464px;
+	height: 70px;
+	line-height: 70px;
+	margin: 0 auto;
+	font-size: 30px;
+	border-radius: 10px;
+	color: #fff;
+	text-decoration: underline;
+	
+}
+.zadan .zd_middle .zd_title img{
+	display: block;
+	margin: 0 auto;
+}
+
+.zadan .zd_middle .zd_zadan{
+	background: url(../img/160615zadan/zd_cion17.png) no-repeat center bottom;
+	width: 556px;
+	height: 840px;
+	margin: 0 auto;
+	margin-top: -140px;
+	position: relative;
+	overflow: hidden;
+}
+.zadan .zd_middle .zd_zadan .zd_chuizi{
+	position: absolute;
+	top: 251px;
+	left: 77px;
+	-webkit-animation: zd_chuizi 1s cubic-bezier(0.34, -0.1, 0.32, 1.01) infinite alternate;
+	animation: zd_chuizi 1s cubic-bezier(0.34, -0.1, 0.32, 1.01) infinite alternate;
+	transform-origin: bottom left;
+	-webkit-transform-origin: bottom left;
+	
+}
+
+@keyframes zd_chuizi
+{
+	0%		
+	{
+		transform: rotate(-15deg);
+		
+		
+	}
+	/*50%		
+	{
+		transform: rotate(0deg);
+		
+	}*/
+	100%	
+	{
+		transform: rotate(15deg);
+	}
+}
+@-webkit-keyframes zd_chuizi
+{
+   0%		
+	{
+		transform: rotate(-15deg);
+		
+	}
+	/*50%		
+	{
+		transform: rotate(0deg);
+		
+	}*/
+	100%	
+	{
+		transform: rotate(15deg);
+	}
+}
+.zadan .zd_middle .zd_zadan  .zd_bg{
+	/*background: url(../img/160615zadan/zd_cion09.png) no-repeat center center;*/
+	position: absolute;
+}
+.zadan .zd_middle .zd_zadan .zd_bg01{
+	position: absolute;
+	top: 0;
+	
+-webkit-animation: zd_bg 3s  infinite ;
+	animation: zd_bg 3s infinite ;
+	animation-direction: alternate;
+	-webkit-animation-direction: alternate;
+	transform-origin: 280px 420px;
+	-webkit-transform-origin: 280px 420px;
+}
+
+@keyframes zd_bg
+{
+	0%		
+	{
+		transform: rotate(5deg);
+		
+		
+	}
+	/*50%		
+	{
+		transform: rotate(5deg);
+		
+	}*/
+	100%	
+	{
+		transform: rotate(0deg);
+		opacity: 0.5;
+	}
+}
+@-webkit-keyframes zd_bg
+{
+   0%		
+	{
+		transform: rotate(5deg);
+		
+	}
+	/*50%		
+	{
+		transform: rotate(5deg);
+		
+	}*/
+	100%	
+	{
+		transform: rotate(0deg);
+		opacity: 0.5;
+	}
+}
+.zadan .zd_middle .zd_zadan .zd_bg02{
+	position: absolute;
+	top: 0;
+	
+-webkit-animation: zd_bg02 3s  infinite forwards;
+	animation: zd_bg02 3s infinite forwards;
+	animation-direction: alternate;
+	-webkit-animation-direction: alternate;
+	transform-origin: 280px 420px;
+	-webkit-transform-origin: 280px 420px;
+	/*animation-delay:5s;
+-webkit-animation-delay:5s; */
+}
+
+@keyframes zd_bg02
+{
+	0%		
+	{
+		transform: rotate(0deg);
+		
+		
+	}
+	/*50%		
+	{
+		transform: rotate(5deg);
+		
+	}*/
+	100%	
+	{
+		transform: rotate(5deg);
+		opacity: 0.5;
+	}
+}
+@-webkit-keyframes zd_bg02
+{
+   0%		
+	{
+		transform: rotate(0);
+		
+	}
+	/*50%		
+	{
+		transform: rotate(5deg);
+		
+	}*/
+	100%	
+	{
+		transform: rotate(5deg);
+		opacity: 0.5;
+	}
+}
+.zadan .zd_middle .zd_zadan .zd_jindan{
+	position: absolute;
+	top: 216px;
+	left: 50px;
+}
+
+.zadan .zd_middle .zd_zadan .zd_jindan01{
+	
+-webkit-animation: zd_jindan01 0.05s  infinite ;
+	animation: zd_jindan01 0.05s infinite ;
+	animation-direction: alternate;
+	-webkit-animation-direction: alternate;
+}
+
+@keyframes zd_jindan01
+{
+	0%		
+	{
+		transform: rotate(5deg);
+		
+		
+	}
+	/*50%		
+	{
+		transform: rotate(5deg);
+		
+	}*/
+	100%	
+	{
+		transform: rotate(0deg);
+	}
+}
+@-webkit-keyframes zd_jindan01
+{
+   0%		
+	{
+		transform: rotate(5deg);
+		
+	}
+	/*50%		
+	{
+		transform: rotate(5deg);
+		
+	}*/
+	100%	
+	{
+		transform: rotate(0deg);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+.zadan .zd_middle .zd_zadan .zd_bigcaidai{
+	position: absolute;
+	top: 0;
+	width: 556px;
+	height: 420px;
+	overflow: hidden;
+}
+.zadan .zd_middle .zd_zadan .cardai07{
+	
+-webkit-animation: cardai 1s cubic-bezier(0.34, -0.1, 0.32, 1.01) infinite alternate;
+	animation: cardai 1s cubic-bezier(0.34, -0.1, 0.32, 1.01) infinite alternate;
+	
+}
+
+@keyframes cardai
+{
+	0%		
+	{
+		opacity: 1;
+		
+		
+	}
+	50%		
+	{
+		opacity: 0.2;
+		
+	}
+	100%	
+	{
+		opacity: 1;
+	}
+}
+@-webkit-keyframes cardai
+{
+   0%		
+	{
+		opacity: 1;
+		
+		
+	}
+	50%		
+	{
+		opacity: 0.2;
+		
+	}
+	100%	
+	{
+		opacity: 1;
+	}
+}
+.zadan .zd_middle .zd_zadan .cardai01{
+	position: absolute;
+	top: 145px;
+	left: 112px;
+	display: none;
+}
+.zadan .zd_middle .zd_zadan .cardai02{
+	position: absolute;
+	top: 420px;
+	left: 243px;
+	/*display: none;*/
+}
+.zadan .zd_middle .zd_zadan .cardai03{
+	position: absolute;
+	top: 420px;
+	left:243px;
+	/*display: none;*/
+}
+.zadan .zd_middle .zd_zadan .cardai04{
+	position: absolute;
+	top: 420px;
+	left: 190px;
+	/*display: none;*/
+}
+.zadan .zd_middle .zd_zadan .cardai05{
+	position: absolute;
+	top: 420px;
+	left: 220px;
+	/*display: none;*/
+}
+
+.zadan .zd_middle .zd_zadan .cardai06{
+	position: absolute;
+	top: 420px;
+	left: 243px;
+	/*display: none;*/
+}
+
+.zadan .zd_bottom {
+	padding-top: 20px;
+}
+.zadan .zd_bottom img{
+	display: block;
+	margin: 0 auto;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

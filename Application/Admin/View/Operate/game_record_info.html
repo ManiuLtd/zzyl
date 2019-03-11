@@ -1,0 +1,139 @@
+<extend name="Public/base"/>
+<block name="body">
+<style>
+        .t1{margin-left: -17px;}
+        .t2{margin-left: -130px;}
+        .t8{margin-left: -80px;}
+        .t4{margin-left: -120px;}
+        /*.t5{margin-left: -170px;}*/
+        .t6{margin-left: -155px;}
+        /*.t7{margin-left: -150px;}*/
+        /*.t8{margin-left: -120px;}*/
+        @media (max-width: 768px){
+            .top-menu{margin-left: 0px;}
+            .t7{margin-top: 5px;}
+        }
+</style>
+	<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>游戏输赢记录</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                                <form action="{:U()}" method="get">
+                                <div class="col-sm-5 m-b-xs" style="width: 200px;">
+                                    <select class="input-sm form-control input-s-sm inline" name="type">
+                                        <option value="0">请选择游戏类型</option>
+                                        <volist name="game" id="game">
+                                            <option value="{$game.gaemid}">{$game.name}</option>    
+                                        </volist>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 top-menu t3" style="width: 200px;">
+                                    <div class="input-group">
+                                        时间
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t4" style="width: 200px;">
+                                    <div class="input-group">
+                                        <input type="text" class="input-sm form-control"  id="datetimepicker1" name="start" value="{$start|date='Y-m-d H:i',###}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t5" style="width: 200px;">
+                                    <div class="input-group">
+                                        至
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width: 200px;">
+                                    <div class="input-group">
+                                        <input type="text" class="input-sm form-control"  id="datetimepicker2" name="stop" value="{$stop|date='Y-m-d H:i',###}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t7" style="width: 200px;">
+                                    <div class="input-group">
+                                       <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                    </div>
+                                </div>
+                                </form>
+                            </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>游戏名称</th>
+                                        <th>对局总数</th>
+                                        <th>输赢统计</th>
+                                        <th>初级场对局数</th>
+                                        <th>初级场输赢</th>
+                                        <th>中级场对局数</th>
+                                        <th>中级场输赢</th>
+                                        <th>高级场对局数</th>
+                                        <th>高级场输赢</th>
+                                        <!-- <th>专家场对局数</th>
+                                        <th>专家场输赢</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody class="gamedata">
+
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<script>
+    $(function(){
+        var start = {:$_GET['start'] ? $_GET['start'] : 0};
+        var stop = {:$_GET['start'] ? $_GET['start'] : 0};
+        var gameid = {:$_GET['gameid'] ? $_GET['gameid'] : 0};
+
+        var str = '';
+        str+= '<tr>'
+        str+= '<td colspan="19" align="center">正在获取...</td>'
+        str+= '</tr>' 
+        $('.gamedata').append(str)
+
+        $.ajax({
+            url:"{:U('game_record_info2')}",
+            data:{type:type,start:start,stop:stop},
+            type:'post',
+            dataType:'json',
+            success:function(res){
+                $('.gamedata').children('tr').remove();
+                var str = '';
+                $.each(res,function(k,v){
+                    str += '<tr>';
+                    str += '<td>'+v.name+'</td>';
+                    str += '<td>'+v.all_count+'</td>';
+                    str += '<td>'+v.all_bunko+'</td>';
+                    str += '<td>'+v.chuji.count+'</td>';
+                    str += '<td>'+v.chuji.bunko+'</td>';
+                    str += '<td>'+v.zhongji.count+'</td>';
+                    str += '<td>'+v.zhongji.bunko+'</td>';
+                    str += '<td>'+v.gaoji.count+'</td>';
+                    str += '<td>'+v.gaoji.bunko+'</td>';
+                    // str += '<td>'+v.zhuanjia.count+'</td>';
+                    // str += '<td>'+v.zhuanjia.bunko+'</td>';
+                    str += '</tr>';
+                })
+                
+                $('.gamedata').append(str)
+            },
+            error:function(){
+                $('.gamedata').children('tr').remove();
+                str = '';
+                str += '<tr>';
+                str += '<td colspan="11">信息获取失败</td>';
+                str += '</tr>';
+
+            }
+        })
+    })
+</script>
+</block>

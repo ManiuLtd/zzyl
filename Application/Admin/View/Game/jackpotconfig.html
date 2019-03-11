@@ -1,0 +1,148 @@
+<extend name="Public/base"/>
+<block name="body">
+
+	<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <!--<div class="ibox-title">
+                        <h5>vip房间列表</h5>
+                    </div>-->
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                            <div class="col-sm-5 m-b-xs" style="width:140px">
+                                <select class="input-sm form-control input-s-sm inline type"  onchange="nntype(this)" name="serviceName">
+                                    <option value="">选择类型</option>
+                                    <option value="ddz">斗地金币场</option>
+                                    <option value="ddz">斗地积分房</option>
+                                    <option value="sss">十三水金币场</option>
+                                    <option value="sss">十三水积分房</option>
+                                    <option value="zhajinhua">炸金花金币场</option>
+                                    <option value="zhajinhua">炸金花积分房</option>
+                                    <option value="tdh">广东推倒胡金币场</option>
+                                    <option value="tdh">广东推倒胡积分房</option>
+                                    <option value="lyjk">21点金币场</option>
+                                    <option value="lyjk">21点积分房</option>
+                                    <option value="njj">牛牛金币场</option>
+                                    <option value="njj">牛牛积分房</option>
+                                    <option value="srpj">牌九金币场</option>
+                                    <option value="srpj">牌九积分房</option>
+                                    <option value="sxtdh">山西推倒胡金币场</option>
+                                    <option value="sxtdh">山西推倒胡积分房</option>
+                                    <option value="sg">三公金币场</option>
+                                    <option value="sg">三公积分房</option>
+                                    <option value="pdk">跑得快金币场</option>
+                                    <option value="pdk">跑得快积分房</option>
+                                    <option value="brnn">百人牛牛金币场</option>
+                                    <option value="3rphz">三人跑胡子金币场</option>
+                                    <option value="3rphz">三人跑胡子积分房</option>
+                                    <option value="hzmj">红中麻将金币场</option>
+                                    <option value="hzmj">红中麻将积分房</option>
+                                    <option value="sdb">十点半金币场</option>
+                                    <option value="sdb">十点半积分房</option>
+                                    <option value="csmj">潮汕四人金币场</option>
+                                    <option value="csmj">潮汕四人积分房</option>
+                                    <option value="xzmj">血战麻将金币场</option>
+                                    <option value="xzmj">血战麻将积分房</option>
+                                    <option value="hl30m">欢乐30秒金币房</option>
+                                </select>
+                            </div>
+                            <input type="hidden" name="type" class='nsty' value="0">
+                            <div class="col-sm-3" style="width: 6%;margin-left:0px;">
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>游戏类型</th>
+                                        <!-- <th>游戏奖池</th> -->
+                                        <th>游戏输赢</th>
+                                        <th>游戏抽水</th>
+                                        <!-- <th>私有房抽水</th> -->
+                                      <!--  <th>其他类型赢钱</th> -->
+                                        <th>游戏总输赢</th>
+                                        <!-- <th>游戏总抽水</th> -->
+                                       <!-- <th>私有房总抽水</th> -->
+                                        <!-- <th>其他类型总赢钱</th> -->
+                                        <th>平台控制输赢类型</th>
+										<!-- <th>今日输赢值</th> -->
+										<th>输赢千分比</th>
+					<!-- 					<th>符合条件的真人输概率</th>
+										<th>符合条件的真人赢概率</th>
+										<th>今日输赢千分比</th>
+										<th>奖池值1</th>
+										<th>奖池值2</th>
+										<th>奖池值3</th>
+										<th>奖池值4</th>
+										<th>奖池值5</th> -->
+										<th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>{$_data.name}</td>
+                                        <!-- <td>{$_data.poolmoney}</td> -->
+										<td>{$_data.gamewinmoney}</td>
+										<td>{$_data.percentagewinmoney}</td>
+										<!-- <td>{$_data.taxRateprivateRoomMoney}</td> -->
+									<!--	<td>{$_data.otherwinMoney}</td> -->
+										<td>{$_data.allgamewinmoney}</td>
+										<!-- <td>{$_data.allpercentagewinmoney}</td> -->
+							<!--			<td>{$_data.alltaxrateprivateroommoney}</td> -->
+										<!-- <td>{$_data.allotherwinmoney}</td> -->
+										<td>
+											<if condition="($_data.platformctrltype eq 0)">
+												T型自动控制
+											<elseif condition="($_data.platformctrltype eq 1)"/>
+												点型控制
+											</if>
+										</td>
+										<!-- <td>{$_data.platformctrlvalue}</td> -->
+										<td>{$_data.platformctrlpercent}‰</td>
+								<!-- 		<td>{$_data.realpeoplefailpercent}‰</td>
+										<td>{$_data.realpeoplewinpercent}‰</td>
+										<td>{$_data.rewardscount}‰</td>
+										<td>{$_data.rewards1}</td>
+										<td>{$_data.rewards2}</td>
+										<td>{$_data.rewards3}</td>
+										<td>{$_data.rewards4}</td>
+										<td>{$_data.rewards5}</td> -->
+									
+										<td>
+											 <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('游戏奖池配置','{:U('jackpotedit',array('roomid'=>$_data['roomid']))}','2','300','300')"  style="text-decoration:none"> 编辑</a>
+										</td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<script>
+    function nntype(obj){
+        var type = $(obj).val()
+        if(type){
+
+            var text = $('.type option:selected').text();
+            if(text.indexOf('金币') != '-1'){
+                $('.nsty').val(0)
+            } else if(text.indexOf('积分') != '-1') {
+                $('.nsty').val(1)
+            } else if(text.indexOf('私人') != '-1') {
+                $('.nsty').val(2)
+            }
+        }
+    }
+</script>
+</block>

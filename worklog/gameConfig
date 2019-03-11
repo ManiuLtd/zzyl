@@ -1,0 +1,207 @@
+
+array (
+  0 => 
+  array (
+    'keyconfig' => 'supportTimesEveryDay',
+    'valueconfig' => '1',
+    'describe' => '每天领取救济金次数',
+  ),
+  1 => 
+  array (
+    'keyconfig' => 'supportMinLimitMoney',
+    'valueconfig' => 0.5,
+    'describe' => '低于多少金币领取救济金',
+  ),
+  2 => 
+  array (
+    'keyconfig' => 'supportMoneyCount',
+    'valueconfig' => 0.01,
+    'describe' => '每次领取救济金的金币数量每次领取救济金的金币数量',
+  ),
+  3 => 
+  array (
+    'keyconfig' => 'registerGiveMoney',
+    'valueconfig' => 50,
+    'describe' => '注册送金币',
+  ),
+  4 => 
+  array (
+    'keyconfig' => 'registerGiveJewels',
+    'valueconfig' => '100',
+    'describe' => '注册送房卡',
+  ),
+  5 => 
+  array (
+    'keyconfig' => 'logonGiveMoneyEveryDay',
+    'valueconfig' => 0,
+    'describe' => '每日登录赠送金币数',
+  ),
+  6 => 
+  array (
+    'keyconfig' => 'sendHornCostJewels',
+    'valueconfig' => '5',
+    'describe' => '发送世界广播消耗房卡',
+  ),
+  7 => 
+  array (
+    'keyconfig' => 'useMagicExpressCostMoney',
+    'valueconfig' => 0.029999999999999999,
+    'describe' => '发送魔法表情消耗金币数',
+  ),
+  8 => 
+  array (
+    'keyconfig' => 'friendRewardMoney',
+    'valueconfig' => 1,
+    'describe' => '用户打赏金币',
+  ),
+  9 => 
+  array (
+    'keyconfig' => 'friendRewardMoneyCount',
+    'valueconfig' => '5',
+    'describe' => '用户打赏金币次数',
+  ),
+  10 => 
+  array (
+    'keyconfig' => 'buyingDeskCount',
+    'valueconfig' => '300',
+    'describe' => '购买房卡次数',
+  ),
+  11 => 
+  array (
+    'keyconfig' => 'sendGiftMyLimitMoney',
+    'valueconfig' => 10000000000,
+    'describe' => '赠送要求自己最低金币数',
+  ),
+  12 => 
+  array (
+    'keyconfig' => 'sendGiftMyLimitJewels',
+    'valueconfig' => '100000000000',
+    'describe' => '赠送要求自己最低房卡数',
+  ),
+  13 => 
+  array (
+    'keyconfig' => 'sendGiftMinMoney',
+    'valueconfig' => 100000000000,
+    'describe' => '赠送最低金币数',
+  ),
+  14 => 
+  array (
+    'keyconfig' => 'sendGiftMinJewels',
+    'valueconfig' => '100000000000',
+    'describe' => '赠送最低房卡数',
+  ),
+  15 => 
+  array (
+    'keyconfig' => 'sendGiftRate',
+    'valueconfig' => '0.1',
+    'describe' => '赠送系统扣除的税率',
+  ),
+  16 => 
+  array (
+    'keyconfig' => 'bankMinSaveMoney',
+    'valueconfig' => 1,
+    'describe' => '银行保存最低金币数',
+  ),
+  17 => 
+  array (
+    'keyconfig' => 'bankSaveMoneyMuti',
+    'valueconfig' => '10',
+    'describe' => '银行存钱必须是这个倍数',
+  ),
+  18 => 
+  array (
+    'keyconfig' => 'bankMinTakeMoney',
+    'valueconfig' => 1,
+    'describe' => '银行最低取钱数',
+  ),
+  19 => 
+  array (
+    'keyconfig' => 'bankTakeMoneyMuti',
+    'valueconfig' => '10',
+    'describe' => '银行取钱必须是这个倍数',
+  ),
+  20 => 
+  array (
+    'keyconfig' => 'bankMinTransfer',
+    'valueconfig' => 1,
+    'describe' => '银行最低转账数',
+  ),
+  21 => 
+  array (
+    'keyconfig' => 'bankTransferMuti',
+    'valueconfig' => '10',
+    'describe' => '银行转账必须是这个数的倍数',
+  ),
+  22 => 
+  array (
+    'keyconfig' => 'groupCreateCount',
+    'valueconfig' => '5',
+    'describe' => '俱乐部创建限制',
+  ),
+  23 => 
+  array (
+    'keyconfig' => 'groupMemberCount',
+    'valueconfig' => '150',
+    'describe' => '俱乐部人数限制',
+  ),
+  24 => 
+  array (
+    'keyconfig' => 'groupJoinCount',
+    'valueconfig' => '10',
+    'describe' => '加入俱乐部限制',
+  ),
+  25 => 
+  array (
+    'keyconfig' => 'groupManageRoomCount',
+    'valueconfig' => '5',
+    'describe' => '俱乐部管理房间人数限制',
+  ),
+  26 => 
+  array (
+    'keyconfig' => 'groupRoomCount',
+    'valueconfig' => '1',
+    'describe' => '俱乐部房间限制',
+  ),
+  27 => 
+  array (
+    'keyconfig' => 'groupAllAlterNameCount',
+    'valueconfig' => '3',
+    'describe' => '俱乐部更新ID总次数限制',
+  ),
+  28 => 
+  array (
+    'keyconfig' => 'groupEveAlterNameCount',
+    'valueconfig' => '1',
+    'describe' => '俱乐部每日更新ID次数限制',
+  ),
+  29 => 
+  array (
+    'keyconfig' => 'friendTakeRewardMoneyCount',
+    'valueconfig' => '10',
+    'describe' => '用户打赏金币次数',
+  ),
+  30 => 
+  array (
+    'keyconfig' => 'groupTransferCount',
+    'valueconfig' => '3',
+    'describe' => '俱乐部最多能授权管理员数量',
+  ),
+  31 => 
+  array (
+    'keyconfig' => 'ftpIP',
+    'valueconfig' => '192.168.0.79',
+    'describe' => 'ftp服务器ip',
+  ),
+  32 => 
+  array (
+    'keyconfig' => 'ftpUser',
+    'valueconfig' => 'zzylftp',
+    'describe' => 'ftp服务器账号',
+  ),
+  33 => 
+  array (
+    'keyconfig' => 'ftpPasswd',
+    'valueconfig' => 'jfik&*5jhfj',
+    'describe' => 'ftp服务器密码',
+  ),
+)

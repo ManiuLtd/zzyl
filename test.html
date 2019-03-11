@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+    </title>
+</head>
+
+<body>
+</body>
+<script type="text/javascript">
+var last = Date.now(),
+    doc = window.document,
+    ifr = doc.createElement('iframe');
+
+//创建一个隐藏的iframe
+ifr.src = "mw-haotianqipai://test:8088/test?userID=8897&name=fuck";
+ifr.style.cssText = 'display:none;border:0;width:0;height:0;';
+doc.body.appendChild(ifr);
+
+setTimeout(function() {
+    doc.body.removeChild(ifr);
+    //setTimeout回小于2000一般为唤起失败 
+    if (Date.now() - last < 2000) {
+        if (typeof onFail == 'function') {
+            onFail();
+        } else {
+            //弹窗提示或下载处理等
+        }
+    } else {
+        if (typeof onSuccess == 'function') {
+            onSuccess();
+        }
+    }
+}, 1000);
+</script>
+
+</html>

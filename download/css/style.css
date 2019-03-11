@@ -1,0 +1,59 @@
+@charset "utf-8";
+/*www.jq22.com*/
+body, ul, dl, dd, dt, ol, li, p, h1, h2, h3, h4, h5, h6, textarea, form, select, fieldset, table, td, div, input {margin:0;padding:0;-webkit-text-size-adjust: none}
+h1, h2, h3, h4, h5, h6{font-size:36px;}
+body>div{margin:0 auto}
+div {text-align:left}
+a img {border:0}
+body { color: #333; text-align: center; font: 12px "宋体"; }
+ul, ol, li {list-style-type:none;vertical-align:0}
+a {outline-style:none;color:#535353;text-decoration:none}
+a:hover { color: #D40000; text-decoration: none}
+.clear{height:0; overflow:hidden; clear:both}
+.button {display: inline-block;zoom: 1; *display: inline;vertical-align: baseline;margin: 0 2px;outline: none;cursor: pointer;text-align: center;text-decoration: none;font: 14px/100% Arial, Helvetica, sans-serif;padding:0.25em 0.6em 0.3em;text-shadow: 0 1px 1px rgba(0,0,0,.3);-webkit-border-radius: .5em; -moz-border-radius: .5em;border-radius: .5em;-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);box-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+.red {color: #faddde;border: solid 1px #980c10;background: #d81b21;background: -webkit-gradient(linear, left top, left bottom, from(#ed1c24), to(#A51715));background: -moz-linear-gradient(top,  #ed1c24,  #A51715);filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ed1c24', endColorstr='#aa1317'); font-size:14px!important;}
+}
+.red:hover { background: #b61318; background: -webkit-gradient(linear, left top, left bottom, from(#c9151b), to(#a11115)); background: -moz-linear-gradient(top,  #c9151b,  #a11115); filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#c9151b', endColorstr='#a11115'); color:#fff;}
+.red:active {color: #de898c;background: -webkit-gradient(linear, left top, left bottom, from(#aa1317), to(#ed1c24));background: -moz-linear-gradient(top,  #aa1317,  #ed1c24);filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#aa1317', endColorstr='#ed1c24');}
+.weixin-tip{display:none; height: 80px; line-height: 50px; font-size: 28px; font-family: '微软雅黑'; color: #FFF; text-align: center; background:url('../images/weixin-tip.png');background-size:100% 100%; font-weight: normal; position: absolute; width: 100%; left: 0; top: 0; z-index: 999; padding: 0px 0px 8px; }
+.keBottom{ color: #FFF; height: 60px; text-align: center; background: url(../images/bodyBg2.gif) repeat-x left top; position: absolute; width: 100%; left: 0; bottom: 0; z-index: 999; font: 18px/60px "微软雅黑"; padding: 3px 0px 5px; opacity:0.8;}
+
+.keBottom a,.keBottom a:hover{color:#fff;}
+/*www.jq22.com CSS结束，应用特效时，以上样式可删除*/
+/* 效果CSS开始 */
+* { margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+.container { width: 100%; height: 100%; position: absolute; left: 0; top: 0%; }
+.container .page { height: 100%; position: relative; color:#fff;text-align:center; }
+.container .page h1{padding-top:120px; line-height:50px; display:block}
+.container .page0 { background:url('../download1.png');background-size:100%;}
+.container .page1 { background:url('../download2.png');background-size:100%; }
+.container .page2 { background:url('http://haoyue.szhuomei.com/0303.png');background-size:100%; display: none;}
+.container .page1 img.no1 { position: absolute; left: 10px; top: 50px; -webkit-transition: all 1s ease 0s; }
+.container .page1.cur img.no1 { -webkit-transform: rotate(720deg); }
+.container .page1 img.no2 { position: absolute; left: 600px; top: 50px; -webkit-transition: all 1s ease 2s; }
+.container .page1.cur img.no2 { left: 30px; top: 100px; -webkit-transform: rotate(720deg); }
+.xiangxiatishi { position: fixed; bottom: 20px; left: 50%; -webkit-transform: translateX(-50%); -webkit-animation: dong 1s linear 0s infinite alternate; }
+@-webkit-keyframes dong {  from {
+bottom:20px;
+}
+to { bottom: 60px; }
+}
+.button2{
+	padding-left: 6%; 
+	position: fixed;
+	bottom: 5px;
+	width: 100%;
+}
+.text2{ 
+	text-align: right;
+	width: 100%;
+}
+.text2 img{ 
+	margin-right:10% ;
+	width: 15%;
+	margin-bottom: -38px;
+}
+
+/* 效果CSS结束 */

@@ -1,0 +1,86 @@
+<include file="Public/base"/>
+        <div class="search-wrap">
+			      <div class="tab-container">
+				<div class="tab-nav">
+					<a href="" class="on">我的手下的三级代理</a>
+				</div>
+            </div>
+						            <div class="search-condition">
+			<form>
+
+                <div class="time">
+
+                 <if condition="$level neq 3">
+						      <a type="button" href="{:U('addAgent')}"  class="btn btn-info">添加代理</a>
+				    &nbsp;&nbsp;
+						      <a type="button" href="{:U('agent_list')}"  class="btn btn-info">审核列表</a>
+				</if>
+
+                    &nbsp;&nbsp;
+                    <div class="end">
+                        <i>玩家ID</i>
+                        <input style=" border: 1px solid #ccc; border-radius: 0.1rem; height: 0.68rem; line-height: 0.78rem; padding-left: 0.2rem; width: 90px;" name="userid"  type="text">
+                    </div>
+						<button  class="btn-search" type="submit" style="top:32px">搜索</button>  
+                </div>
+               
+			</form>
+
+
+                <div class="item">
+  <div class="table-responsive">
+       <p style="margin-top:5px;"><b>二维码绑定: {$qrcodeCount|default=0}   邀请码绑定:{$agentCount|default=0}</b></p>
+      <table class="table table-bordered" style="width: 100%">
+        <thead>
+        
+          <tr>
+            <th>代理账号(手机号)</th>
+            <th>微信</th>
+            <th>邀请码</th>
+            <th>游戏ID</th>
+            <th>地址</th>
+            <th>会员数</th>
+            <th>下级代理数</th>
+            <th>可提现金额</th>
+            <th>已提现金额</th>
+            <th>最后登录时间</th>
+            <th>类别</th>
+          </tr>
+        </thead>
+        <tbody>
+        <volist name="_data" id="my_agent">
+          <tr>
+            <th scope="row">{$my_agent.username}</th>
+            <td>{$my_agent.wechat}</td>
+            <td>{$my_agent.agentid}</td>
+            <td><a href="{:U('userinfo',array('userid'=>$my_agent['userid']))}">{$my_agent.userid}</a></td>
+            <td>{$my_agent.last_login_address}</td>
+            <td>{$my_agent.user_count}</td>
+            <td>{$my_agent.agent_count}</td>
+            <td>{$my_agent.balance}</td>
+            <td>{$my_agent.history_pos_money}</td>
+            <td>{$my_agent.last_login_time|date="Y-m-d H:i:s",###}</td>
+        <td>
+              <if condition="($my_agent.type eq 2)">
+              手下二级代理
+              <elseif condition="($my_agent.type eq 3)"/>
+              手下三级代理
+              </if>
+            </td>         
+</tr>
+          </volist>
+        </tbody>
+      </table>
+    </div><!-- /.table-responsive -->
+                   
+{$_page}
+				                </div>
+            </div>
+        </div>
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>棋牌运营平台</span></p>
+            </div>
+        </div>
+</body>
+</html>

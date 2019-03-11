@@ -1,0 +1,108 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        @media (max-width: 768px){
+          /*.panel-body{border:2px solid red;}*/
+          #top1{width: 600px;}
+        }
+    </style>
+        <div class="wrapper wrapper-content animated fadeInRight">       
+        <div class="row" style="">
+                <div class="col-sm-12">
+                    <div class="panel panel-info" id="top1">
+                        <div class="panel-heading">
+                               <h4>平台基本数据</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-striped table-bordered table-hover" id="my-info">
+                                <tr>
+                                    <td><b>平台累计收入：<font color="red">{$income|default="0.00"}</font></b></td>
+                                    <td><b>平台目前金币总数:<font color="red">{$all_money}</font></b></td>
+                                    <td><b>平台目前房卡总数:<font color="red">{$all_jewels}</font></b></td>
+                                    <td><b>平台用户总数:<font color="red">{$user_count|default=0}</font></b></td>
+                                    <td><b>平台机器人总数:<font color="red">{$vbot_count|default=0}</font></b></td>
+                                </tr>
+                                <tr>
+                                    <td><b>平台代理总数:</b><font color="red">{$agent_count|default=0}</font></td>
+                                    <td><b>平台玩家总金币:</b><font color="red">{$user_money|default=0}</font></td>
+                                    <td><b>在线玩家人数:</b><font color="red">{$online_user|default=0}</font></td>
+                                    <td><b>平台消耗房卡数:</b><font color="red">{$jewels_cost|default=0}</font></td>
+                                    <td><b>平台消耗金币数:</b><font color="red">{$money_cost|default=0}</font></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-success" id="top1">
+                        <div class="panel-heading">
+                               <h4>商城统计数据</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-striped table-bordered table-hover" id="my-info">
+                                <tr>
+                                    <td><b>平台充值金额：<font color="red">{$mallMoneyCount|default="0.00"}</font></b></td>
+                                    <td><b>平台累计充值房卡数:<font color="red">{$mallFk|default=0}</font></b></td>
+                                    <td><b>平台累计充值金币数:<font color="red">{$mallMoney|default=0}</font></b></td>
+                                    <td><b>代理账号余额:<font color="red">{$balance|default="0.00"}</font></b></td>
+                                    <td><b>代理提现总金额:<font color="red">{$history_pos_money|default="0.00"}</font></b></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-danger"  id="top1">
+                        <div class="panel-heading">
+                               <h4>大厅与游戏统计数据</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-striped table-bordered table-hover" id="my-info">
+                                <tr>
+                                    <td><b>用户登录总次数：<font color="red">{$userLoginCount|default=0}</font></b></td>
+                                    <td><b>用户反馈总次数：<font color="red">{$feedbackCount|default=0}</font></b></td>
+                                    <td><b>用户分享总次数：<font color="red">{$sharegameCount|default=0}</font></b></td>
+                                    <td><b>用户签到总次数：<font color="red">{$signRecordCount|default=0}</font></b></td>
+                                    <td><b>用户签到领取金币总数：<font color="red">{$signRecordMoneyCount|default=0}</font></b></td>
+                                </tr>
+                                <tr>
+                                    <td><b>用户签到领取房卡总数：<font color="red">{$signRecordFkCount|default=0}</font></b></td>
+                                    <td><b>用户转赠总次数：<font color="red">{$sendGiftCount|default=0}</font></b></td>
+                                    <td><b>用户转赠消耗房卡总数：<font color="red">{$deduceFkCount|default=0}</font></b></td>
+                                    <td><b>用户转赠消耗金币总数：<font color="red">{$deduceMoneyCount|default=0}</font></b></td>
+                                    <td><b>用户发送世界广播次数：<font color="red">{$hornCount|default=0}</font></b></td>
+                                </tr>
+                                <tr>
+                                    <td><b>用户发送世界广播消耗房卡：<font color="red">{$costFkCount|default=0}</font></b></td>
+                                    <td><b>用户实物兑换次数：<font color="red">{$swCount|default=0}</font></b></td>
+                                    <td><b>用户实物兑换消耗金币：<font color="red">{$xhMoneyCount|default=0}</font></b></td>
+                                    <td><b>用户实物兑换获取的总房卡：<font color="red">{$FkCount|default=0}</font></b></td>
+                                    <td><b>用户发送魔法表情次数：<font color="red">{$magicExpressCount|default=0}</font></b></td>
+                                </tr>
+                                <tr>
+                                    <td><b>用户发送魔法表情消耗金币：<font color="red">{$magicExpressMoneyCount|default=0}</font></b></td>
+                                    <td><b>绑定邀请码用户数：<font color="red">{$bind_user|default=0}</font></b></td>
+                                    <td><b>用户绑定邀请码获得金币数：<font color="red">{$bind_send_money}</font></b></td>
+                                    <td><b>用户绑定邀请码获得房卡数：<font color="red">{$bind_send_jewels}</font></b></td>
+                                    <td><b>用户抽奖总次数：<font color="red">{$TurntablerecordCount|default=0}</font></b></td>
+                                </tr>
+                                <tr>
+                                    <td><b>用户抽奖获得金币总数：<font color="red">{$TurntablerecordMoneyCount|default=0}</font></b></td>
+                                    <td><b>用户抽奖获得房卡总数：<font color="red">{$TurntablerecordFkCount|default=0}</font></b></td>
+                                    <td><b>用户领取救济金次数：<font color="red">{$supportCount|default=0}</font></b></td>
+                                    <td><b>用户领取救济金总数：<font color="red">{$supportMoneyCount|default=0}</font></b></td>
+                               	    <td><b>用户登录总次数：<font color="red">{$login_count|default=0}</font></b></td>
+				 </tr>
+				<tr>
+                                    <td><b>今日已开房卡场数：<font color="red">{$jewels_game|default=0}</font></b></td>
+                               	    <td><b>今日金币输赢：<font color="red">{$today_bunko|default=0}</font></b></td>
+                                    <td><b>消耗房卡数：<font color="red">{$jewels_cost|default=0}</font></b></td>
+                                    <td><b>消耗金币数：<font color="red">{$money_cost|default=0}</font></b></td>
+                                    <td><b>目前活跃玩家数：<font color="red">{$now_active_user|default=0}</font></b></td>
+				 </tr>
+				<tr>
+                                     <td><b>平台玩家总数：<font color="red">{$plat_user_count|default=0}</font></b></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</block>

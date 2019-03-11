@@ -1,0 +1,25 @@
+<extend name="Public/base"/>
+<block name="content">
+<div class="news_left">
+          <h3>新闻分类</h3><hr>
+          <ul>
+            <li><a href="{:U('',array('type'=>0))}">游戏公告</a></li><hr>
+            <li><a href="{:U('',array('type'=>1))}">行业资讯</a></li><hr>
+          </ul>
+        </div>
+        <div class="news_right">
+          <h3>新闻列表</h3><hr>
+          <volist name="news" id="news">
+          <div class="news_list" style="overflow: hidden">
+              <img src="{$news.img_url}" style="width:10%;margin-right:2%;">
+              <a href=""><font size="5">{$news.title}</font></a>
+
+                  <p >{$news.content}</p>
+
+
+              <p style="text-align: right;">{$news.create_time|date="Y-m-d H:i:s",###}</p>
+          </div>
+          </volist>
+          <div class="page"></div>
+        </div>
+</block>

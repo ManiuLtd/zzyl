@@ -1,0 +1,57 @@
+<extend name="Public/base"/>
+<block name="body">
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:105%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <div class="col-sm-3" style="width:100px;margin-left:0px;">
+                                <div class="input-group">
+                                    <a href="javascript:;" class="btn btn-sm btn-success"
+                                       onclick="admin_edit('发布系统邮件','{:U('send_email')}','2','500','500')"
+                                       style="text-decoration:none"> 发布系统邮件</a>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="width:100px;margin-left:0px;">
+                                <div class="input-group">
+                                    <a href="javascript:;" class="btn btn-sm btn-success"
+                                       onclick="admin_edit('发布个人邮件','{:U('personal_send_email')}','2','500','580')"
+                                       style="text-decoration:none"> 发布个人邮件</a>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>邮件标题</th>
+                                    <th>邮件内容</th>
+                                    <th>邮件类型</th>
+                                    <th>发送者</th>
+                                    <th>附件内容</th>
+                                    <th>发送时间</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="emailList" id="email">
+                                    <tr>
+                                        <td>{$email.title}</td>
+                                        <td>{$email.content}</td>
+                                        <td>{$email.typeName}</td>
+                                        <td>{$email.senderName}</td>
+                                        <td>{$email.goodsName}</td>
+                                        <td>{$email.sendtime|date="Y-m-d H:i:s",###}</td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

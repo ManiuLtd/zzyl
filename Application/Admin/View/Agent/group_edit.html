@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    
+    <script type="text/javascript">
+    //ajax post
+        function ajax_post(the){
+            layer.confirm('您确定要做此操作吗？', {
+            btn: ['确定','取消'] //按钮
+            }, function(){
+                var that = $(the);
+                var url= $(the).attr('action');
+                var cs = $(the).serialize();
+                 $.ajax({
+                    url:url,
+                    data:cs,
+                    type:'POST',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                parent.location.reload();
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                        }
+                    });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+</script>
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">       
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>添加分组</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" action="{:U()}" onsubmit="return ajax_post(this);">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">分组名称</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="group_name" value="{$group.group_name}">
+                                    <input type="hidden" name="id" value="{$group.id}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">是否禁用</label>
+
+                                <div class="col-sm-10">
+                                    <select class="form-control m-b" name="disabled" id="disabled">
+                                        <option value="0">否</option>
+                                        <option value="1">是</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">分组描述：</label>
+                                <div class="col-sm-8">
+                                    <textarea id="ccomment" name="desc" class="form-control" required="" aria-required="true">{$group.desc}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">权限分配：</label>
+                                <div class="col-sm-8">
+                                    <volist name="_menus" id="_menus">
+                                        <dl class="permission-list">
+                                            <dt>
+                                                <label>
+                                                    <input type="checkbox" value="{$_menus.id}" name="rules[]" id="user-Character-1">
+                                                    {$_menus.menu_name}</label>
+                                                    <hr style="margin-top:0px;margin-bottom:0px;">
+                                            </dt>
+                                            <dd>
+                                            <dd>
+                                                <volist name="_menus.child" id="child">
+                                                    <label class="">
+                                                        <input type="checkbox" value="{$child.id}" name="rules[]" id="user-Character-1-0-0">
+                                                        {$child.menu_name}&emsp;
+                                                    </label>
+                                                </volist>
+                                            </dd>
+                                            </dd>
+                                        </dl>
+                                    </volist>
+                                </div>
+                            </div>
+                            <!-- <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">权限分配：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <volist name="menu" id="menu">
+                    <dl class="permission-list">
+                        <dt>
+                            <label>
+                                <input type="checkbox" value="{$_menu.id}" name="rules[]" id="user-Character-1">
+                                {$_menu.menu_name}</label>
+                        </dt>
+                        <dd>
+
+                        <dd>
+                            <volist name="menu.child" id="child">
+                                <label class="">
+                                    <input type="checkbox" value="{$child.id}" name="rules[]" id="user-Character-1-0-0">
+                                    {$child.menu_name}
+                                </label>
+                            </volist>
+                        </dd>
+
+                        </dd>
+                    </dl>
+                </volist>
+            </div>
+        </div> -->
+                            <div class="hr-line-dashed"></div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit">保存内容</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript">
+    $("#disabled option[value='{$group.disabled}']").attr("selected", "selected");
+    var rules = eval('('+'{$rules}'+')');
+    function contains(arr, obj) {
+        var i = arr.length;
+        while (i--) {
+            if (arr[i] == obj) {
+                return true;
+            }
+        }
+        return false;
+    }
+    $("input[name='rules[]']").each(function(e){
+        if(contains(rules,$(this).val()) == true){
+            $(this).attr('checked',true);
+        }
+    });
+</script>
+</body>
+</html>

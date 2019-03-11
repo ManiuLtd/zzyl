@@ -1,0 +1,64 @@
+<extend name="Public/base"/>
+<block name="body">
+
+	<div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>代理申请列表</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+  
+
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+
+                                        <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Adminmenu"></th>
+                                        <th>游戏ID</th>
+                                        <th>游戏昵称</th>
+                                        <th>手机号</th>
+                                        <th>微信号</th>
+                                        <th>上级代理</th>
+                                        <th>上级代理级别</th>
+                                        <th>申请IP</th>
+                                        <th>申请时间</th>
+                                        <th>审核状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="list">
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" value="{$list.id}" name="id[]">
+                                        </td>
+                                        <td><a onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')"  style="text-decoration:none"><font color="#1AB394">{$list.user_id}</font></a></td>
+                                        <td><a  onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')"  style="text-decoration:none"><font color="#1AB394">{$list.username}</font></a></td>
+                                        <td>{$list.phone}</td>
+                                        <td>{$list.weixin}</td>
+                                        <td>{$list.agentid|default="无上级"}</td>
+                                        <td><switch name="list.agent_level"> <case value="1">一级代理</case> <case value="2">二级代理</case><case value="3">三级级代理</case> <default />无上级代理</switch></td>
+                                        <td>{$list.apply_ip}</td>
+                                        <td>{$list.addtime|date='Y-m-d H:i:s',###}</td>
+                                        <td><switch name="list.status"> <case value="0">未审核</case> <case value="1">审核未通过</case> <default />审核已通过</switch></td>
+                                        <td>
+                                        	<a class="btn btn-outline btn-info  dim " href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('代理审核','{:U('apply_edit',array('id'=>$list['id']))}','2','400','400')" class="ml-5" style="text-decoration:none">审核</a>
+                             <!--           	<a href="{:U('Public/del_record',array('id'=>$_data['id'],'model'=>'Adminmenu'))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim ">删除</a> -->
+                                        </td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

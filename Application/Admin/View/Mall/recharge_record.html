@@ -1,0 +1,158 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        .t1 {
+            margin-left: -17px;
+        }
+
+        .t2 {
+            margin-left: -17px;
+        }
+
+        /*  .t3{margin-left: -130px;}
+          .t4{margin-left: -12px;}*/
+        .t5 {
+            margin-left: -170px;
+        }
+
+        @media (max-width: 768px) {
+            .top-menu {
+                margin-left: 0px;
+            }
+
+            .t6 {
+                margin-top: 5px;
+            }
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>充值账单明细</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                                <div class="col-sm-5 m-b-xs" style="width: 200px;">
+                                    <select class="input-sm form-control input-s-sm inline" name="type">
+                                        <option value="0">请选择</option>
+                                        <option value="1"
+                                        <if condition="$type eq 1"> selected</if>
+                                        >充值人ID</option>
+                                        <option value="2"
+                                        <if condition="$type eq 2"> selected</if>
+                                        >充值人昵称</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 top-menu t1" style="width: 200px;">
+                                    <div class="input-group">
+                                        <input type="text" placeholder="请输入关键词" class="input-sm form-control"
+                                               name="search" value="{$search}"> <span class="input-group-btn">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t2" style="width:100px;">
+                                    <div class="input-group">
+                                        充值时间
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t3" style="width: 200px;">
+                                    <div class="input-group">
+                                        <input type="text" class="input-sm form-control" id="datetimepicker1"
+                                               name="start" value="{$start|date='Y-m-d H:i',###}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t4" style="width:200px;">
+                                    <div class="input-group">
+                                        至
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t5" style="width:200px;">
+                                    <div class="input-group">
+                                        <input type="text" class="input-sm form-control" id="datetimepicker2"
+                                               name="stop" value="{$stop|date='Y-m-d H:i',###}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width:200px;">
+                                    <div class="input-group">
+                                        <button type="submit" class="btn btn-sm btn-primary"> 搜索</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>充值时间</th>
+                                    <th>充值人ID</th>
+                                    <th>充值人昵称</th>
+                                    <th>充值人类型</th>
+                                    <th>购买详情</th>
+                                    <th>充值金额</th>
+                                    <th>绑定代理游戏ID</th>
+                                    <th>绑定邀请码</th>
+                                    <th>绑定代理账号</th>
+                                    <th>绑定代理类型</th>
+                                    <th>绑定代理分成</th>
+                                    <th>代理分成总和</th>
+                                    <th>平台收入</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>{$_data.handletime|date="Y-m-d H:i:s",###}</td>
+                                        <td>
+                                            <a onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')"
+                                               style="text-decoration:none"><font color="#1AB394">{$_data.userid}</font></a>
+                                        </td>
+                                        <td>
+                                            <a onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')"
+                                               style="text-decoration:none"><font
+                                                    color="#1AB394">{$_data.name}</font></a></td>
+                                        <td>{$_data.user.user_type_name}</td>
+                                        <td>
+                                            <font color="red">{$_data.buynum}</font>
+                                            {$_data.buy_type_name}
+                                        </td>
+                                        <td>{$_data.recharge_amount}</td>
+                                        <if condition="$_data['user']['bind_agent_id'] neq '无'">
+                                            <td>
+                                                <a onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['user']['bind_agent_userid']))}','2','1200','800')"
+                                                   style="text-decoration:none"><font color="#1AB394">{$_data.user.bind_agent_userid}</font></a>
+                                            </td>
+                                            <td>
+                                                <a onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['user']['bind_agent_userid']))}','2','1200','800')"
+                                                   style="text-decoration:none"><font color="#1AB394">{$_data.user.bind_agent_id}</font></a>
+                                            </td>
+                                            <td>
+                                                <a onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['user']['bind_agent_userid']))}','2','1200','800')"
+                                                   style="text-decoration:none"><font color="#1AB394">{$_data.user.bind_agent_username}</font></a>
+                                            </td>
+                                            <else/>
+                                            <td>{$_data.user.bind_agent_userid}</td>
+                                            <td>{$_data.user.bind_agent_id}</td>
+                                            <td>{$_data.user.bind_agent_username}</td>
+                                        </if>
+                                        <td>{$_data.user.bind_agent_type_name}</td>
+                                        <td>{$_data.bind_agent_commission}</td>
+                                        <td>{$_data.all_agent_commission}</td>
+                                        <td>
+                                            <font color="red">{$_data.plat_commission}</font>
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

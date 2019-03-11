@@ -1,0 +1,692 @@
+<?php
+namespace Admin\Controller;
+vendor('Common.Socket','','.class.php');
+vendor('Common.SendFunction','','.class.php');
+vendor('Common.GetRedis','','.class.php');
+class HallController extends AdminController {
+    //抽奖管理
+    public function turntable(){
+    	//获取抽奖记录
+    	$type = I('type');
+        $search = I('search');
+        if($type && $search){
+            switch($type){
+            	case 1:
+            	$where['userID'] = $search;
+            	break;
+            	case 2:
+            	$where['username'] = $search;
+            	break;
+            }
+        }
+        $start = I('start');
+        $stop = I('stop');
+        if($start && $stop){
+            $start = strtotime($start);
+            $stop = strtotime($stop);
+            $where['turntableTime'] = ['between',[$start,$stop]];
+        }
+        $data = D('Data')->get_all_data('Turntablerecord',$where,15,'turntableTime desc');
+        foreach($data['_data'] as $k => $v){
+        	$data['_data'][$k]['turntable_count'] = M('Turntablerecord')->where(['userID'=>$data['_data'][$k]['userid']])->count();
+        	$data['_data'][$k]['winning_count'] = M('Turntablerecord')->where(['userID'=>$data['_data'][$k]['userid'],'prizeType'=>['neq',0]])->count();
+        	$data['_data'][$k]['get_money'] = M('Turntablerecord')->where(['userID'=>$data['_data'][$k]['userid'],'prizeType'=>1])->sum('num');
+        	$data['_data'][$k]['get_jewels'] = M('Turntablerecord')->where(['userID'=>$data['_data'][$k]['userid'],'prizeType'=>2])->sum('num');
+        }
+        //dump($data);exit();
+        $this->assign('_data',$data['_data']);
+        $this->assign('_page',$data['_page']);
+        $this->display();
+    }
+    //抽奖配置
+    public function turntable_config(){
+    	//获取抽奖配置
+    	$config = M('Turntableconfig')->select();
+   		$all_money = M('Turntableconfig')->where(['prizeType'=>1])->sum('num');
+   		$all_jewels = M('Turntableconfig')->where(['prizeType'=>2])->sum('num');
+    	$all_chance = M('Turntableconfig')->sum('chance');
+    	$money = M('Turntablerecord')->where(['prizeType'=>1])->sum('num');
+    	$jewels = M('Turntablerecord')->where(['prizeType'=>2])->sum('num');
+    	$this->assign('all_money',$all_money);
+    	$this->assign('all_jewels',$all_jewels);
+    	$this->assign('all_chance',$all_chance);
+    	$this->assign('config',$config);
+        $this->assign('money',FunctionHelper::moneyTimes2Small($money));
+        // $this->assign('money',($money));
+    	$this->assign('jewels',$jewels);
+    	$this->display();
+    }
+
+    //抽奖编辑
+    public function turntable_config_edit(){
+    	$data['id'] = I('id');
+    	$data['prize'] = I('prize');
+    	$data['num'] = I('num');
+        if(I('prizeType') != 3){
+           $data['prizeType'] = I('prizeType'); 
+        }
+    	$data['chance'] = I('chance');
+    	if(!preg_match("/^[1-9][0-9]*$/",$data['num']) && $data['prizeType'] != 0){
+    		$this->error('奖品数量数只能是正整数');
+    	}
+    	$res = M('Turntableconfig')->save($data);
+    	if($res){
+    		$this->success('编辑成功');
+    	}else{
+    		$this->error('编辑失败');
+    	}
+    }
+
+
+    //获取签到记录
+    public function sign(){
+        //获取抽奖记录
+        $type = I('type');
+        $search = I('search');
+        if($type && $search){
+            switch($type){
+                case 1:
+                $where['userID'] = $search;
+                break;
+                case 2:
+                $where['username'] = $search;
+                break;
+            }
+        }
+        $start = I('start');
+        $stop = I('stop');
+        if($start && $stop){
+            $start = strtotime($start);
+            $stop = strtotime($stop);
+            $where['signTime'] = ['between',[$start,$stop]];
+        }
+        $data = D('Data')->get_all_data('Signrecord',$where,15,'signTime desc');
+        foreach($data['_data'] as $k => $v){
+            $data['_data'][$k]['sign_count'] = M('Signrecord')->where(['userID'=>$data['_data'][$k]['userid']])->count();
+            $data['_data'][$k]['get_money'] = M('Signrecord')->where(['userID'=>$data['_data'][$k]['userid'],'prizeType'=>1])->sum('num');
+            $data['_data'][$k]['get_jewels'] = M('Signrecord')->where(['userID'=>$data['_data'][$k]['userid'],'prizeType'=>2])->sum('num');
+        }
+        $this->assign('_data',$data['_data']);
+        $this->assign('_page',$data['_page']);
+        $this->display();
+    }
+
+    //签到配置
+    public function sign_config(){
+        //获取签到配置
+        $config = M('Signconfig')->select();
+        $all_money = M('Signconfig')->where(['prizeType'=>1])->sum('num');
+        $all_jewels = M('Signconfig')->where(['prizeType'=>2])->sum('num');
+        $money = M('Signrecord')->where(['prizeType'=>1])->sum('num');
+        $jewels = M('Signrecord')->where(['prizeType'=>2])->sum('num');
+        $this->assign('all_money',$all_money);
+        $this->assign('all_jewels',$all_jewels);
+        $this->assign('config',$config);
+        $this->assign('money',$money);
+        $this->assign('jewels',$jewels);
+        $this->display();
+    }
+
+    //签到编辑
+    public function sign_config_edit(){
+        $data['id'] = I('id');
+        $data['prize'] = I('prize');
+        $data['num'] = I('num');
+        if(I('prizeType') != 3){
+           $data['prizeType'] = I('prizeType'); 
+        }
+        if(!preg_match("/^[1-9][0-9]*$/",$data['num']) && $data['prizeType'] != 0){
+            $this->error('奖品数量数只能是正整数');
+        }
+        $res = M('Signconfig')->save($data);
+        if($res){
+            $this->success('编辑成功');
+        }else{
+            $this->error('编辑失败');
+        }
+    }
+    //反馈管理
+    public function feedback(){
+        //获取所有的反馈消息//并且是未结束的
+        $where = [];
+        $search = I('search');
+        if($search){
+            $where['userID|username'] = ['like',"{$search}"];
+        }
+        $start = strtotime(I('start'));
+        $stop = strtotime(I('stop'));
+        if($start && $stop){
+            $where['f_time'] = ['between',[$start,$stop]];
+        }
+        $order_by = "has_back desc,id desc";
+        $read_type = I('read_type');
+        if($read_type){
+           $where['read_type'] = $read_type; 
+        }else{
+            $where['read_type'] = ['neq',3]; 
+        }     
+        $data = D('Data')->get_all_data('Adminfeedback',$where,10,$order_by);
+        $this->assign('_page',$data['_page']);
+        $this->assign('_data',$data['_data']);
+        $this->display(); 
+    }
+
+    //反馈详情
+    public function feedback_msg(){
+        $id = I('id');
+        $f = M('Adminfeedback')->find($id);
+        //获取所有的用户回复内容
+        $u = M('Adminfeedbackcallback')->where(['c_id'=>$id,'c_type'=>2])->select();
+        //获取所有系统回复内容
+        $s = M('Adminfeedbackcallback')->where(['c_id'=>$id,'c_type'=>1])->select();
+        //两个进行排序
+        $msg = array_merge($u,$s); 
+        $sort = array(    
+                'direction' => 'SORT_ASC', //排序顺序标志 SORT_DESC 降序；SORT_ASC 升序    
+                'field'     => 'c_time',       //排序字段    
+        );    
+        $arrSort = array();    
+        foreach($msg AS $uniqid => $row){    
+            foreach($row AS $key=>$value){    
+                $arrSort[$key][$uniqid] = $value;    
+            }    
+        }    
+        if($sort['direction']){    
+            array_multisort($arrSort[$sort['field']], constant($sort['direction']), $msg);    
+        }  
+        $this->assign('f',$f);
+        $this->assign('msg',$msg);
+        $this->display();
+    }
+    //回复
+    public function feedback_callback(){
+        if(IS_POST){
+            $data = [
+                'c_id'    =>    I('id'),
+                'c_content'=>   I('c_content'),
+                'c_type'   =>   1,
+                'c_time'   =>   time(), 
+            ];
+            if(M('Adminfeedbackcallback')->add($data)){
+                //修改read_type 为未读
+                $data = ['id'=>I('id'),'read_type'=>1,'has_back'=>0];
+                M('Adminfeedback')->save($data);
+                $this->success('回复成功');
+            }else{
+                $this->error('回复失败'.M('Adminfeedbackcallback')->getError());
+            }
+        }else{
+            $id = I('id');
+            //获取常用语
+            $arr = [
+                ['msg'=>'一边去吧孩纸'],
+                ['msg'=>'不想理你呢'],
+                ['msg'=>'你想怎样，摔手机啊'],
+            ];
+            $this->assign('arr',$arr);
+            $this->assign('id',$id);
+            $this->display();
+        }
+    }
+    //结束反馈
+    public function feedback_over(){
+        $id = array_unique((array)I('id',0));
+        if ( empty($id) || empty($id[0]) ) {
+            $this->error('请选择要操作的数据');
+        }
+        $data['read_type'] = 3;
+        foreach($id as $k => $v){
+            $res = M('Adminfeedback')->where(['id'=>$id[$k]])->save($data);
+            if(!$res){
+                $this->error('结束失败');
+            }
+        }
+        $this->success('结束成功');
+    }
+
+
+    //邮件
+    public function email(){
+		header("Content-Type: text/html; charset=utf-8");
+                //获取所有邮件
+                $redis = \GetRedis::get();
+                if($redis->connect == false)    $this->error('缓存服务器未启动');
+                $prefix = 'emailInfo|S';
+                $arr = $redis->redis->keys($prefix.'*');
+                $array = array();
+                foreach($arr as $key => $value){
+                    $array[$key] = $redis->redis->hgetall($value);
+                }
+		foreach($arrar as $k => $v){
+echo $array[$k]['content'];
+			$content = mb_detect_encoding($array[$k]['content'], array("ASCII",'UTF-8','GB2312',"GBK",'BIG5'));
+			$titleName   = mb_detect_encoding($array[$k]['titleName'], array("ASCII",'UTF-8','GB2312',"GBK",'BIG5'));
+			$sendName   = mb_detect_encoding($array[$k]['sendName'], array("ASCII",'UTF-8','GB2312',"GBK",'BIG5'));
+			echo $content;
+			
+if($content == 'GB2312'){
+				$array[$k]['content'] = iconv('GB2312','UTF-8',$array[$k]['content']);
+			}	
+			if($titleName == 'GB2312'){
+                                $array[$k]['titleName'] = iconv('GB2312','UTF-8',$array[$k]['titleName']);
+                        }  
+
+			if($sendName == 'GB2312'){
+                                $array[$k]['sendName'] = iconv('GB2312','UTF-8',$array[$k]['sendName']);
+                        }  
+		}
+   		var_dump($array);exit();		
+                $this->assign('email',$array);
+                $this->display();
+    }
+
+    //发布系统邮件
+    public function send_email(){
+        if(IS_POST){
+                $socket = \Socket::get();
+                $send   = new \SendFunction();
+                if(empty(I('title')) || empty(I('content'))){
+                    $this->error('标题或者内容不能为空');
+                }
+                /*/$title = iconv('UTF-8','ASCII',I('title'));
+                //$content = iconv('UTF-8','ASCII',I('content'));
+                //$send_name = iconv('UTF-8','ASCII','系统');*/
+                $title = iconv('UTF-8','GB2312',I('title'));
+                $connet = iconv('UTF-8','GB2312',I('content'));
+                $send_name = iconv('UTF-8','GB2312','系统');		
+                $emailPacket = $send -> makeEmailPacket(101,$send_name,$title,'',$connet);
+                if($socket->connet == false)    $this->error('添加失败,连接服务器失败');
+                $res = $socket->send($send::EmailID,1,0,$emailPacket);
+                if(!$res){
+                    $this->error('发布失败,给服务器发送消息失败');
+                }
+                $read = unpack('i*',$socket->read_data(1024));
+                if(!$read){
+                    $this->error('发布失败，服务器未响应');
+                }
+                if($read[4] != 0){
+                    $this->error('发布失败，服务器响应错误码为'.$read[4]);
+                }
+                $this->success('发布成功');
+        }else{
+            $this->display();
+        }
+    }
+
+    //公告
+    public function notice(){
+            $data = D('Data')->get_all_data('Notice', '', 15, '');
+            $this->assign('_page', $data['_page']);
+            $this->assign('_data', $data['_data']);
+            $this->display();
+    }
+
+    //删除公告
+    public function notice_del(){
+        $id = array_unique((array)I('id',0));
+        if ( empty($id) || empty($id[0]) ) {
+            $this->error('请选择要操作的数据');
+        }
+        $socket = \Socket::get();
+        $send   = new \SendFunction();
+        if($socket->connet == false)    $this->error('删除失败,连接服务器失败');
+        //循环删除
+        foreach($id as $k => $v){
+            $packet = $send -> makeDelNoticePacket($id[$k]);
+            $res = $socket -> send($send::DelNoticeID,1,0,$packet);
+            if(!$res){
+                $this->error('删除失败，发送消息失败');
+            }
+            $read = unpack('i*',$socket->read_data(1024));
+            if(!$read){
+                $this->error('发布失败，服务器未响应');
+            }
+            if($read[4] != 0){
+                $this->error('发布失败，服务器响应错误码为'.$read[4]);
+            }
+            //删除数据库
+            M('Notice')->where(['id'=>$id[$k]])->delete();
+        }
+        $this->success('删除成功');
+    }  
+
+    //发布公告
+    public function  send_notice(){
+        if(IS_POST){
+            $data['id'] = M('Notice')->max('id')+1;
+            $data['interval'] = I('interval');
+            $data['times'] = I('times');
+            $data['beginTime'] = strtotime(I('beginTime'));
+            $data['endTime'] = strtotime(I('endTime'));
+            $data['type'] = I('type');
+            $data['content'] = I('content');
+            if(!preg_match("/^[1-9][0-9]*$/",$data['interval']) || !preg_match("/^[1-9][0-9]*$/",$data['times'])){
+                $this->error('播放间隔和次数必须是正整数');
+            }
+            if($data['beginTime'] > $data['endTime']){
+                $this->error('开始时间不能大于结束时间');
+            }
+            if(!$data['content']){
+                $this->error('公告内容不能为空');
+            }
+            //给服务器发送消息
+            $socket = \Socket::get();
+            $send   = new \SendFunction();
+            //向服务器发送数据
+            if($socket->connet == false){
+                $this->error('发布失败,连接服务器失败');
+            }
+            $noticePacket = $send -> makeNoticePacket($data['id'],$data['content'],$data['interval'],$data['times'],$data['beginTime'],$data['endTime'],$data['type']);
+            $res = $socket->send($send::NoticeID,1,0,$noticePacket);
+            if(!$res){
+                $this->error('发布失败,给服务器发送消息失败');
+            }
+            $read = unpack('i*',$socket->read_data(1024));
+            if(!$read){
+                $this->error('发布失败，服务器未响应');
+            }
+            if($read[4] != 0){
+                $this->error('发布失败，服务器响应错误码为'.$read[4]);
+            }
+            //写入数据库
+            $res = M('Notice')->add($data);
+            if($res){
+                $this->success('发布成功');
+            }else{
+                $this->error('发布成功，但写入数据库时发生错误');
+            }
+        }else{
+            $this->display();
+        }
+    }
+
+    //转赠
+    public function given(){
+
+    }
+
+    //救济金
+    public function alms(){
+
+    }   
+
+    //商城
+    public function mall(){
+
+    }  
+
+
+    //世界广播
+    public function ratio(){
+
+    } 
+
+    //实物兑换
+    public function convert(){
+        //获取所有的实物兑换记录
+        $type = I('type');
+        $search = I('search');
+        if($type && $search){
+            switch($type){
+                case 1:
+                $where['userID'] = $search;
+                break;
+                case 2:
+                $where['realname'] = $search;
+                break;
+                case 3:
+                $where['phone'] = $search;
+                break;
+            }
+        }
+        $start = I('start');
+        $stop = I('stop');
+        if($start && $stop){
+            $start = strtotime($start);
+            $stop = strtotime($stop);
+            $where['create_time'] = ['between',[$start,$stop]];
+        }
+        $where['buyType'] = 4;
+        $handle = I('handle');
+        if($handle){
+           $where['handle'] = $handle; 
+        }else{
+            $where['handle'] = ['neq',1]; 
+        }     
+        $data = D('Data')->get_all_data('orders',$where,15,'create_time desc');
+        foreach($data['_data'] as $k=>$v){
+            if($data['_data'][$k]['buyGoods'] == '房卡'){
+                $data['_data'][$k]['handle'] = 1;
+            }
+            $data['_data'][$k]['consumenum_all'] = M('orders')->where(['userID'=>$data['_data'][$k]['userid'],'buyType'=>4,'consumeType'=>1])->sum('consumeNum');
+        }
+        $this->assign('_data',$data['_data']);
+        $this->assign('_page',$data['_page']);
+        $this->display();
+    }
+
+    //进行兑换
+    public function convert_handle(){
+        $data['id'] = I('id');
+        $data['handle'] = 1;
+        if(M('Orders')->save($data)){
+            $this->success('处理成功');
+        }else{
+            $this->error('处理失败');
+        }
+    }
+
+    //大厅跳转和游戏参数配置
+    public function web_page(){
+        //获取所有常用参数
+        $data1 = D('Data')->get_all_data('Gameconfig',$where,5,'');
+        $this->assign('_data1',$data1['_data']);
+        $this->assign('_page',$data1['_page']);
+         //获取已经生成文件
+        $dir = $_SERVER['DOCUMENT_ROOT'].'new/html';
+        $dh = opendir($dir);
+        $r =readdir($dh);
+        $file_all = [];
+        $i = 0;
+        while (($file = readdir($dh)) != false) {  
+            if ($file!="." && $file!="..") {  
+                $create_time = filectime($dir.'/'.$file);
+                $file_all[$i] = ['file_name'=>$file,'create_time'=>$create_time,'file_url'=>'http://'.$_SERVER['HTTP_HOST'].'/new/html/'.$file]; 
+            }
+            $i++;  
+        }   
+        closedir($dh);
+        $this->assign('file_all',$file_all);
+        $this->display();
+    }
+
+    //游戏参数编辑
+    public function game_config_edit(){
+        $data['id'] = I('id');
+        $data['value'] = I('value');
+        $data['desc'] = I('desc');
+        if(!$data['desc']){
+            $this->error('描述必须填写');
+        }
+        if(M('Gameconfig')->save($data)){
+            $this->success('编辑成功');
+        }else{
+            $this->error('编辑失败');
+        }
+    }
+
+    //添加页面
+    public function html_add(){
+        if(IS_POST){
+            $file_name = I('file_name').'.html';
+            $content   = html_entity_decode(I('editorValue'));
+            $title = I('title');
+            //判断文件是否存在
+            $dir = $_SERVER['DOCUMENT_ROOT'].'new/html/';
+            if(file_exists($dir.$file_name)){
+                $this->error('该文件已经存在');
+            }
+            $html_head = '<!DOCTYPE html>
+                            <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                            <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1.0, maximum-scale=1, user-scalable=no">
+                            <title>'.$title.'</title>
+                            <style>
+                            body,div,p,ul,ol,li,h1,h2,h3,h4,h5{margin:0;padding:0}
+                            body{font:12px/2 "\5FAE\8F6F\96C5\9ED1";}
+                            li{list-style:none}
+                            a{text-decoration:none}
+                            img{border:none}
+                            em{font-style:normal}
+                            .wrap{padding:20px 30px}
+                            .hl{color:#F00;font-weight:bold}
+                            </style>
+                            </head>
+                            <body>
+                            <div class="wrap">';               
+            $html_foot = "</div>
+                            </body>
+                            </html>";
+            $file_content = $html_head."\n".$content."\n".$html_foot;
+            //写入文件
+            $fh = fopen($dir.$file_name,'w');
+            $res = fwrite($fh,$file_content);
+            fclose($fh);
+            if(!$res){
+                $this->error('文件生成失败'.$dir.$file_name);
+            }
+            $this->success('文件创建成功，文件地址为http://'.$dir.$file_name);               
+        }else{
+            $this->display();
+        }
+    }
+
+
+    //文件预览
+    public function html_view(){
+        $file_name = I('file_name');
+        $dir = $_SERVER['DOCUMENT_ROOT'].'new/html/';
+        $html = file_get_contents($dir.$file_name);
+        echo $html;
+    }
+
+    //文件删除
+    public function html_del(){
+
+        $file_name = I('file_name');
+        $dir = $_SERVER['DOCUMENT_ROOT'].'new/html/'.$file_name;
+        $res = unlink($dir);
+        if($res){       
+            $this->success('删除成功');
+        }else{
+            $this->error('删除失败');
+        }
+    }
+
+    //游戏常用参数配置
+    public function game_config(){
+        if(IS_POST){
+            //dump($_POST);exit();
+            //修改
+            if(M()->table('otherConfig')->where(['id'=>1])->save($_POST)){
+                $this->success('修改成功');
+            }else{
+                $this->error('修改失败'.M()->table('otherConfig')->getError());
+            }
+        }else{
+            //获取所有的常用配置参数
+            $config = M()->table('otherConfig')->find();
+            $this->assign('config',$config);
+            $this->display();
+        }
+    }
+
+    //分享管理
+    public function share(){
+        $whre = [];
+        //获取抽奖记录
+        $type = I('type');
+        $search = I('search');
+        if($type && $search){
+            switch($type){
+                case 1:
+                $where['userid'] = $search;
+                break;
+                case 2:
+                $where['name'] = $search;
+                break;
+            }
+        }
+        $start = I('start');
+        $stop = I('stop');
+        if($start && $stop){
+            $start = strtotime($start);
+            $stop = strtotime($stop);
+            $where['share_time'] = ['between',[$start,$stop]];
+        }
+        $data = D('Data')->get_all_data('sharegame',$where,15,'share_time desc');
+        //获取用户信息
+        foreach($data['_data'] as $k => $v){
+            
+            $user = M()->table('userInfo')->where(['userID'=>$data['_data'][$k]['userid']])->find();
+            $data['_data'][$k]['jewels']  = $user['jewels'];
+            $data['_data'][$k]['money']   = $user['money'];
+            $data['_data'][$k]['account'] = $user['account'];
+            //累计分享获得的金币数房卡数
+            $data['_data'][$k]['get_money'] = M('sharegame')->where(['userid'=>$data['_data'][$k]['userid']])->sum('send_money');
+            $data['_data'][$k]['get_jewels'] = M('sharegame')->where(['userid'=>$data['_data'][$k]['userid']])->sum('send_jewels');
+            //累计分享次数
+            $data['_data'][$k]['share_count'] = M('sharegame')->where(['userid'=>$data['_data'][$k]['userid']])->count();
+        }
+        $this->assign('_data',$data['_data']);
+        $this->assign('_page',$data['_page']);
+        $this->display();
+    }
+
+    //分享配置
+    public function share_config(){
+        if(IS_POST){
+            if($_FILES['share_img']['size']){
+                //有文件上传
+                $upload = new \Think\Upload();// 实例化上传类
+                $upload->maxSize   =     3145728 ;// 设置附件上传大小
+                $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+                $upload->rootPath  =     './Uploads/'; // 设置附件上传根目录
+                $upload->savePath  =     'home_img/'; // 设置附件上传（子）目录
+                $upload->autoSub   =      false; // 设置附件上传（子）目录
+                // 上传文件 
+                $info   =   $upload->upload();
+                if(!$info) {// 上传错误提示错误信息
+                    $this->error($upload->getError());
+                }
+                $file_url = 'http://'.$_SERVER['HTTP_HOST'].'/Uploads/'.$upload->savePath.$info['share_img']['savename'];
+                M('gameconfig')->where(['key'=>'share_img'])->save(['value'=>$file_url]);
+            }
+            //更新普通参数
+            $data = $_POST;
+            if(!$data['share_begin_time'] || !$data['share_end_time'] || !$data['share_url']){
+                $this->error('请选择活动时间');
+            }
+            if($data['share_begin_time'] > $data['share_end_time']){
+                $this->error('活动时间错误');
+            }
+            $data['share_begin_time'] = strtotime($data['share_begin_time']);
+            $data['share_end_time'] = strtotime($data['share_end_time']);
+            foreach($data as $k => $v){
+                M('gameconfig')->where(['key'=>$k])->save(['value'=>$data[$k]]);
+            }
+            $this->success('发布成功');
+        }else{
+            $where = [
+                'id'=>['between',[8,15]],
+            ];
+            $config = M('gameconfig')->where($where)->select();
+            $arr = [];
+            foreach($config as $k => $v){
+                $arr[$config[$k]['key']] = $config[$k]['value'];
+            }
+            $this->assign('config',$arr);
+            $this->display();
+        }
+    }
+
+}

@@ -1,0 +1,36 @@
+<?php
+return array(
+	//'配置项'=>'配置值'
+  'SHOW_PAGE_TRACE' =>false,   //页面调试工具
+  'URL_CASE_INSENSITIVE' => false,
+  //数据库配置
+  'DB_TYPE'   => 'mysql',    // 数据库类型
+  'DB_HOST'   => '127.0.0.1', // 服务器地址
+  'DB_NAME'   => 'zhizunyule',       // 数据库名
+  'DB_USER'   => 'root',        // 用户名
+  'DB_PWD'    => 'j24b2qc8qa@#',    // 密码
+  //'DB_CHARSET'=>'utf-8',      //字符集
+  //'DB_DSN'	=>	'dblib:host=172.18.163.18:1433;dbname=NewHM',
+  'DB_PORT'   => '3306',    // 端口
+  'DB_PREFIX' => 'web_',      // 数据库表前缀
+  'DEVELOP_MODE'=>true,
+  'Alidayu'   =>  [
+      'appkey'  =>  '',
+  ],  
+
+  //定义代理充值类型
+  'MemberRechargeType' => [
+      'BeMember'        =>  1,  //成为代理
+      'RechargeMoney'   =>  2,  //充值钻石
+      'RechargeJewels'  =>  3,  //充值房卡
+  ],
+  //定义代理充值回调地址
+  'MemberRechargeUrl' =>  [ 
+      'BeMember'        =>  'http://39.108.166.3/Notify/online_recharge.php',
+  ],
+
+  // 网站名称
+  'web_name'             => '至尊娱乐',
+  'WEBSITE_URL' => 'http://'.$_SERVER['HTTP_HOST'],
+
+);

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html style="font-size: 59.375px;" lang="zh-cn"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta name="format-detection" content="telephone=no, email=no">
+	<title>棋牌运营平台-充值查询 </title>
+
+	<link href="__PUBLIC__/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/page/page.css" rel="stylesheet" type="text/css" />
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js"></script>
+    <link href="__PUBLIC__/admin/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" /> 
+	<link rel="stylesheet" href="__PUBLIC__/newadmin/css/common.css">
+    <link rel="stylesheet" href="__PUBLIC__/newadmin/css/search.css">
+    
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/newadmin/js/sky.js"></script>
+
+
+</head>
+<body>
+
+<style>
+table.table a {color:blue;}
+.welcome-wrap {padding:0.24rem;}
+.welcome-wrap .avator img {height:auto;}
+#tipcontent {padding:10px}
+</style>
+
+
+<style>
+.nav-wrap .home{width:.26rem;height:.23rem;background:url(__PUBLIC__/newadmin/img/icon-home.png) no-repeat;-webkit-background-size:cover;background-size:cover;position:absolute;left:.28rem;top:50%;-webkit-transform:translate3d(0,-50%,0);transform:translate3d(0,-50%,0)}
+.welcome-wrap .brief .txt i {padding-right:10px;}
+</style>
+
+	<div class="panel panel-index">
+        <div class="nav-wrap">
+            <div class="nav">
+				<a href="javascript:;" onclick="history.go(-1)"></a>
+				                <h1>充值查询</h1>
+            </div>
+        </div>
+		        <div class="welcome-wrap">
+			            <div class="avator"><a href="http://dl.wwdbqp.com/agent"><img src="__PUBLIC__/newadmin/img/avator.png"></a></div>
+            <div class="brief">
+                <p class="username" onclick="if (document.getElementById('wtlogin').style.display=='none') $('#wtlogin').show(); else $('#wtlogin').hide();">欢迎你！{$agent.username}
+                	                            <span style="color:#f08200;font-size:16px;">
+										        </span>
+				</p>
+													
+			</div>
+
+        </div>
+			
+<style>
+.end select { border: 1px solid #ccc; border-radius: 0.1rem; display: block; height: 0.78rem; line-height: 0.78rem;padding-left: 0.2rem;}
+</style>
+
+        <div class="search-wrap">
+            <div class="search-condition">
+
+
+			<form method="get" id="form1">
+                <div class="time">
+                    <div class="start">
+                        <i>开始时间</i>
+                        <input name="start"  value="" onchange="checkSdata(this,'')" type="date" value=''>
+                    </div>
+                    <span class="line">-</span>
+                    <div class="end">
+                        <i>结束时间</i>
+                        <input name="end"  value="" onchange="checkSdata(this,'')" type="date">
+                    </div>
+										                    <div class="end" style="padding-left:10px">
+					                        <i>玩家id/昵称</i>
+                        <input style=" border: 1px solid #ccc; border-radius: 0.1rem; height: 0.78rem; line-height: 0.78rem; padding-left: 0.2rem; width: 80px;" name="search"  type="text">
+                    </div>
+					<button type="submit" class="btn-search" >搜索</button>
+                </div>
+			</form>
+
+
+                <div class="item">
+     <div class="table-responsive">
+      <table class="table table-bordered" style="width: 100%">
+        <thead>
+          <tr>
+            <th colspan="9">基本信息</th>
+            <th colspan="2">直属销售</th>
+            <th colspan="2">非直属销售</th>
+          </tr>
+          <tr>
+            <th>代理账号</th>
+            <th>代理等级</th>
+            <th>操作前余额</th>
+            <th>操作金额</th>
+            <th>操作后余额</th>
+            <th>描述</th>
+            <th>时间</th>
+            <th>行为者ID</th>
+            <th>行为者昵称</th>
+            <th>总额</th>
+            <th>提成</th>
+            <th>总额</th>
+            <th>提成</th>
+          </tr>
+        </thead>
+        <tbody>
+        <volist name="_data" id="_data">
+          <tr>
+            <th scope="row">{$_data.username}</th>
+            <td>
+              <if condition="($_data.agent_level eq 1)">
+              一级代理
+              <elseif condition="($_data.agent_level eq 2)"/>
+              二级代理
+              <elseif condition="($_data.agent_level eq 3)"/>
+              三级代理
+              </if>
+            </td>  
+            <td>{$_data.front_balance}</td>
+            <td>{$_data.handle_money}</td>
+            <td>{$_data.after_balance}</td>
+            <td>{$_data._desc}</td>
+            <td>{$_data.make_time|date="Y-m-d H:i:s",###}</td>
+            <td>{$_data.make_userid}</td>
+            <td>{$_data.make_name}</td>
+            <td>{$_data.amount}</td>
+            <td>{$_data.commission}</td>
+            <td>{$_data.under_amount}</td>
+            <td>{$_data.under_commission}</td>
+          </tr>
+          </volist>
+        </tbody>
+      </table>
+    </div><!-- /.table-responsive -->
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+<script type="text/javascript" src="__PUBLIC__/newadmin/js/ajax.js"></script>
+<script src="__PUBLIC__/newadmin/js/ajaxfileupload.js"></script>
+
+
+<script>
+
+</script>
+
+
+        <div class="index-wrap">
+            <div class="footer-note">
+                <p style="text-align:center"><span>旺旺棋牌运营平台<!--<br>微信客服：wwdbqp--></span></p>
+            </div>
+        </div>
+<link rel="stylesheet" href="__PUBLIC__/newadmin/css/agency.css">
+
+<style>
+.tipp { color: grey; font-size: 0.24rem;line-height: 1.4; }
+</style>
+
+<div class="popup popup-agency-confirm" id="tipbody" style="display: none;width:380px;">
+	<a href="javascript:;" class="popup-btn-close" onclick="closemsg();"></a>
+	<div class="main">
+		<div class="tip">
+			<p id="tipcontent"></p>
+		</div>
+		<div class="btns">
+			<a href="javascript:;" class="btn-ok" id="btn-ok" onclick="closemsg();">确认</a>
+		</div>
+	</div>
+</div>
+<div class="popup-mask" id="tipdiv" style="display: none;"></div>	
+
+<script>
+function showmsg($msg) {
+	$("#tipcontent").html($msg);
+	$('#tipbody').fadeIn();
+	$('#tipdiv').fadeIn();
+}
+function closemsg() {
+	$('#tipbody').fadeOut();
+	$('#tipdiv').fadeOut();
+}
+function checkSdata(obj, sdate) {
+	if (CompareDate(sdate,obj.value))
+	{
+		obj.value = sdate;
+	}
+}
+function CompareDate(d1,d2)
+{
+  return ((new Date(d1.replace(/-/g,"\/"))) > (new Date(d2.replace(/-/g,"\/"))));
+}
+</script>
+
+    </div>
+
+</body></html>

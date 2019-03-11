@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    
+    <script type="text/javascript">
+    //ajax post
+        function ajax_post(the){
+            layer.confirm('您确定要做此操作吗？', {
+            btn: ['确定','取消'] //按钮
+            }, function(){
+                var that = $(the);
+                var url= $(the).attr('action');
+                var cs = $(the).serialize();
+                 $.ajax({
+                    url:url,
+                    data:cs,
+                    type:'POST',
+                    success:function(data){
+                        if(data.status==1){
+                            layer.msg(data.info, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                parent.location.reload();
+                            },2000);
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                        }
+                    });
+            }, function(){
+                layer.msg('取消成功', {
+                    time: 1500, //20s后自动关闭
+                });
+                return false;
+            });
+            return false;
+        }
+</script>
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">       
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>添加视频</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal" action="{:U('materialAdd')}" onsubmit="return ajax_post(this);" >
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">标题</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="title">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">描述</label>
+                                <div class="col-sm-10">
+                                    <textarea name="video_desc" class="form-control" id="" cols="30" rows="10" style="resize: none;"></textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group image" style="display: none;">
+                                <label class="col-sm-2 control-label">播放</label>
+                                <div class="col-sm-10">
+                                    <video src="" class="mm" width="150" height="150" controls="controls">
+                                      你的浏览器暂不支持播放
+                                    </video>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group img" style="display: block;">
+                                <label class="col-sm-2 control-label">上传视频</label>
+                                <div class="col-sm-10">
+                                   <input type="file" name="img" id="test1">
+                                </div>
+                                <!-- <p style="text-indent: 20px;margin-top: 5px;">大小2M.播放长度不超过60s</p> -->
+                            </div>
+
+                            
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <input type="hidden" name="type" value="video">
+                                    <input type="hidden" name="local" value="">
+                                    <button class="btn btn-primary" type="submit">保存内容</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 全局js -->
+    <script src="__PUBLIC__/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="__PUBLIC__/admin/js/content.js?v=1.0.0"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="__PUBLIC__/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/layui/layui.js"></script>
+</body>
+<script>
+
+layui.use('upload', function(){
+  var $ = layui.jquery
+  ,upload = layui.upload;
+  
+  //普通图片上传
+  var uploadInst = upload.render({
+    elem: '#test1'
+    ,url: '{:U("Wechat/uploads2")}'
+    ,accept: 'video' //音频
+    ,done: function(res){
+        if(res.status == 0){
+            layer.msg('上传失败')
+        } else {
+            layer.msg('上传成功')
+            $('.image').show();
+            $(".mm").attr('src',res.data)
+            $('input[name=local]').val(res.data)
+        }
+    }
+})
+
+
+  // //音乐上传
+  // var uploadInst = upload.render({
+  //   elem: '#m'
+  //   ,url: '{:U("Wechat/uploads")}'
+  //   ,done: function(res){
+  //       if(res.status == 0){
+  //           layer.msg('上传失败')
+  //       } else {
+  //           $('.mm').val(res.data)
+  //       }
+  //   }
+
+  //   })
+
+  // //视频上传
+  // var uploadInst = upload.render({
+  //   elem: '#v'
+  //   ,url: '{:U("Wechat/uploads")}'
+  //   ,done: function(res){
+  //       if(res.status == 0){
+  //           layer.msg('上传失败')
+  //       } else {
+  //           $('.v').val(res.data)
+  //       }
+  //   }
+
+  //   })
+
+
+  })
+</script>
+</html>

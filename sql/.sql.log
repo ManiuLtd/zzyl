@@ -1,0 +1,110 @@
+alter table web_agent_member add is_franchisee tinyint(1) default 0 comment '加盟商 0否 1是';
+
+alter table web_agent_member add `commission_rate` tinyint(1) NOT NULL COMMENT '分销比率';
+
+alter table web_recharge_commission add `commission_type` tinyint(1) NOT NULL comment '1充值分销 2对战赢家分销';
+
+alter table web_agent_member add unique key (`userid`);
+
+alter table web_recharge_commission add `get_amount_user_type` tinyint(1) default 1 comment '获得分佣用户类型 1代理用户 2平台运营商';
+
+alter table web_recharge_commission add `foreign_key_id` int unsigned not null comment '抽水表记录id';
+
+alter table web_code_invitation add `invite_userid` int default null;
+
+alter table web_agent_member modify column `login_count` int default 0 comment '代理登录次数';
+
+alter table statistics_moneychange add index (`reason`);
+
+alter table web_admin_menu add index (`pid`);
+
+alter table gameBaseInfo add `is_Recommend` tinyint(1) default 0 comment '是否推荐';
+alter table gameBaseInfo add index (`is_Recommend`);
+
+alter table roomBaseInfo add `is_Recommend` tinyint(1) default 0 comment '是否推荐';
+alter table roomBaseInfo add index (`is_Recommend`);
+
+alter table userInfo add index (`isVirtual`);
+
+alter table statistics_logonandlogout add index (`userID`,`type`,`time`);
+
+alter table rewardsPool add updateTime int default 0;
+
+create table `web_admin_login_history` (
+	`id` int unsigned not null auto_increment primary key,
+	`adminID` int unsigned default null,
+	`username` varchar(30) not null,
+	`loginStatus` tinyint(1) not null comment '登录状态 0登录失败 1登录成功',
+	`loginVerify` tinyint not null default 1 comment '1有效登录(进行数据校验) 0无效登录（无效登录就是直接阻止，不进行数据校验）',
+	`createTime` int not null,
+	key (`username`, `loginVerify`)
+) engine=InnoDB default charset=utf8;
+
+alter table userInfo modify column `phone` varchar(24) DEFAULT '' COMMENT '电话号码';
+
+alter table gameBaseInfo add `sort` int default 0 comment '排序';
+
+alter table web_pay_config modify column `private_key` varchar(2000) NOT NULL COMMENT '私钥';
+
+alter table web_pay_config modify column `public_key` varchar(2000) NOT NULL COMMENT '私钥';
+
+alter table gameBaseInfo add `is_hide` tinyint(1) default 0 comment '是否隐藏';
+alter table gameBaseInfo add index (`is_hide`);
+
+alter table otherConfig modify column `valueConfig` varchar(512) DEFAULT '' COMMENT '配置值';
+
+alter table statistics_moneychange add constraint FK_ID foreign key(`userID`) references userInfo(`userID`);
+
+/*修改支付配置表*/
+DROP TABLE IF EXISTS `web_pay_config`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `web_pay_config` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `callback_server_PK` varchar(2000) DEFAULT NULL COMMENT '回调服务器公钥，如支付宝公钥',
+  `parnetID` varchar(255) DEFAULT NULL COMMENT '合作伙伴身份（PID），如支付宝号',
+  `type` int(11) unsigned NOT NULL COMMENT '支付类型',
+  `name` varchar(32) NOT NULL COMMENT '名字',
+  `app_id` varchar(64) NOT NULL COMMENT '应用ID',
+  `mch_id` varchar(64) NOT NULL COMMENT '商户ID',
+  `private_key` varchar(2000) NOT NULL COMMENT '私钥',
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT '状态',
+  `public_key` varchar(2000) NOT NULL COMMENT '私钥',
+  `notify_url` varchar(256) DEFAULT '' COMMENT '回调地址',
+  `return_url` varchar(256) DEFAULT '' COMMENT '成功返回页面',
+  `version` varchar(32) DEFAULT '1' COMMENT '版本号',
+  `third` int(11) NOT NULL DEFAULT '1' COMMENT '第三方',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+alter table web_home_product add `type` int default 1 COMMENT '资源类型 1网站下载 2app公告';
+
+alter table web_share_code add index (`unionid`);
+
+alter table web_sign_record drop index `signTime`;
+
+alter table web_sign_record drop index `userID`;
+
+alter table web_sign_record add index (`userID`, `signTime`);
+
+alter table web_recharge_commission add unique index (`agent_userid`, `foreign_key_id`);
+
+
+alter table roomBaseInfo add `is_hide` tinyint(1) default 0 comment '是否隐藏';
+alter table roomBaseInfo add index (`is_hide`);
+
+CREATE TABLE `web_fun_config` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` varchar(255) NOT NULL,
+  `funKey` int(11) NOT NULL,
+  `funName` varchar(50) NOT NULL,
+  `funName3` varchar(50) NOT NULL,
+  `pic` varchar(50) NOT NULL,
+  `title` varchar(50) NOT NULL,
+  `is_open` tinyint(1) default 1,
+  `sort` int default 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+alter table roomBaseInfo add `updateTime` int default 0;

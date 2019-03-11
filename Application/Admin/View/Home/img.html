@@ -1,0 +1,61 @@
+<extend name="Public/base"/>
+<block name="body">
+<style>        
+        @media (max-width: 768px){
+             .ibox{width: 1000px;}
+        }
+</style>
+	<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>图片位管理</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                           <!--  <div class="col-sm-3" style="width:100px;margin-left:0px;">
+                                <div class="input-group">
+                                   <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('发布公告','{:U('send_notice')}','2','600','600')"  style="text-decoration:none"> 发布公告</a>
+                                </div>
+                            </div> -->
+                            
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>图片名称</th>
+                                        <th>图片描述</th>
+                                        <th>图片预览</th>
+                                        <th>图片类型</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>{$_data.name}</td>
+                                        <td>{$_data.desc}</td>
+                                        <td><img src="{$_data.img_url}" style="height:50px;"></td>
+                                        <td>
+                                            <if condition="($_data.type eq 0)">
+                                                普通
+                                            <elseif condition="($_data.type eq 1)"/>
+                                                轮播图
+                                            </if>
+                                        </td>
+                                        <td>
+                                        	<a class="btn btn-outline btn-info  dim " onclick="admin_edit('重新上传','{:U('img_upload',array('id'=>$_data['id']))}','2','200','200')"  style="text-decoration:none">重新上传</i></a>
+                                        </td>
+                                    </tr>
+                                  </volist>  
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

@@ -1,0 +1,242 @@
+<extend name="Public/base"/>
+<block name="body">
+<style>
+    .t1{margin-left: -17px;}
+    .t2{margin-left: -20px;}
+    .t3{margin-left: -160px;}
+    .t4{margin-left: -10px;}
+    .t5{margin-left: -160px;}
+    .t7{margin-left: -135px;}
+    .t8{margin-left: -110px;}
+    @media (max-width: 768px){
+        .top-menu{margin-left: 0px;}
+        .t6{margin-top: 5px;}
+    }
+</style>
+	<div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>代理列表</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row hide-if-navbar-none" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                            <div class="col-sm-5 m-b-xs" style="width: 200px;">
+                                <select class="input-sm form-control input-s-sm inline" name="type">
+                                    <option value="0">请选择</option>
+                                    <option value="1" <if condition="$type eq 1"> selected </if>>后台账号(手机号)</option>
+                                    <option value="2" <if condition="$type eq 2"> selected </if>>游戏ID</option>
+                                    <option value="3" <if condition="$type eq 3"> selected </if>>游戏昵称</option>
+                                    <option value="4" <if condition="$type eq 4"> selected </if>>邀请码</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-5 m-b-xs" style="width: 200px;">
+                                <select class="input-sm form-control input-s-sm inline" name="searchType">
+                                    <!-- <option value="0">请选择</option> -->
+                                    <volist name="arrSearchType" id="v">
+                                        <option value="{$v.val}" <if condition="$searchType eq $v['val']"> selected </if>>{$v.word}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <div class="col-sm-3 top-menu t1" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control" name="search" value="{$search}"> <span class="input-group-btn">
+                                  
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t2" style="width: 200px;">
+                                <div class="input-group">
+                                    时间
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t3" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker1" name="start" value="{$start|date='Y-m-d H:i:s',###}">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t4" style="width: 200px;">
+                                <div class="input-group">
+                                    至
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t5" style="width: 200px;">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control"  id="datetimepicker2" name="stop" value="{$stop|date='Y-m-d H:i:s',###}">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 top-menu t6" style="width: 200px;">
+                                <div class="input-group">
+                                   <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                </div>
+                            </div>
+                            </form>
+                            <div class="col-sm-3 top-menu t7" style="width: 200px;">
+                                <div class="input-group">
+                                   <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('代理添加','{:U('member_add')}','2','800','800')"  style="text-decoration:none"> 添加代理</a>
+                                </div>
+                            </div>
+
+                            <form action="{:U('Public/disabled')}" method="post" onsubmit="return ajax_post(this);" >
+                                <!-- <div class="col-sm-3 top-menu t7" style="width: 200px;">
+                                     <div class="input-group">
+                                        <button type="submit" class="btn btn-sm btn-danger"> 批量禁用</button>
+                                     </div>
+                            </div>-->
+                            <div class="col-sm-3 top-menu t8" style="width: 200px;">
+                                <div class="input-group">
+                                   <a  class="btn btn-sm btn-info" href="{:U('agent_list')}" style="text-decoration:none;color:white"> 代理链排行榜</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+
+                                        <th><input type="checkbox" value="" class="chkall"><input type="hidden" name="model" value="Agentmember"><input type="hidden" name="disabled" value="1"></th>
+                                        <th>ID</th>
+                                        <th>游戏ID</th>
+                                        <th>游戏昵称</th>
+                                        <th>后台账号(手机号)</th>
+                                        <th>邀请码</th>
+                                        <th>金币数</th>
+                                        <?php if (C('IS_SHOW_JEWELS')) {?>
+                                        <th>钻石数</th>
+                                        <?php }?>
+                                        <!-- <th>代理等级</th> -->
+                                        <th>上级邀请码</th>
+                                        <th>上级代理(手机号)</th>
+                                        <th>直属会员数</th>
+                                        <th>直属代理数</th>
+                                        <th>直属收入</th>
+                                        <th>非直属收入</th>
+                                        <th>余额</th>
+                                        <th>分成比率</th>
+                                        <th>试用创建俱乐部天数</th>
+                                        <th>成为代理时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <if condition="($_data.wpoid gt 0 OR $_data.waaaid gt 0) AND ($_data.ucaid elt 0) AND ($_data.wbbbid elt 0)">
+                                        <tr style="background-color: #FF6EB4">
+                                    <else />
+                                        <tr>
+                                    </if>
+                                            <td>
+                                                <input type="checkbox" value="{$_data.id}" name="id[]">
+                                            </td>
+                                            <td><a style="color:#23c6c8" href="javascript:;" onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')" >{$_data.id}</a></td>
+                                            <td><a style="color:#23c6c8" href="javascript:;" onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')" >{$_data.userid}</a></td>
+                                            <td><a style="color:#23c6c8" href="javascript:;" onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')" >{$_data.name}</a></td>
+                                            <td>{$_data.username}</td>
+                                            <td>{$_data.agentid}</td>
+                                            <td>{$_data.money}</td>
+                                            <?php if (C('IS_SHOW_JEWELS')) {?>
+                                            <td><?php echo $_data['jewels'];?></td>
+                                            <?php }?>
+                                            <!-- <td>
+                                                <if condition="($_data.agent_level eq 1)">
+                                                一级代理
+                                                <elseif condition="($_data.agent_level eq 2)"/>
+                                                二级代理
+                                                <elseif condition="($_data.agent_level eq 3)"/>
+                                                三级代理
+                                                </if>
+                                            </td> -->
+                                            <td>{$_data.superior_agentid}</td>
+                                            <td>{$_data.superior_username}</td>
+                                            <td>
+                                            <a onclick="admin_edit('代理详情','{:U('Agent/member_list',array('id'=>$_data['id'], 'searchType' => 4, 'type' => 2, 'search' => $_data['userid'], 'isHideNavbar' => 1))}','2','1200','800')"
+                                                   style="text-decoration:none"><font color="#1AB394">{$_data.user_count}</font></a></td>
+                                            <td>
+                                            <a onclick="admin_edit('代理详情','{:U('Agent/member_list',array('id'=>$_data['id'], 'searchType' => 5, 'type' => 2, 'search' => $_data['userid'], 'isHideNavbar' => 1))}','2','1200','800')"
+                                                   style="text-decoration:none"><font color="#1AB394">{$_data.member_count}</font></a>
+                                               </td>
+                                            <td>{$_data.under_money}</td>
+                                            <td>{$_data.not_under_money}</td>
+                                            <td>{$_data.balance}</td>
+                                            <td>{$_data.commission_rate}%</td>
+                                            <td>{$_data.on_trial_day}</td>
+                                            <td>{$_data.register_time|date="Y-m-d H:i:s",###}</td>
+                                            <td>
+                                                <if condition="($_data.disabled eq 0)"> <a title="禁用" href="{:U('Public/disabled',array('id'=>$_data['id'],'disabled'=>1,'model'=>'Agent_member'))}" onclick="return ajax_get(this)" class="btn btn-outline btn-warning  dim ">禁用</a></if>
+                                                <if condition="($_data.disabled eq 1)"><a title="解禁" href="{:U('Public/disabled',array('id'=>$_data['id'],'disabled'=>0,'model'=>'Agent_member'))}" onclick="return ajax_get(this)" class="btn btn-outline btn-info  dim ">解禁</a></if>
+                                                <a href="{:U('member_del',array('id'=>$_data['id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim ">删除</i></a>
+                                                <if condition="($_data.superior_agentid neq '')">
+                                                <if condition="($_data.superior_agentid neq '')">
+                                                <a href="{:U('remove_bind',array('id'=>$_data['id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-success  dim " >解绑</i></a>
+                                                <else/>
+                                                <a style="width: 53px" onclick="admin_edit('绑定邀请码','{:U('agentid_bind',array('id'=>$_data['id']))}','2','800','300')"  style="text-decoration:none" class="btn btn-outline btn-info  dim ">绑定</i></a>
+                                                </if>
+                                                <a onclick="admin_edit('编辑','{:U('agent_edit',array('id'=>$_data['id']))}','2','800','450')"  style="text-decoration:none" class="btn btn-outline btn-info  dim ">编辑</i></a>
+    <!--<a download="{$_data.gamename}.png" href="/Uploads/qrcode/{:md5($_data['userid'])}.png" style="text-decoration:none" class="btn btn-outline btn-info  dim ">下载</i></a>-->
+
+                                            </td>
+                                        </tr>
+                                        <!--<tr>
+                                            <td>
+                                                <input type="checkbox" value="{$_data.id}" name="id[]">
+                                            </td>
+                                            <td><a style="color:#23c6c8" href="javascript:;" onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')" >{$_data.id}</a></td>
+                                            <td><a style="color:#23c6c8" href="javascript:;" onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')" >{$_data.userid}</a></td>
+                                            <td><a style="color:#23c6c8" href="javascript:;" onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')" >{$_data.name}</a></td>
+                                            <td>{$_data.username}</td>
+                                            <td>{$_data.agentid}</td>
+                                            <td>{$_data.money}</td>
+                                            <?php if (C('IS_SHOW_JEWELS')) {?>
+                                            <td><?php echo $_data['jewels'];?></td>
+                                            <?php }?>
+                                            &lt;!&ndash; <td>
+                                                <if condition="($_data.agent_level eq 1)">
+                                                一级代理
+                                                <elseif condition="($_data.agent_level eq 2)"/>
+                                                二级代理
+                                                <elseif condition="($_data.agent_level eq 3)"/>
+                                                三级代理
+                                                </if>
+                                            </td> &ndash;&gt;
+                                            <td>{$_data.superior_agentid}</td>
+                                            <td>{$_data.superior_username}</td>
+                                            <td>
+                                                <a onclick="admin_edit('代理详情','{:U('Agent/member_list',array('id'=>$_data['id'], 'searchType' => 4, 'type' => 2, 'search' => $_data['userid'], 'isHideNavbar' => 1))}','2','1200','800')"
+                                                   style="text-decoration:none"><font color="#1AB394">{$_data.user_count}</font></a></td>
+                                            <td>
+                                                <a onclick="admin_edit('代理详情','{:U('Agent/member_list',array('id'=>$_data['id'], 'searchType' => 5, 'type' => 2, 'search' => $_data['userid'], 'isHideNavbar' => 1))}','2','1200','800')"
+                                                   style="text-decoration:none"><font color="#1AB394">{$_data.member_count}</font></a>
+                                            </td>
+                                            <td>{$_data.under_money}</td>
+                                            <td>{$_data.not_under_money}</td>
+                                            <td>{$_data.balance}</td>
+                                            <td>{$_data.commission_rate}%</td>
+                                            <td>{$_data.on_trial_day}</td>
+                                            <td>{$_data.register_time|date="Y-m-d H:i:s",###}</td>
+                                            <td>
+                                                <if condition="($_data.disabled eq 0)"> <a title="禁用" href="{:U('Public/disabled',array('id'=>$_data['id'],'disabled'=>1,'model'=>'Agent_member'))}" onclick="return ajax_get(this)" class="btn btn-outline btn-warning  dim ">禁用</a></if>
+                                                <if condition="($_data.disabled eq 1)"><a title="解禁" href="{:U('Public/disabled',array('id'=>$_data['id'],'disabled'=>0,'model'=>'Agent_member'))}" onclick="return ajax_get(this)" class="btn btn-outline btn-info  dim ">解禁</a></if>
+                                                <a href="{:U('member_del',array('id'=>$_data['id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-danger  dim ">删除</i></a>
+                                                <if condition="($_data.superior_agentid neq '')">
+                                                    <if condition="($_data.superior_agentid neq '')">
+                                                        <a href="{:U('remove_bind',array('id'=>$_data['id']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-success  dim " >解绑</i></a>
+                                                        <else/>
+                                                        <a style="width: 53px" onclick="admin_edit('绑定邀请码','{:U('agentid_bind',array('id'=>$_data['id']))}','2','800','300')"  style="text-decoration:none" class="btn btn-outline btn-info  dim ">绑定</i></a>
+                                                    </if>
+                                                    <a onclick="admin_edit('编辑','{:U('agent_edit',array('id'=>$_data['id']))}','2','800','450')"  style="text-decoration:none" class="btn btn-outline btn-info  dim ">编辑</i></a>
+                                                    &lt;!&ndash;<a download="{$_data.gamename}.png" href="/Uploads/qrcode/{:md5($_data['userid'])}.png" style="text-decoration:none" class="btn btn-outline btn-info  dim ">下载</i></a>&ndash;&gt;
+
+                                            </td>
+                                        </tr>-->
+                                  </volist>  
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

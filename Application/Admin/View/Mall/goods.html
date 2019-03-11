@@ -1,0 +1,201 @@
+<extend name="Public/base"/>
+<block name="body">
+       <style>
+        @media (max-width: 768px){
+          /*.panel-body{border:2px solid red;}*/
+          #box{width: 1200px;}
+        }
+    </style>
+    <script>
+        $(function () {
+            $('[data-toggle="popover-img"]').popover({
+                'html': true,
+                'placement': 'right',
+                'trigger': 'hover'
+            });
+            layui.use('upload', function(){
+                var $ = layui.jquery
+                        ,upload = layui.upload;
+                //拖拽上传
+                upload.render({
+                    elem: '#test1,#test2,#test3,#test4,#test5,#test6,#test7,#test8,#test9,#test10'
+                    ,method:'post'
+                    ,done: function(res){
+                        if(res.code==1 ){
+                            layer.msg(res.msg, {icon: 1});
+                            var timer = setInterval(function(){
+                                clearInterval(timer);
+                                parent.location.reload();
+                            },2000);
+                            return false;
+                        }else{
+                            return layer.msg(res.msg, {icon: 1});
+                            return false;
+                        }
+
+
+                    }
+                });
+
+            });
+        })
+    </script>
+        <?php $is_show_jewels = C('IS_SHOW_JEWELS');?>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row" >
+                <div class="col-sm-12">
+                    <div class="panel " id="box">
+                        <div class="ibox-title" style="width: 100%;overflow: hidden;" >
+                            <div style="width: 150px;float: left;">
+                                <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('添加商品','{:U('add_goods')}','2','900','700')"  > 添加商品</a>
+                            </div>
+                            <form action="{:U()}" method="get">
+                                <div class="input-group" style="width: 70px;float: left;line-height: 30px;">
+                                    商品类型
+                                </div>
+                                <div class="col-sm-5 m-b-xs" style="width: 200px;">
+                                    <select class="input-sm form-control input-s-sm inline" name="buyType">
+                                        <option value="0">请选择</option>
+                                        <option value="1" <if condition="$type eq 1"> selected </if>>金币</option>
+                                        <if condition="1 == $is_show_jewels">
+                                            <option value="2" <if condition="$type eq 2"> selected </if>>房卡</option>
+                                        </if>
+                                        <option value="3" <if condition="$type eq 3"> selected </if>>道具</option>
+                                        <option value="4" <if condition="$type eq 4"> selected </if>>实物</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width:200px;">
+                                    <div class="input-group">
+                                        <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+
+                        <div class="panel-body">
+                            <table class="table table-striped table-bordered table-hover" id="my-info">
+                                <tr>
+                                    <th>id</th>
+                                    <th>商品名称</th>
+                                    <th>商品类型</th>
+                                    <th>数量</th>
+                                    <th>消耗资源</th>
+                                    <th>消耗类型</th>
+                                    <th>消耗数量</th>
+                                    <th>是否上架</th>
+                                    <th>是否上新</th>
+                                    <th>是否最热</th>
+                                    <th>appleID</th>
+                                    <th>实物图片</th>
+                                    <th>编辑</th>
+                                </tr>
+                                <volist name="_data" id="_data" key="k">
+                                <tr>
+                                <form action="{:U('pay_goods_config_edit')}" method="post" onsubmit="return ajax_post(this);">
+                                    <td>{$_data.id}</td>
+                                    <td>
+                                        <input type="text" name="buyGoods" class="form-control" value="{$_data.buygoods}">
+                                    </td>
+                                    <td>
+                                        <if condition="($_data.buytype eq 1)">
+                                        <font color="#F8AC59">金币</font>
+                                        <elseif condition="($_data.buytype eq 2)"/>
+                                        <font color="#1AB394">房卡</font>
+                                        <elseif condition="($_data.buytype eq 3)"/>
+                                        道具
+                                        <elseif condition="($_data.buytype eq 4)"/>
+                                        <font color="black">实物</font>
+                                        </if>
+                                        <select name="buyType">
+                                            <option value="0">请选择</option>
+                                            <option value="1"<if condition="($_data.buytype eq 1)"> selected="selected"</if>>金币</option>
+                                            <if condition="1 == $is_show_jewels">
+                                                <option value="2"<if condition="($_data.buytype eq 2)"> selected="selected"</if>>房卡</option>
+                                            </if>
+                                            <option value="3"<if condition="($_data.buytype eq 3)"> selected="selected"</if>>道具</option>
+                                            <option value="4"<if condition="($_data.buytype eq 4)"> selected="selected"</if>>实物</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" class="form-control" name="buyNum" value="{$_data.buynum}"></td>
+                                    <td><input type="text" name="consumeGoods" class="form-control" value="{$_data.consumegoods}"></td>
+                                    <td>
+                                        <if condition="($_data.consumetype eq 0)">
+                                        <font color="red">人民币</font>
+                                        <elseif condition="($_data.consumetype eq 1)"/>
+                                        <font color="#F8AC59">金币</font>
+                                        <elseif condition="($_data.consumetype eq 2)"/>
+                                        <font color="#1AB394">房卡</font>
+                                        </if>
+                                        <select name="consumeType">
+                                            <option value="10">请选择</option>
+                                            <option value="0"<if condition="($_data.consumetype eq 0)"> selected="selected"</if>>人民币</option>
+                                            <option value="1"<if condition="($_data.consumetype eq 1)"> selected="selected"</if>>金币</option>
+                                            <if condition="1 == $is_show_jewels">
+                                                <option value="2"<if condition="($_data.consumetype eq 2)"> selected="selected"</if>>房卡</option>
+                                            </if>
+                                        </select>
+                                    </td>
+                                    <td><input type="number" step="0.01" class="form-control" name="consumeNum" value="{$_data.consumenum}"></td>
+                                    <td>
+                                        <if condition="($_data.status eq 0)">
+                                        <font color="red">否</font>
+                                        <elseif condition="($_data.status eq 1)"/>
+                                        <font color="green">是</font>
+                                        </if>
+                                        <select name="status">
+                                            <option value="10">请选择</option>
+                                            <option value="0" <if condition="$_data['status'] eq 0">selected="selected"</if>>否</option>
+                                            <option value="1" <if condition="$_data['status'] eq 1">selected="selected"</if>>是</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <if condition="($_data.is_new eq 0)">
+                                        <font color="red">否</font>
+                                        <elseif condition="($_data.is_new eq 1)"/>
+                                        <font color="green">是</font>
+                                        </if>
+                                        <select name="is_New">
+                                            <option value="10">请选择</option>
+                                            <option value="0" <if condition="$_data['is_new'] eq 0">selected="selected"</if>>否</option>
+                                            <option value="1" <if condition="($_data.is_new eq 1)">selected="selected"</if>>是</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <if condition="($_data.is_hot eq 0)">
+                                        <font color="red">否</font>
+                                        <elseif condition="($_data.is_hot eq 1)"/>
+                                        <font color="green">是</font>
+                                        </if>
+                                        <select name="is_Hot">
+                                            <option value="10">请选择</option>
+                                            <option value="0" <if condition="($_data.is_hot eq 0)">selected="selected"</if>>否</option>
+                                            <option value="1" <if condition="($_data.is_hot eq 1)">selected="selected"</if>>是</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" name="appleID" class="form-control" value="{$_data.appleid}"></td>
+                                    <td width="80px">
+                                        <if condition="true || ($_data.buytype eq 4) ">
+                                            <div class="layui-upload-drag" id="test{$k}" data-id="{$_data.id}" lay-data="{url: '{:U('api/upload_img',['path'=>goods,'id'=>$_data['id']])}'}" style="padding: 0px;">
+                                                <i class="layui-icon" style="font-size: 20px"></i>
+                                            </div>
+                                            <img src="{$_data.goods_img}" width="40" data-toggle="popover-img" title="" data-content="<img src='{$_data.goods_img}' width='100%'/>" />
+                                        </if>
+                                     </td>
+                                    <input type="hidden" name="id" value="{$_data.id}">
+                                    <td width="150px">
+                                        <button type="submit" class="btn btn-success btn-outline">确认修改</button>
+                                        <a href="javascript:;" style="float: right" class="btn btn-sm btn-success" onclick="admin_del('{:U('goods_del')}',{$_data['id']})"  > 删除</a>
+                                    </td>
+                                    </form>
+                                </tr>
+                                </volist>
+                            </table>
+                        </div>
+                        <div class="page">{$_page}</div>
+                </div>
+            </div>
+           
+        </div>
+        </div>
+</block>

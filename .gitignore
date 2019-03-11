@@ -2,6 +2,7 @@ logs/
 .project
 .settings
 .buildpath
+.idea
 .idea/workspace.xml
 .idea/webServers.xml
  .idea/deployment.xml

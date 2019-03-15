@@ -27,6 +27,7 @@ final class ErrorConfig {
 	const ERROR_MSG_TIMESTAMP = '请求时间错误';
 	const ERROR_MSG_PARAMETER = '参数错误';
     const ERROR_NOT_PARAMETER = '参数不能为空';
+    const ERROR_NOT_NUMBER = '金额必须为正数值';
 	const ERROR_MSG_UUID = 'UUID不匹配';
 	const ERROR_MSG_SIGN = '签名不正确';
 	const ERROR_MSG_PLAY_GAME = '游戏中不能操作';
@@ -93,6 +94,8 @@ final class ErrorConfig {
     const ERROR_MSG_KEEP_BOTTOM_MONEY = '账户必须留底3元';
     const ERROR_MSG_KEEP_ADD_BANK = '请添加银行账户';
     const ERROR_MSG_KEEP_ADD_ZFB = '请添加支付宝账户';
+    const ERROR_MSG_KEEP_ADD_SKZH = '请添加收款账户';
+    const ERROR_MSG_KEEP_ADD_TXCS = '今日提现次数已经达到上限,请明日在来吧';
 
 	//手机绑定
 	const ERROR_MSG_BIND_TOO = '已绑定';

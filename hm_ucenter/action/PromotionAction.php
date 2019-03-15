@@ -2,14 +2,16 @@
 namespace action;
 
 use config\ErrorConfig;
-use model\UserCashBank;
-use model\UserCashApplication;
 use model\AppModel;
-use model\PhoneModel;
 use manager\DBManager;
 use config\MysqlConfig;
 use helper\LogHelper;
-//use Qrcode\QRcode;
+use manager\RedisManager;
+use model\UserModel;
+use helper\FunctionHelper;
+use model\UserCashBank;
+use config\EnumConfig;
+
 /**
  * Created by PhpStorm.
  * User: Administrator
@@ -457,6 +459,149 @@ class   PromotionAction extends AppAction
         $arrayKeyValue4 = ['create_date','day_performance','day_team_performance','day_personal_performance','reward'];
         $returnInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue4, $where4);
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $returnInfo);
+    }
+
+
+    /*
+     * 申请提现
+     * */
+    public function applyCashWithdrawal($param)
+    {
+        $userID = (int)$param['userID'];
+        if (empty($param['userID']) || empty($param['apply_amount']) || empty($param['withdrawals'])) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
+        }
+        if(!is_numeric($param['apply_amount']) || $param['apply_amount'] <= 0) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_NUMBER);
+
+        $put_countInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_config, ['value'], "id = 6");
+        $putmin_countInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_config, ['value'], "id = 7");
+        if(empty($put_countInfo['value']) || empty($putmin_countInfo['value'])) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_TURNTABLE_CONFIG);
+
+        //判断用户是否已经添加了银行卡号或者支付宝账号
+        $adddata = [];
+        if($param['withdrawals'] == 2){
+            $cashBankInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_user_cash_bank, ['Id','bank_number','real_name'], "userID = {$userID}");
+            if(empty($cashBankInfo)) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_KEEP_ADD_SKZH);
+        }
+
+        //查询出今天申请的次数
+        $starttime = strtotime(date('Y-m-d', time()));
+        $endtime = $starttime + 86400;
+        $where = "apply_time > {$starttime} and apply_time < $endtime and userid = {$userID}";
+        $count = DBManager::getMysql()->getCount(MysqlConfig::Table_web_agent_apply_pos, 'id', $where);
+        if($put_countInfo['value'] - $count == 0) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_KEEP_ADD_TXCS);
+        if($param['apply_amount'] < $putmin_countInfo['value']) AppModel::returnJson(ErrorConfig::ERROR_CODE, '每笔最少提现'.$putmin_countInfo['value'].'元');
+
+        //从redis获取用户信息
+        $needData = ['name', 'money'];
+        $redisuserInfo = UserModel::getInstance()->getUserInfo($param['userID'], $needData);
+        //获取用户的代理信息
+        $userInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_member, ['username','agent_level','wechat','balance','agentid','history_pos_money'], "userid = {$userID}");
+        $withdrawableMoney = sprintf("%.2f", $userInfo['balance'] / 100);
+        if($param['apply_amount'] > $withdrawableMoney) AppModel::returnJson(ErrorConfig::ERROR_CODE, '您只有 '.$withdrawableMoney.' 余额可以申请提现');
+
+        //开启事务
+        DBManager::getMysql()->beginTransaction();
+        try{
+            //可以申请，先冻结
+            $changeMoney = $userInfo['balance'] - $param['apply_amount'] * 100;
+            $history_pos_money = $userInfo['history_pos_money'] + $param['apply_amount'] * 100;
+            $res1 = DBManager::getMysql()->update(MysqlConfig::Table_web_agent_member, ['balance' => $changeMoney,'history_pos_money' => $history_pos_money], "userid = {$userID}");
+            if(empty($res1)){
+                DBManager::getMysql()->rollback();
+                AppModel::returnJson(ErrorConfig::ERROR_CODE, '申请提现失败11');
+            }
+
+            if($param['withdrawals'] == 2){ //提现到银行卡
+                $status = 0;
+                $adddata = [
+                    'bankcard' => $cashBankInfo['bank_number'],
+                    'real_name' => $cashBankInfo['real_name'],
+                    'cash_bank_id' => $cashBankInfo['Id'],
+                ];
+            }else{  //提现到游戏账户
+                $status = 1;
+                //游戏账户添加对应的金币
+               /* $money = $redisuserInfo['money'] + $param['apply_amount'] * 100;
+                $res7 = DBManager::getMysql()->update(MysqlConfig::Table_userinfo, ['money' => $money], "userid = {$userID}");
+                if(empty($res7)){
+                    DBManager::getMysql()->rollback();
+                    AppModel::returnJson(ErrorConfig::ERROR_CODE, '申请提现失败77');
+                }*/
+
+                //通知c++金币变化
+                $changeFireCoin = FunctionHelper::MoneyInput($param['apply_amount'], 1);
+                $res8 = UserCashBank::getInstance()->sendMessage($userID, EnumConfig::E_ResourceType['MONEY'], $changeFireCoin, EnumConfig::E_ResourceChangeReason['CASH_WITHDRAWAL_TXDXXZH']);
+                if(empty($res8)){
+                    DBManager::getMysql()->rollback();
+                    AppModel::returnJson(ErrorConfig::ERROR_CODE, '申请提现失败88');
+                }
+
+                /*//添加用户金币变化表的记录
+                $moneychangeInfo['userID'] = $userID;
+                $moneychangeInfo['time'] = time();
+                $moneychangeInfo['money'] = $redisuserInfo['money'] + $param['apply_amount'] * 100;
+                $moneychangeInfo['changeMoney'] = $param['apply_amount'] * 100;
+                $moneychangeInfo['reason'] = '1024';
+                $changeres = DBManager::getMysql()->insert(MysqlConfig::Table_statistics_moneychange, $moneychangeInfo);
+                if (empty($changeres)) {
+                    DBManager::getMysql()->rollback();
+                    AppModel::returnJson(ErrorConfig::ERROR_CODE, '申请提现失败88');
+                }*/
+            }
+
+            //添加申请记录
+            $posdata = [
+                'username' => $userInfo['username'],
+                'userid' => $userID,
+                'level_agent' => $userInfo['agent_level'],
+                'wechat' => $userInfo['wechat'],
+                'apply_time' => time(),
+                'front_balance' => $userInfo['balance'],
+                'after_balance' => $userInfo['balance'] - $param['apply_amount'] * 100,
+                'apply_amount' => $param['apply_amount'] * 100,
+                'status' => $status,
+                'agentid' => $userInfo['agentid'],
+                'withdrawals' => $param['withdrawals'],
+            ];
+
+            $res2 = DBManager::getMysql()->insert(MysqlConfig::Table_web_agent_apply_pos, array_merge($adddata, $posdata));
+            if(empty($res2)){
+                DBManager::getMysql()->rollback();
+                AppModel::returnJson(ErrorConfig::ERROR_CODE, '申请提现失败22');
+            }
+
+            //记录账单
+            $billdata = [
+                'username' => $userInfo['username'],
+                'agent_level' => $userInfo['agent_level'],
+                'front_balance' => $userInfo['balance'],  //总的可提现金额
+                'handle_money' => ($param['apply_amount'] * 100),  //提现金额
+                'after_balance' => $userInfo['balance'] - $param['apply_amount'] * 100, //剩余可提现金额
+                '_desc' => '提款',
+                'make_time' => time(),
+                'make_name' => $redisuserInfo['name'],
+                'make_userid' => $userInfo['userid'],
+                'amount' => 0,
+                'commission' => (-$param['apply_amount'] * 100),
+                'under_amount' => 0,
+                'under_commission' => 0,
+            ];
+            $res3 = DBManager::getMysql()->insert(MysqlConfig::Table_web_bill_detail, $billdata);
+            //var_dump($res3);exit;
+            if(empty($res3)){
+                DBManager::getMysql()->rollback();
+                AppModel::returnJson(ErrorConfig::ERROR_CODE, '申请提现失败33');
+            }
+
+            DBManager::getMysql()->commit();
+            AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT);
+        }catch (Exception $e){
+            LogHelper::printLog(self::LOG_TAG_NAME, '提现申请错误信息'.$e->getMessage());
+            DBManager::getMysql()->rollback();
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, '申请提现失败'.$e->getMessage());
+        }
+
     }
 
 

@@ -64,6 +64,17 @@ class UserCashBank extends AppModel
         return DBManager::getMysql()->update(MysqlConfig::Table_user_cash_bank, $param, $where);
     }
 
+    /*
+     * 推送消息
+     * $param int $userid  用户ID
+     * $param int $type  类型
+     * $param int $money  金额
+     * $param int $changereason  变化类型
+     * */
+    public function sendMessage($userid, $type, $money, $changereason)
+    {
+        return $this->changeUserResource($userid, $type, $money, $changereason);
+    }
 
 
 }

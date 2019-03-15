@@ -266,7 +266,7 @@ class CronController extends Controller
             }
             //更改该用户的可提现金额
             if(!empty($adddata[$key1]['reward'])){
-                M()->table('web_agent_member')->where(['userid' => $val1['userid']])->setInc('balance',$adddata[$key1]['reward']);
+                M()->table('web_agent_member')->where(['userid' => $val1['userid']])->setInc('balance',$adddata[$key1]['reward'] * 100);
             }
 
         }

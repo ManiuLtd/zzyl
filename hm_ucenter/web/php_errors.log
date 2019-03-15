@@ -1,6 +1,0 @@
-[31-Jan-2019 12:13:05 Asia/Shanghai] PHP Fatal error:  Cannot override final method model\AppModel::getAll() in D:\phpStudy\PHPTutorial\vhost\huo.qq\PHP\hm_ucenter\model\ConfigModel.php on line 136
-[31-Jan-2019 12:13:05 Asia/Shanghai] PHP Fatal error:  Cannot override final method model\AppModel::getAll() in D:\phpStudy\PHPTutorial\vhost\huo.qq\PHP\hm_ucenter\model\ConfigModel.php on line 11
-[31-Jan-2019 12:13:06 Asia/Shanghai] PHP Fatal error:  Cannot override final method model\AppModel::getAll() in D:\phpStudy\PHPTutorial\vhost\huo.qq\PHP\hm_ucenter\model\ConfigModel.php on line 11
-[31-Jan-2019 12:13:41 Asia/Shanghai] PHP Fatal error:  Cannot override final method model\AppModel::getAll() in D:\phpStudy\PHPTutorial\vhost\huo.qq\PHP\hm_ucenter\model\ConfigModel.php on line 136
-[31-Jan-2019 12:13:42 Asia/Shanghai] PHP Fatal error:  Cannot override final method model\AppModel::getAll() in D:\phpStudy\PHPTutorial\vhost\huo.qq\PHP\hm_ucenter\model\ConfigModel.php on line 11
-[31-Jan-2019 12:14:43 Asia/Shanghai] PHP Fatal error:  Cannot override final method model\AppModel::getAll() in D:\phpStudy\PHPTutorial\vhost\huo.qq\PHP\hm_ucenter\model\ConfigModel.php on line 136

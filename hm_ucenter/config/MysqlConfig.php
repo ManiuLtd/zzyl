@@ -21,6 +21,8 @@ final class MysqlConfig
     const Table_statistics_logonandlogout = 'statistics_logonandlogout'; //登录登出
     const Table_statistics_moneychange = 'statistics_moneychange'; //金币变化
     const Table_statistics_rewardspool = 'statistics_rewardspool'; //奖池记录
+    const Table_statistics_day_performance = 'statistics_day_performance'; //奖池记录
+    const Table_pumping_ratio = 'pumping_ratio'; //代理奖励规则
     const Table_userinfo = 'userInfo'; //玩家信息
 
     /*

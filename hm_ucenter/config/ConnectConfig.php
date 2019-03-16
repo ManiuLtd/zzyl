@@ -19,13 +19,13 @@ final class ConnectConfig
     //目前用到的mysql配置
     const MYSQL_CONFIG_MASTER = array(
         'dbtype' => 'mysql',
-        // 'host' => '192.168.0.64', //TODO
-        'host' => '127.0.0.1', //TODO
+        //'host' => '172.18.194.16', //TODO
+        'host' => '127.0.0.1',
         'port' => 3306, //TODO
-        'dbname' => 'old_zhizunyule', //TODO
+        'dbname' => 'zhizunyule', //TODO
         'username' => 'root',//TODO
-        'password' => 'root', //TODO
-        'charset' => 'UTF-8',
+        'password' => 'j24b2qc8qa@#', //TODO
+        'charset' => 'utf8',
         'pconnect' => false,
     );
 

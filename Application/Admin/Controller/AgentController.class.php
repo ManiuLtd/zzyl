@@ -1037,11 +1037,30 @@ class AgentController extends AdminController
 
         M()->startTrans();
         $data = M('agent_apply_pos')->where(['id' => $id])->find();
+        $userInfo = M('agent_member')->where(['userid' => $data['userid']])->find();
         $res1 = M('agent_apply_pos')->where(['id' => $id])->save(array('status' => 2, 'handle_time' => time()));
         $res2 = M('agent_member')->where(['userid' => $data['userid']])->setDec('history_pos_money', $data['apply_amount'] );
         $res3 = M('agent_member')->where(['userid' => $data['userid']])->setInc('balance', $data['apply_amount']);
 
-        if ($res1 && $res2 && $res3) {
+        //记录账单
+        $billdata = [
+            'username' => $userInfo['username'],
+            'agent_level' => $userInfo['agent_level'],
+            'front_balance' => $userInfo['balance'],  //总的可提现金额
+            'handle_money' => $data['apply_amount'],  //提现金额
+            'after_balance' => $userInfo['balance'] + $data['apply_amount'], //剩余可提现金额
+            '_desc' => '代理提现审批驳回',
+            'make_time' => time(),
+            //'make_name' => $redisuserInfo['name'],
+            'make_userid' => $userInfo['userid'],
+            'amount' => 0,
+            'commission' => ($data['apply_amount']),
+            'under_amount' => 0,
+            'under_commission' => 0,
+        ];
+        $res4 = M('bill_detail')->add($billdata);
+
+        if ($res1 && $res2 && $res3 && $res4) {
             M()->commit();
             //发送邮件
             operation_record(UID, '通过代理提现审核');

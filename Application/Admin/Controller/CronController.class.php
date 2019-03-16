@@ -253,24 +253,60 @@ class CronController extends Controller
                 foreach ($agent_id_arr as $key2 => $val2){
                     foreach ($adddata as $key3 => $val3){
                         if($val2['userid'] === $val3['userid']){
-                            $subordinaterewardMoney += $this->getJlmongey($val3['day_performance'], $ratioInfo);
+                            $subordinaterewardMoney += $this->getJlmongey($val3['day_performance']/100, $ratioInfo);
+                            /*if($val1['userid'] == 122021){
+                                var_dump($agent_id_arr);
+                                var_dump($val3['day_performance']);
+                                var_dump($subordinaterewardMoney);exit;
+                            }*/
                         }
                     }
                 }
-
+                /*if($val1['userid'] == 122021){
+                    $myRewardMoney = $this->getJlmongey($val1['day_performance']/100, $ratioInfo);
+                    $adddata[$key1]['reward'] = $myRewardMoney - $subordinaterewardMoney;
+                }*/
                 //计算自己奖励的金额的总和
-                $myRewardMoney = $this->getJlmongey($val1['day_performance'], $ratioInfo);
+                $myRewardMoney = $this->getJlmongey($val1['day_performance']/100, $ratioInfo);
                 $adddata[$key1]['reward'] = $myRewardMoney - $subordinaterewardMoney;
             }else{   //如果没有下级代理根据自己的总业绩计算奖励
-                $adddata[$key1]['reward'] = $this->getJlmongey($val1['day_performance'], $ratioInfo);
+                $adddata[$key1]['reward'] = $this->getJlmongey($val1['day_performance']/100, $ratioInfo);
             }
             //更改该用户的可提现金额
             if(!empty($adddata[$key1]['reward'])){
                 M()->table('web_agent_member')->where(['userid' => $val1['userid']])->setInc('balance',$adddata[$key1]['reward'] * 100);
+                //记录账单
+                $this->addApplyPos($adddata[$key1]['userid'], $adddata[$key1]['reward']);
             }
 
         }
         return $adddata;
+    }
+
+    /*
+     * 添加账单
+     * $userid  用户id
+     * $handle_money 提现金额
+     * */
+    protected function addApplyPos($userid, $handle_money){
+        //查询出该代理的信息
+        $userInfo = M('agent_member')->field('userid,username,agent_level,balance')->where(['userid' => $userid])->find();
+        //记录账单
+        $billdata = [
+            'username' => $userInfo['username'],
+            'agent_level' => $userInfo['agent_level'],
+            'front_balance' => $userInfo['balance'],  //总的可提现金额
+            'handle_money' => ($handle_money * 100),  //奖励金额
+            'after_balance' => $userInfo['balance'] + $handle_money * 100, //剩余可提现金额
+            '_desc' => '代理奖励',
+            'make_time' => time(),
+            'make_userid' => $userInfo['userid'],
+            'amount' => 0,
+            'commission' => ($handle_money * 100),
+            'under_amount' => 0,
+            'under_commission' => 0,
+        ];
+        M('bill_detail')->add($billdata);
     }
 
     /*

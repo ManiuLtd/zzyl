@@ -353,7 +353,7 @@ class   PromotionAction extends AppAction
                 $this->gettemcount($v1['userid']);
                 $subordinate_agent_id = $this->zsdata();
                 //查询出所有的会员ID
-                $memberidarr = $this->getmemberid($v1['userid'], $subordinate_agent_id);
+                //$memberidarr = $this->getmemberid($v1['userid'], $subordinate_agent_id);
                 //查询出所有下级代理的玩家以及自己的玩家
                 $forarr = array_merge($subordinate_agent_id, [$v1['userid']]);
                 $memberidarr = [];
@@ -394,10 +394,9 @@ class   PromotionAction extends AppAction
         //var_dump($dayperformanceInfo);
 
         //计算预估收益
-        $this->gettemcount($userID);
-        $subordinate_agent_id = $this->zsdata();
-        //var_dump($subordinate_agent_id);exit;
-        $inUserID = implode(',', $subordinate_agent_id);
+        //算出我的一级代理
+        $dataInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_agent_member, ['userid'], "superior_agentid = {$userID}");
+        $inUserID = implode(',', array_column($dataInfo, 'userid'));
         //var_dump($inUserID);exit;
         $create_date = date('Y-m-d', time());
         $where4 = "create_date = '{$create_date}' and userID IN ({$inUserID})";
@@ -405,11 +404,11 @@ class   PromotionAction extends AppAction
         $dayperformanceInfoArr = DBManager::getMysql()->selectAll(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue4, $where4);
         //var_dump($dayperformanceInfoArr);
         //计算本人今天到现在的收益
-        $myTimeBenefit = $this->getJlmongey($returnInfo['day_performance']);
+        $myTimeBenefit = $this->getJlmongey($returnInfo['day_performance']/100);
         //计算下级每个人的收益，相加
         $sumBenefit = '';
         foreach ($dayperformanceInfoArr as $k => $v){
-            $sumBenefit += $this->getJlmongey($v['day_performance']);
+            $sumBenefit += $this->getJlmongey($v['day_performance']/100);
         }
 
         $returnInfo['estimated_revenue'] = $myTimeBenefit - $sumBenefit;
@@ -496,7 +495,7 @@ class   PromotionAction extends AppAction
         $needData = ['name', 'money'];
         $redisuserInfo = UserModel::getInstance()->getUserInfo($param['userID'], $needData);
         //获取用户的代理信息
-        $userInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_member, ['username','agent_level','wechat','balance','agentid','history_pos_money'], "userid = {$userID}");
+        $userInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_member, ['userid','username','agent_level','wechat','balance','agentid','history_pos_money'], "userid = {$userID}");
         $withdrawableMoney = sprintf("%.2f", $userInfo['balance'] / 100);
         if($param['apply_amount'] > $withdrawableMoney) AppModel::returnJson(ErrorConfig::ERROR_CODE, '您只有 '.$withdrawableMoney.' 余额可以申请提现');
 
@@ -563,6 +562,7 @@ class   PromotionAction extends AppAction
                 'status' => $status,
                 'agentid' => $userInfo['agentid'],
                 'withdrawals' => $param['withdrawals'],
+                'ordersn' => $this->buildOrderNo(),
             ];
 
             $res2 = DBManager::getMysql()->insert(MysqlConfig::Table_web_agent_apply_pos, array_merge($adddata, $posdata));
@@ -602,6 +602,50 @@ class   PromotionAction extends AppAction
             AppModel::returnJson(ErrorConfig::ERROR_CODE, '申请提现失败'.$e->getMessage());
         }
 
+
+
+    }
+
+    /**
+     *
+     * 生成16位编号
+     * Gets a prefixed unique identifier based on the current time in microseconds.
+     */
+    protected function buildOrderNo()
+    {
+        return date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
+    }
+
+
+    /*
+     * 获取我的奖励领取信息
+     * */
+    public function showRewardReceiveInfo($param)
+    {
+        $userID = (int)$param['userID'];
+        $page = empty((int)$param['page']) ? 1 : (int)$param['page'];
+        $pagesize = self::PAGE_SIZE;
+        $startnum = ($page * $pagesize) - $pagesize;
+        if (empty($param['userID'])) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
+        }
+
+        //获取提现列表
+        $where4 = "userID = {$userID} order by apply_time desc LIMIT {$startnum},{$pagesize}";
+        $arrayKeyValue4 = ['apply_time','apply_amount','ordersn','withdrawals','status'];
+        $returnInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_agent_apply_pos, $arrayKeyValue4, $where4);
+        foreach ($returnInfo as &$v){
+            $v['apply_time'] = date('Y-m-d', $v['apply_time']);
+            $v['withdrawals_text'] = $v['withdrawals'] == 1 ? '提现到游戏账户' : '提现到支付宝或者银行';
+        }
+        //获取可提现金额
+        $balanceInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_member, ['balance'], "userid = {$userID}");
+
+        $resInfo['receive_list'] = $returnInfo;
+        $resInfo['balance'] = $balanceInfo['balance'];
+        $resInfo['ID'] = $userID;
+
+        AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $resInfo);
     }
 
 

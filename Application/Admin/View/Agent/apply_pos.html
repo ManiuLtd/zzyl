@@ -96,7 +96,10 @@
                                         <th>代理账号</th>
                                         <th>游戏ID</th>
                                         <th>代理级别</th>
-                                        <th>代理银行卡号</th>
+                                        <th>代理银行卡/支付宝号</th>
+                                        <th>账号真实姓名</th>
+                                        <th>申请编号</th>
+                                        <th>提现类型</th>
                                         <th>微信号</th>
                                         <th>申请提款金额</th>
                                         <th>申请前余额</th>
@@ -128,6 +131,9 @@
                                             </if>
                                         </td>
                                         <td>{$_data.bankcard}</td>
+                                        <td>{$_data.real_name}</td>
+                                        <td>{$_data.ordersn}</td>
+                                        <td><if condition="($_data.withdrawals eq 1)">提现到游戏账户<else/>提现到支付宝或银行卡账户</if></td>
                                         <td>{$_data.wechat}</td>
                                         <td>{$_data.apply_amount}</td>
                                         <td>{$_data.front_balance}</td>

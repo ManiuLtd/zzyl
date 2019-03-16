@@ -9,6 +9,9 @@ use model\PhoneModel;
 use manager\DBManager;
 use config\MysqlConfig;
 use helper\LogHelper;
+use config\EnumConfig;
+use helper\FunctionHelper;
+use model\UserModel;
 /**
  * Created by PhpStorm.
  * User: Administrator
@@ -54,7 +57,7 @@ class CashAction extends AppAction
         }
 
         //获取金币
-        $arrayKeyValue = ['money','phone'];
+        $arrayKeyValue = ['phone'];
         $where = "userID = {$userID}";
         $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, $arrayKeyValue, $where);
 
@@ -68,6 +71,8 @@ class CashAction extends AppAction
         $resinfo['is_bind_zfb'] = empty($zfbres)? 0 : 1; //0没有绑定支付宝账号  1已经绑定支付宝账号
         $where = "userID = {$userID}";
         $resinfo['account_info'] = DBManager::getMysql()->selectAll(MysqlConfig::Table_user_cash_bank, ['bank_number','real_name','account_type'],$where);
+        $moneyInfo = UserModel::getInstance()->getUserInfo($userID,['money']);
+        $resinfo['money'] = $moneyInfo['money'];
 
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT,$resinfo);
 
@@ -227,7 +232,7 @@ class CashAction extends AppAction
             }
 
             //添加用户金币变化表的记录
-            $moneychangeInfo['userID'] = $param['userID'];
+            /*$moneychangeInfo['userID'] = $param['userID'];
             $moneychangeInfo['time'] = time();
             $moneychangeInfo['money'] = $userinfo['money'] - $param['cash_money']*100;
             $moneychangeInfo['changeMoney'] = -100 * $param['cash_money'];
@@ -241,6 +246,13 @@ class CashAction extends AppAction
             //更改用户的金币数
             $userres = DBManager::getMysql()->update(MysqlConfig::Table_userinfo, ['money' => $userinfo['money'] - $param['cash_money']*100], "userID = {$param['userID']}");
             if (empty($userres)) {
+                DBManager::getMysql()->rollback();
+                AppModel::returnJson(ErrorConfig::ERROR_CODE, '申请提现失败');
+            }*/
+            $changeFireCoin = FunctionHelper::MoneyInput($param['cash_money'], 1);
+
+            $res = UserCashBank::getInstance()->sendMessage($param['userID'], EnumConfig::E_ResourceType['MONEY'], -$changeFireCoin, EnumConfig::E_ResourceChangeReason['GOLD_EXCHANGE']);
+            if (empty($res)) {
                 DBManager::getMysql()->rollback();
                 AppModel::returnJson(ErrorConfig::ERROR_CODE, '申请提现失败');
             }

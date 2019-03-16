@@ -2251,7 +2251,7 @@ class UserController extends AdminController
             if (empty($cashInfo)) $this->error('审批失败');
 
             //添加用户金币变化表的记录
-            $money = M()->table('userInfo')->where("userID = ".$cashInfo['userid'])->getField('money');
+            /*$money = M()->table('userInfo')->where("userID = ".$cashInfo['userid'])->getField('money');
             $moneychangeInfo['userID'] = $cashInfo['userid'];
             $moneychangeInfo['time'] = time();
             $moneychangeInfo['money'] = $money + $cashInfo['cash_money']*100;
@@ -2264,6 +2264,14 @@ class UserController extends AdminController
 
             //更改用户的金币数
             if (empty(M()->table('userInfo')->where("userID = ".$cashInfo['userid'])->setInc('money', $cashInfo['cash_money']*100))) {
+                M()->rollback();
+                $this->error('审批失败');
+            }*/
+            $userID = $cashInfo['userid'];
+            $type = 1;
+            $num = FunctionHelper::MoneyInput($cashInfo['cash_money'], $type);
+            $result = UserModel::getInstance()->changeUserResource($userID, $type, $num, EnumConfig::E_ResourceChangeReason['CASH_WITHDRAWAL_JUJUE']);
+            if (empty($result)) {
                 M()->rollback();
                 $this->error('审批失败');
             }

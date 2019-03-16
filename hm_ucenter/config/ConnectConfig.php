@@ -24,7 +24,7 @@ final class ConnectConfig
         'port' => 3306, //TODO
         'dbname' => 'old_zhizunyule', //TODO
         'username' => 'root',//TODO
-        'password' => 'j24b2qc8qa@#', //TODO
+        'password' => 'j24b2qc8qa@#', //TODO/
         'charset' => 'utf8',
         'pconnect' => false,
     );

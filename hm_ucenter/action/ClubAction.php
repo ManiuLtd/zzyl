@@ -1028,10 +1028,10 @@ class ClubAction extends AppAction
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_TARGETUSER_DO_NOT_EXIST);
         }
         //是否我的好友
-        $isFriend = FriendModel::getInstance()->checkUserFriend($userID, $friendID);
+        /*$isFriend = FriendModel::getInstance()->checkUserFriend($userID, $friendID);
         if (!$isFriend) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, "邀请的用户不是你的好友");
-        }
+        }*/
         //是否已经在俱乐部中
         $exists = ClubModel::getInstance()->isFriendsGroupMemberExists($friendsGroupID, $friendID);
         if ($exists) {

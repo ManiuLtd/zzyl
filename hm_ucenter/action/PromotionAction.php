@@ -395,6 +395,7 @@ class   PromotionAction extends AppAction
         //计算预估收益
         //算出我的一级代理
         $dataInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_agent_member, ['userid'], "superior_agentid = {$userID}");
+        var_dump($dataInfo);exit;
         $inUserID = implode(',', array_column($dataInfo, 'userid'));
         //var_dump($inUserID);exit;
         $create_date = date('Y-m-d', time());

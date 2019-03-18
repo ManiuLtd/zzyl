@@ -391,6 +391,7 @@ class   PromotionAction extends AppAction
         $where3 = "create_date = '{$create_date}' and userid = {$userID}";
         $arrayKeyValue3 = ['day_performance','day_team_performance','day_personal_performance'];
         $returnInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue3, $where3);
+        var_dump($returnInfo);exit;
 
         //计算预估收益
         //算出我的一级代理

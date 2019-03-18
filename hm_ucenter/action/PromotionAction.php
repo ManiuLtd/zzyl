@@ -395,14 +395,13 @@ class   PromotionAction extends AppAction
         //计算预估收益
         //算出我的一级代理
         $dataInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_agent_member, ['userid'], "superior_agentid = {$userID}");
-        var_dump($dataInfo);exit;
         $inUserID = implode(',', array_column($dataInfo, 'userid'));
         //var_dump($inUserID);exit;
         $create_date = date('Y-m-d', time());
         $where4 = "create_date = '{$create_date}' and userid IN ({$inUserID})";
         $arrayKeyValue4 = ['day_performance'];
         $dayperformanceInfoArr = DBManager::getMysql()->selectAll(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue4, $where4);
-        //var_dump($dayperformanceInfoArr);
+        var_dump($dayperformanceInfoArr);exit;
         //计算本人今天到现在的收益
         $myTimeBenefit = $this->getJlmongey($returnInfo['day_performance']/100);
         //计算下级每个人的收益，相加

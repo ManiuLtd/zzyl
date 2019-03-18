@@ -27,7 +27,7 @@ class CronController extends Controller
         $todayDate = date('Y-m-d', $this->time);
         $startTime = strtotime(date('Y-m-d', $this->time));
         $endTime = strtotime(date('Y-m-d', $this->time)) + 86399;
-
+        $i = 0;
         $Model = new \Think\Model();
         M()->startTrans();
         try{
@@ -79,6 +79,7 @@ class CronController extends Controller
                 $adddata[$k1]['create_time'] = $this->time;
                 //var_dump($adddata);exit;
                 $this->idArr = [];
+                echo ++$i;
             }
             //var_dump($adddata);
             //删除今天的所有数据

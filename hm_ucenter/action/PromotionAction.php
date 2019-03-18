@@ -431,7 +431,6 @@ class   PromotionAction extends AppAction
         //查询出抽层比例信息
         $arrayKeyValue4 = ['agent_start_value','agent_end_value','pump_money'];
         $ratioInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_pumping_ratio, $arrayKeyValue4);
-        var_dump($ratioInfo);exit;
         foreach ($ratioInfo as $key => $value){
             if($performance >= $value['agent_start_value'] && $performance < $value['agent_end_value']){
                 return floor($performance/10000) * $value['pump_money'];

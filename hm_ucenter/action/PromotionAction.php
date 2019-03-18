@@ -379,7 +379,6 @@ class   PromotionAction extends AppAction
      */
     public function showAchievementsInfo($param)
     {
-        echo 33;exit;
         $userID = (int)$param['userID'];
         $page = empty((int)$param['page']) ? 1 : (int)$param['page'];
         $pagesize = self::PAGE_SIZE;
@@ -389,10 +388,9 @@ class   PromotionAction extends AppAction
         }
 
         $create_date = date('Y-m-d', time());
-        $where3 = "create_date = '{$create_date}' and userID = {$userID}";
+        $where3 = "create_date = '{$create_date}' and userid = {$userID}";
         $arrayKeyValue3 = ['day_performance','day_team_performance','day_personal_performance'];
         $returnInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue3, $where3);
-        var_dump($returnInfo);exiti;
 
         //计算预估收益
         //算出我的一级代理

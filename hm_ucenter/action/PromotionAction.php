@@ -390,6 +390,7 @@ class   PromotionAction extends AppAction
         $create_date = date('Y-m-d', time());
         $where3 = "create_date = '{$create_date}' and userid = {$userID}";
         $arrayKeyValue3 = ['day_performance','day_team_performance','day_personal_performance'];
+        echo 33;exit;
         $returnInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue3, $where3);
 
         //计算预估收益

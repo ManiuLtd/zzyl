@@ -143,9 +143,9 @@ class   PromotionAction extends AppAction
             $logo_height = imagesy($logo); //logo图片高度
             $logo_qr_width = $QR_width / 3; //组合之后logo的宽度(占二维码的1/5)
             $scale = $logo_width / $logo_qr_width; //logo的宽度缩放比(本身宽度/组合后的宽度)
-            $logo_qr_height = $logo_height / ($scale); //组合之后logo的高度
-            $from_width = ($QR_width - $logo_qr_width) / 2; //组合之后logo左上角所在x坐标点
-            $from_height = ($QR_width - $logo_qr_width + 220) / 2; //组合之后logo左上角所在y坐标点
+            $logo_qr_height = $logo_height / $scale; //组合之后logo的高度
+            $from_width = ($QR_width - $logo_qr_width) / 1.02; //组合之后logo左上角所在x坐标点
+            $from_height = ($QR_width - $logo_qr_width + 220) / 1.05; //组合之后logo左上角所在y坐标点
 
             //重新组合图片并调整大小
             /*

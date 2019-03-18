@@ -68,7 +68,7 @@ class SmsDemo
      * 发送短信
      * @return stdClass
      */
-    public static function sendSms($phone, $code) {
+    public static function sendSms($phone, $code, $type) {
 
         // 初始化SendSmsRequest实例用于设置发送短信的参数
         $request = new SendSmsRequest();
@@ -83,7 +83,17 @@ class SmsDemo
         $request->setSignName("至尊娱乐");
 
         // 必填，设置模板CODE，应严格按"模板CODE"填写, 请参考: https://dysms.console.aliyun.com/dysms.htm#/develop/template
-        $request->setTemplateCode("SMS_151765437");
+        if($type == 0){
+            $request->setTemplateCode("SMS_160685115"); //绑定手机号
+        }elseif ($type == 1){
+            $request->setTemplateCode("SMS_160630306"); //找回密码
+        }elseif ($type == 2){
+            $request->setTemplateCode("SMS_151765437"); //注册成为会员
+        }elseif ($type == 3){
+            $request->setTemplateCode("SMS_160685127"); //绑定支付宝银行卡收款账户
+        }else{
+            $request->setTemplateCode("SMS_151765437");//默认注册成为会员
+        }
 
         // 可选，设置模板参数, 假如模板中存在变量需要替换则为必填项
         $request->setTemplateParam(json_encode(array(  // 短信模板中字段的值

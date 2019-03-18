@@ -89,7 +89,7 @@ class PhoneLogic extends BaseLogic
         // 绑定
         include dirname(dirname(__FILE__)) . '/aliyun-dysms-php-sdk/api_demo/SmsDemo.php';
         $code = rand(111111, 999999);
-        $response = \SmsDemo::sendSms($phone, $code);
+        $response = \SmsDemo::sendSms($phone, $code, $type);
         //发送成功
         if ($response->Code == 'OK') {
             PhoneModel::getInstance()->setPhoneCodeInfo($phone, $type, $count + 1, $code);

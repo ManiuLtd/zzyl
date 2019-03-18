@@ -250,7 +250,6 @@ final class DBHelper
      */
     public function selectRow($tableName, $arrayKeyValue = [], $where = '')
     {
-        var_dump($arrayKeyValue);exit;
         $this->checkFields($tableName, $arrayKeyValue);
         $strSql = '';
         if (!empty($arrayKeyValue)) {

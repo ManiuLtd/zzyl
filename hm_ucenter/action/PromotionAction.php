@@ -127,7 +127,7 @@ class   PromotionAction extends AppAction
         if(!file_exists($Path))
         {
             //检查是否有该文件夹，如果没有就创建，并给予最高权限
-            mkdir($Path, 0700);
+            mkdir($Path, 0777);
         }
 
         $imgopj->png($value, $filename, $errorCorrectionLevel, $matrixPointSize, 2);

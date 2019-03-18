@@ -379,6 +379,7 @@ class   PromotionAction extends AppAction
      */
     public function showAchievementsInfo($param)
     {
+        echo 33;exit;
         $userID = (int)$param['userID'];
         $page = empty((int)$param['page']) ? 1 : (int)$param['page'];
         $pagesize = self::PAGE_SIZE;

@@ -12,3 +12,9 @@
 [14-Mar-2019 21:13:30 PRC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 20480 bytes) in D:\phpStudy\PHPTutorial\vhost\huo.qq\OLD_PHP\ThinkPHP\Library\Think\Model.class.php on line 588
 [14-Mar-2019 21:16:16 PRC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 16384 bytes) in D:\phpStudy\PHPTutorial\vhost\huo.qq\OLD_PHP\ThinkPHP\Library\Think\Think.class.php on line 331
 [14-Mar-2019 21:57:59 PRC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 16384 bytes) in D:\phpStudy\PHPTutorial\vhost\huo.qq\OLD_PHP\ThinkPHP\Library\Think\Think.class.php on line 331
+[18-Mar-2019 19:21:19 PRC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 16384 bytes) in D:\phpStudy\PHPTutorial\vhost\huo.qq\OLD_PHP\ThinkPHP\Library\Think\Think.class.php on line 331
+[18-Mar-2019 19:24:47 PRC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 16384 bytes) in D:\phpStudy\PHPTutorial\vhost\huo.qq\OLD_PHP\ThinkPHP\Library\Think\Think.class.php on line 331
+[18-Mar-2019 19:25:17 PRC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in D:\phpStudy\PHPTutorial\vhost\huo.qq\OLD_PHP\ThinkPHP\Library\Think\Db\Driver.class.php on line 170
+[18-Mar-2019 19:28:00 PRC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in D:\phpStudy\PHPTutorial\vhost\huo.qq\OLD_PHP\ThinkPHP\Library\Think\Db\Driver.class.php on line 170
+[18-Mar-2019 19:28:30 PRC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in D:\phpStudy\PHPTutorial\vhost\huo.qq\OLD_PHP\ThinkPHP\Library\Think\Think.class.php on line 331
+[18-Mar-2019 19:31:48 PRC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 16384 bytes) in D:\phpStudy\PHPTutorial\vhost\huo.qq\OLD_PHP\ThinkPHP\Library\Think\Think.class.php on line 331

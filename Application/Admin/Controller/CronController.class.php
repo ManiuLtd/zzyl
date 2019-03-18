@@ -22,6 +22,7 @@ class CronController extends Controller
     //实时统计客户每天的业绩，没十分钟执行一次
     public function realtimeStatisticalPerformance()
     {
+        set_time_limit(0);
         $this->time = time();
         $todayDate = date('Y-m-d', $this->time);
         $startTime = strtotime(date('Y-m-d', $this->time));

@@ -79,7 +79,7 @@ class CronController extends Controller
                 //var_dump($adddata);exit;
                 $this->idArr = [];
             }
-            //var_dump($adddata);
+            var_dump($adddata);exit;
             //删除今天的所有数据
             M()->table('statistics_day_performance')->where(['create_date' => $todayDate])->delete();
             //批量导入刚才组装好的数据

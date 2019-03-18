@@ -265,6 +265,7 @@ final class DBHelper
         } else {
             $strSql = "SELECT $strSql FROM `$tableName` WHERE $where";
         }
+        var_dump($strSql);exit;
         return $this->queryRow($strSql);
     }
 

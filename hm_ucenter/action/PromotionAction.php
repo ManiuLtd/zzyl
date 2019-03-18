@@ -391,7 +391,6 @@ class   PromotionAction extends AppAction
         $where3 = "create_date = '{$create_date}' and userid = {$userID}";
         $arrayKeyValue3 = ['day_performance','day_team_performance','day_personal_performance'];
         $returnInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue3, $where3);
-        var_dump($returnInfo);exit;
 
         //计算预估收益
         //算出我的一级代理
@@ -399,7 +398,7 @@ class   PromotionAction extends AppAction
         $inUserID = implode(',', array_column($dataInfo, 'userid'));
         //var_dump($inUserID);exit;
         $create_date = date('Y-m-d', time());
-        $where4 = "create_date = '{$create_date}' and userID IN ({$inUserID})";
+        $where4 = "create_date = '{$create_date}' and userid IN ({$inUserID})";
         $arrayKeyValue4 = ['day_performance'];
         $dayperformanceInfoArr = DBManager::getMysql()->selectAll(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue4, $where4);
         //var_dump($dayperformanceInfoArr);
@@ -413,7 +412,7 @@ class   PromotionAction extends AppAction
 
         $returnInfo['estimated_revenue'] = $myTimeBenefit - $sumBenefit;
         //查询出业绩列表
-        $where8 = "userID = {$userID} LIMIT {$startnum},{$pagesize}";
+        $where8 = "userid = {$userID} LIMIT {$startnum},{$pagesize}";
         $arrayKeyValue8 = ['create_date','day_performance','day_team_performance','day_personal_performance'];
         $listInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue8, $where8);
         $returnInfo['performance_list'] = $listInfo;

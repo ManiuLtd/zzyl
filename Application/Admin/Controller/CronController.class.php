@@ -76,7 +76,7 @@ class CronController extends Controller
                 $adddata[$k1]['day_personal_performance'] = $todayPersonalAmount[0]['summoney'];
                 $adddata[$k1]['create_date'] = $todayDate;
                 $adddata[$k1]['create_time'] = $this->time;
-                var_dump($adddata);exit;
+                //var_dump($adddata);exit;
                 $this->idArr = [];
             }
             //var_dump($adddata);

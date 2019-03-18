@@ -76,10 +76,10 @@ class CronController extends Controller
                 $adddata[$k1]['day_personal_performance'] = $todayPersonalAmount[0]['summoney'];
                 $adddata[$k1]['create_date'] = $todayDate;
                 $adddata[$k1]['create_time'] = $this->time;
-                //var_dump($adddata);exit;
+                var_dump($adddata);exit;
                 $this->idArr = [];
             }
-            var_dump($adddata);exit;
+            //var_dump($adddata);
             //删除今天的所有数据
             M()->table('statistics_day_performance')->where(['create_date' => $todayDate])->delete();
             //批量导入刚才组装好的数据

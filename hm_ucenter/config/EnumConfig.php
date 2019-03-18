@@ -49,6 +49,7 @@ final class EnumConfig
         'REGISTER' => 10,                // 注册
         'PHONE_REGISTER' => 1022,        //手机注册
         'MAGIC_EXPRESS' => 11,           // 魔法表情
+        'RESOURCE_CHANGE_REASON_PERFORMANCE' => 12,           //龙虎斗业绩流水
 
         'BANK_SAVE' => 1000,             // 银行存钱
         'BANK_TAKE' => 1001,             // 银行取钱
@@ -93,6 +94,7 @@ final class EnumConfig
         self::E_ResourceChangeReason['REGISTER'] => '注册',
         self::E_ResourceChangeReason['PHONE_REGISTER'] => '手机注册',
         self::E_ResourceChangeReason['MAGIC_EXPRESS'] => '魔法表情',
+        self::E_ResourceChangeReason['RESOURCE_CHANGE_REASON_PERFORMANCE'] => '龙虎斗业绩流水',
 
         self::E_ResourceChangeReason['BANK_SAVE'] => '银行存钱',
         self::E_ResourceChangeReason['BANK_TAKE'] => '银行取钱',

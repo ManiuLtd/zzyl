@@ -52,8 +52,8 @@ class CronController extends Controller
                 //查询出该团队今天到现在的业绩
                 if(!empty($team_userid_arr)){
                     $inuserid = implode(',', $team_userid_arr);
-                    $sql = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and reason = 3 and userID in ({$inuserid})";
-                    //var_dump($sql);
+                    $sql = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID in ({$inuserid})";
+                    //var_dump($sql);exit;
                     //本日团队贡献
                     $todayTeamAmount = $Model->query($sql);
                     //var_dump($todayTeamAmount);exit;
@@ -62,7 +62,7 @@ class CronController extends Controller
                 }
 
                 //本日个人贡献
-                $sql2 = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and reason = 3 and userID = {$v1['userid']}";
+                $sql2 = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID = {$v1['userid']}";
                 //var_dump($sql2);exit;
                 $todayPersonalAmount = $Model->query($sql2);
                 /*var_dump($todayTeamAmount);
@@ -185,7 +185,7 @@ class CronController extends Controller
                 //查询出该团队今天到现在的业绩
                 if(!empty($team_userid_arr)){
                     $inuserid = implode(',', $team_userid_arr);
-                    $sql = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and reason = 3 and userID in ({$inuserid})";
+                    $sql = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID in ({$inuserid})";
                     //var_dump($sql);
                     //本日团队贡献
                     $todayTeamAmount = $Model->query($sql);
@@ -195,7 +195,7 @@ class CronController extends Controller
                 }
 
                 //本日个人贡献
-                $sql2 = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and reason = 3 and userID = {$v1['userid']}";
+                $sql2 = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID = {$v1['userid']}";
                 //var_dump($sql2);exit;
                 $todayPersonalAmount = $Model->query($sql2);
                 //var_dump($todayPersonalAmount);exit;

@@ -223,6 +223,7 @@ final class DBHelper
      */
     public function selectAll($tableName, $arrayKeyValue = [], $where = '')
     {
+        var_dump($arrayKeyValue);exit;
         $this->checkFields($tableName, $arrayKeyValue);
         $strSql = '';
         if (!empty($arrayKeyValue)) {

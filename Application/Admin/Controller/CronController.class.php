@@ -412,7 +412,7 @@ class CronController extends Controller
 
     public function updateAgent(){
         $superior_agentid = 122151;
-        $id = 118035;
+        $id = 118037;
         //获取该代理的所有下级代理
         $xj_agent_id = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_lowerAgentSet . '|' . $superior_agentid);
         //该自己添加下级代理
@@ -427,13 +427,18 @@ class CronController extends Controller
         if(!empty($res)){ //存在上级代理,就得给自己的上级代理添加该代理
             //获取该上级代理的所有上级代理
             $sj_agent_id = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_superiorAgentSet . '|' . $superior_agentid);
+
+            //给添加的代理成员添加上级代理信息
+            $resss = RedisManager::getRedis()->hMset(RedisConfig::Hash_superiorAgentSet . '|' . $id, array_push($sj_agent_id, $superior_agentid));
+var_dump($resss);exit;
             foreach ($sj_agent_id as $k => $v){
                 $xj_agent_ids = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_lowerAgentSet . '|' . $v);
                 array_push($xj_agent_ids, $id);
                 RedisManager::getRedis()->hMset(RedisConfig::Hash_lowerAgentSet . '|' . $v, $xj_agent_ids);
             }
         }else{
-            //给添加的代理
+            //给添加的代理成员添加上级代理信息
+            RedisManager::getRedis()->hMset(RedisConfig::Hash_superiorAgentSet . '|' . $id, [$superior_agentid]);
         }
         var_dump($xj_agent_id);
         var_dump($res);

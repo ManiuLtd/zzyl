@@ -31,6 +31,7 @@ class   PromotionAction extends AppAction
     //访问域名
     const ACCESS_DOMAIN = 'http://zzyl.szbchm.com';
     protected $idArr = [];
+    const LOG_TAG_NAME = 'PROMOTION';
 
     public static function getInstance()
     {
@@ -195,6 +196,7 @@ class   PromotionAction extends AppAction
      * */
     public function showExtensionInfo($param)
     {
+        LogHelper::printLog(self::LOG_TAG_NAME, '参数777'.json_encode($param));
         $userID = (int)$param['userID'];
         if (empty($param['userID'])) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
@@ -314,6 +316,7 @@ class   PromotionAction extends AppAction
      */
     public function showPlayerInfo($param)
     {
+        LogHelper::printLog(self::LOG_TAG_NAME, '参数111'.json_encode($param));
         $userID = (int)$param['userID'];
         $searchid = (int)$param['searchid'];
         $page = empty((int)$param['page']) ? 1 : (int)$param['page'];
@@ -384,6 +387,7 @@ class   PromotionAction extends AppAction
      */
     public function showAchievementsInfo($param)
     {
+        LogHelper::printLog(self::LOG_TAG_NAME, '参数222'.json_encode($param));
         $userID = (int)$param['userID'];
         $page = empty((int)$param['page']) ? 1 : (int)$param['page'];
         $pagesize = self::PAGE_SIZE;
@@ -453,6 +457,7 @@ class   PromotionAction extends AppAction
      * */
     public function showRewardInformation($param)
     {
+        LogHelper::printLog(self::LOG_TAG_NAME, '参数333'.json_encode($param));
         //var_dump(self::PAGE_SIZE);exit;
         $userID = (int)$param['userID'];
         $page = empty((int)$param['page']) ? 1 : (int)$param['page'];
@@ -478,6 +483,7 @@ class   PromotionAction extends AppAction
      * */
     public function applyCashWithdrawal($param)
     {
+        LogHelper::printLog(self::LOG_TAG_NAME, '参数444'.json_encode($param));
         $userID = (int)$param['userID'];
         if (empty($param['userID']) || empty($param['apply_amount']) || empty($param['withdrawals'])) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
@@ -634,6 +640,7 @@ class   PromotionAction extends AppAction
      * */
     public function showRewardReceiveInfo($param)
     {
+        LogHelper::printLog(self::LOG_TAG_NAME, '参数555'.json_encode($param));
         $userID = (int)$param['userID'];
         $page = empty((int)$param['page']) ? 1 : (int)$param['page'];
         $pagesize = self::PAGE_SIZE;

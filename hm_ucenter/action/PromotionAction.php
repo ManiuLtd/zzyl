@@ -368,7 +368,7 @@ class   PromotionAction extends AppAction
                 $performanceInfo[$k1]['direct_player_num'] = count($this->getmemberid($v1['userid'], $subordinate_agent_id));
                 $this->idArr = [];
             }
-            if(!empty($performanceInfo)) $returndata['resinfo'] = $performanceInfo;
+            $returndata['resinfo'] = $performanceInfo;
             $returndata['count'] = $count;
             $returndata['page'] = $page;
         }
@@ -420,7 +420,7 @@ class   PromotionAction extends AppAction
         $where8 = "userid = {$userID} LIMIT {$startnum},{$pagesize}";
         $arrayKeyValue8 = ['create_date','day_performance','day_team_performance','day_personal_performance'];
         $listInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue8, $where8);
-        if(!empty($listInfo)) $returnInfo['performance_list'] = $listInfo;
+        $returnInfo['performance_list'] = $listInfo;
         $map = "userid = {$userID}";
         $count = DBManager::getMysql()->getCount(MysqlConfig::Table_statistics_day_performance, 'Id', $map);
         $returnInfo['count'] = $count;
@@ -464,8 +464,7 @@ class   PromotionAction extends AppAction
         $date = date('Y-m-d', time());
         $where4 = "userID = {$userID} and create_date <> '{$date}' LIMIT {$startnum},{$pagesize}";
         $arrayKeyValue4 = ['create_date','day_performance','day_team_performance','day_personal_performance','reward'];
-        $res = DBManager::getMysql()->selectAll(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue4, $where4);
-        if(!empty($res)) $returnInfo['res'] = $res;
+        $returnInfo['res'] = DBManager::getMysql()->selectAll(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue4, $where4);
         $map = "userID = {$userID} and create_date <> '{$date}'";
         $count = DBManager::getMysql()->getCount(MysqlConfig::Table_statistics_day_performance, 'Id', $map);
         $returnInfo['count'] = $count;
@@ -660,7 +659,7 @@ class   PromotionAction extends AppAction
         $resInfo['page'] = $page;
 
 
-        if(!empty($returnInfo)) $resInfo['receive_list'] = $returnInfo;
+        $resInfo['receive_list'] = $returnInfo;
         $resInfo['balance'] = $balanceInfo['balance'];
         $resInfo['ID'] = $userID;
 

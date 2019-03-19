@@ -77,9 +77,24 @@ class CronController extends Controller
                 //组装插入的数据
                 $adddata[$k1]['userid'] = $v1['userid'];
                 $adddata[$k1]['name'] = $v1['username'];
-                $adddata[$k1]['day_performance'] = $todayTeamAmount[0]['summoney'] + $todayPersonalAmount[0]['summoney'];
-                $adddata[$k1]['day_team_performance'] = $todayTeamAmount[0]['summoney'];
-                $adddata[$k1]['day_personal_performance'] = $todayPersonalAmount[0]['summoney'];
+                if(empty($todayTeamAmount[0]['summoney'] + $todayPersonalAmount[0]['summoney'])){
+                    $adddata[$k1]['day_performance'] = 0;
+                }else{
+                    $adddata[$k1]['day_performance'] = $todayTeamAmount[0]['summoney'] + $todayPersonalAmount[0]['summoney'];
+                }
+
+                if(empty($todayTeamAmount[0]['summoney'])){
+                    $adddata[$k1]['day_team_performance'] = 0;
+                }else{
+                    $adddata[$k1]['day_team_performance'] = $todayTeamAmount[0]['summoney'];
+                }
+
+                if(empty($todayPersonalAmount[0]['summoney'])){
+                    $adddata[$k1]['day_personal_performance'] = 0;
+                }else{
+                    $adddata[$k1]['day_personal_performance'] = $todayPersonalAmount[0]['summoney'];
+                }
+
                 $adddata[$k1]['create_date'] = $todayDate;
                 $adddata[$k1]['create_time'] = $this->time;
                 //var_dump($adddata);exit;
@@ -212,9 +227,23 @@ class CronController extends Controller
                 //组装插入的数据
                 $adddata[$k1]['userid'] = $v1['userid'];
                 $adddata[$k1]['name'] = $v1['username'];
-                $adddata[$k1]['day_performance'] = $todayTeamAmount[0]['summoney'] + $todayPersonalAmount[0]['summoney'];
-                $adddata[$k1]['day_team_performance'] = $todayTeamAmount[0]['summoney'];
-                $adddata[$k1]['day_personal_performance'] = $todayPersonalAmount[0]['summoney'];
+                if(empty($todayTeamAmount[0]['summoney'] + $todayPersonalAmount[0]['summoney'])){
+                    $adddata[$k1]['day_performance'] = 0;
+                }else{
+                    $adddata[$k1]['day_performance'] = $todayTeamAmount[0]['summoney'] + $todayPersonalAmount[0]['summoney'];
+                }
+
+                if(empty($todayTeamAmount[0]['summoney'])){
+                    $adddata[$k1]['day_team_performance'] = 0;
+                }else{
+                    $adddata[$k1]['day_team_performance'] = $todayTeamAmount[0]['summoney'];
+                }
+
+                if(empty($todayPersonalAmount[0]['summoney'])){
+                    $adddata[$k1]['day_personal_performance'] = 0;
+                }else{
+                    $adddata[$k1]['day_personal_performance'] = $todayPersonalAmount[0]['summoney'];
+                }
                 $adddata[$k1]['create_date'] = $todayDate;
                 $adddata[$k1]['create_time'] = time();
                 $this->idArr = [];

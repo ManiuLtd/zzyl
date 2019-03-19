@@ -13,6 +13,7 @@ use model\AgentModel;
 use model\AppModel;
 use model\UserModel;
 use Qrcode\QRcode;
+use config\RedisConfig;
 
 class AgentController extends AdminController
 {
@@ -105,7 +106,7 @@ class AgentController extends AdminController
             ->field('a.*,u.name, wpo.id as wpoid, waaa.id as waaaid, uca.Id as ucaid, wbbb.id as wbbbid')
             ->group('u.userID')
             ->where($where)->limit($page->firstRow.','.$page->listRows)->order('a.id desc')->select();
-        //var_dump($data);exit;
+        var_dump($data);exit;
         $data = [
             '_page' =>  $page->show(),
             '_data'  =>  $data,
@@ -180,6 +181,7 @@ class AgentController extends AdminController
             'arrSearchType' => $arrSearchType,
             'searchType' => $searchType,
         ]);
+        var_dump($member);exit;
         $this->assign('_data', $member);
         $this->assign('_page', $data['_page']);
         $this->assign('start', $start);
@@ -419,6 +421,10 @@ class AgentController extends AdminController
                 //获取最大的agentid
                 $id = M('agent_member')->add($data);
                 if ($id) {
+                    if(!empty($data['superior_agentid'])){
+                        //修改该代理上级的下级代理统计
+                        $this->updateAgent($data['superior_agentid'], $id);
+                    }
                     //redis 添加集合
                     RedisManager::getGameRedis()->sAdd(GameRedisConfig::Set_web_agentmember, $data['userid']);
                     operation_record(UID, '添加用户名为' . $member['username'] . '的代理');
@@ -449,6 +455,34 @@ class AgentController extends AdminController
             $this->assign(['arrVerifyType' => $this->getVerifyType()]);
             $this->assign('group', $group);
             $this->display();
+        }
+    }
+
+    /*
+     * 修改redis代理关系信息
+     * $paranm int $superior_agentid 上级代理id
+     * $param int $id   添加的代理id
+     * */
+    public function updateAgent($superior_agentid, $id){
+        //获取该代理的所有下级代理
+        $xj_agent_id = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_lowerAgentSet . '|' . $superior_agentid);
+        //该自己添加下级代理
+        if(empty($xj_agent_id)){
+            RedisManager::getRedis()->hMset(RedisConfig::Hash_lowerAgentSet . '|' . $superior_agentid, [$id]);
+        }else{
+            array_push($xj_agent_id, $id);
+            RedisManager::getRedis()->hMset(RedisConfig::Hash_lowerAgentSet . '|' . $superior_agentid, $xj_agent_id);
+        }
+
+        $res = RedisManager::getRedis()->exists(RedisConfig::Hash_superiorAgentSet . '|' . $superior_agentid);
+        if(!empty($res)){ //存在上级代理,就得给自己的上级代理添加该代理
+            //获取该上级代理的所有上级代理
+            $sj_agent_id = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_superiorAgentSet . '|' . $superior_agentid);
+            foreach ($sj_agent_id as $k => $v){
+                $xj_agent_ids = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_lowerAgentSet . '|' . $v);
+                array_push($xj_agent_ids, $id);
+                RedisManager::getRedis()->hMset(RedisConfig::Hash_lowerAgentSet . '|' . $v, $xj_agent_ids);
+            }
         }
     }
 

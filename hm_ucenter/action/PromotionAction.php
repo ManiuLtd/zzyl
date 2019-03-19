@@ -370,6 +370,7 @@ class   PromotionAction extends AppAction
             }
             $returndata['resinfo'] = $performanceInfo;
             $returndata['count'] = $count;
+            $returndata['page'] = $page;
         }
 
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $returndata);
@@ -423,6 +424,7 @@ class   PromotionAction extends AppAction
         $map = "userid = {$userID}";
         $count = DBManager::getMysql()->getCount(MysqlConfig::Table_statistics_day_performance, 'Id', $map);
         $returnInfo['count'] = $count;
+        $returnInfo['page'] = $page;
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $returnInfo);
 
     }
@@ -466,6 +468,7 @@ class   PromotionAction extends AppAction
         $map = "userID = {$userID} and create_date <> '{$date}'";
         $count = DBManager::getMysql()->getCount(MysqlConfig::Table_statistics_day_performance, 'Id', $map);
         $returnInfo['count'] = $count;
+        $returnInfo['page'] = $page;
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $returnInfo);
     }
 
@@ -653,6 +656,7 @@ class   PromotionAction extends AppAction
         $map = "userID = {$userID}";
         $count = DBManager::getMysql()->getCount(MysqlConfig::Table_web_agent_apply_pos, 'id', $map);
         $resInfo['count'] = $count;
+        $resInfo['page'] = $page;
 
 
         $resInfo['receive_list'] = $returnInfo;

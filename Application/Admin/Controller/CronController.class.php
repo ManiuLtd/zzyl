@@ -38,7 +38,9 @@ class CronController extends Controller
             $agentMemberInfo = M()->table('web_agent_member')->field('username,userid,agentid')->select();
             foreach ($agentMemberInfo as $k1 => $v1){
                 //查询出每个代理的所有下级代理ID
-                $subordinate_agent_id = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_lowerAgentSet . '|' . $v1['userid']);
+                self::diGui($v1['userid']);
+                $subordinate_agent_id = $this->zsdata();
+                //$subordinate_agent_id = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_lowerAgentSet . '|' . $v1['userid']);
                 //var_dump($subordinate_agent_id);
                 //查询出所有下级代理的玩家以及自己的玩家
                 $forarr = array_merge($subordinate_agent_id, [$v1['agentid']]);
@@ -54,7 +56,8 @@ class CronController extends Controller
                 //查询出该团队今天到现在的业绩
                 if(!empty($team_userid_arr)){
                     $inuserid = implode(',', $team_userid_arr);
-                    $sql = "select sum(sum_change_money) as summoney from statistical_temporary_performance where create_date >= {$todayDate} and userid in ({$inuserid})";
+                    $sql = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID in ({$inuserid})";
+                    //$sql = "select sum(sum_change_money) as summoney from statistical_temporary_performance where create_date >= {$todayDate} and userid in ({$inuserid})";
                     //var_dump($sql);exit;
                     //本日团队贡献
                     $todayTeamAmount = $Model->query($sql);
@@ -64,7 +67,8 @@ class CronController extends Controller
                 }
 
                 //本日个人贡献
-                $sql2 = "select sum_change_money as summoney from statistical_temporary_performance where create_date >= {$todayDate} and userid = {$v1['userid']}";
+                $sql2 = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID = {$v1['userid']}";
+                //$sql2 = "select sum_change_money as summoney from statistical_temporary_performance where create_date >= {$todayDate} and userid = {$v1['userid']}";
                 //var_dump($sql2);exit;
                 $todayPersonalAmount = $Model->query($sql2);
                 /*var_dump($todayTeamAmount);
@@ -168,9 +172,9 @@ class CronController extends Controller
             $agentMemberInfo = M()->table('web_agent_member')->field('username,userid,agentid')->select();
             foreach ($agentMemberInfo as $k1 => $v1){
                 //查询出每个代理的所有下级代理ID
-                /*self::diGui($v1['userid']);
-                $subordinate_agent_id = $this->zsdata();*/
-                $subordinate_agent_id = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_lowerAgentSet . '|' . $v1['userid']);
+                self::diGui($v1['userid']);
+                $subordinate_agent_id = $this->zsdata();
+                //$subordinate_agent_id = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_lowerAgentSet . '|' . $v1['userid']);
                 //var_dump($subordinate_agent_id);
                 //查询出所有下级代理的玩家以及自己的玩家
                 $forarr = array_merge($subordinate_agent_id, [$v1['agentid']]);
@@ -188,8 +192,8 @@ class CronController extends Controller
                 //查询出该团队今天到现在的业绩
                 if(!empty($team_userid_arr)){
                     $inuserid = implode(',', $team_userid_arr);
-                    //$sql = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID in ({$inuserid})";
-                    $sql = "select sum(sum_change_money) as summoney from statistical_temporary_performance where create_date >= {$todayDate} and userid in ({$inuserid})";
+                    $sql = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID in ({$inuserid})";
+                    //$sql = "select sum(sum_change_money) as summoney from statistical_temporary_performance where create_date >= {$todayDate} and userid in ({$inuserid})";
                     //var_dump($sql);
                     //本日团队贡献
                     $todayTeamAmount = $Model->query($sql);
@@ -199,8 +203,8 @@ class CronController extends Controller
                 }
 
                 //本日个人贡献
-                //$sql2 = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID = {$v1['userid']}";
-                $sql2 = "select sum_change_money as summoney from statistical_temporary_performance where create_date >= {$todayDate} and userid = {$v1['userid']}";
+                $sql2 = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID = {$v1['userid']}";
+                //$sql2 = "select sum_change_money as summoney from statistical_temporary_performance where create_date >= {$todayDate} and userid = {$v1['userid']}";
                 //var_dump($sql2);exit;
                 $todayPersonalAmount = $Model->query($sql2);
                 //var_dump($todayPersonalAmount);exit;
@@ -427,15 +431,14 @@ class CronController extends Controller
         if(!empty($res)){ //存在上级代理,就得给自己的上级代理添加该代理
             //获取该上级代理的所有上级代理
             $sj_agent_id = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_superiorAgentSet . '|' . $superior_agentid);
-            array_push($sj_agent_id, $superior_agentid);
-            //给添加的代理成员添加上级代理信息
-            RedisManager::getRedis()->hMset(RedisConfig::Hash_superiorAgentSet . '|' . $id, $sj_agent_id);
-
             foreach ($sj_agent_id as $k => $v){
                 $xj_agent_ids = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_lowerAgentSet . '|' . $v);
                 array_push($xj_agent_ids, $id);
                 RedisManager::getRedis()->hMset(RedisConfig::Hash_lowerAgentSet . '|' . $v, $xj_agent_ids);
             }
+            array_push($sj_agent_id, $superior_agentid);
+            //给添加的代理成员添加上级代理信息
+            RedisManager::getRedis()->hMset(RedisConfig::Hash_superiorAgentSet . '|' . $id, $sj_agent_id);
         }else{
             //给添加的代理成员添加上级代理信息
             RedisManager::getRedis()->hMset(RedisConfig::Hash_superiorAgentSet . '|' . $id, [$superior_agentid]);

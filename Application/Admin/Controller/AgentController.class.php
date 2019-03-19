@@ -421,10 +421,10 @@ class AgentController extends AdminController
                 //获取最大的agentid
                 $id = M('agent_member')->add($data);
                 if ($id) {
-                    if(!empty($data['superior_agentid'])){
+                    /*if(!empty($data['superior_agentid'])){
                         //修改该代理上级的下级代理统计
                         $this->updateAgent($data['superior_agentid'], $id);
-                    }
+                    }*/
                     //redis 添加集合
                     RedisManager::getGameRedis()->sAdd(GameRedisConfig::Set_web_agentmember, $data['userid']);
                     operation_record(UID, '添加用户名为' . $member['username'] . '的代理');
@@ -483,6 +483,12 @@ class AgentController extends AdminController
                 array_push($xj_agent_ids, $id);
                 RedisManager::getRedis()->hMset(RedisConfig::Hash_lowerAgentSet . '|' . $v, $xj_agent_ids);
             }
+            array_push($sj_agent_id, $superior_agentid);
+            //给添加的代理成员添加上级代理信息
+            RedisManager::getRedis()->hMset(RedisConfig::Hash_superiorAgentSet . '|' . $id, $sj_agent_id);
+        }else{
+            //给添加的代理成员添加上级代理信息
+            RedisManager::getRedis()->hMset(RedisConfig::Hash_superiorAgentSet . '|' . $id, [$superior_agentid]);
         }
     }
 

@@ -25,6 +25,8 @@ final class RedisConfig
     const Hash_packetVersion = 'packetVersion'; //包版本信息
     const Hash_packetVersionTest = 'packetVersionTest'; //测试包版本信息
     const Hash_webUserInfo = 'webUserInfo'; //玩家统计信息
+    const Hash_superiorAgentSet = 'superiorAgentSet'; //上级代理信息
+    const Hash_lowerAgentSet = 'lowerAgentSet'; //下级代理信息
 
     //数据缓存
     const Hash_web_turntable_config = 'web_turntable_config';

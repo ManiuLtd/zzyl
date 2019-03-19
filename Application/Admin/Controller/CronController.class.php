@@ -2,6 +2,8 @@
 namespace Admin\Controller;
 
 use Think\Controller;
+use manager\RedisManager;
+use config\RedisConfig;
 
 /*
  * 定时任务统计业务
@@ -11,6 +13,7 @@ class CronController extends Controller
 {
     protected $time = '';//管理员信息
     protected $idArr = []; //所有的下级代理id和会员id
+    protected $sgidArr = []; //所有上级代理id
 
     public function _initialize(){
         /*if(empty(IS_CLI)){
@@ -35,8 +38,7 @@ class CronController extends Controller
             $agentMemberInfo = M()->table('web_agent_member')->field('username,userid,agentid')->select();
             foreach ($agentMemberInfo as $k1 => $v1){
                 //查询出每个代理的所有下级代理ID
-                self::diGui($v1['userid']);
-                $subordinate_agent_id = $this->zsdata();
+                $subordinate_agent_id = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_lowerAgentSet . '|' . $v1['userid']);
                 //var_dump($subordinate_agent_id);
                 //查询出所有下级代理的玩家以及自己的玩家
                 $forarr = array_merge($subordinate_agent_id, [$v1['agentid']]);
@@ -52,7 +54,7 @@ class CronController extends Controller
                 //查询出该团队今天到现在的业绩
                 if(!empty($team_userid_arr)){
                     $inuserid = implode(',', $team_userid_arr);
-                    $sql = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID in ({$inuserid})";
+                    $sql = "select sum(sum_change_money) as summoney from statistical_temporary_performance where create_date >= {$todayDate} and userid in ({$inuserid})";
                     //var_dump($sql);exit;
                     //本日团队贡献
                     $todayTeamAmount = $Model->query($sql);
@@ -62,7 +64,7 @@ class CronController extends Controller
                 }
 
                 //本日个人贡献
-                $sql2 = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID = {$v1['userid']}";
+                $sql2 = "select sum_change_money as summoney from statistical_temporary_performance where create_date >= {$todayDate} and userid = {$v1['userid']}";
                 //var_dump($sql2);exit;
                 $todayPersonalAmount = $Model->query($sql2);
                 /*var_dump($todayTeamAmount);
@@ -166,8 +168,9 @@ class CronController extends Controller
             $agentMemberInfo = M()->table('web_agent_member')->field('username,userid,agentid')->select();
             foreach ($agentMemberInfo as $k1 => $v1){
                 //查询出每个代理的所有下级代理ID
-                self::diGui($v1['userid']);
-                $subordinate_agent_id = $this->zsdata();
+                /*self::diGui($v1['userid']);
+                $subordinate_agent_id = $this->zsdata();*/
+                $subordinate_agent_id = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_lowerAgentSet . '|' . $v1['userid']);
                 //var_dump($subordinate_agent_id);
                 //查询出所有下级代理的玩家以及自己的玩家
                 $forarr = array_merge($subordinate_agent_id, [$v1['agentid']]);
@@ -185,7 +188,8 @@ class CronController extends Controller
                 //查询出该团队今天到现在的业绩
                 if(!empty($team_userid_arr)){
                     $inuserid = implode(',', $team_userid_arr);
-                    $sql = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID in ({$inuserid})";
+                    //$sql = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID in ({$inuserid})";
+                    $sql = "select sum(sum_change_money) as summoney from statistical_temporary_performance where create_date >= {$todayDate} and userid in ({$inuserid})";
                     //var_dump($sql);
                     //本日团队贡献
                     $todayTeamAmount = $Model->query($sql);
@@ -195,7 +199,8 @@ class CronController extends Controller
                 }
 
                 //本日个人贡献
-                $sql2 = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID = {$v1['userid']}";
+                //$sql2 = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID = {$v1['userid']}";
+                $sql2 = "select sum_change_money as summoney from statistical_temporary_performance where create_date >= {$todayDate} and userid = {$v1['userid']}";
                 //var_dump($sql2);exit;
                 $todayPersonalAmount = $Model->query($sql2);
                 //var_dump($todayPersonalAmount);exit;
@@ -352,6 +357,86 @@ class CronController extends Controller
         ];
         $res = M('bill_detail')->add($billdata);
         var_dump($res);exit;
+    }
+
+    /*
+     * 将用户的所有下级代理存到redis
+     * */
+    public function depositAgentRelationship(){
+        $agentMemberInfo = M()->table('web_agent_member')->field('userid')->select();
+        foreach ($agentMemberInfo as $k1 => $v1) {
+            //查询出每个代理的所有下级代理ID
+            self::diGui($v1['userid']);
+            $subordinate_agent_id = $this->zsdata();
+            if(!empty($subordinate_agent_id)) RedisManager::getRedis()->hMset(RedisConfig::Hash_lowerAgentSet . '|' . $v1['userid'], $subordinate_agent_id);
+            $this->idArr = [];
+        }
+        echo '结束';
+    }
+
+    /*
+     * 将用户的所有上级代理存到redis
+     * */
+    public function depositSuperiorAgent(){
+        $agentMemberInfo = M()->table('web_agent_member')->field('userid,superior_agentid')->select();
+        foreach ($agentMemberInfo as $k1 => $v1) {
+            //查询出每个代理的所有下级代理ID
+            //$v1['superior_agentid'] = 122006;
+            if(!empty($v1['superior_agentid'])){
+                array_push($this->sgidArr, $v1['superior_agentid']);
+                self::sjdiGui($v1['superior_agentid']);
+                RedisManager::getRedis()->hMset(RedisConfig::Hash_superiorAgentSet . '|' . $v1['userid'], $this->sgidArr);
+            }
+            $this->sgidArr = [];
+        }
+        echo '结束';
+    }
+
+    /*
+     * 递归函数查询上级代理id
+     * */
+    protected function sjdiGui($superior_agentid){
+        $mapWhere['userid'] = $superior_agentid;
+        //查询出我上级的上级的用户id
+        $ressuperior_agentid = M('agent_member')->where($mapWhere)->getField('superior_agentid');
+        if(!empty($ressuperior_agentid)){
+            array_push($this->sgidArr, $ressuperior_agentid);
+            self::sjdiGui($ressuperior_agentid);
+        }
+    }
+
+    /*
+     * 统计所有代理今天的业绩，临时业绩表,便于定时脚本统计,没八分钟执行一次
+     * */
+    public function temporary_Performance(){
+        $this->time = time();
+        $todayDate = date('Y-m-d', $this->time);
+        $startTime = strtotime(date('Y-m-d', $this->time));
+        $endTime = strtotime(date('Y-m-d', $this->time)) + 86399;
+        $Model = new \Think\Model();
+        M()->startTrans();
+        $sql = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as sum_change_money,userID as userid from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) group by userID";
+        //本日团队贡献
+        $todayTeamAmount = $Model->query($sql);
+        if(!empty($todayTeamAmount)){
+            foreach ($todayTeamAmount as &$val){
+                $val['create_date'] = $todayDate;
+                $val['create_time'] = $this->time;
+            }
+
+            //删除今天的所有数据
+            M()->table('statistical_temporary_performance')->where(['create_date' => $todayDate])->delete();
+            //批量导入刚才组装好的数据
+            $res2 = M()->table('statistical_temporary_performance')->addAll($todayTeamAmount);
+            if(empty($res2)){
+                M()->rollback();
+                echo '数据插入失败';
+            }
+        }
+
+        M()->commit();
+        echo '执行成功';exit;
+
     }
 
 }

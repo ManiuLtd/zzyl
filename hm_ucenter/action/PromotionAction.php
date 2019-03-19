@@ -27,7 +27,7 @@ class   PromotionAction extends AppAction
 {
     private static $_instance = null;
     //每页条数
-    const PAGE_SIZE = 10;
+    const PAGE_SIZE = 7;
     //访问域名
     const ACCESS_DOMAIN = 'http://zzyl.szbchm.com';
     protected $idArr = [];

@@ -330,36 +330,6 @@ class CronController extends Controller
     }
 
     /*
-     * 根据每个人的业绩计算奖励
-     * $param int $performance 用户的业绩
-     * $param arr $ratioInfo   抽层比例信息
-     * */
-    public function testCheShi()
-    {
-        $userid = 122043;
-        $handle_money = 200;
-        //查询出该代理的信息
-        $userInfo = M('agent_member')->field('userid,username,agent_level,balance')->where(['userid' => $userid])->find();
-        //记录账单
-        $billdata = [
-            'username' => $userInfo['username'],
-            'agent_level' => $userInfo['agent_level'],
-            'front_balance' => $userInfo['balance'],  //总的可提现金额
-            'handle_money' => ($handle_money * 100),  //奖励金额
-            'after_balance' => $userInfo['balance'] + $handle_money * 100, //剩余可提现金额
-            '_desc' => '代理奖励',
-            'make_time' => time(),
-            'make_userid' => $userInfo['userid'],
-            'amount' => 0,
-            'commission' => ($handle_money * 100),
-            'under_amount' => 0,
-            'under_commission' => 0,
-        ];
-        $res = M('bill_detail')->add($billdata);
-        var_dump($res);exit;
-    }
-
-    /*
      * 将用户的所有下级代理存到redis
      * */
     public function depositAgentRelationship(){

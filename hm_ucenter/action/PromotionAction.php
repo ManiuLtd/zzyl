@@ -347,6 +347,8 @@ class   PromotionAction extends AppAction
             $where3 = "create_date = '{$create_date}' and userID IN ({$inUserID}) LIMIT {$startnum},{$pagesize}";
             $arrayKeyValue3 = ['userid','name','day_team_performance','day_personal_performance'];
             $performanceInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue3, $where3);
+            $map = "create_date = '{$create_date}' and userID IN ({$inUserID})";
+            $count = DBManager::getMysql()->getCount(MysqlConfig::Table_statistics_day_performance, 'Id', $map);
 
             foreach ($performanceInfo as $k1 => $v1){
                 //获取团队人数
@@ -366,9 +368,11 @@ class   PromotionAction extends AppAction
                 $performanceInfo[$k1]['direct_player_num'] = count($this->getmemberid($v1['userid'], $subordinate_agent_id));
                 $this->idArr = [];
             }
+            $returndata['resinfo'] = $performanceInfo;
+            $returndata['count'] = $count;
         }
 
-        AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $performanceInfo);
+        AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $returndata);
 
     }
 
@@ -416,6 +420,9 @@ class   PromotionAction extends AppAction
         $arrayKeyValue8 = ['create_date','day_performance','day_team_performance','day_personal_performance'];
         $listInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue8, $where8);
         $returnInfo['performance_list'] = $listInfo;
+        $map = "userid = {$userID}";
+        $count = DBManager::getMysql()->getCount(MysqlConfig::Table_statistics_day_performance, 'Id', $map);
+        $returnInfo['count'] = $count;
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $returnInfo);
 
     }
@@ -455,7 +462,10 @@ class   PromotionAction extends AppAction
         $date = date('Y-m-d', time());
         $where4 = "userID = {$userID} and create_date <> '{$date}' LIMIT {$startnum},{$pagesize}";
         $arrayKeyValue4 = ['create_date','day_performance','day_team_performance','day_personal_performance','reward'];
-        $returnInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue4, $where4);
+        $returnInfo['res'] = DBManager::getMysql()->selectAll(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue4, $where4);
+        $map = "userID = {$userID} and create_date <> '{$date}'";
+        $count = DBManager::getMysql()->getCount(MysqlConfig::Table_statistics_day_performance, 'Id', $map);
+        $returnInfo['count'] = $count;
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $returnInfo);
     }
 
@@ -639,6 +649,11 @@ class   PromotionAction extends AppAction
         }
         //获取可提现金额
         $balanceInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_member, ['balance'], "userid = {$userID}");
+
+        $map = "userID = {$userID}";
+        $count = DBManager::getMysql()->getCount(MysqlConfig::Table_web_agent_apply_pos, 'id', $map);
+        $resInfo['count'] = $count;
+
 
         $resInfo['receive_list'] = $returnInfo;
         $resInfo['balance'] = $balanceInfo['balance'];

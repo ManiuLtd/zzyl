@@ -209,7 +209,7 @@ class CronController extends Controller
                     $inuserid = implode(',', $team_userid_arr);
                     $sql = "select sum(if(changeMoney > 0, changeMoney, -changeMoney)) as summoney from statistics_moneychange where time >= {$startTime} and time <= {$endTime} and ((reason = 3 and roomID not in (21,22,23,24)) or reason = 12) and userID in ({$inuserid})";
                     //$sql = "select sum(sum_change_money) as summoney from statistical_temporary_performance where create_date >= {$todayDate} and userid in ({$inuserid})";
-                    //var_dump($sql);
+                    var_dump($sql);exit;
                     //本日团队贡献
                     $todayTeamAmount = $Model->query($sql);
                     //var_dump($todayTeamAmount);exit;

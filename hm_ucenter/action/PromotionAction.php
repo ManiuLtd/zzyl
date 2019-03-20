@@ -357,14 +357,15 @@ class   PromotionAction extends AppAction
         }
 
         //查询出直属下级用户
-        $arrayKeyValue1 = ['userid'];
-        $where1 = empty($searchid) ? "superior_agentid = {$userID}" : "superior_agentid = {$userID} and userid = {$searchid}";
+        $arrayKeyValue1 = ['userid','username'];
+        $where1 = empty($searchid) ? "superior_agentid = {$userID} LIMIT {$startnum},{$pagesize}" : "superior_agentid = {$userID} and userid = {$searchid} LIMIT {$startnum},{$pagesize}";
         $dataInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_agent_member, $arrayKeyValue1, $where1);
-        //var_dump($dataInfo);
+        $map = empty($searchid) ? "superior_agentid = {$userID}" : "superior_agentid = {$userID} and userid = {$searchid}";
+        $count = DBManager::getMysql()->getCount(MysqlConfig::Table_web_agent_member, 'userid', $map);
         LogHelper::printLog(self::LOG_TAG_NAME, $where1.'参数111###'.json_encode($dataInfo));
 
         //查询出我的玩家用户
-        $where2 = "agentID = {$userID}";
+        /*$where2 = "agentID = {$userID}";
         if(!empty($dataInfo)){
             $notUserID = implode(',', array_column($dataInfo, 'userid'));
             $where2 = empty($searchid) ? "agentID = {$userID} and userID NOT IN ({$notUserID})" : "agentID = {$userID} and userID NOT IN ({$notUserID}) and userID = {$searchid}";
@@ -373,19 +374,17 @@ class   PromotionAction extends AppAction
         $bindInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_agent_bind, $arrayKeyValue2, $where2);
         //var_dump($bindInfo);
         LogHelper::printLog(self::LOG_TAG_NAME, $where2.'参数111###'.json_encode($bindInfo));
-        $list_id_arr = array_merge($dataInfo, $bindInfo);
+        $list_id_arr = array_merge($dataInfo, $bindInfo);*/
         $performanceInfo = [];
         //var_dump($list_id_arr);exit;
-        if(!empty($list_id_arr)){
-            $inUserID = implode(',', array_column($list_id_arr, 'userid'));
+        if(!empty($dataInfo)){
+            $inUserID = implode(',', array_column($dataInfo, 'userid'));
             $create_date = date('Y-m-d', time());
-            $where3 = "create_date = '{$create_date}' and userID IN ({$inUserID}) LIMIT {$startnum},{$pagesize}";
-            $arrayKeyValue3 = ['userid','name','day_team_performance','day_personal_performance'];
-            $performanceInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue3, $where3);
-            $map = "create_date = '{$create_date}' and userID IN ({$inUserID})";
-            $count = DBManager::getMysql()->getCount(MysqlConfig::Table_statistics_day_performance, 'Id', $map);
+            $where3 = "create_date = '{$create_date}' and userID IN ({$inUserID})";
+            $arrayKeyValue3 = ['userid','day_team_performance','day_personal_performance'];
+            $perInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue3, $where3);
 
-            foreach ($performanceInfo as $k1 => $v1){
+            foreach ($dataInfo as $k1 => $v1){
                 //获取团队人数
                 $this->gettemcount($v1['userid']);
                 $subordinate_agent_id = $this->zsdata();
@@ -401,12 +400,30 @@ class   PromotionAction extends AppAction
                 $performanceInfo[$k1]['team_num'] = count(array_merge($subordinate_agent_id, $memberidarr));
                 //直属玩家人数
                 $performanceInfo[$k1]['direct_player_num'] = count($this->getmemberid($v1['userid'], $subordinate_agent_id));
+                //ID
+                $performanceInfo[$k1]['userid'] = $v1['userid'];
+                //玩家昵称
+                $performanceInfo[$k1]['userid'] = $v1['username'];
+
+                if(empty($perInfo)){
+                    $performanceInfo[$k1]['day_team_performance'] = 0;
+                    $performanceInfo[$k1]['day_personal_performance'] = 0;
+                }else{
+                    foreach ($perInfo as $key => $val){
+                        if($val['userid'] == $v1['userid']){
+                            $performanceInfo[$k1]['day_team_performance'] = $val['day_team_performance'];
+                            $performanceInfo[$k1]['day_personal_performance'] = $val['day_personal_performance'];
+                        }
+                    }
+                }
+
                 $this->idArr = [];
             }
-            $returndata['resinfo'] = $performanceInfo;
-            $returndata['count'] = $count;
-            $returndata['page'] = $page;
         }
+
+        $returndata['resinfo'] = $performanceInfo;
+        $returndata['count'] = $count;
+        $returndata['page'] = $page;
 
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $returndata);
 

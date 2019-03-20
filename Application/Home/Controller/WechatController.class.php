@@ -181,7 +181,8 @@ class WechatController extends Controller
 //        $agentid = session('agentid');
         $time = date('YmdHis');
         LogHelper::printDebug($time . 'agentBangDebug' . __LINE__);
-        $user    = $this->getOauthApp()->oauth->user();
+        //$user    = $this->getOauthApp()->oauth->user();
+        $unionid = $this->getuserinfo();
         $agent   = M('agentMember')->where(['userid' => $invite_userid])->find();
         LogHelper::printDebug($time . 'agentBangDebug' . __LINE__ . M()->getLastSql());
         if (!$agent) {
@@ -192,13 +193,13 @@ class WechatController extends Controller
 
         // 存入数据库
         date_default_timezone_set('PRC');
-        $arr                  = $user->toArray();
+        //$arr                  = $user->toArray();
 //        $data['unionid']      = $arr['original']['unionid'];
 //        $data['agent_userid'] = $invite_userid;
 //        $data['agentid']      = $agentid;
 //        $data['expiry_time']  = 7 * 24 * 60 * 60;
 //        $data['login']        = 0;
-        $data['unionid']      = $arr['original']['unionid'];
+        $data['unionid']      = $unionid;
         $data['invite_userid'] = $invite_userid;
         $data['userid']      = 0;
         $data['status'] = EnumConfig::E_ShareCodeRewardStatus['NONE'];
@@ -418,6 +419,63 @@ class WechatController extends Controller
         }
 
         return $this->display();
+    }
+
+    protected function getuserinfo(){
+        /*
+         * 'app_id'  => DynamicConfig::WECHAT_APPID,
+            'secret'  => DynamicConfig::WECHAT_APPSECREDIT,
+        */
+        $appid = DynamicConfig::WECHAT_APPID;
+        $appsecret = DynamicConfig::WECHAT_APPSECREDIT;
+        $code = $_GET['code'];
+        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$appid}&secret={$appsecret}&code={$code}&grant_type=authorization_code";
+        //获取openid
+        $res = $this->http_get($url);
+        $response = json_decode($res,true);
+        //获取unionid
+        $url2 = "https://api.weixin.qq.com/sns/userinfo?access_token={$response['access_token']}&openid={$response['openid']}&lang=zh_CN";
+        $res2 = $this->http_get($url2);
+        $response2 = json_decode($res2,true);
+        return $response2['unionid'];
+    }
+
+    /**
+     * HTTP_GET方法
+     * @param $url
+     * @return mixed
+     */
+    private function http_get($url) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_HEADER,0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,FALSE);
+        $res = curl_exec($ch);
+        curl_close($ch);
+        return $res;
+    }
+
+    /**
+     * HTTP_POST方法
+     * @param $url
+     * @param $data
+     * @return mixed
+     */
+    public function http_post($url, $data) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_HEADER,0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,FALSE);
+        $res = curl_exec($ch);
+        curl_close($ch);
+        return $res;
     }
 
 }

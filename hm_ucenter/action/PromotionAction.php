@@ -878,7 +878,7 @@ class   PromotionAction extends AppAction
             }
 
             //调用第三方服务添加水印
-            $data['filepath'] = $extension;
+            $data['filepath'] = dirname(__DIR__) .'/synthesis/logo/'.md5($id).'.png';
             $data['userid'] = $id;
             $data['fontfile'] = $fontfile;
             var_dump($url);

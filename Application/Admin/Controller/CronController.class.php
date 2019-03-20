@@ -452,13 +452,11 @@ class CronController extends Controller
         // 在图片右下角添加水印文字 ThinkPHP 并保存为new.jpg
         $image->open(".\\hm_ucenter\\synthesis\\20190320\\610f8155c562b6cdc2ba60235808532f.png")->text(122002,'D:\\phpStudy\\PHPTutorial\\vhost\\huo.qq\\OLD_PHP\\hm_ucenter\\synthesis\\logo\\simkai.ttf',20,'#000000',\Think\Image::IMAGE_WATER_EAST)->save(".\\hm_ucenter\\synthesis\\20190320\\610f8155c562b6cdc2ba60235808532f.png");
         echo 33;exit;*/
-        $filename = dirname(__DIR__).'/../..'.$recived['filepath'];
-        $fontfile = dirname(__DIR__).'/../..'.$recived['fontfile'];
-        \Think\Log::write('######呵呵111#####'.$filename);
-        \Think\Log::write('######呵呵222#####'.$fontfile);
+        \Think\Log::write('######呵呵111#####'.$recived['filepath']);
+        \Think\Log::write('######呵呵222#####'.$recived['fontfile']);
         $image = new \Think\Image();
         // 在图片右下角添加水印文字 ThinkPHP 并保存为new.jpg
-        $image->open($filename)->text($recived['userid'],$fontfile,20,'#000000',\Think\Image::IMAGE_WATER_EAST)->save($filename);
+        $image->open($recived['filepath'])->text($recived['userid'],$recived['fontfile'],20,'#000000',\Think\Image::IMAGE_WATER_EAST)->save($recived['filepath']);
         echo 33;
     }
 

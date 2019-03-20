@@ -452,8 +452,8 @@ class CronController extends Controller
         // 在图片右下角添加水印文字 ThinkPHP 并保存为new.jpg
         $image->open(".\\hm_ucenter\\synthesis\\20190320\\610f8155c562b6cdc2ba60235808532f.png")->text(122002,'D:\\phpStudy\\PHPTutorial\\vhost\\huo.qq\\OLD_PHP\\hm_ucenter\\synthesis\\logo\\simkai.ttf',20,'#000000',\Think\Image::IMAGE_WATER_EAST)->save(".\\hm_ucenter\\synthesis\\20190320\\610f8155c562b6cdc2ba60235808532f.png");
         echo 33;exit;*/
-        $filepath = THINK_PATH.'hm_ucenter/synthesis/20190320/'.$recived['filepath'];
-        $fontfile = THINK_PATH.'hm_ucenter/synthesis/logo/simkai.ttf';
+        $filepath = APP_PATH .'hm_ucenter/synthesis/20190320/'.$recived['filepath'];
+        $fontfile = APP_PATH .'hm_ucenter/synthesis/logo/simkai.ttf';
         \Think\Log::write('######呵呵111#####'.$filepath);
         \Think\Log::write('######呵呵222#####'.$fontfile);
         $image = new \Think\Image();

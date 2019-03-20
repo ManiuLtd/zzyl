@@ -878,9 +878,9 @@ class   PromotionAction extends AppAction
             }
 
             //调用第三方服务添加水印
-            $data['filepath'] = '.'.$extension;
+            $data['filepath'] = $extension;
             $data['userid'] = $id;
-            $data['fontfile'] = '.'.$fontfile;
+            $data['fontfile'] = $fontfile;
             var_dump($url);
             $res = $this->http_post($url, json_encode($data));
             $response = json_decode($res,true);

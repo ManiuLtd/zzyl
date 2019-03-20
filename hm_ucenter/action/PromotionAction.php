@@ -30,6 +30,7 @@ class   PromotionAction extends AppAction
     const PAGE_SIZE = 7;
     //访问域名
     const ACCESS_DOMAIN = 'https://zzyl.szbchm.com';
+    const BENDI_DOMAIN = 'http://oldhuo.qq';
     protected $idArr = [];
     const LOG_TAG_NAME = 'PROMOTION';
 
@@ -113,8 +114,10 @@ class   PromotionAction extends AppAction
             $filename = $Path.'\\'.$id.'_agent_qrcode.png';
             $QR = dirname(__DIR__) .'\synthesis\logo\20190312200148.png'; //准备好的logo图片
             $png = $Path.'\\' . md5($id) . '.png';
-            $qrimg = 'hm_ucenter\synthesis\\'.date('Ymd').'\\'.$id.'_agent_qrcode.png';
-            $extension = 'hm_ucenter\synthesis\\'.date('Ymd').'\\' . md5($id) . '.png';
+            $qrimg = '\\hm_ucenter\synthesis\\'.date('Ymd').'\\'.$id.'_agent_qrcode.png';
+            $extension = '\\hm_ucenter\synthesis\\'.date('Ymd').'\\' . md5($id) . '.png';
+            $url = self::BENDI_DOMAIN."/admin.php/Cron/sjImage";
+            $fontfile = dirname(__DIR__) .'\synthesis\logo\simkai.ttf';//字体文件路径
         }else{
             require_once dirname(__DIR__) . '/phpqrcode/phpqrcode.php';
             $Path = dirname(__DIR__) . '/synthesis/'.date('Ymd');
@@ -123,6 +126,8 @@ class   PromotionAction extends AppAction
             $png = $Path.'/' . md5($id) . '.png';
             $qrimg = '/hm_ucenter/synthesis/'.date('Ymd').'/'.$id.'_agent_qrcode.png';
             $extension = '/hm_ucenter/synthesis/'.date('Ymd').'/' . md5($id) . '.png';
+            $url = self::ACCESS_DOMAIN."/admin.php/Cron/sjImage";
+            $fontfile =dirname(__DIR__) .'/synthesis/logo/simkai.ttf';//字体文件路径
         }
         $imgopj = new \QRcode();
         if(!file_exists($Path))
@@ -182,6 +187,15 @@ class   PromotionAction extends AppAction
                  */
                 imagecopyresampled($QR, $logo, $right, $from_width, 0, 0, $logo_qr_width, $logo_qr_height, $logo_width, $logo_height);
             }
+
+            //调用第三方服务添加水印
+            /*$data['filepath'] = '.'.$extension;
+            $data['userid'] = $id;
+            $data['fontfile'] = '.'.$fontfile;
+            var_dump($url);exit;
+            $res = $this->http_post($url, json_encode($data));
+            $response = json_decode($res,true);
+            var_dump($response);exit;*/
 
         }
         $returnarr['qrimg'] = $qrimg;
@@ -720,6 +734,165 @@ class   PromotionAction extends AppAction
         $resInfo['ID'] = $userID;
 
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $resInfo);
+    }
+
+    /**
+     * HTTP_POST方法
+     * @param $url
+     * @param $data
+     * @return mixed
+     */
+    public function http_post($url, $data) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_HEADER,0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,FALSE);
+        $res = curl_exec($ch);
+        curl_close($ch);
+        return $res;
+    }
+
+
+    /**
+     * 生成分享的二维码，以及生成的二维码
+     * @param $param
+     */
+    public function newshowImgInfo($param)
+    {
+        $id = (int)$param['userID'];
+        if (empty($param['userID'])) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
+        }
+
+        //判断是否是代理，如果是不是代理就将该用户生成顶级代理
+        $arrayKeyValue = ['id'];
+        $where = "userid = {$id}";
+        $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_member, $arrayKeyValue, $where);
+        //查询出用户信息
+        $arrayKeyValue = ['phone','name'];
+        $where = "userID = {$id}";
+        $userinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, $arrayKeyValue, $where);
+        if (empty($resinfo)) {  //不是代理
+            $res = $this->get_superior($id);
+            $data['superior_agentid'] = $res['superior_agentid'];
+            $data['superior_username'] = $res['superior_username'];
+            $data['username'] = $userinfo['name'];
+            $data['userid'] = $id;
+            $data['agentid'] = $id;
+            $data['register_time'] = time();
+            $res = DBManager::getMysql()->insert(MysqlConfig::Table_web_agent_member, $data);
+            if(empty($res)) AppModel::returnJson(ErrorConfig::ERROR_CODE, '代理添加失败');
+        }
+
+        if(empty($userinfo['phone'])) AppModel::returnJson(ErrorConfig::ERROR_CODE, '请先绑定手机号');
+
+        $url = self::ACCESS_DOMAIN.'/home/wechat/share.html?userID='.$id;
+        $img = '';
+
+        $value = $url;  //二维码内容;
+        $errorCorrectionLevel = 'H'; //容错级别
+        $matrixPointSize = 7; //生成图片大小
+        //生成二维码图片
+        if(strtoupper(substr(PHP_OS,0,3))==='WIN'){
+            require_once dirname(__DIR__) . '\phpqrcode\phpqrcode.php';
+            $Path = dirname(__DIR__) . '\synthesis\\'.date('Ymd');
+            $filename = $Path.'\\'.$id.'_agent_qrcode.png';
+            $QR = dirname(__DIR__) .'\synthesis\logo\20190312200148.png'; //准备好的logo图片
+            $png = $Path.'\\' . md5($id) . '.png';
+            $qrimg = '\\hm_ucenter\synthesis\\'.date('Ymd').'\\'.$id.'_agent_qrcode.png';
+            $extension = '\\hm_ucenter\synthesis\\'.date('Ymd').'\\' . md5($id) . '.png';
+            $url = self::BENDI_DOMAIN."/admin.php/Cron/sjImage";
+            $fontfile = dirname(__DIR__) .'\synthesis\logo\simkai.ttf';//字体文件路径
+        }else{
+            require_once dirname(__DIR__) . '/phpqrcode/phpqrcode.php';
+            $Path = dirname(__DIR__) . '/synthesis/'.date('Ymd');
+            $filename = $Path.'/'.$id.'_agent_qrcode.png';
+            $QR = dirname(__DIR__) .'/synthesis/logo/20190312200148.png'; //准备好的logo图片
+            $png = $Path.'/' . md5($id) . '.png';
+            $qrimg = '/hm_ucenter/synthesis/'.date('Ymd').'/'.$id.'_agent_qrcode.png';
+            $extension = '/hm_ucenter/synthesis/'.date('Ymd').'/' . md5($id) . '.png';
+            $url = self::ACCESS_DOMAIN."/admin.php/Cron/sjImage";
+            $fontfile =dirname(__DIR__) .'/synthesis/logo/simkai.ttf';//字体文件路径
+        }
+        $imgopj = new \QRcode();
+        if(!file_exists($Path))
+        {
+            //检查是否有该文件夹，如果没有就创建，并给予最高权限
+            mkdir($Path, 0777);
+        }
+
+        $imgopj->png($value, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
+        $logo = $filename; //已经生成的原始二维码图
+
+        // 生成二维码
+        if (file_exists($logo)) {
+            $QR = imagecreatefromstring(file_get_contents($QR)); //目标图象连接资源。
+            $logo = imagecreatefromstring(file_get_contents($logo)); //源图象连接资源。
+            $QR_width = imagesx($QR); //二维码图片宽度
+            $QR_height = imagesy($QR); //二维码图片高度
+            $logo_width = imagesx($logo); //logo图片宽度
+            $logo_height = imagesy($logo); //logo图片高度
+            $logo_qr_width = $QR_width / 3; //组合之后logo的宽度(占二维码的1/5)
+            $scale = $logo_width / $logo_qr_width; //logo的宽度缩放比(本身宽度/组合后的宽度)
+            $logo_qr_height = $logo_height / $scale; //组合之后logo的高度
+            $from_width = ($QR_width - $logo_qr_width) / 1.02; //组合之后logo左上角所在x坐标点
+            $from_height = ($QR_width - $logo_qr_width + 220) / 1.05; //组合之后logo左上角所在y坐标点
+
+            //重新组合图片并调整大小
+            /*
+             *  imagecopyresampled() 将一幅图像(源图象)中的一块正方形区域拷贝到另一个图像中
+             */
+            imagecopyresampled($QR, $logo, $from_width, $from_height, 0, 0, $logo_qr_width, $logo_qr_height, $logo_width, $logo_height);
+        }
+
+        //输出图片
+        $res = imagepng($QR, $png);
+        imagedestroy($QR);
+        imagedestroy($logo);
+        // 合成二维码
+        if ($res) {
+            $logo = $png; //准备好的logo图片
+            $QR = $img; //已经生成的原始二维码图
+            if (file_exists($logo)) {
+                $QR = imagecreatefromstring(file_get_contents($QR)); //目标图象连接资源。
+                $logo = imagecreatefromstring(file_get_contents($logo)); //源图象连接资源。
+                $QR_width = imagesx($QR); //二维码图片宽度
+                $QR_height = imagesy($QR); //二维码图片高度
+                $logo_width = imagesx($logo); //logo图片宽度
+                $logo_height = imagesy($logo); //logo图片高度
+                $logo_qr_width = 320; //组合之后logo的宽度(占二维码的1/5)
+                $scale = $logo_width / $logo_qr_width; //logo的宽度缩放比(本身宽度/组合后的宽度)
+                $logo_qr_height = $logo_height / $scale; //组合之后logo的高度
+                $from_width = 1800; //组合之后logo左上角所在坐标点
+                $right = 110;
+                // var_dump($from_width);die;
+                //重新组合图片并调整大小
+                /*
+                 *  imagecopyresampled() 将一幅图像(源图象)中的一块正方形区域拷贝到另一个图像中
+                 */
+                imagecopyresampled($QR, $logo, $right, $from_width, 0, 0, $logo_qr_width, $logo_qr_height, $logo_width, $logo_height);
+            }
+
+            //调用第三方服务添加水印
+            $data['filepath'] = '.'.$extension;
+            $data['userid'] = $id;
+            $data['fontfile'] = '.'.$fontfile;
+            var_dump($url);
+            $res = $this->http_post($url, json_encode($data));
+            $response = json_decode($res,true);
+            var_dump($response);exit;
+
+        }
+        $returnarr['qrimg'] = $qrimg;
+        $returnarr['extension'] = $extension;
+        $longUrl = self::ACCESS_DOMAIN.'/home/wechat/share.html?userID='.$id;
+        $returnarr['short_links'] = self::shortUrl($longUrl);
+
+        AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $returnarr);
     }
 
 

@@ -443,38 +443,19 @@ class CronController extends Controller
     }
 
 
-    public function updateAgent(){
-        $superior_agentid = 122151;
-        $id = 118035;
-        //获取该代理的所有下级代理
-        $xj_agent_id = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_lowerAgentSet . '|' . $superior_agentid);
-        //该自己添加下级代理
-        if(empty($xj_agent_id)){
-            RedisManager::getRedis()->hMset(RedisConfig::Hash_lowerAgentSet . '|' . $superior_agentid, [$id]);
-        }else{
-            array_push($xj_agent_id, $id);
-            RedisManager::getRedis()->hMset(RedisConfig::Hash_lowerAgentSet . '|' . $superior_agentid, $xj_agent_id);
-        }
-
-        $res = RedisManager::getRedis()->exists(RedisConfig::Hash_superiorAgentSet . '|' . $superior_agentid);
-        if(!empty($res)){ //存在上级代理,就得给自己的上级代理添加该代理
-            //获取该上级代理的所有上级代理
-            $sj_agent_id = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_superiorAgentSet . '|' . $superior_agentid);
-            foreach ($sj_agent_id as $k => $v){
-                $xj_agent_ids = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_lowerAgentSet . '|' . $v);
-                array_push($xj_agent_ids, $id);
-                RedisManager::getRedis()->hMset(RedisConfig::Hash_lowerAgentSet . '|' . $v, $xj_agent_ids);
-            }
-            array_push($sj_agent_id, $superior_agentid);
-            //给添加的代理成员添加上级代理信息
-            RedisManager::getRedis()->hMset(RedisConfig::Hash_superiorAgentSet . '|' . $id, $sj_agent_id);
-        }else{
-            //给添加的代理成员添加上级代理信息
-            RedisManager::getRedis()->hMset(RedisConfig::Hash_superiorAgentSet . '|' . $id, [$superior_agentid]);
-        }
-        var_dump($xj_agent_id);
-        var_dump($res);
-        var_dump($sj_agent_id);
+    public function sjImage(){
+        $post = file_get_contents("php://input");
+        \Think\Log::write($post);
+        $recived = json_decode($post,true);
+        \Think\Log::write($recived);
+        /*$image = new \Think\Image();
+        // 在图片右下角添加水印文字 ThinkPHP 并保存为new.jpg
+        $image->open(".\\hm_ucenter\\synthesis\\20190320\\610f8155c562b6cdc2ba60235808532f.png")->text(122002,'D:\\phpStudy\\PHPTutorial\\vhost\\huo.qq\\OLD_PHP\\hm_ucenter\\synthesis\\logo\\simkai.ttf',20,'#000000',\Think\Image::IMAGE_WATER_EAST)->save(".\\hm_ucenter\\synthesis\\20190320\\610f8155c562b6cdc2ba60235808532f.png");
+        echo 33;exit;*/
+        $image = new \Think\Image();
+        // 在图片右下角添加水印文字 ThinkPHP 并保存为new.jpg
+        $image->open($recived['filepath'])->text($recived['userid'],$recived['fontfile'],20,'#000000',\Think\Image::IMAGE_WATER_EAST)->save($recived['filepath']);
+        echo 33;
     }
 
 }

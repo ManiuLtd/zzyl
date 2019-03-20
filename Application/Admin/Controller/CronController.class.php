@@ -447,7 +447,7 @@ class CronController extends Controller
         $post = file_get_contents("php://input");
         \Think\Log::write('#####呵呵######'.$post);
         $recived = json_decode($post,true);
-        \Think\Log::write('######呵呵#####'.$recived['filepath']);
+        \Think\Log::write('######呵呵#####'.dirname(__DIR__));
         /*$image = new \Think\Image();
         // 在图片右下角添加水印文字 ThinkPHP 并保存为new.jpg
         $image->open(".\\hm_ucenter\\synthesis\\20190320\\610f8155c562b6cdc2ba60235808532f.png")->text(122002,'D:\\phpStudy\\PHPTutorial\\vhost\\huo.qq\\OLD_PHP\\hm_ucenter\\synthesis\\logo\\simkai.ttf',20,'#000000',\Think\Image::IMAGE_WATER_EAST)->save(".\\hm_ucenter\\synthesis\\20190320\\610f8155c562b6cdc2ba60235808532f.png");

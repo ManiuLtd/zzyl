@@ -806,7 +806,6 @@ class   PromotionAction extends AppAction
             $qrimg = '\\hm_ucenter\synthesis\\'.date('Ymd').'\\'.$id.'_agent_qrcode.png';
             $extension = '\\hm_ucenter\synthesis\\'.date('Ymd').'\\' . md5($id) . '.png';
             $url = self::BENDI_DOMAIN."/admin.php/Cron/sjImage";
-            $fontfile = dirname(__DIR__) .'\synthesis\logo\simkai.ttf';//字体文件路径
         }else{
             require_once dirname(__DIR__) . '/phpqrcode/phpqrcode.php';
             $Path = dirname(__DIR__) . '/synthesis/'.date('Ymd');
@@ -816,7 +815,6 @@ class   PromotionAction extends AppAction
             $qrimg = '/hm_ucenter/synthesis/'.date('Ymd').'/'.$id.'_agent_qrcode.png';
             $extension = '/hm_ucenter/synthesis/'.date('Ymd').'/' . md5($id) . '.png';
             $url = self::ACCESS_DOMAIN."/admin.php/Cron/sjImage";
-            $fontfile =dirname(__DIR__) .'/synthesis/logo/simkai.ttf';//字体文件路径
         }
         $imgopj = new \QRcode();
         if(!file_exists($Path))
@@ -880,10 +878,7 @@ class   PromotionAction extends AppAction
             //调用第三方服务添加水印
             $data['filepath'] = md5($id).'.png';
             $data['userid'] = $id;
-            var_dump($url);
-            $res = $this->http_post($url, json_encode($data));
-            $response = json_decode($res,true);
-            var_dump($response);exit;
+            $this->http_post($url, json_encode($data));
 
         }
         $returnarr['qrimg'] = $qrimg;

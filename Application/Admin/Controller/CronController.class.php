@@ -444,7 +444,6 @@ class CronController extends Controller
 
 
     public function sjImage(){
-        var_dump(__APP__);exit;
         $post = file_get_contents("php://input");
         \Think\Log::write('#####呵呵######'.$post);
         $recived = json_decode($post,true);

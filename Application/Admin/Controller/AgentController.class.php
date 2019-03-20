@@ -180,7 +180,6 @@ class AgentController extends AdminController
             'arrSearchType' => $arrSearchType,
             'searchType' => $searchType,
         ]);
-        var_dump($member);exit;
         $this->assign('_data', $member);
         $this->assign('_page', $data['_page']);
         $this->assign('start', $start);

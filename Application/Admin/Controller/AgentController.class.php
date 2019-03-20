@@ -106,7 +106,6 @@ class AgentController extends AdminController
             ->field('a.*,u.name, wpo.id as wpoid, waaa.id as waaaid, uca.Id as ucaid, wbbb.id as wbbbid')
             ->group('u.userID')
             ->where($where)->limit($page->firstRow.','.$page->listRows)->order('a.id desc')->select();
-        var_dump($data);exit;
         $data = [
             '_page' =>  $page->show(),
             '_data'  =>  $data,

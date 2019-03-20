@@ -467,6 +467,7 @@ class MallController extends AdminController
                 break;
         }
         $where['consumeType'] = 0;
+        var_dump($where);exit;
         $data = D('Data')->get_all_data('pay_orders', $where, 10, 'id desc');
         foreach ($data['_data'] as &$v) {
             $v['buynum'] = FunctionHelper::moneyOutput($v['buynum'], $v['buytype']);

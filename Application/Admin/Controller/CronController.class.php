@@ -458,7 +458,7 @@ class CronController extends Controller
         \Think\Log::write('######呵呵222#####'.$fontfile);
         $image = new \Think\Image();
         // 在图片右下角添加水印文字 ThinkPHP 并保存为new.jpg
-        $image->open($filepath)->text('邀请码:'.$recived['userid'],$fontfile,20,'#FF00FF',\Think\Image::IMAGE_WATER_SOUTH)->save($filepath);
+        $image->open($filepath)->text('邀请码:'.$recived['userid'],$fontfile,20,'#4D4D4D',\Think\Image::IMAGE_WATER_SOUTH)->save($filepath);
         echo 33;
     }
 

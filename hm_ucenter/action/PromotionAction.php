@@ -361,6 +361,7 @@ class   PromotionAction extends AppAction
         $where1 = empty($searchid) ? "superior_agentid = {$userID}" : "superior_agentid = {$userID} and userid = {$searchid}";
         $dataInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_agent_member, $arrayKeyValue1, $where1);
         //var_dump($dataInfo);
+        LogHelper::printLog(self::LOG_TAG_NAME, $where1.'参数111###'.json_encode($dataInfo));
 
         //查询出我的玩家用户
         $where2 = "agentID = {$userID}";
@@ -371,6 +372,7 @@ class   PromotionAction extends AppAction
         $arrayKeyValue2 = ['userid'];
         $bindInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_agent_bind, $arrayKeyValue2, $where2);
         //var_dump($bindInfo);
+        LogHelper::printLog(self::LOG_TAG_NAME, $where2.'参数111###'.json_encode($bindInfo));
         $list_id_arr = array_merge($dataInfo, $bindInfo);
         $performanceInfo = [];
         //var_dump($list_id_arr);exit;

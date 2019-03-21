@@ -411,7 +411,7 @@ class   PromotionAction extends AppAction
                 //ID
                 $performanceInfo[$k1]['userid'] = $v1['userid'];
                 //玩家昵称
-                $performanceInfo[$k1]['username'] = $v1['username'];
+                $performanceInfo[$k1]['name'] = $v1['username'];
 
                 if(empty($perInfo)){
                     $performanceInfo[$k1]['day_team_performance'] = 0;
@@ -688,7 +688,7 @@ class   PromotionAction extends AppAction
      */
     protected function buildOrderNo()
     {
-        return date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
+        return date('md').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
     }
 
 

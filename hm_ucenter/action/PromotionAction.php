@@ -94,6 +94,7 @@ class   PromotionAction extends AppAction
             $data['username'] = $userinfo['name'];
             $data['userid'] = $id;
             $data['agentid'] = $id;
+            $data['commission_rate'] = 95;
             $data['register_time'] = time();
             $res = DBManager::getMysql()->insert(MysqlConfig::Table_web_agent_member, $data);
             if(empty($res)) AppModel::returnJson(ErrorConfig::ERROR_CODE, '代理添加失败');

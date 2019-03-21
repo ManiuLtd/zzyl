@@ -283,7 +283,7 @@ class   PromotionAction extends AppAction
         $arrayKeyValue1 = ['id'];
         $active_number = DBManager::getMysql()->selectAll(MysqlConfig::Table_statistics_moneychange, $arrayKeyValue1, $where);
 
-        $returndata['parentid'] = $memberinfo['superior_agentid'];//上级id
+        $returndata['parentid'] = !empty($memberinfo['superior_agentid']) ? $memberinfo['superior_agentid'] : '';//上级id
         $returndata['id'] = $userID;//用户id
         $returndata['team_num'] = count($sum_arr);//团队人数
         $returndata['direct_player_num'] = count($this->getmemberid($userID, $subordinate_agent_id));//直属玩家人数
@@ -411,7 +411,7 @@ class   PromotionAction extends AppAction
                 //ID
                 $performanceInfo[$k1]['userid'] = $v1['userid'];
                 //玩家昵称
-                $performanceInfo[$k1]['userid'] = $v1['username'];
+                $performanceInfo[$k1]['username'] = $v1['username'];
 
                 if(empty($perInfo)){
                     $performanceInfo[$k1]['day_team_performance'] = 0;

@@ -51,6 +51,13 @@ class UpdateAction extends AppAction
             $version = $packetVersionInfo['version'];
             AppModel::returnString($version);
         }
+        $addre = explode('/', $packetVersionInfo['address']);
+        unset($addre[1]);
+        $addinfo = [];
+        foreach ($addre as $k => $v){
+            $addinfo[] = $v;
+        }
+        $packetVersionInfo['address'] = $addinfo;
         //$packetVersionInfo['address'] = self::shortUrl($packetVersionInfo['address']);
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $packetVersionInfo);
     }

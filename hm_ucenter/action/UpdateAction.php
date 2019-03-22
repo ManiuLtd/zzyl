@@ -51,9 +51,34 @@ class UpdateAction extends AppAction
             $version = $packetVersionInfo['version'];
             AppModel::returnString($version);
         }
-        LogHelper::printLog('PROMOTION', '参数qwert12344'.json_encode($params));
-        LogHelper::printLog('PROMOTION', '参数qwert'.json_encode($packetVersionInfo));
-        AppModel::returnJsonNew(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $packetVersionInfo);
+        $packetVersionInfo['address'] = self::shortUrl($packetVersionInfo['address']);
+        AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $packetVersionInfo);
+    }
+
+    public static function shortUrl($longUrl){
+        // 免费的短连接，有可能会被封掉
+        $url = 'http://api.suolink.cn/api.php?url=' . urlencode($longUrl);
+        return self::request($url);
+    }
+
+    public static function request($url, $methdo = 'get'){
+        if($methdo == 'get'){
+            return self::httpGet($url);
+        }
+    }
+
+    public static function httpGet($url){
+        // $headerArray =array("Content-type:application/json;","Accept:application/json");
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        // curl_setopt($url,CURLOPT_HTTPHEADER,$headerArray);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        // $output = json_decode($output,true);
+        return $output;
     }
 
     /**

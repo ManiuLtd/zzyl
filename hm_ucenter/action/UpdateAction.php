@@ -4,6 +4,7 @@ use config\EnumConfig;
 use config\ErrorConfig;
 use model\AppModel;
 use model\UpdateModel;
+use helper\LogHelper;
 
 /**
  * 更新业务

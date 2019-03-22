@@ -558,6 +558,24 @@ abstract class AppModel
     }
 
     /**
+     * 返回处理结果 Json形式
+     * @param string $code
+     * @param string $msg
+     * @param array $data
+     */
+    public static function returnJsonNew($code = '', $msg = '', $data = [])
+    {
+        FunctionHelper::iconvEncode($data);
+        $json = json_encode(['status' => $code, 'msg' => $msg, 'data' => $data], JSON_UNESCAPED_SLASHES);
+        //debug
+        LogHelper::printDebug('routeMark:api=' . isset($_REQUEST['api']) ? $_REQUEST['api'] : 'unknown api' . ' action=' . isset($_REQUEST['action'] ) ? $_REQUEST['action'] : 'unknown action');
+        LogHelper::printDebug($json);
+        //结束统计耗时
+        LogHelper::mark(LOG_MARK_END);
+        exit($json);
+    }
+
+    /**
      * 返回处理结果 string形式
      * 更新的时候需要用到
      * @param string $data

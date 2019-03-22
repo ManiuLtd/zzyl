@@ -883,6 +883,8 @@ class ClubController extends AdminController
             ->field('S.userID,U.name,U.account,S.time,S.fireCoin,S.changeFireCoin,S.reason,R.name as rname')
             ->select();
         foreach ($res as $k => &$v) {
+            $v['changefirecoin'] = sprintf('%.2f', ($v['changefirecoin']/100));
+            $v['firecoin'] = sprintf('%.2f', ($v['firecoin']/100));
             $v['changefirecoin'] = $v['changefirecoin'] > 0 ? '+' . $v['changefirecoin'] : $v['changefirecoin'];
             $v['reason_name'] = EnumConfig::E_ResourceChangeReasonName[$v['reason']];
         }
@@ -954,6 +956,8 @@ class ClubController extends AdminController
             ->field('S.userID,U.name,U.account,S.time,S.money,S.changeMoney,S.reason,R.name as rname')
             ->select();
         foreach ($res as $k => &$v) {
+            $v['changemoney'] = sprintf('%.2f', ($v['changemoney']/100));
+            $v['money'] = sprintf('%.2f', ($v['money']/100));
             $v['changemoney'] = $v['changemoney'] > 0 ? '+' . $v['changemoney'] : $v['changemoney'];
             $v['reason_name'] = EnumConfig::E_ResourceChangeReasonName[$v['reason']];
         }

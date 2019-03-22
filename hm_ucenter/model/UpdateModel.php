@@ -139,7 +139,7 @@ class UpdateModel extends AppModel
         FunctionHelper::arrayValueToInt($result, self::INT_KEY_ARRAY);
         return $result;*/
         $where = "packet_type={$packet_type} and packet_id={$packet_id}";
-        $result = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_packet_version, ['id','packet_type','packet_id','name','version','check_version','desc'], $where);
+        $result = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_packet_version, [], $where);
         FunctionHelper::arrayValueToInt($result, self::INT_KEY_ARRAY);
         return $result;
     }

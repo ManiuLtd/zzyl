@@ -306,13 +306,13 @@ class CronController extends Controller
                 }*/
                 //计算自己奖励的金额的总和
                 $myRewardMoney = $this->getJlmongey($val1['day_performance']/100, $ratioInfo);
-                $adddata[$key1]['reward'] = $myRewardMoney - $subordinaterewardMoney;
+                $adddata[$key1]['reward'] = ($myRewardMoney - $subordinaterewardMoney)*100;
             }else{   //如果没有下级代理根据自己的总业绩计算奖励
-                $adddata[$key1]['reward'] = $this->getJlmongey($val1['day_performance']/100, $ratioInfo);
+                $adddata[$key1]['reward'] = ($this->getJlmongey($val1['day_performance']/100, $ratioInfo))*100;
             }
             //更改该用户的可提现金额
             if(!empty($adddata[$key1]['reward'])){
-                M()->table('web_agent_member')->where(['userid' => $val1['userid']])->setInc('balance',$adddata[$key1]['reward'] * 100);
+                M()->table('web_agent_member')->where(['userid' => $val1['userid']])->setInc('balance',$adddata[$key1]['reward']);
                 //记录账单
                 $this->addApplyPos($adddata[$key1]['userid'], $adddata[$key1]['reward']);
             }
@@ -333,14 +333,14 @@ class CronController extends Controller
         $billdata = [
             'username' => $userInfo['username'],
             'agent_level' => $userInfo['agent_level'],
-            'front_balance' => $userInfo['balance'],  //总的可提现金额
-            'handle_money' => ($handle_money * 100),  //奖励金额
-            'after_balance' => $userInfo['balance'] + $handle_money * 100, //剩余可提现金额
+            'front_balance' => $userInfo['balance'] - $handle_money,  //总的可提现金额
+            'handle_money' => $handle_money,  //奖励金额
+            'after_balance' => $userInfo['balance'], //剩余可提现金额
             '_desc' => '代理奖励',
             'make_time' => time(),
             'make_userid' => $userInfo['userid'],
             'amount' => 0,
-            'commission' => ($handle_money * 100),
+            'commission' => $handle_money,
             'under_amount' => 0,
             'under_commission' => 0,
         ];

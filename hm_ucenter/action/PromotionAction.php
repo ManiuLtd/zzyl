@@ -713,7 +713,15 @@ class   PromotionAction extends AppAction
         $returnInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_agent_apply_pos, $arrayKeyValue4, $where4);
         foreach ($returnInfo as &$v){
             $v['apply_time'] = date('Y-m-d', $v['apply_time']);
-            $v['withdrawals_text'] = $v['withdrawals'] == 1 ? '提现到游戏账户' : '提现到支付宝或者银行';
+            $v['withdrawals_text'] = $v['withdrawals'] == 1 ? '金币提现' : '现金提现';
+            if($v['status'] == 0){
+                $v['status'] = '待审核';
+            }elseif ($v['status'] == 1){
+                $v['status'] = '通过';
+            }else{
+                $v['status'] = '拒绝';
+            }
+
         }
         //获取可提现金额
         $balanceInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_member, ['balance'], "userid = {$userID}");

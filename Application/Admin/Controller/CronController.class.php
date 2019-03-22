@@ -336,7 +336,7 @@ class CronController extends Controller
             'front_balance' => $userInfo['balance'] - $handle_money,  //总的可提现金额
             'handle_money' => $handle_money,  //奖励金额
             'after_balance' => $userInfo['balance'], //剩余可提现金额
-            '_desc' => '代理奖励',
+            '_desc' => '每日代理奖励',
             'make_time' => time(),
             'make_userid' => $userInfo['userid'],
             'amount' => 0,

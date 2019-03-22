@@ -50,6 +50,8 @@ class UpdateAction extends AppAction
             $version = $packetVersionInfo['version'];
             AppModel::returnString($version);
         }
+        LogHelper::printLog('PROMOTION', '参数qwert12344'.json_encode($params));
+        LogHelper::printLog('PROMOTION', '参数qwert'.json_encode($packetVersionInfo));
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $packetVersionInfo);
     }
 

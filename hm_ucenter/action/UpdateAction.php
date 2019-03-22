@@ -51,7 +51,7 @@ class UpdateAction extends AppAction
             $version = $packetVersionInfo['version'];
             AppModel::returnString($version);
         }
-        $packetVersionInfo['address'] = self::shortUrl($packetVersionInfo['address']);
+        //$packetVersionInfo['address'] = self::shortUrl($packetVersionInfo['address']);
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $packetVersionInfo);
     }
 

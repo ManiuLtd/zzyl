@@ -28,6 +28,8 @@ class   PromotionAction extends AppAction
     private static $_instance = null;
     //每页条数
     const PAGE_SIZE = 7;
+    //每页条数
+    const OLD_PAGE_SIZE = 5;
     //访问域名
     const ACCESS_DOMAIN = 'https://zzyl.szbchm.com';
     const BENDI_DOMAIN = 'http://oldhuo.qq';
@@ -448,7 +450,7 @@ class   PromotionAction extends AppAction
         LogHelper::printLog(self::LOG_TAG_NAME, '参数222'.json_encode($param));
         $userID = (int)$param['userID'];
         $page = empty((int)$param['page']) ? 1 : (int)$param['page'];
-        $pagesize = self::PAGE_SIZE;
+        $pagesize = self::OLD_PAGE_SIZE;
         $startnum = ($page * $pagesize) - $pagesize;
         if (empty($param['userID'])) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
@@ -701,7 +703,7 @@ class   PromotionAction extends AppAction
         LogHelper::printLog(self::LOG_TAG_NAME, '参数555'.json_encode($param));
         $userID = (int)$param['userID'];
         $page = empty((int)$param['page']) ? 1 : (int)$param['page'];
-        $pagesize = self::PAGE_SIZE;
+        $pagesize = self::OLD_PAGE_SIZE;
         $startnum = ($page * $pagesize) - $pagesize;
         if (empty($param['userID'])) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);

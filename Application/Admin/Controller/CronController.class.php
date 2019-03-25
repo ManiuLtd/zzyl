@@ -12,19 +12,22 @@ use config\RedisConfig;
 class CronController extends Controller
 {
     protected $time = '';//管理员信息
+    protected $newtime = '';//管理员信息
     protected $idArr = []; //所有的下级代理id和会员id
     protected $sgidArr = []; //所有上级代理id
 
     public function _initialize(){
-        /*if(empty(IS_CLI)){
+        if(empty(IS_CLI)){
             echo '只能在命令行模式下面运行!';
             exit;
-        }*/
+        }
     }
 
     //实时统计客户每天的业绩，没十分钟执行一次
     public function realtimeStatisticalPerformance()
     {
+        \Think\Log::write('当前时间错'.time());
+        \Think\Log::write('实时统计客户每天的业绩，每十分钟执行一次');
         set_time_limit(0);
         $this->time = time();
         $todayDate = date('Y-m-d', $this->time);
@@ -174,10 +177,25 @@ class CronController extends Controller
     //每天凌晨三十分统计客户每天的奖励
     public function statisticsDailyRewards()
     {
-        $this->time = (time() - 7200);  //前一天的时间错
-        $todayDate = date('Y-m-d', $this->time); // 前一天年月日
-        $startTime = strtotime(date('Y-m-d', $this->time));
-        $endTime = strtotime(date('Y-m-d', $this->time)) + 86399;
+        \Think\Log::write('每天凌晨三十分统计客户每天的奖励');
+        $this->newtime = (time() - 7200);  //前一天的时间错
+        $todayDate = date('Y-m-d', $this->newtime); // 前一天年月日
+        $startTime = strtotime(date('Y-m-d', $this->newtime));
+        $endTime = strtotime(date('Y-m-d', $this->newtime)) + 86399;
+        \Think\Log::write('当前时间错'.time());
+        \Think\Log::write('前一天的时间错'.$this->newtime);
+        \Think\Log::write('前一天年月日'.$todayDate);
+        \Think\Log::write('前一天凌晨'.$startTime);
+        \Think\Log::write('今天凌晨'.$endTime);
+        $jintianymd = date('Y-m-d', time());
+        \Think\Log::write('今天年月日'.$jintianymd);
+        $ztymd = date("Y-m-d",strtotime("-1 day"));  //前一天年月日
+        \Think\Log::write('昨天年月日'.$ztymd);
+        if($todayDate == $jintianymd || $todayDate != $ztymd){
+            \Think\Log::write('年月日不对，禁止执行脚本');
+            echo 333;exit;
+        }
+
 
         $Model = new \Think\Model();
         M()->startTrans();
@@ -336,7 +354,7 @@ class CronController extends Controller
             'front_balance' => $userInfo['balance'] - $handle_money,  //总的可提现金额
             'handle_money' => $handle_money,  //奖励金额
             'after_balance' => $userInfo['balance'], //剩余可提现金额
-            '_desc' => '每日代理奖励',
+            '_desc' => '*每日代理奖励*',
             'make_time' => time(),
             'make_userid' => $userInfo['userid'],
             'amount' => 0,

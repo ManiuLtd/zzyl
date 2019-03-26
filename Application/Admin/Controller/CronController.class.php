@@ -17,10 +17,10 @@ class CronController extends Controller
     protected $sgidArr = []; //所有上级代理id
 
     public function _initialize(){
-        if(empty(IS_CLI)){
+        /*if(empty(IS_CLI)){
             echo '只能在命令行模式下面运行!';
             exit;
-        }
+        }*/
     }
 
     //实时统计客户每天的业绩，没十分钟执行一次

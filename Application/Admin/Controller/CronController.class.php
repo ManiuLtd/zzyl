@@ -178,7 +178,7 @@ class CronController extends Controller
     public function statisticsDailyRewards()
     {
         \Think\Log::write('每天凌晨三十分统计客户每天的奖励');
-        $this->newtime = (time() - 3600);  //前一天的时间错
+        $this->newtime = (time() - 36000);  //前一天的时间错
         $todayDate = date('Y-m-d', $this->newtime); // 前一天年月日
         $startTime = strtotime(date('Y-m-d', $this->newtime));
         $endTime = strtotime(date('Y-m-d', $this->newtime)) + 86399;

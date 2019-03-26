@@ -398,7 +398,7 @@ final class StructConfig
     {
         $pack = '';
         $pack .= pack('l', $fireCoinChangeInfo['userID']); //成员ID
-        $pack .= pack('l', $fireCoinChangeInfo['newFireCoin']); //新火币
+        $pack .= pack('q', $fireCoinChangeInfo['newFireCoin']); //新火币
         return $pack;
     }
 

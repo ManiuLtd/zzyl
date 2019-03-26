@@ -973,6 +973,14 @@ class ClubAction extends AppAction
         $friendsGroupID = (int)$params['friendsGroupID'];
         $tarUserID = (int)$params['tarUserID'];
         $changeFireCoin = (int)$params['changeFireCoin'];
+
+        //验证充值是否超过每个人所能够拥有金币的最大金额
+        $redisKey = RedisManager::makeKey(RedisConfig::Hash_friendsGroupToUser, $friendsGroupID, $userID);
+        $coin = RedisManager::getRedis()->hIncrBy($redisKey, 'carryFireCoin', 0);
+        $sumcoin = $changeFireCoin + $coin/100;
+        if($sumcoin > 19999998){
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_THE_CLUB_DOES_NOT_money);
+        }
         //俱乐部是否存在
         $exists = ClubModel::getInstance()->isFriendsGroupExists($friendsGroupID);
         if (!$exists) {

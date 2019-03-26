@@ -69,6 +69,7 @@ final class ErrorConfig {
 	// 俱乐部消息
 	const ERROR_MSG_CLUBNAME_CANT_NOT_EMPTY = '请输入俱乐部名称';
 	const ERROR_MSG_THE_CLUB_DOES_NOT_EXIST = '俱乐部不存在或已被解散';
+    const ERROR_MSG_THE_CLUB_DOES_NOT_money= '超过成员所能拥有的最大至尊币数量';
 	const ERROR_MSG_YOU_ARE_ALREADY_A_GROUP_OF_OWNERS = '你已经是群主';
 	const ERROR_MSG_THE_MESSAGE_DOES_NOT_EXIST = '消息不存在或已经处理过';
 	const ERROR_MSG_THE_REQUEST_HAS_BEEN_SUBMITTED = '已经发送加入俱乐部申请';

@@ -38,8 +38,8 @@ final class ConnectConfig
 
     //游戏redis配置
     const REDIS_CONFIG_GAME = array(
-//        'host' => '192.168.0.87', //TODO
-        'host' => '47.107.147.29', //TODO
+        'host' => '192.168.0.64', //TODO
+ //       'host' => '47.107.147.29', //TODO
         'port' => 6380, //TODO
         'password' => 'Yy304949708', //TODO
         'dbname' => null,
@@ -47,8 +47,8 @@ final class ConnectConfig
     );
     //本地redis配置
     const REDIS_CONFIG_LOCAL = array(
-        'host' => '47.107.147.29', //TODO
-//        'host' => '192.168.0.87', //TODO
+ //       'host' => '47.107.147.29', //TODO
+        'host' => '192.168.0.64', //TODO
         'port' => 6381, //TODO
         'password' => 'Yy304949708', //TODO
         'dbname' => null,

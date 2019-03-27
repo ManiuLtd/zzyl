@@ -130,16 +130,16 @@ class ClubModel extends AppModel
      */
     public function getFriendsGroupList($userID)
     {
-        $t1 = microtime(true);
+        //$t1 = microtime(true);
         $userToFriendsGroupSet = RedisManager::getRedis()->zRange(RedisConfig::SSet_userToFriendsGroupSet . '|' . $userID, 0, -1);
-        $t2 = microtime(true);
-        echo '耗时'.round($t2-$t1,3).'秒<br>';
+        //$t2 = microtime(true);
+        //echo '耗时'.round($t2-$t1,3).'秒<br>';
         $friendsGroupList = [];
         foreach ($userToFriendsGroupSet as $friendsGroupID) {
-            $t1 = microtime(true);
+            //$t1 = microtime(true);
             $friendsGroup = $this->getFriendsGroup($friendsGroupID, $userID);
-            $t2 = microtime(true);
-            echo '耗时'.round($t2-$t1,3).'秒<br>';
+            //$t2 = microtime(true);
+            //echo '耗时'.round($t2-$t1,3).'秒<br>';
             if (!empty($friendsGroup)) {
                 //加入俱乐部到列表
                 $friendsGroupList[] = $friendsGroup;

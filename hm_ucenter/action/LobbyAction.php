@@ -37,6 +37,9 @@ class LobbyAction extends AppAction
      */
     public function gameList($params)
     {
+        while (1){
+
+        }
         $is_recommend = (int)$params['is_recommend'];
         $gameList = LobbyModel::getInstance()->getGameList($is_recommend, 'gameID');
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $gameList);

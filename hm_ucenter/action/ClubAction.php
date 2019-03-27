@@ -43,7 +43,7 @@ class ClubAction extends AppAction
      */
     public function friendsGroupList($params)
     {
-        AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, []);
+        //AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, []);
         $userID = (int)$params['userID'];
         $result = ClubModel::getInstance()->getFriendsGroupList($userID);
         LogHelper::printDebug($result);

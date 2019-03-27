@@ -975,7 +975,7 @@ class ClubAction extends AppAction
         $changeFireCoin = (int)$params['changeFireCoin'];
 
         //验证充值是否超过每个人所能够拥有金币的最大金额
-        $redisKey = RedisManager::makeKey(RedisConfig::Hash_friendsGroupToUser, $friendsGroupID, $userID);
+        $redisKey = RedisManager::makeKey(RedisConfig::Hash_friendsGroupToUser, $friendsGroupID, $tarUserID);
         $coin = RedisManager::getRedis()->hIncrBy($redisKey, 'carryFireCoin', 0);
         $sumcoin = $changeFireCoin/100 + $coin/100;
         if($sumcoin > 19999998){

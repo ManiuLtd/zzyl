@@ -171,19 +171,19 @@ class ClubModel extends AppModel
         FunctionHelper::arrayValueToInt($friendsGroup, $intKeyArray);
         if ($userID != 0) {
             //俱乐部前面9个ID 用于显示头像
-            $friendsGroup['frontMember'] = $this->getFriendsGroupFrontMember($friendsGroupID);
+            //$friendsGroup['frontMember'] = $this->getFriendsGroupFrontMember($friendsGroupID);
             //在线人数
             $friendsGroup['currOnlineCount'] = $this->getFriendsGroupOnlineCount($friendsGroupID);
             //已开牌桌数量
             $friendsGroup['deskCount'] = $this->getFriendsGroupOpenDeskCount($friendsGroupID);
             //已开VIP房间数量
-            $friendsGroup['VIPRoomCount'] = $this->getFriendsGroupVIPRoomCount($friendsGroupID);
+            //$friendsGroup['VIPRoomCount'] = $this->getFriendsGroupVIPRoomCount($friendsGroupID);
             //身份
-            $friendsGroup['status'] = $this->getFriendsGroupMemberStatus($friendsGroupID, $userID);
+            //$friendsGroup['status'] = $this->getFriendsGroupMemberStatus($friendsGroupID, $userID);
             //权限
-            $friendsGroup['power'] = $this->getFriendsGroupMemberPower($friendsGroupID, $userID);
+            //$friendsGroup['power'] = $this->getFriendsGroupMemberPower($friendsGroupID, $userID);
             //携带火币
-            $friendsGroup['fireCoin'] = $this->getFriendsGroupMemberCarryFireCoin($friendsGroupID, $userID);
+            //$friendsGroup['fireCoin'] = $this->getFriendsGroupMemberCarryFireCoin($friendsGroupID, $userID);
         }
         return $friendsGroup;
     }

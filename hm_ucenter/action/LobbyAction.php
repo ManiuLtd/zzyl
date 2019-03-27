@@ -37,6 +37,7 @@ class LobbyAction extends AppAction
      */
     public function gameList($params)
     {
+        AppModel::returnJson(ErrorConfig::ERROR_CODE, '请求超时');
         $is_recommend = (int)$params['is_recommend'];
         $gameList = LobbyModel::getInstance()->getGameList($is_recommend, 'gameID');
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $gameList);

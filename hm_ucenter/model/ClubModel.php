@@ -151,6 +151,7 @@ class ClubModel extends AppModel
     public function getFriendsGroup($friendsGroupID, $userID = 0)
     {
         $friendsGroup = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_friendsGroup . '|' . $friendsGroupID);
+        var_dump($friendsGroup);exit;
         $intKeyArray = array(
             'friendsGroupID',
             'peopleCount',

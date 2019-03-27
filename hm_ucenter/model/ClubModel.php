@@ -162,6 +162,7 @@ class ClubModel extends AppModel
         );
         //一些值需要转为int
         FunctionHelper::arrayValueToInt($friendsGroup, $intKeyArray);
+        $t1 = microtime(true);
         if ($userID != 0) {
             //俱乐部前面9个ID 用于显示头像
             $friendsGroup['frontMember'] = $this->getFriendsGroupFrontMember($friendsGroupID);
@@ -178,6 +179,8 @@ class ClubModel extends AppModel
             //携带火币
             $friendsGroup['fireCoin'] = $this->getFriendsGroupMemberCarryFireCoin($friendsGroupID, $userID);
         }
+        $t2 = microtime(true);
+        echo '耗时'.round($t2-$t1,3).'秒<br>';exit;
         return $friendsGroup;
     }
 

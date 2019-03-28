@@ -43,14 +43,14 @@ class ClubAction extends AppAction
      */
     public function friendsGroupList($params)
     {
-        $t1 = microtime(true);
+        //$t1 = microtime(true);
         //AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, []);
         $userID = (int)$params['userID'];
         $result = ClubModel::getInstance()->getFriendsGroupList($userID);
         LogHelper::printDebug($result);
-        $t2 = microtime(true);
+        /*$t2 = microtime(true);
         echo '耗时'.round($t2-$t1,3).'秒<br>';
-        exit;
+        exit;*/
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $result);
     }
 

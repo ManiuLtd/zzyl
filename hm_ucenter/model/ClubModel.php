@@ -173,7 +173,7 @@ class ClubModel extends AppModel
         if ($userID != 0) {
             //$t1 = microtime(true);
             //俱乐部前面9个ID 用于显示头像
-            $friendsGroup['frontMember'] = $this->getFriendsGroupFrontMember($friendsGroupID);
+            //$friendsGroup['frontMember'] = $this->getFriendsGroupFrontMember($friendsGroupID);
             //在线人数
             $friendsGroup['currOnlineCount'] = $this->getFriendsGroupOnlineCount($friendsGroupID);
             //$t2 = microtime(true);
@@ -185,7 +185,7 @@ class ClubModel extends AppModel
             //echo '耗时'.round($t2-$t1,3).'秒<br>';
             //已开VIP房间数量
             //$t1 = microtime(true);
-            $friendsGroup['VIPRoomCount'] = $this->getFriendsGroupVIPRoomCount($friendsGroupID);
+            //$friendsGroup['VIPRoomCount'] = $this->getFriendsGroupVIPRoomCount($friendsGroupID);
             //$t2 = microtime(true);
             //echo '耗时'.round($t2-$t1,3).'秒<br>';
             //身份

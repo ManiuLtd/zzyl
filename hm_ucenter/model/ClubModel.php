@@ -146,7 +146,7 @@ class ClubModel extends AppModel
                 $friendsGroupList[] = $friendsGroup;
             }
         }
-        exit;
+        //exit;
         return $friendsGroupList;
     }
 

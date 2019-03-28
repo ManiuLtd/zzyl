@@ -146,7 +146,7 @@ class ClubModel extends AppModel
                 $friendsGroupList[] = $friendsGroup;
             }
         }
-        //exit;
+        exit;
         return $friendsGroupList;
     }
 
@@ -171,23 +171,14 @@ class ClubModel extends AppModel
         //一些值需要转为int
         FunctionHelper::arrayValueToInt($friendsGroup, $intKeyArray);
         if ($userID != 0) {
-            //$t1 = microtime(true);
             //俱乐部前面9个ID 用于显示头像
             //$friendsGroup['frontMember'] = $this->getFriendsGroupFrontMember($friendsGroupID);
             //在线人数
             $friendsGroup['currOnlineCount'] = $this->getFriendsGroupOnlineCount($friendsGroupID);
-            //$t2 = microtime(true);
-            //echo '耗时'.round($t2-$t1,3).'秒<br>';
             //已开牌桌数量
-            //$t1 = microtime(true);
             $friendsGroup['deskCount'] = $this->getFriendsGroupOpenDeskCount($friendsGroupID);
-            //$t2 = microtime(true);
-            //echo '耗时'.round($t2-$t1,3).'秒<br>';
             //已开VIP房间数量
-            //$t1 = microtime(true);
             //$friendsGroup['VIPRoomCount'] = $this->getFriendsGroupVIPRoomCount($friendsGroupID);
-            //$t2 = microtime(true);
-            //echo '耗时'.round($t2-$t1,3).'秒<br>';
             //身份
             $friendsGroup['status'] = $this->getFriendsGroupMemberStatus($friendsGroupID, $userID);
             //权限
@@ -969,7 +960,7 @@ class ClubModel extends AppModel
     public function getFriendsGroupOpenDeskCount($friendsGroupID, $floor = 0)
     {
         $openDeskCount = 0;
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 1; $i <= 6; $i++) {
             $FGRoomInfo = RedisManager::getGameRedis()->get(GameRedisConfig::String_FGRoomInfo . '|' . $friendsGroupID . ',' . $floor . ',' . $i);
             if ($FGRoomInfo !== false) {
                 $openDeskCount++;

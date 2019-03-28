@@ -186,14 +186,14 @@ class ClubModel extends AppModel
             //已开VIP房间数量
             $t1 = microtime(true);
             $friendsGroup['VIPRoomCount'] = $this->getFriendsGroupVIPRoomCount($friendsGroupID);
+            $t2 = microtime(true);
+            echo '耗时'.round($t2-$t1,3).'秒<br>';
             //身份
             $friendsGroup['status'] = $this->getFriendsGroupMemberStatus($friendsGroupID, $userID);
             //权限
             $friendsGroup['power'] = $this->getFriendsGroupMemberPower($friendsGroupID, $userID);
             //携带火币
             $friendsGroup['fireCoin'] = $this->getFriendsGroupMemberCarryFireCoin($friendsGroupID, $userID);
-            $t2 = microtime(true);
-            echo '耗时'.round($t2-$t1,3).'秒<br>';
         }
         return $friendsGroup;
     }

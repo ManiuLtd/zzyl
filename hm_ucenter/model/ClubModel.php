@@ -959,14 +959,8 @@ class ClubModel extends AppModel
      */
     public function getFriendsGroupOpenDeskCount($friendsGroupID, $floor = 0)
     {
-        $openDeskCount = 0;
-        for ($i = 1; $i <= 6; $i++) {
-            $FGRoomInfo = RedisManager::getGameRedis()->get(GameRedisConfig::String_FGRoomInfo . '|' . $friendsGroupID . ',' . $floor . ',' . $i);
-            if ($FGRoomInfo !== false) {
-                $openDeskCount++;
-            }
-        }
-        return $openDeskCount;
+        $keysinfo = RedisManager::getGameRedis()->keys(GameRedisConfig::String_FGRoomInfo . '|' . $friendsGroupID . ',' . $floor . ',*');
+        return count($keysinfo);
     }
 
     /**

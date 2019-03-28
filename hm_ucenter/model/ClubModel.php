@@ -132,21 +132,17 @@ class ClubModel extends AppModel
     {
         //$t1 = microtime(true);
         $userToFriendsGroupSet = RedisManager::getRedis()->zRange(RedisConfig::SSet_userToFriendsGroupSet . '|' . $userID, 0, -1);
-        //$t1 = microtime(true);
-        //$t2 = microtime(true);
-        //echo '耗时'.round($t2-$t1,3).'秒<br>';
         $friendsGroupList = [];
         foreach ($userToFriendsGroupSet as $friendsGroupID) {
-            //$t1 = microtime(true);
             $friendsGroup = $this->getFriendsGroup($friendsGroupID, $userID);
-            //$t2 = microtime(true);
-            //echo '耗时'.round($t2-$t1,3).'秒<br>';
             if (!empty($friendsGroup)) {
                 //加入俱乐部到列表
                 $friendsGroupList[] = $friendsGroup;
             }
         }
-        //exit;
+        /*$t2 = microtime(true);
+        echo '耗时'.round($t2-$t1,3).'秒<br>';
+        exit;*/
         return $friendsGroupList;
     }
 

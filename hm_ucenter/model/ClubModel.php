@@ -168,7 +168,7 @@ class ClubModel extends AppModel
         FunctionHelper::arrayValueToInt($friendsGroup, $intKeyArray);
         if ($userID != 0) {
             //俱乐部前面9个ID 用于显示头像
-            //$friendsGroup['frontMember'] = $this->getFriendsGroupFrontMember($friendsGroupID);
+            $friendsGroup['frontMember'] = $this->getFriendsGroupFrontMember($friendsGroupID);
             //在线人数
             $friendsGroup['currOnlineCount'] = $this->getFriendsGroupOnlineCount($friendsGroupID);
             //已开牌桌数量

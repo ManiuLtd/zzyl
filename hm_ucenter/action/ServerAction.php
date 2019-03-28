@@ -39,8 +39,6 @@ class ServerAction extends AppAction
      */
     public function getLogonServer($params)
     {
-        var_dump($params);
-        var_dump( ServerModel::getInstance());exit;
         $logonServerList = ServerModel::getInstance()->getLogonServerList();
 
         if (empty($logonServerList)) {

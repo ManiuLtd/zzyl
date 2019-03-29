@@ -44,12 +44,13 @@ class CronController extends Controller
                 self::diGui($v1['userid']);
                 $subordinate_agent_id = $this->zsdata();
                 //$subordinate_agent_id = RedisManager::getRedis()->hGetAll(RedisConfig::Hash_lowerAgentSet . '|' . $v1['userid']);
-                var_dump($v1['userid']);
-                var_dump($v1['agentid']);
-                var_dump($subordinate_agent_id);
+                if($v1['userid'] == 12076){
+                    var_dump($v1['userid']);
+                    var_dump($v1['agentid']);
+                    var_dump($subordinate_agent_id);
+                }
                 //查询出所有下级代理的玩家以及自己的玩家
                 $forarr = array_merge($subordinate_agent_id, [$v1['agentid']]);
-                var_dump($forarr);
                 $memberidarr = [];
                 foreach ($forarr as $k9 => $v9){
                     $memberidarr = array_merge($memberidarr, $this->getmemberid($v9, $subordinate_agent_id));
@@ -58,8 +59,11 @@ class CronController extends Controller
                 //$memberidarr  自己以及自己所有下级代理的玩家
                 //我的团队成员id
                 $team_userid_arr = array_merge($subordinate_agent_id, $memberidarr);
-                var_dump($memberidarr);
-                var_dump($team_userid_arr);exit;
+                if($v1['userid'] == 12076){
+                    var_dump($forarr);
+                    var_dump($memberidarr);
+                    var_dump($team_userid_arr);exit;
+                }
                 //查询出该团队今天到现在的业绩
                 if(!empty($team_userid_arr)){
                     $inuserid = implode(',', $team_userid_arr);

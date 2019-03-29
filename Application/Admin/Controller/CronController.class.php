@@ -53,7 +53,7 @@ class CronController extends Controller
                 $forarr = array_merge($subordinate_agent_id, [$v1['agentid']]);
                 $memberidarr = [];
                 foreach ($forarr as $k9 => $v9){
-                    $memberidarr = array_merge($memberidarr, $this->getmemberid($v9, $subordinate_agent_id));
+                    $memberidarr = array_merge($memberidarr, $this->getmemberid($v9, $forarr));
                 }
                 //$subordinate_agent_id  所有的下级代理id
                 //$memberidarr  自己以及自己所有下级代理的玩家
@@ -221,7 +221,7 @@ class CronController extends Controller
                 $forarr = array_merge($subordinate_agent_id, [$v1['agentid']]);
                 $memberidarr = [];
                 foreach ($forarr as $k9 => $v9){
-                    $memberidarr = array_merge($memberidarr, $this->getmemberid($v9, $subordinate_agent_id));
+                    $memberidarr = array_merge($memberidarr, $this->getmemberid($v9, $forarr));
                 }
 
                 //$subordinate_agent_id  所有的下级代理id

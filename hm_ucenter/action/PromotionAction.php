@@ -253,14 +253,14 @@ class   PromotionAction extends AppAction
         $this->gettemcount($userID);
         $subordinate_agent_id = $this->zsdata();
         //查询出所有的会员ID
-        $memberidarr = $this->getmemberid($memberinfo['agentid'], $subordinate_agent_id);
+        //$memberidarr = $this->getmemberid($memberinfo['agentid'], $subordinate_agent_id);
         /*var_dump($subordinate_agent_id);
         var_dump($memberidarr);*/
         //查询出所有下级代理的玩家以及自己的玩家
         $forarr = array_merge($subordinate_agent_id, [$userID]);
         $memberidarr = [];
         foreach ($forarr as $k9 => $v9){
-            $memberidarr = array_merge($memberidarr, $this->getmemberid($v9, $subordinate_agent_id));
+            $memberidarr = array_merge($memberidarr, $this->getmemberid($v9, $forarr));
         }
         //$subordinate_agent_id  所有的下级代理id
         //$memberidarr  自己以及自己所有下级代理的玩家
@@ -277,7 +277,7 @@ class   PromotionAction extends AppAction
         $forarr = array_merge($addsubordinate_agent_id, [$memberinfo['agentid']]);
         $addmemberidarr = [];
         foreach ($forarr as $k9 => $v9){
-            $addmemberidarr = array_merge($addmemberidarr, $this->getmemberid($v9, $subordinate_agent_id, "bind_time > {$starttime} and bind_time < $endtime and "));
+            $addmemberidarr = array_merge($addmemberidarr, $this->getmemberid($v9, $forarr, "bind_time > {$starttime} and bind_time < $endtime and "));
         }
 
         //查询出今日活跃人数，只要今日完了游戏就算活跃人数
@@ -289,7 +289,7 @@ class   PromotionAction extends AppAction
         $returndata['parentid'] = !empty($memberinfo['superior_agentid']) ? $memberinfo['superior_agentid'] : '';//上级id
         $returndata['id'] = $userID;//用户id
         $returndata['team_num'] = count($sum_arr);//团队人数
-        $returndata['direct_player_num'] = count($this->getmemberid($userID, $subordinate_agent_id));//直属玩家人数
+        $returndata['direct_player_num'] = count($this->getmemberid($userID, $forarr));//直属玩家人数
         $returndata['add_today_num'] = count(array_merge($addsubordinate_agent_id, $addmemberidarr));//今日新增人数
         $returndata['active_number'] = count($active_number);//今日活跃人数
 
@@ -405,12 +405,12 @@ class   PromotionAction extends AppAction
                 $forarr = array_merge($subordinate_agent_id, [$v1['userid']]);
                 $memberidarr = [];
                 foreach ($forarr as $k9 => $v9){
-                    $memberidarr = array_merge($memberidarr, $this->getmemberid($v9, $subordinate_agent_id));
+                    $memberidarr = array_merge($memberidarr, $this->getmemberid($v9, $forarr));
                 }
                 //团队人数
                 $performanceInfo[$k1]['team_num'] = count(array_merge($subordinate_agent_id, $memberidarr));
                 //直属玩家人数
-                $performanceInfo[$k1]['direct_player_num'] = count($this->getmemberid($v1['userid'], $subordinate_agent_id));
+                $performanceInfo[$k1]['direct_player_num'] = count($this->getmemberid($v1['userid'], $forarr));
                 //ID
                 $performanceInfo[$k1]['userid'] = $v1['userid'];
                 //玩家昵称

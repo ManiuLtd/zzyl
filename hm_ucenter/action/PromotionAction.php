@@ -307,6 +307,7 @@ class   PromotionAction extends AppAction
             $where1 .= " and userID NOT IN ({$agentarr})";
         }
         $arrayKeyValue1 = ['userID'];
+        var_dump($where1);exit;
         $dataInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_agent_bind, $arrayKeyValue1, $where1);
         return array_column($dataInfo, 'userID');
     }

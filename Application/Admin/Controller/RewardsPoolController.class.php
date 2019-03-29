@@ -118,6 +118,7 @@ class RewardsPoolController extends AgentController
 
             $v['gamewinmoney'] = FunctionHelper::MoneyOutput((int)$v['gamewinmoney']);
             $v['allgamewinmoney'] = FunctionHelper::MoneyOutput((int)$v['allgamewinmoney']);
+            $v['sumgamewinmoney'] = $v['gamewinmoney'] + $v['allgamewinmoney'];
             $v['poolmoney'] = FunctionHelper::MoneyOutput((int)$v['poolmoney']);
             $v['percentagewinmoney'] = FunctionHelper::MoneyOutput((int)$v['percentagewinmoney']);
             $v['allpercentagewinmoney'] = FunctionHelper::MoneyOutput((int)$v['allpercentagewinmoney']);
@@ -176,6 +177,10 @@ class RewardsPoolController extends AgentController
             'allgamewinmoney' => [
                 'key' => 'allgamewinmoney',
                 'title' => '今日前累计游戏输赢钱',
+            ],
+            'sumgamewinmoney' => [
+                'key' => 'sumgamewinmoney',
+                'title' => '实时奖池',
             ],
             'percentagewinmoney' => [
                 'key' => 'percentagewinmoney',

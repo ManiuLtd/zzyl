@@ -290,6 +290,7 @@ class   PromotionAction extends AppAction
         $returndata['id'] = $userID;//用户id
         $returndata['team_num'] = count($sum_arr);//团队人数
         $returndata['direct_player_num'] = count($this->getmemberid($userID, $forarr));//直属玩家人数
+        exit;
         $returndata['add_today_num'] = count(array_merge($addsubordinate_agent_id, $addmemberidarr));//今日新增人数
         $returndata['active_number'] = count($active_number);//今日活跃人数
 
@@ -307,7 +308,7 @@ class   PromotionAction extends AppAction
             $where1 .= " and userID NOT IN ({$agentarr})";
         }
         $arrayKeyValue1 = ['userID'];
-        var_dump($where1);exit;
+        var_dump($where1);
         $dataInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_agent_bind, $arrayKeyValue1, $where1);
         return array_column($dataInfo, 'userID');
     }

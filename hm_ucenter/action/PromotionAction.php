@@ -257,10 +257,10 @@ class   PromotionAction extends AppAction
         /*var_dump($subordinate_agent_id);
         var_dump($memberidarr);*/
         //查询出所有下级代理的玩家以及自己的玩家
-        $forarr = array_merge($subordinate_agent_id, [$userID]);
+        $forarrnew = array_merge($subordinate_agent_id, [$userID]);
         $memberidarr = [];
-        foreach ($forarr as $k9 => $v9){
-            $memberidarr = array_merge($memberidarr, $this->getmemberid($v9, $forarr));
+        foreach ($forarrnew as $k9 => $v9){
+            $memberidarr = array_merge($memberidarr, $this->getmemberid($v9, $forarrnew));
         }
         //$subordinate_agent_id  所有的下级代理id
         //$memberidarr  自己以及自己所有下级代理的玩家
@@ -289,8 +289,7 @@ class   PromotionAction extends AppAction
         $returndata['parentid'] = !empty($memberinfo['superior_agentid']) ? $memberinfo['superior_agentid'] : '';//上级id
         $returndata['id'] = $userID;//用户id
         $returndata['team_num'] = count($sum_arr);//团队人数
-        $returndata['direct_player_num'] = count($this->getmemberid($userID, $forarr));//直属玩家人数
-        exit;
+        $returndata['direct_player_num'] = count($this->getmemberid($userID, $forarrnew));//直属玩家人数
         $returndata['add_today_num'] = count(array_merge($addsubordinate_agent_id, $addmemberidarr));//今日新增人数
         $returndata['active_number'] = count($active_number);//今日活跃人数
 
@@ -308,7 +307,6 @@ class   PromotionAction extends AppAction
             $where1 .= " and userID NOT IN ({$agentarr})";
         }
         $arrayKeyValue1 = ['userID'];
-        var_dump($where1);
         $dataInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_agent_bind, $arrayKeyValue1, $where1);
         return array_column($dataInfo, 'userID');
     }

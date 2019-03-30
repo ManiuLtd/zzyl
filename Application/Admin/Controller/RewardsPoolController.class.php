@@ -182,6 +182,10 @@ class RewardsPoolController extends AgentController
                 'key' => 'sumgamewinmoney',
                 'title' => '实时奖池',
             ],
+            'platformbankmoney' => [
+                'key' => 'platformbankmoney',
+                'title' => '平台银行储蓄',
+            ],
             'percentagewinmoney' => [
                 'key' => 'percentagewinmoney',
                 'title' => '今日累计抽水',
@@ -189,6 +193,11 @@ class RewardsPoolController extends AgentController
             'allpercentagewinmoney' => [
                 'key' => 'allpercentagewinmoney',
                 'title' => '今日前累计抽水',
+            ],
+            'recoverypoint' => [
+                'key' => 'recoverypoint',
+                'title' => '平台回收金币的结点',
+                'type' => ['type' => 'input', 'name' => 'recoverypoint', 'attribution' => 'style="width:80px;"']
             ],
             'platformctrlpercent' => [
                 'key' => 'platformctrlpercent',
@@ -312,6 +321,7 @@ class RewardsPoolController extends AgentController
                 'realPeopleFailPercent' => (int)I('realpeoplefailpercent'),
                 'minPondMoney' => (int)I('minPondMoney') *100,
                 'maxPondMoney' => (int)I('maxPondMoney') *100,
+                'recoveryPoint' => (int)I('recoverypoint'),
                 'updateTime' => time(),
             ]);
             $res = M()->table(MysqlConfig::Table_roombaseinfo)->where(['roomID' => $roomID])->save(['is_Recommend' => $isRecommend, 'is_hide' => $is_hide, 'updateTime' => time()]);

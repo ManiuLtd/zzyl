@@ -129,6 +129,8 @@ class RewardsPoolController extends AgentController
             $v['realpeoplewinpercent'] = (int)$v['realpeoplewinpercent'];
             $v['minpondmoney'] = (int)$v['minpondmoney'] /100;
             $v['maxpondmoney'] = (int)$v['maxpondmoney'] /100;
+            $v['platformbankmoney'] = FunctionHelper::MoneyOutput((int)$v['platformbankmoney']);
+            $v['recoverypoint'] = FunctionHelper::MoneyOutput((int)$v['recoverypoint']);
 //            var_export($v);
         }
 //        var_dump($listCommission);
@@ -321,7 +323,7 @@ class RewardsPoolController extends AgentController
                 'realPeopleFailPercent' => (int)I('realpeoplefailpercent'),
                 'minPondMoney' => (int)I('minPondMoney') *100,
                 'maxPondMoney' => (int)I('maxPondMoney') *100,
-                'recoveryPoint' => (int)I('recoverypoint'),
+                'recoveryPoint' => (int)I('recoverypoint') * 100,
                 'updateTime' => time(),
             ]);
             $res = M()->table(MysqlConfig::Table_roombaseinfo)->where(['roomID' => $roomID])->save(['is_Recommend' => $isRecommend, 'is_hide' => $is_hide, 'updateTime' => time()]);

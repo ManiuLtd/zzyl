@@ -102,9 +102,11 @@ class EmailModel extends AppModel
             'mailType' => $mailType, // 奖励类型
             'goodsList' => json_encode($goodsList), //邮件奖励
         );
+        var_dump($emailDetailInfo);
         // 增加邮件信息 emailDetailInfo
         RedisManager::getRedis()->hMset(RedisConfig::Hash_emailDetailInfo . '|' . $emailID, $emailDetailInfo);
         $result = $this->createEmailToDB($emailDetailInfo);
+        var_dump($result);exit;
         if (empty($result)) {
             RedisManager::getRedis()->del(RedisConfig::Hash_emailDetailInfo . '|' . $emailID);
             return [];

@@ -86,6 +86,7 @@ class UpdateAction extends AppAction
      */
     public function gameVersion($params)
     {
+        LogHelper::printLog('TEST', '版本信息请求参数'.json_encode($params));
         $gameID = (int)$params['gameID'];
         $returnType = (int)$params['returnType'];
         $packet_type = EnumConfig::E_VersionPacketType['GAME'];

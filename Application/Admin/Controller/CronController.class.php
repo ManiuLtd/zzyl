@@ -190,7 +190,7 @@ class CronController extends Controller
         $todayDate = date('Y-m-d', $this->newtime); // 前一天年月日
         $startTime = strtotime(date('Y-m-d', $this->newtime));
         $endTime = strtotime(date('Y-m-d', $this->newtime)) + 86399;
-        \Think\Log::write('当前时间错'.time());
+        /*\Think\Log::write('当前时间错'.time());
         \Think\Log::write('前一天的时间错'.$this->newtime);
         \Think\Log::write('前一天年月日'.$todayDate);
         \Think\Log::write('前一天凌晨'.$startTime);
@@ -202,7 +202,7 @@ class CronController extends Controller
         if($todayDate == $jintianymd || $todayDate != $ztymd){
             \Think\Log::write('年月日不对，禁止执行脚本');
             echo 333;exit;
-        }
+        }*/
 
 
         $Model = new \Think\Model();
@@ -210,7 +210,7 @@ class CronController extends Controller
         try{
             $adddata = [];
             //查询出所有的代理
-            $agentMemberInfo = M()->table('web_agent_member')->field('username,userid,agentid')->select();
+            $agentMemberInfo = M()->table('web_agent_member')->field('username,userid,agentid,new_agent_leval_money')->select();
             foreach ($agentMemberInfo as $k1 => $v1){
                 //查询出每个代理的所有下级代理ID
                 self::diGui($v1['userid']);
@@ -253,6 +253,7 @@ class CronController extends Controller
                 //组装插入的数据
                 $adddata[$k1]['userid'] = $v1['userid'];
                 $adddata[$k1]['name'] = $v1['username'];
+                $adddata[$k1]['new_agent_leval_money'] = $v1['new_agent_leval_money'];
                 if(empty($todayTeamAmount[0]['summoney'] + $todayPersonalAmount[0]['summoney'])){
                     $adddata[$k1]['day_performance'] = 0;
                 }else{
@@ -317,11 +318,11 @@ class CronController extends Controller
                 foreach ($agent_id_arr as $key2 => $val2){
                     foreach ($adddata as $key3 => $val3){
                         if($val2['userid'] === $val3['userid']){
-                            $subordinaterewardMoney += $this->getJlmongey($val3['day_performance']/100, $ratioInfo);
-                            /*if($val1['userid'] == 122021){
-                                var_dump($agent_id_arr);
+                            $subordinaterewardMoney += $this->getJlmongey($val3['day_performance']/100, $ratioInfo, $val3['new_agent_leval_money']);
+                            /*if($val1['userid'] == 122002){
+                                var_dump($val3['userid']);
                                 var_dump($val3['day_performance']);
-                                var_dump($subordinaterewardMoney);exit;
+                                var_dump($subordinaterewardMoney);
                             }*/
                         }
                     }
@@ -331,10 +332,10 @@ class CronController extends Controller
                     $adddata[$key1]['reward'] = $myRewardMoney - $subordinaterewardMoney;
                 }*/
                 //计算自己奖励的金额的总和
-                $myRewardMoney = $this->getJlmongey($val1['day_performance']/100, $ratioInfo);
+                $myRewardMoney = $this->getJlmongey($val1['day_performance']/100, $ratioInfo, $val1['new_agent_leval_money']);
                 $adddata[$key1]['reward'] = ($myRewardMoney - $subordinaterewardMoney)*100;
             }else{   //如果没有下级代理根据自己的总业绩计算奖励
-                $adddata[$key1]['reward'] = ($this->getJlmongey($val1['day_performance']/100, $ratioInfo))*100;
+                $adddata[$key1]['reward'] = ($this->getJlmongey($val1['day_performance']/100, $ratioInfo, $val1['new_agent_leval_money']))*100;
             }
             //更改该用户的可提现金额
             if(!empty($adddata[$key1]['reward'])){
@@ -342,8 +343,10 @@ class CronController extends Controller
                 //记录账单
                 $this->addApplyPos($adddata[$key1]['userid'], $adddata[$key1]['reward']);
             }
+            unset($adddata[$key1]['new_agent_leval_money']);
 
         }
+
         return $adddata;
     }
 
@@ -377,13 +380,28 @@ class CronController extends Controller
      * 根据每个人的业绩计算奖励
      * $param int $performance 用户的业绩
      * $param arr $ratioInfo   抽层比例信息
+     * $param int $new_agent_leval_money 保底金额
      * */
-    public function getJlmongey($performance, $ratioInfo)
+    public function getJlmongey($performance, $ratioInfo, $new_agent_leval_money)
     {
+        if($performance < 100) return 0;
         foreach ($ratioInfo as $key => $value){
             if($performance >= $value['agent_start_value'] && $performance < $value['agent_end_value']){
-                return floor($performance/10000) * $value['pump_money'];
+                //return floor($performance/10000) * $value['pump_money'];
+                $pump_money66 = $value['pump_money'];
             }
+
+        }
+
+        if($pump_money66 >= $new_agent_leval_money){
+            // return floor($performance/10000) * $pump_money66;
+            //return sprintf("%.2f", ($performance/10000) * $pump_money66);
+            //这样操作是为了保留两位小数，不进行四舍五入
+            return floor(($performance/100) * $pump_money66)/100;
+        }else{
+            // return floor($performance/10000) * $new_agent_leval_money;
+            return floor(($performance/100) * $new_agent_leval_money)/100;
+            //return sprintf("%.2f", ($performance/10000) * $new_agent_leval_money);
         }
 
     }

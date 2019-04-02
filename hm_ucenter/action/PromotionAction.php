@@ -463,20 +463,26 @@ class   PromotionAction extends AppAction
 
         //计算预估收益
         //算出我的一级代理
-        $dataInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_agent_member, ['userid'], "superior_agentid = {$userID}");
+        $dataInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_agent_member, ['userid','new_agent_leval_money'], "superior_agentid = {$userID}");
         $inUserID = implode(',', array_column($dataInfo, 'userid'));
         //var_dump($inUserID);exit;
         $create_date = date('Y-m-d', time());
         $where4 = "create_date = '{$create_date}' and userid IN ({$inUserID})";
-        $arrayKeyValue4 = ['day_performance'];
+        $arrayKeyValue4 = ['day_performance','userid'];
         $dayperformanceInfoArr = DBManager::getMysql()->selectAll(MysqlConfig::Table_statistics_day_performance, $arrayKeyValue4, $where4);
         //var_dump($dayperformanceInfoArr);
         //计算本人今天到现在的收益
-        $myTimeBenefit = $this->getJlmongey($returnInfo['day_performance']/100);
+        $myTimeBenefit = $this->getJlmongey($returnInfo['day_performance']/100, $this->getUserlevel($userID));
         //计算下级每个人的收益，相加
         $sumBenefit = '';
         foreach ($dayperformanceInfoArr as $k => $v){
-            $sumBenefit += $this->getJlmongey($v['day_performance']/100);
+            foreach ($dataInfo as $key1 => $val1){
+                if($v['userid'] == $val1['userid']){
+                    $new_agent_leval8 = $val1['new_agent_leval_money'];
+                    break;
+                }
+            }
+            $sumBenefit += $this->getJlmongey($v['day_performance']/100, $new_agent_leval8);
         }
 
         $returnInfo['estimated_revenue'] = $myTimeBenefit - $sumBenefit;
@@ -497,20 +503,49 @@ class   PromotionAction extends AppAction
     /*
      * 根据每个人的业绩计算奖励
      * $param int $performance 用户的业绩
+     * $param int new_agent_leval_money 保底金额
      * return  返回该用户的收益
      * */
-    public function getJlmongey($performance)
+    public function getJlmongey($performance, $new_agent_leval_money)
     {
+        if($performance < 100) return 0;
         //查询出抽层比例信息
         $arrayKeyValue4 = ['agent_start_value','agent_end_value','pump_money'];
         $ratioInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_pumping_ratio, $arrayKeyValue4);
         foreach ($ratioInfo as $key => $value){
             if($performance >= $value['agent_start_value'] && $performance < $value['agent_end_value']){
-                return floor($performance/10000) * $value['pump_money'];
+                //return floor($performance/10000) * $value['pump_money'];
+                $pump_money66 = $value['pump_money'];
             }
         }
 
+        if($pump_money66 >= $new_agent_leval_money){
+            return floor(($performance/100) * $pump_money66)/100;
+            //return sprintf("%.2f", ($performance/10000) * $pump_money66);
+        }else{
+            return floor(($performance/100) * $new_agent_leval_money)/100;
+            //return sprintf("%.2f", ($performance/10000) * $new_agent_leval_money);
+        }
+
+
     }
+
+    /*
+     * 根据用户id查询出该用户的代理等级
+     * $param int $userid 用户id
+     * return  返回该用户的代理等级
+     * */
+    protected function getUserlevel($userid)
+    {
+        //查询出抽层比例信息
+
+        $where3 = "userid = {$userid}";
+        $arrayKeyValue3 = ['new_agent_leval_money'];
+        $returnInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_member, $arrayKeyValue3, $where3);
+        return $returnInfo['new_agent_leval_money'];
+
+    }
+
 
     /*
      * 获取我的奖励信息

@@ -173,6 +173,7 @@ final class DBHelper
 //        } else {
         //use pdo
         $strSql = "INSERT INTO `$tableName` (`" . implode('`,`', array_keys($arrayDataValue)) . "`) VALUES (" . implode(",", array_fill(0, count($arrayDataValue), '?')) . ")";
+        var_dump($strSql);
         $result = $this->pdo->prepare($strSql)->execute(array_values($arrayDataValue));
 //        }
         $this->getPDOError();

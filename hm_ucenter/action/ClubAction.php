@@ -1008,7 +1008,8 @@ class ClubAction extends AppAction
         //是否能回收
         $tarFireCoin = ClubModel::getInstance()->getFriendsGroupMemberCarryFireCoin($friendsGroupID, $tarUserID);
         if ($tarFireCoin + $changeFireCoin < 0) {
-            AppModel::returnJson(ErrorConfig::ERROR_CODE, "回收" . EnumConfig::E_ResourceTypeNames[EnumConfig::E_ResourceType['FIRECOIN']] . "不能超过{$tarFireCoin}");
+            $usermaney = $tarFireCoin/100;
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, "回收" . EnumConfig::E_ResourceTypeNames[EnumConfig::E_ResourceType['FIRECOIN']] . "不能超过{$usermaney}");
         }
 
         $result = ClubModel::getInstance()->changeUserResource($tarUserID, EnumConfig::E_ResourceType['FIRECOIN'], $changeFireCoin, EnumConfig::E_ResourceChangeReason['CLUB_RECHARGE'], 0, $friendsGroupID);

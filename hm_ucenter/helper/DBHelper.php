@@ -151,7 +151,7 @@ final class DBHelper
         }
         $this->log($strSql);
         $result = $this->pdo->exec($strSql);
-        LogHelper::printLog('PROMOTION', '保底sql'.json_encode($result));
+        LogHelper::printLog('PROMOTION', '保底sql'.$strSql);
         $this->getPDOError();
         return $result;
     }

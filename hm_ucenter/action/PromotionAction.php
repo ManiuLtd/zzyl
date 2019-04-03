@@ -402,6 +402,8 @@ class   PromotionAction extends AppAction
         //var_dump($bindInfo);
         LogHelper::printLog(self::LOG_TAG_NAME, $where2.'参数111###'.json_encode($bindInfo));
         $list_id_arr = array_merge($dataInfo, $bindInfo);*/
+        //查询出当前用户的保底金额
+        $user_new_agent_leval_money = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_member, ['new_agent_leval_money'], "userid = {$userID}");
         $performanceInfo = [];
         //var_dump($list_id_arr);exit;
         if(!empty($dataInfo)){
@@ -433,6 +435,8 @@ class   PromotionAction extends AppAction
                 $performanceInfo[$k1]['name'] = $v1['name'];
                 //保底金额
                 $performanceInfo[$k1]['new_agent_leval_money'] = $v1['new_agent_leval_money'];
+                //当前用户的保底金额
+                $performanceInfo[$k1]['user_new_agent_leval_money'] = $user_new_agent_leval_money['new_agent_leval_money'];
 
                 if(empty($perInfo)){
                     $performanceInfo[$k1]['day_team_performance'] = 0;
@@ -465,15 +469,19 @@ class   PromotionAction extends AppAction
     {
         LogHelper::printLog(self::LOG_TAG_NAME, '保底金额参数'.json_encode($param));
         LogHelper::printLog(self::LOG_TAG_NAME, '保底金额参数'.json_encode($_SERVER));
-        $userID = (int)$param['userID'];
-        $new_agent_leval_money = $param['new_agent_leval_money'];
-        if (empty($userID) || empty($new_agent_leval_money)) {
+        $userID = (int)$param['userID']; //当前登录用户id
+        $gameplayerid = (int)$param['gameplayerid']; //当前被编辑保底金额玩家id
+        $new_agent_leval_money = $param['new_agent_leval_money']; //保底金额
+        if (empty($userID) || empty($new_agent_leval_money) || empty($gameplayerid)) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
         }
 
-        if($new_agent_leval_money < 0) AppModel::returnJson(ErrorConfig::ERROR_CODE, '保底金额不能小于0!');
+        if($new_agent_leval_money < 60) AppModel::returnJson(ErrorConfig::ERROR_CODE, '玩家保底金额不能小于60!');
 
-        $res = DBManager::getMysql()->update(MysqlConfig::Table_web_agent_member, ['new_agent_leval_money' => $new_agent_leval_money], "userid = {$userID}");
+        //查询出当前用户的保底金额
+        $user_new_agent_leval_money = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_member, ['new_agent_leval_money'], "userid = {$userID}");
+        if($new_agent_leval_money >= $user_new_agent_leval_money['new_agent_leval_money']) AppModel::returnJson(ErrorConfig::ERROR_CODE, '玩家保底金额不能高于本人保底金额!');
+        $res = DBManager::getMysql()->update(MysqlConfig::Table_web_agent_member, ['new_agent_leval_money' => $new_agent_leval_money], "userid = {$gameplayerid}");
 
         if(empty($res)) AppModel::returnJson(ErrorConfig::ERROR_CODE, '保底修改失败!');
 

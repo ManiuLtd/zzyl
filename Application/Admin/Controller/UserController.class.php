@@ -2289,4 +2289,111 @@ class UserController extends AdminController
         }
     }
 
+    //玩家资金列表
+    public function player_Funds_List()
+    {
+        $type = I('type');
+        $search = I('search');
+        $is_super = I('is_super', false);
+        $is_online = I('is_online', false);
+
+        //只查玩家
+        $where['U.isVirtual'] = EnumConfig::E_GameUserType['PLAYER'];
+
+        if ($type && $search) {
+            switch ($type) {
+                case 1:
+                    $where['U.userID'] = $search;
+                    break;
+                case 2:
+                    $where['U.name'] = ['like', "%{$search}%"];
+                    break;
+            }
+        } else {
+            $search = '';
+        }
+
+        // 查超端用户
+        if ($is_super) {
+            //权限最大值 或运算
+            $status_length = 0;
+            foreach (EnumConfig::E_UserStatusType as $s_key => $s_value) {
+                $status_length |= $s_value;
+            }
+            //超端权限可能值数组
+            $super_status_array = [];
+            for ($status = 0; $status <= $status_length; $status++) {
+                //与运算
+                if (($status & EnumConfig::E_UserStatusType['SUPER']) == EnumConfig::E_UserStatusType['SUPER']) {
+                    $super_status_array[] = $status;
+                }
+            }
+            $where['U.status'] = ['in', $super_status_array];
+            unset($where['U.registerTime']);
+        }
+
+        //查在线玩家
+        if ($is_online) {
+            $where['U.IsOnline'] = EnumConfig::E_UserOnlineStatus['ON'];
+            unset($where['U.registerTime']);
+        }
+
+        $count = M()->table('userInfo as U')->where($where)->count();
+        $page = new \Think\Page($count, 20);
+        $dbUserList = M()
+            ->table('userInfo as U')
+            ->where($where)
+            ->field('U.userID, U.name, U.money, U.lastCrossDayTime, U.registerTime, U.IsOnline')
+            ->limit($page->firstRow . ',' . $page->listRows)
+            ->select();
+        //var_dump($dbUserList);exit;
+
+        foreach ($dbUserList as $key => &$dbUser) {
+            //后台充值总金额
+            $adminRechargeMoney = M()->table('web_admin_action')->where(['actionType' => 1, 'userID' => $dbUser['userid']])->sum('resourceNum');
+            //客户端充值总金额
+            $clientRechargeMoney = M()->table('web_pay_orders')->where(['status' => 1, 'userID' => $dbUser['userid']])->sum('buyNum');
+            //总充值
+            /*if($dbUser['userid'] == 122004){
+                var_dump($adminRechargeMoney);
+                var_dump($clientRechargeMoney);exit;
+            }*/
+            $dbUser['sumRechargeMoney'] = $adminRechargeMoney + $clientRechargeMoney/100;
+
+            //后台提现
+            $adminCash = M()->table('web_admin_action')->where(['actionType' => 2, 'userID' => $dbUser['userid']])->field('sum(resourceNum) as sumresourceNum, count(*) as number')->find();
+            //客户端提现即兑换
+            $clientCash = M()->table('user_cash_application')->where(['cash_status' => 2, 'userID' => $dbUser['userid']])->field('sum(cash_money) as sumcash_money, count(*) as number')->find();
+            //总提现
+            /*if($dbUser['userid'] == 122004){
+                var_dump($adminCash);
+                var_dump($clientCash);exit;
+            }*/
+            $dbUser['sumCash'] = $adminCash['sumresourcenum'] + $clientCash['sumcash_money'];
+
+            //提现次数
+            $dbUser['cashCount'] = $adminCash['number'] + $clientCash['number'];
+
+            if($dbUser['isonline'] == 1){
+                $dbUser['IsOnline'] = '在线';
+            }else{
+                $dbUser['IsOnline'] = '不在线';
+            }
+
+        }
+
+        //金币倍数处理
+        FunctionHelper::moneyInArrayOutput($dbUserList, GeneralConfig::USERINFO_MONEY);
+        //var_dump($dbUserList);exit;
+
+        $this->assign('_page', $page->show());
+        $this->assign('_data', $dbUserList);
+        $this->assign('search', $search);
+        $this->assign('type', $type);
+        $this->display();
+    }
+
+
+
+
 }

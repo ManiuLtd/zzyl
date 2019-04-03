@@ -1,0 +1,107 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        .t1 {
+            margin-left: -17px;
+        }
+
+        .t2 {
+            margin-left: -17px;
+        }
+
+        @media (max-width: 768px) {
+            .top-menu {
+                margin-left: 0px;
+            }
+
+            .t6 {
+                margin-top: 5px;
+            }
+        }
+    </style>
+    <?php $is_show_jewels = C('IS_SHOW_JEWELS');?>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                                <div class="col-sm-5 m-b-xs" style="width: 150px;">
+                                    <select class="input-sm form-control input-s-sm inline" name="type">
+                                        <option value="0">请选择</option>
+                                        <option value="1">
+                                        <if condition="$type eq 1"> selected</if>
+                                        >用户ID</option>
+                                        <option value="2">
+                                        <if condition="$type eq 2"> selected</if>
+                                        >用户昵称</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 top-menu t1" style="width: 200px;">
+                                    <div class="input-group">
+                                        <input type="text" placeholder="请输入关键词" class="input-sm form-control"
+                                               name="search" value="{$search}"> <span class="input-group-btn"/>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width: 100px;">
+                                    <div class="input-group">
+                                        <button type="submit" class="btn btn-sm btn-primary">搜全部玩家</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width:100px;">
+                                    <div class="input-group">
+                                        <button type="submit" name="is_super" value=true
+                                                class="btn btn-sm btn-info"> 搜超端玩家
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width:100px;">
+                                    <div class="input-group">
+                                        <button type="submit" name="is_online" value=true
+                                                class="btn btn-sm btn-info"> 搜在线玩家
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>用户ID</th>
+                                    <th>用户昵称</th>
+                                    <th>总充值金额</th>
+                                    <th>总提现金额</th>
+                                    <th>提现次数</th>
+                                    <th>金币</th>
+                                    <th>注册时间</th>
+                                    <th>上次登录时间</th>
+                                    <th>游戏状态</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>{$_data.userid}</td>
+                                        <td>{$_data.name}</td>
+                                        <td>{$_data.sumRechargeMoney|default=0}</td>
+                                        <td>{$_data.sumCash|default=0}</td>
+                                        <td>{$_data.cashCount|default=0}</td>
+                                        <td>{$_data.money|default=0}</td>
+                                        <td>{$_data.registertime|date="Y-m-d H:i:s",###}</td>
+                                        <td>{$_data.lastCrossDayTime|date="Y-m-d H:i:s",###}</td>
+                                        <td>{$_data.IsOnline}</td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--<div class="page">{$_page}</div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

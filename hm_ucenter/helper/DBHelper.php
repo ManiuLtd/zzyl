@@ -151,6 +151,7 @@ final class DBHelper
         }
         $this->log($strSql);
         $result = $this->pdo->exec($strSql);
+        var_dump($strSql);exit;
         $this->getPDOError();
         return $result;
     }

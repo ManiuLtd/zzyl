@@ -186,7 +186,7 @@ class CronController extends Controller
     public function statisticsDailyRewards()
     {
         \Think\Log::write('每天凌晨三十分统计客户每天的奖励');
-        $this->newtime = (time() - 36000);  //前一天的时间错
+        $this->newtime = (time() - 72000);  //前一天的时间错
         $todayDate = date('Y-m-d', $this->newtime); // 前一天年月日
         $startTime = strtotime(date('Y-m-d', $this->newtime));
         $endTime = strtotime(date('Y-m-d', $this->newtime)) + 86399;
@@ -333,15 +333,9 @@ class CronController extends Controller
                 }*/
                 //计算自己奖励的金额的总和
                 $myRewardMoney = $this->getJlmongey($val1['day_performance']/100, $ratioInfo, $val1['new_agent_leval_money']);
-                if($val1['userid'] == 122001){
-                    var_dump($myRewardMoney);
-                    var_dump($subordinaterewardMoney);
-                    var_dump($myRewardMoney - $subordinaterewardMoney);
-                    exit;
-                }
-                $adddata[$key1]['reward'] = ($myRewardMoney - $subordinaterewardMoney)*100;
+                $adddata[$key1]['reward'] = floor(($myRewardMoney - $subordinaterewardMoney)*100);
             }else{   //如果没有下级代理根据自己的总业绩计算奖励
-                $adddata[$key1]['reward'] = ($this->getJlmongey($val1['day_performance']/100, $ratioInfo, $val1['new_agent_leval_money']))*100;
+                $adddata[$key1]['reward'] = floor(($this->getJlmongey($val1['day_performance']/100, $ratioInfo, $val1['new_agent_leval_money']))*100);
             }
             //更改该用户的可提现金额
             if(!empty($adddata[$key1]['reward'])){
@@ -403,10 +397,10 @@ class CronController extends Controller
             // return floor($performance/10000) * $pump_money66;
             //return sprintf("%.2f", ($performance/10000) * $pump_money66);
             //这样操作是为了保留两位小数，不进行四舍五入
-            return floor(($performance/100) * $pump_money66)/100;
+            return ($performance/10000) * $pump_money66;
         }else{
             // return floor($performance/10000) * $new_agent_leval_money;
-            return floor(($performance/100) * $new_agent_leval_money)/100;
+            return ($performance/100) * $new_agent_leval_money;
             //return sprintf("%.2f", ($performance/10000) * $new_agent_leval_money);
         }
 

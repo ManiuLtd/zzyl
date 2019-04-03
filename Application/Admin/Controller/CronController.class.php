@@ -186,11 +186,11 @@ class CronController extends Controller
     public function statisticsDailyRewards()
     {
         \Think\Log::write('每天凌晨三十分统计客户每天的奖励');
-        $this->newtime = (time() - 36000);  //前一天的时间错
+        $this->newtime = (time() - 3600);  //前一天的时间错
         $todayDate = date('Y-m-d', $this->newtime); // 前一天年月日
         $startTime = strtotime(date('Y-m-d', $this->newtime));
         $endTime = strtotime(date('Y-m-d', $this->newtime)) + 86399;
-        /*\Think\Log::write('当前时间错'.time());
+        \Think\Log::write('当前时间错'.time());
         \Think\Log::write('前一天的时间错'.$this->newtime);
         \Think\Log::write('前一天年月日'.$todayDate);
         \Think\Log::write('前一天凌晨'.$startTime);
@@ -202,7 +202,7 @@ class CronController extends Controller
         if($todayDate == $jintianymd || $todayDate != $ztymd){
             \Think\Log::write('年月日不对，禁止执行脚本');
             echo 333;exit;
-        }*/
+        }
 
 
         $Model = new \Think\Model();

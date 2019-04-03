@@ -338,7 +338,7 @@ class CronController extends Controller
                     var_dump($subordinaterewardMoney);
                     var_dump($myRewardMoney - $subordinaterewardMoney);
                     $int = ($myRewardMoney - $subordinaterewardMoney)*100;
-                    var_dump(intval($int));
+                    var_dump(int($int));
                     var_dump(floor($int));
                     exit;
                 }

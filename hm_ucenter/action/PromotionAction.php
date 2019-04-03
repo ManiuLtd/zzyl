@@ -352,7 +352,7 @@ class   PromotionAction extends AppAction
     }
 
     /**
-     * 获取我的玩家信息(直属下级和玩家)
+     * 获取我的玩家信息(直属下级)
      * @param $param
      */
     public function showPlayerInfo($param)
@@ -368,12 +368,28 @@ class   PromotionAction extends AppAction
         }
 
         //查询出直属下级用户
-        $arrayKeyValue1 = ['userid','username'];
+        $arrayKeyValue1 = ['userid','new_agent_leval_money'];
         $where1 = empty($searchid) ? "superior_agentid = {$userID} LIMIT {$startnum},{$pagesize}" : "superior_agentid = {$userID} and userid = {$searchid} LIMIT {$startnum},{$pagesize}";
         $dataInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_agent_member, $arrayKeyValue1, $where1);
         $map = empty($searchid) ? "superior_agentid = {$userID}" : "superior_agentid = {$userID} and userid = {$searchid}";
         $count = DBManager::getMysql()->getCount(MysqlConfig::Table_web_agent_member, 'userid', $map);
         LogHelper::printLog(self::LOG_TAG_NAME, $where1.'参数111###'.json_encode($dataInfo));
+
+        //从用户表里面查询出用户的你昵称
+        if(!empty($dataInfo)){
+            $notUserID = implode(',', array_column($dataInfo, 'userid'));
+            $where2 = "userID IN ({$notUserID})";
+            $arrayKeyValue2 = ['name','userid'];
+            $nameInfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_userinfo, $arrayKeyValue2, $where2);
+            foreach ($dataInfo as $key1 => $val1){
+                foreach ($nameInfo as $key2 => $val2){
+                    if($val1['userid'] == $val2['userid']){
+                        $dataInfo[$key1]['name'] = $val2['name'];
+                    }
+                }
+            }
+        }
+
 
         //查询出我的玩家用户
         /*$where2 = "agentID = {$userID}";
@@ -414,7 +430,9 @@ class   PromotionAction extends AppAction
                 //ID
                 $performanceInfo[$k1]['userid'] = $v1['userid'];
                 //玩家昵称
-                $performanceInfo[$k1]['name'] = $v1['username'];
+                $performanceInfo[$k1]['name'] = $v1['name'];
+                //保底金额
+                $performanceInfo[$k1]['new_agent_leval_money'] = $v1['new_agent_leval_money'];
 
                 if(empty($perInfo)){
                     $performanceInfo[$k1]['day_team_performance'] = 0;
@@ -437,6 +455,29 @@ class   PromotionAction extends AppAction
         $returndata['page'] = $page;
 
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $returndata);
+
+    }
+
+    /*
+     * 修改我的下级代理的保底金额
+     * */
+    public function updateBottomGuard($param)
+    {
+        LogHelper::printLog(self::LOG_TAG_NAME, '保底金额参数'.json_encode($param));
+        LogHelper::printLog(self::LOG_TAG_NAME, '保底金额参数'.json_encode($_SERVER));
+        $userID = (int)$param['userID'];
+        $new_agent_leval_money = $param['new_agent_leval_money'];
+        if (empty($userID) || empty($new_agent_leval_money)) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
+        }
+
+        if($new_agent_leval_money < 0) AppModel::returnJson(ErrorConfig::ERROR_CODE, '保底金额不能小于0!');
+
+        $res = DBManager::getMysql()->update(MysqlConfig::Table_web_agent_member, ['new_agent_leval_money' => $new_agent_leval_money], "userid = {$userID}");
+
+        if(empty($res)) AppModel::returnJson(ErrorConfig::ERROR_CODE, '保底修改失败!');
+
+        AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT);
 
     }
 

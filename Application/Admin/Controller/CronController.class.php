@@ -341,9 +341,9 @@ class CronController extends Controller
                     var_dump(floor(($myRewardMoney - $subordinaterewardMoney)*100));
                     exit;
                 }
-                $adddata[$key1]['reward'] = floor(($myRewardMoney - $subordinaterewardMoney)*100);
+                $adddata[$key1]['reward'] = intval(($myRewardMoney - $subordinaterewardMoney)*100);
             }else{   //如果没有下级代理根据自己的总业绩计算奖励
-                $adddata[$key1]['reward'] = floor(($this->getJlmongey($val1['day_performance']/100, $ratioInfo, $val1['new_agent_leval_money']))*100);
+                $adddata[$key1]['reward'] = intval(($this->getJlmongey($val1['day_performance']/100, $ratioInfo, $val1['new_agent_leval_money']))*100);
             }
             //更改该用户的可提现金额
             if(!empty($adddata[$key1]['reward'])){

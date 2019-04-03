@@ -12,6 +12,8 @@ use model\ServerModel;
 class GameController extends AdminController
 {
     protected $tableName = MysqlConfig::Table_gamebaseinfo;
+    const ARR_PAGE = [1 => ['word' => '15条', 'val' => 15, ], 2 => ['word' => '50条', 'val' => 50, ],  3 => ['word' => '150条', 'val' => 150, ], ];
+
     //版本控制
     public function version()
     {
@@ -184,6 +186,130 @@ class GameController extends AdminController
             operation_record(UID, '上传游戏底包');
             $this->success('上传成功！');
         }
+    }
+
+    //子游戏列表
+    public function subgameList()
+    {
+        $page = I('p', 1);
+        $limit = I("limit", self::ARR_PAGE[1]['val']);
+        $searchType = I("searchType");
+        $search = trim(I("search"));
+
+        $arrSearchType = [
+            0 => [
+                'word' => '请选择',
+                'val' => 0,
+            ],
+            1 => [
+                'word' => 'roomID',
+                'val' => 1,
+            ],
+            2 => [
+                'word' => 'gameID',
+                'val' => 2,
+            ],
+        ];
+
+        $arrWhere = [];
+
+
+        if (isset($arrSearchType[$searchType])) {
+            switch ($arrSearchType[$searchType]['val']) {
+                case 1:
+                    $arrWhere['b.roomID']  = $search;
+                    break;
+                case 2:
+                    $arrWhere['b.gameID'] = $search;
+                    break;
+                default:
+                    break;
+            }
+        }
+        // $arrWhere['gamewinmoney']  = ['neq',0];
+
+        $res = $this->getList($arrWhere, $page, $limit);
+        $listCommission = $res['_data'];
+
+
+        $count = $res['_count'];
+        $pager = new \Think\Page($count, $limit);
+
+        //前端显示的字段
+        $show_list = [
+            'roomid' => [
+                'key' => 'roomid',
+                'title' => 'roomid',
+                'type' => ['type' => 'input', 'attribution' => 'style="width:100px;border:none;" readonly="readonly"', 'name' => 'roomID'],
+            ],
+            'name' => [
+                'key' => 'name',
+                'title' => '游戏名称',
+                // 'href' => U('User/user_info',array('userid'=>'gamewinmoney')),
+                // 'replace_href' => 'gamewinmoney',
+            ],
+            'is_hide' => [
+                'key' => 'is_hide',
+                'title' => '是否隐藏',
+                'type' => ['type' => 'option', 'name' => 'is_hide', 'options' => [['value' => '0', 'text' => '否'],['value' => 1, 'text' => '是']]],
+            ],
+            'option' => [
+                'key' => 'is_recommend',
+                'title' => '是否推荐',
+                'type' => ['type' => 'option', 'attribution' => 'style="width:100px;border:none;" readonly="readonly"',  'name' => 'is_Recommend', 'options' => [['value' => '0', 'text' => '否'],['value' => 1, 'text' => '是']]],
+            ],
+        ];
+        $this->assign([
+            'formRequest' => U('Game/rewardsPoolEdit'),
+            'show_list' => $show_list,
+            'show_data' => $listCommission,
+            '_page' => $pager->show(),
+            'searchType' => $searchType,
+            'arrSearchType' => $arrSearchType,
+            'search' => $search,
+            'limit' => $limit,
+            'page_select' => self::ARR_PAGE,
+        ]);
+//    	 var_export($listCommission);
+        $this->display();
+    }
+
+    public function rewardsPoolEdit() {
+        if ($_POST) {
+            $isRecommend = (int)I('is_Recommend');
+            $roomID = (int)I('roomID');
+            $is_hide = (int)I('is_hide');
+            $gameID = M()->query('select gameID from ' . MysqlConfig::Table_roombaseinfo . ' where roomID =' . $roomID . ' limit 1');
+            $resCount = M()->query('select count(*) as cnt, gameID from ' . MysqlConfig::Table_roombaseinfo . ' where is_Recommend = 1 and gameID =' . $gameID[0]['gameid']);
+            $res = M()->query('select gameID from ' . MysqlConfig::Table_roombaseinfo . ' where is_Recommend = 1 and roomID =' . $roomID);
+            if (EnumConfig::E_GameRecommend['NO'] == $isRecommend && $resCount[0]['cnt'] <= 1 && $res) {
+                $this->error('房间推荐数不能小于1');
+            }
+            M()->startTrans();
+            $res = M()->table(MysqlConfig::Table_roombaseinfo)->where(['roomID' => $roomID])->save(['is_Recommend' => $isRecommend, 'is_hide' => $is_hide, 'updateTime' => time()]);
+            if (empty($res)) {
+                M()->rollback();
+                $this->error('修改失败');
+            }
+            M()->commit();
+            $this->success('修改成功');
+        }
+    }
+
+    public function getList($where, $page = 1, $limit = 10){
+        $data = M()
+            ->table(MysqlConfig::Table_roombaseinfo)->alias('b')
+            ->where($where)
+            ->field('b.roomID,b.name,b.is_Recommend,b.is_hide')
+            ->page($page)
+            ->limit($limit)
+            ->order('b.roomID desc')
+            ->select();
+        $count = M()
+            ->table(MysqlConfig::Table_roombaseinfo)->alias('b')
+            ->where($where)
+            ->count();
+        return ['_data' => $data, '_count' => $count];
     }
 
     //游戏列表

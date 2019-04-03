@@ -1,0 +1,179 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        .t1 {
+            margin-left: -17px;
+        }
+
+        .t2 {
+            margin-left: -130px;
+        }
+
+        .t8 {
+            margin-left: -80px;
+        }
+
+        .t4 {
+            margin-left: -120px;
+        }
+
+        /*.t5{margin-left: -170px;}*/
+        .t6 {
+            margin-left: -155px;
+        }
+
+        /*.t7{margin-left: -150px;}*/
+        /*.t8{margin-left: -120px;}*/
+        @media (max-width: 768px) {
+            .top-menu {
+                margin-left: 0px;
+            }
+
+            .t7 {
+                margin-top: 5px;
+            }
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="row hide-if-navbar-none" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                                <div class="col-sm-5 m-b-xs" style="width: 200px;">
+                                    <select class="input-sm form-control input-s-sm inline" name="searchType">
+                                        <volist name="arrSearchType" id="v">
+                                            <option value="{$v.val}" <if condition="$searchType eq $v['val']"> selected </if>>{$v.word}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 top-menu t1" style="width: 200px;">
+                                    <div class="input-group">
+                                        <input type="text" placeholder="请输入关键词" class="input-sm form-control"
+                                               name="search" value="{$search}"> <span class="input-group-btn"/>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-5 m-b-xs" style="width: 200px;">
+                                    <select class="input-sm form-control input-s-sm inline" name="limit">
+                                        <volist name="page_select" id="v">
+                                            <option value="{$v.val}" <if condition="$limit eq $v['val']"> selected </if>>{$v.word}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+
+                         
+
+                                <div class="col-sm-3 top-menu t7" style="width: 200px;">
+                                    <div class="input-group">
+                                        <button type="submit" class="btn btn-sm btn-primary"> 搜索</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <volist name="show_list" id="v">
+                                        <th>{$v.title}</th>
+                                    </volist>
+                                    <?php if (!empty($formRequest)) { ?>
+                                    <th>修改</th>
+                                    <?php }?>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="show_data" id="v">
+                                    <tr>
+                                        <form action="{$formRequest}" method="post" onsubmit="return form_ajax_post(this);">
+                                            <volist name="show_list" key="k" id="vv">
+                                                <?php if (!empty($vv['href'])){ ?>
+                                                <td>
+                                                    <input type="hidden" name="<?php echo $vv['type']['name'];?>" value="<?php echo $v[$vv['key']];?>">
+                                                    <a onclick="admin_edit('<?php echo $v[$vv['key']];?>','<?php echo str_replace($vv['replace_href'],$v[$vv['replace_href']],$vv['href']);?>','2','1200','800')"
+                                                       style="text-decoration:none"><font color="#1AB394"><?php echo $v[$vv['key']];?></font></a>
+                                                </td>
+                                                <?php } else { ?>
+                                                <td>
+                                                    <?php
+                                                $type = isset($vv['type']['type']) ? $vv['type']['type'] : '';
+                                                switch($type) {
+                                                    case 'input':
+                                                ?>
+                                                    <input type="text" name="<?php echo $vv['type']['name'];?>" class="form-control" <?php echo $vv['type']['attribution'];?> value="<?php echo $v[$vv['key']];?>">
+                                                    <?php break;
+                                                    case 'option':
+                                                ?>
+                                                    <select name="<?php echo $vv['type']['name'];?>" class="form-control m-b">
+                                                        <option value="">请选择</option>
+                                                        <volist name="vv.type.options" id="ov">
+                                                            <option value="{$ov.value}" <?php if ($v[$vv['key']] == $ov['value']) {?>selected="selected"<?php }?>>{$ov.text}</option>
+                                                        </volist>
+                                                    </select>
+                                                    <?php
+                                                    break;
+                                                    default :
+                                                ?>
+                                                    <?php echo $v[$vv['key']];?>
+                                                    <?php }?>
+
+                                                </td>
+                                                <?php } ?>
+                                            </volist>
+                                            <?php if (!empty($formRequest)) { ?>
+                                            <td><button type="submit" class="btn btn-success btn-outline" onclick="">确认修改</button></td>
+                                            <?php }?>
+                                        </form>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            //ajax post
+            function form_ajax_post(e){
+                // var that = $(e);
+                var $form = $(e);//that.parentsUntil('form');
+                console.log('form', $form.length);
+                layer.confirm('您确定要做此操作吗？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    var form = $form;
+                    var url= $form.attr('action');
+                    var cs = $form.serialize();
+                    $.ajax({
+                        url:url,
+                        data:cs,
+                        type:'POST',
+                        success:function(data){
+                            if(data.status==1){
+                                layer.msg(data.info, {icon: 1});
+                                var timer = setInterval(function(){
+                                    clearInterval(timer);
+                                    window.location.href=data.url;
+                                },2000);
+                            }else{
+                                layer.msg(data.info, {icon: 2});
+                            }
+                        }
+                    });
+                }, function(){
+                    layer.msg('取消成功', {
+                        time: 1500, //20s后自动关闭
+                    });
+                    return false;
+                });
+                return false;
+            }
+        </script>
+</block>
+

@@ -235,16 +235,6 @@ class RewardsPoolController extends AgentController
 //                'key' => 'realpeoplefailpercent',
 //                'title' => '真人玩家输概率',
 //            ],
-            'is_hide' => [
-                'key' => 'is_hide',
-                'title' => '是否隐藏',
-                'type' => ['type' => 'option', 'name' => 'is_hide', 'options' => [['value' => '0', 'text' => '否'],['value' => 1, 'text' => '是']]],
-            ],
-             'option' => [
-                 'key' => 'is_recommend',
-                 'title' => '是否推荐',
-                 'type' => ['type' => 'option', 'attribution' => 'style="width:100px;border:none;" readonly="readonly"',  'name' => 'is_Recommend', 'options' => [['value' => '0', 'text' => '否'],['value' => 1, 'text' => '是']]],
-             ],
 //            'realpeoplewinpercent' => [
 //                'key' => 'realpeoplewinpercent',
 //                'title' => '真人玩家赢概率',
@@ -291,7 +281,7 @@ class RewardsPoolController extends AgentController
         $data = M()
         ->table($this->tableName)->alias('a')->join('left join ' . MysqlConfig::Table_roombaseinfo . ' b on a.roomID = b.roomID')
         ->where($where)
-        ->field('a.*,b.name,b.is_Recommend,b.is_hide')
+        ->field('a.*,b.name')
         ->page($page)
         ->limit($limit)
         ->order('a.roomID desc')
@@ -305,16 +295,6 @@ class RewardsPoolController extends AgentController
 
     public function rewardsPoolEdit() {
         if ($_POST) {
-            $isRecommend = (int)I('is_Recommend');
-            $roomID = (int)I('roomID');
-            $is_hide = (int)I('is_hide');
-            $gameID = M()->query('select gameID from ' . MysqlConfig::Table_roombaseinfo . ' where roomID =' . $roomID . ' limit 1');
-//            dump($gameID);exit;
-            $resCount = M()->query('select count(*) as cnt, gameID from ' . MysqlConfig::Table_roombaseinfo . ' where is_Recommend = 1 and gameID =' . $gameID[0]['gameid']);
-            $res = M()->query('select gameID from ' . MysqlConfig::Table_roombaseinfo . ' where is_Recommend = 1 and roomID =' . $roomID);
-            if (EnumConfig::E_GameRecommend['NO'] == $isRecommend && $resCount[0]['cnt'] <= 1 && $res) {
-                $this->error('房间推荐数不能小于1');
-            }
             M()->startTrans();
             $result = LobbyModel::getInstance()->updateRewardsPool((int)I('roomID'), [
                 'poolMoney' => FunctionHelper::MoneyInput((int)I('poolmoney')),//奖池
@@ -326,8 +306,7 @@ class RewardsPoolController extends AgentController
                 'recoveryPoint' => (int)I('recoverypoint') * 100,
                 'updateTime' => time(),
             ]);
-            $res = M()->table(MysqlConfig::Table_roombaseinfo)->where(['roomID' => $roomID])->save(['is_Recommend' => $isRecommend, 'is_hide' => $is_hide, 'updateTime' => time()]);
-            if (empty($res) || !$result) {
+            if (!$result) {
                 M()->rollback();
                 $this->error('修改失败');
             }

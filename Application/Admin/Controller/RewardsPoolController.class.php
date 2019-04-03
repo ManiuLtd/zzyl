@@ -116,10 +116,10 @@ class RewardsPoolController extends AgentController
 //         var_export($listCommission);
         foreach ($listCommission as $k => &$v) {
 
-            $v['gamewinmoney'] = FunctionHelper::MoneyOutput((int)$v['gamewinmoney']);
-            $v['allgamewinmoney'] = FunctionHelper::MoneyOutput((int)$v['allgamewinmoney']);
-            $v['platformCompensate'] = FunctionHelper::MoneyOutput((int)$v['platformCompensate']);
-            $v['sumgamewinmoney'] = $v['gamewinmoney'] + $v['allgamewinmoney'] + $v['platformCompensate'];
+            $v['gamewinmoney'] = FunctionHelper::MoneyOutput((int)$v['gamewinmoney']); //今日游戏输赢钱
+            $v['allgamewinmoney'] = FunctionHelper::MoneyOutput((int)$v['allgamewinmoney']); //今日前累计游戏输赢钱
+            $v['platformcompensate'] = FunctionHelper::MoneyOutput((int)$v['platformcompensate']); //平台补偿金币
+            $v['sumgamewinmoney'] = $v['gamewinmoney'] + $v['allgamewinmoney'] + $v['platformcompensate']; //实时奖池
             $v['poolmoney'] = FunctionHelper::MoneyOutput((int)$v['poolmoney']);
             $v['percentagewinmoney'] = FunctionHelper::MoneyOutput((int)$v['percentagewinmoney']);
             $v['allpercentagewinmoney'] = FunctionHelper::MoneyOutput((int)$v['allpercentagewinmoney']);
@@ -132,6 +132,7 @@ class RewardsPoolController extends AgentController
             $v['maxpondmoney'] = (int)$v['maxpondmoney'] /100;
             $v['platformbankmoney'] = FunctionHelper::MoneyOutput((int)$v['platformbankmoney']);
             $v['recoverypoint'] = FunctionHelper::MoneyOutput((int)$v['recoverypoint']);
+            $v['incrementofgoldcoin'] = 0; //平台补偿金币增量
 //            var_export($v);
         }
 //        var_dump($listCommission);
@@ -181,6 +182,10 @@ class RewardsPoolController extends AgentController
                 'key' => 'allgamewinmoney',
                 'title' => '今日前累计游戏输赢钱',
             ],
+            'platformcompensate' => [
+                'key' => 'platformcompensate',
+                'title' => '平台补偿金币',
+            ],
             'sumgamewinmoney' => [
                 'key' => 'sumgamewinmoney',
                 'title' => '实时奖池',
@@ -201,6 +206,11 @@ class RewardsPoolController extends AgentController
                 'key' => 'recoverypoint',
                 'title' => '平台回收金币的结点',
                 'type' => ['type' => 'input', 'name' => 'recoverypoint', 'attribution' => 'style="width:80px;"']
+            ],
+            'incrementofgoldcoin' => [
+                'key' => 'incrementofgoldcoin',
+                'title' => '平台补偿金币增量',
+                'type' => ['type' => 'input', 'name' => 'incrementofgoldcoin', 'attribution' => 'style="width:80px;"']
             ],
             'platformctrlpercent' => [
                 'key' => 'platformctrlpercent',
@@ -297,6 +307,9 @@ class RewardsPoolController extends AgentController
     public function rewardsPoolEdit() {
         if ($_POST) {
             M()->startTrans();
+            //根据roomid查询出当前房间的平台补偿金币
+            $platformCompensate = M()->table(MysqlConfig::Table_rewardspool)->where(['roomID' => I('roomID')])->field('platformCompensate')->find();
+            $pmoney = (int)I('incrementofgoldcoin') * 100 + $platformCompensate['platformcompensate'];
             $result = LobbyModel::getInstance()->updateRewardsPool((int)I('roomID'), [
                 'poolMoney' => FunctionHelper::MoneyInput((int)I('poolmoney')),//奖池
                 'platformCtrlPercent' => (int)I('platformctrlpercent'),//单点控制千分比
@@ -305,6 +318,7 @@ class RewardsPoolController extends AgentController
                 'minPondMoney' => (int)I('minPondMoney') *100,
                 'maxPondMoney' => (int)I('maxPondMoney') *100,
                 'recoveryPoint' => (int)I('recoverypoint') * 100,
+                'platformCompensate' => $pmoney,
                 'updateTime' => time(),
             ]);
             if (!$result) {

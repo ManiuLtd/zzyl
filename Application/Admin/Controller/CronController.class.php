@@ -186,11 +186,11 @@ class CronController extends Controller
     public function statisticsDailyRewards()
     {
         \Think\Log::write('每天凌晨三十分统计客户每天的奖励');
-        $this->newtime = (time() - 72000);  //前一天的时间错
+        $this->newtime = (time() - 3600);  //前一天的时间错
         $todayDate = date('Y-m-d', $this->newtime); // 前一天年月日
         $startTime = strtotime(date('Y-m-d', $this->newtime));
         $endTime = strtotime(date('Y-m-d', $this->newtime)) + 86399;
-        /*\Think\Log::write('当前时间错'.time());
+        \Think\Log::write('当前时间错'.time());
         \Think\Log::write('前一天的时间错'.$this->newtime);
         \Think\Log::write('前一天年月日'.$todayDate);
         \Think\Log::write('前一天凌晨'.$startTime);
@@ -202,7 +202,7 @@ class CronController extends Controller
         if($todayDate == $jintianymd || $todayDate != $ztymd){
             \Think\Log::write('年月日不对，禁止执行脚本');
             echo 333;exit;
-        }*/
+        }
 
 
         $Model = new \Think\Model();
@@ -333,7 +333,7 @@ class CronController extends Controller
                 }*/
                 //计算自己奖励的金额的总和
                 $myRewardMoney = $this->getJlmongey($val1['day_performance']/100, $ratioInfo, $val1['new_agent_leval_money']);
-                if($val1['userid'] == 122001){
+                /*if($val1['userid'] == 122027){
                     var_dump($myRewardMoney);
                     var_dump($subordinaterewardMoney);
                     var_dump($myRewardMoney - $subordinaterewardMoney);
@@ -343,10 +343,10 @@ class CronController extends Controller
                     var_dump(intval($int));
                     var_dump(floor($int));
                     exit;
-                }
-                $adddata[$key1]['reward'] = intval(($myRewardMoney - $subordinaterewardMoney)*100);
+                }*/
+                $adddata[$key1]['reward'] = floor(($myRewardMoney - $subordinaterewardMoney)*100);
             }else{   //如果没有下级代理根据自己的总业绩计算奖励
-                $adddata[$key1]['reward'] = intval(($this->getJlmongey($val1['day_performance']/100, $ratioInfo, $val1['new_agent_leval_money']))*100);
+                $adddata[$key1]['reward'] = floor(($this->getJlmongey($val1['day_performance']/100, $ratioInfo, $val1['new_agent_leval_money']))*100);
             }
             //更改该用户的可提现金额
             if(!empty($adddata[$key1]['reward'])){

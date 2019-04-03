@@ -334,14 +334,11 @@ class CronController extends Controller
                 //计算自己奖励的金额的总和
                 $myRewardMoney = $this->getJlmongey($val1['day_performance']/100, $ratioInfo, $val1['new_agent_leval_money']);
                 if($val1['userid'] == 122027){
-                    echo intval((88.1825-74.1825) * 100);
-    echo "<br/>";
-    echo floor((88.1825-74.1825) * 100);
                     var_dump($myRewardMoney);
                     var_dump($subordinaterewardMoney);
                     var_dump($myRewardMoney - $subordinaterewardMoney);
-                    var_dump(($myRewardMoney - $subordinaterewardMoney)*100);
-                    var_dump(intval(($myRewardMoney - $subordinaterewardMoney)*100));
+                    $int = ($myRewardMoney - $subordinaterewardMoney)*100;
+                    var_dump(intval($int));
                     exit;
                 }
                 $adddata[$key1]['reward'] = intval(($myRewardMoney - $subordinaterewardMoney)*100);

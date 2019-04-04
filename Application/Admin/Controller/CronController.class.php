@@ -417,7 +417,7 @@ class CronController extends Controller
             return ($performance/10000) * $pump_money66;
         }else{
             // return floor($performance/10000) * $new_agent_leval_money;
-            return ($performance/100) * $new_agent_leval_money;
+            return ($performance/10000) * $new_agent_leval_money;
             //return sprintf("%.2f", ($performance/10000) * $new_agent_leval_money);
         }
 

@@ -534,7 +534,7 @@ class   PromotionAction extends AppAction
             $sumBenefit += $this->getJlmongey($v['day_performance']/100, $new_agent_leval8);
         }
 
-        $returnInfo['estimated_revenue'] = $myTimeBenefit - $sumBenefit;
+        $returnInfo['estimated_revenue'] = floor(($myTimeBenefit - $sumBenefit) * 100)/100;
         //查询出业绩列表
         $where8 = "userid = {$userID} order by create_date desc LIMIT {$startnum},{$pagesize}";
         $arrayKeyValue8 = ['create_date','day_performance','day_team_performance','day_personal_performance'];
@@ -569,10 +569,10 @@ class   PromotionAction extends AppAction
         }
 
         if($pump_money66 >= $new_agent_leval_money){
-            return floor(($performance/100) * $pump_money66)/100;
+            return ($performance/10000) * $pump_money66;
             //return sprintf("%.2f", ($performance/10000) * $pump_money66);
         }else{
-            return floor(($performance/100) * $new_agent_leval_money)/100;
+            return ($performance/10000) * $new_agent_leval_money;
             //return sprintf("%.2f", ($performance/10000) * $new_agent_leval_money);
         }
 

@@ -184,7 +184,7 @@ class UserAction extends AppAction
                 $res = MailLogic::getInstance()->sendRewards('首次进入游戏奖励', "{$invite_userInfo['name']}邀请您一起玩游戏" ,$userID, $money, $diamonds);
 
             }
-            $commissionRate = 0;//$agentMember['commission_rate'] - 5;
+            $commissionRate = 95;//$agentMember['commission_rate'] - 5;
             $canBind = $commissionRate >= 15;
 //            var_dump($agentMember);
             if (empty($agentMember) || 0 == $agentMember['commission_rate']) {

@@ -278,22 +278,25 @@ class RewardsPoolController extends AgentController
 
         foreach ($listCommission as $k => &$v) {
             $rewsinfo = RedisManager::getGameRedis()->hGetAll("rewardsPool|".$v['roomid']);
-            
-            $v['gamewinmoney'] = FunctionHelper::MoneyOutput((int)$v['gamewinmoney']); //今日游戏输赢钱
-            $v['allgamewinmoney'] = FunctionHelper::MoneyOutput((int)$v['allgamewinmoney']); //今日前累计游戏输赢钱
-            $v['platformcompensate'] = FunctionHelper::MoneyOutput((int)$v['platformcompensate']); //平台补偿金币
-            $v['sumgamewinmoney'] = $v['gamewinmoney'] + $v['allgamewinmoney'] + $v['platformcompensate']; //实时奖池
+            $v['gamewinmoney'] = FunctionHelper::MoneyOutput((int)$rewsinfo['gameWinMoney']); //今日游戏输赢钱   实时获取
+            $v['allgamewinmoney'] = FunctionHelper::MoneyOutput((int)$rewsinfo['allgamewinmoney']); //今日前累计游戏输赢钱  实时获取
+            $v['platformcompensate'] = FunctionHelper::MoneyOutput((int)$rewsinfo['platformcompensate']); //平台补偿金币   实时获取
+//            实时奖池 = 今日游戏输赢钱 + 今日前累计游戏输赢钱 + 平台补偿金币
+//            平台盈利  =  实时奖池 + 平台银行储蓄 - 平台补偿金币
+            $v['sumgamewinmoney'] = $v['gamewinmoney'] + $v['allgamewinmoney'] + $v['platformcompensate']; //实时奖池   实时获取
+            $v['platformbankmoney'] = FunctionHelper::MoneyOutput((int)$rewsinfo['platformBankMoney']); //平台银行储蓄   实时获取
+            $v['platformprofitability'] = $v['sumgamewinmoney'] + $v['platformbankmoney'] - $v['platformcompensate']; //平台盈利
+
             $v['poolmoney'] = FunctionHelper::MoneyOutput((int)$v['poolmoney']);
             $v['percentagewinmoney'] = FunctionHelper::MoneyOutput((int)$v['percentagewinmoney']);
             $v['allpercentagewinmoney'] = FunctionHelper::MoneyOutput((int)$v['allpercentagewinmoney']);
             $v['otherwinmoney'] = FunctionHelper::MoneyOutput((int)$v['otherwinmoney']);
             $v['allotherwinmoney'] = FunctionHelper::MoneyOutput((int)$v['allotherwinmoney']);
-            $v['platformctrlpercent'] = (int)$v['platformctrlpercent'];
+            $v['platformctrlpercent'] = (int)$rewsinfo['platformCtrlPercent']; //单点控制千分比	redis获取
             $v['realpeoplefailpercent'] = (int)$v['realpeoplefailpercent'];
             $v['realpeoplewinpercent'] = (int)$v['realpeoplewinpercent'];
             $v['minpondmoney'] = (int)$v['minpondmoney'] /100;
             $v['maxpondmoney'] = (int)$v['maxpondmoney'] /100;
-            $v['platformbankmoney'] = FunctionHelper::MoneyOutput((int)$v['platformbankmoney']); //平台银行储蓄
             $v['recoverypoint'] = FunctionHelper::MoneyOutput((int)$v['recoverypoint']);
             $v['incrementofgoldcoin'] = 0; //平台补偿金币增量
         }
@@ -310,6 +313,10 @@ class RewardsPoolController extends AgentController
             'name' => [
                 'key' => 'name',
                 'title' => '游戏名称',
+            ],
+            'platformprofitability' => [
+                'key' => 'platformprofitability',
+                'title' => '平台盈利',
             ],
             'sumgamewinmoney' => [
                 'key' => 'sumgamewinmoney',

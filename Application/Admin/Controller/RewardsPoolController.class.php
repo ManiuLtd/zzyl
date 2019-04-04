@@ -353,12 +353,12 @@ class RewardsPoolController extends AgentController
             ],
             'minPondMoney' => [
                 'key' => 'minpondmoney',
-                'title'=> '奖池金额下限',
+                'title'=> '奖池金额下限<br/>(0表示默认的800)',
                 'type' => ['type' => 'input', 'name' => 'minPondMoney', 'attribution' => 'style="width:80px;"'],
             ],
             'maxPondMoney' => [
                 'key' => 'maxpondmoney',
-                'title'=> '奖池金额上限',
+                'title'=> '奖池金额上限<br/>(0表示默认的1000)',
                 'type' => ['type' => 'input', 'name' => 'maxPondMoney', 'attribution' => 'style="width:80px;"'],
             ],
         ];

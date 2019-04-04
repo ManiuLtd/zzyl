@@ -344,6 +344,12 @@ class CronController extends Controller
                     var_dump(floor($int));
                     exit;
                 }*/
+                if($val1['userid'] == 122001){
+                    var_dump($myRewardMoney);
+                    var_dump($subordinaterewardMoney);
+                    var_dump($myRewardMoney - $subordinaterewardMoney);
+                    exit;
+                }
                 $adddata[$key1]['reward'] = floor(($myRewardMoney - $subordinaterewardMoney)*100);
             }else{   //如果没有下级代理根据自己的总业绩计算奖励
                 $adddata[$key1]['reward'] = floor(($this->getJlmongey($val1['day_performance']/100, $ratioInfo, $val1['new_agent_leval_money']))*100);

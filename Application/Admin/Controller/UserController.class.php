@@ -2342,7 +2342,7 @@ class UserController extends AdminController
         $page = new \Think\Page($count, 20);
         $dbUserList = M()
             ->table('userInfo as U')
-            ->join('left join roombaseinfo as rbi on rbi.roomID = U.roomID')
+            ->join('left join roomBaseInfo as rbi on rbi.roomID = U.roomID')
             ->where($where)
             ->field('U.userID, U.name, U.money, U.sealFinishTime, rbi.name as roomname, U.lastCrossDayTime, U.registerTime, U.IsOnline')
             ->limit($page->firstRow . ',' . $page->listRows)

@@ -2342,8 +2342,9 @@ class UserController extends AdminController
         $page = new \Think\Page($count, 20);
         $dbUserList = M()
             ->table('userInfo as U')
+            ->join('left join roombaseinfo as rbi on rbi.roomID = U.roomID')
             ->where($where)
-            ->field('U.userID, U.name, U.money, U.lastCrossDayTime, U.registerTime, U.IsOnline')
+            ->field('U.userID, U.name, U.money, U.sealFinishTime, rbi.name as roomname, U.lastCrossDayTime, U.registerTime, U.IsOnline')
             ->limit($page->firstRow . ',' . $page->listRows)
             ->select();
         //var_dump($dbUserList);exit;
@@ -2378,6 +2379,12 @@ class UserController extends AdminController
                 $dbUser['IsOnline'] = '在线';
             }else{
                 $dbUser['IsOnline'] = '不在线';
+            }
+
+            if($dbUser['sealfinishtime'] == -1){
+                $dbUser['sealfinishtime'] = '永久封号';
+            }else{
+                $dbUser['sealfinishtime'] = '正常';
             }
 
         }

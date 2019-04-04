@@ -96,8 +96,11 @@ class   PromotionAction extends AppAction
             $data['username'] = $userinfo['name'];
             $data['userid'] = $id;
             $data['agentid'] = $id;
+            //默认初始分成比率,已经没用
             $data['commission_rate'] = 95;
             $data['register_time'] = time();
+            //保底金额默认60
+            $data['new_agent_leval_money'] = 60;
             $res = DBManager::getMysql()->insert(MysqlConfig::Table_web_agent_member, $data);
             if(empty($res)) AppModel::returnJson(ErrorConfig::ERROR_CODE, '代理添加失败');
         }

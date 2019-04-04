@@ -78,7 +78,9 @@
                                     <th>金币</th>
                                     <th>注册时间</th>
                                     <th>上次登录时间</th>
+                                    <th>用户状态</th>
                                     <th>游戏状态</th>
+                                    <th>游戏</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -92,7 +94,9 @@
                                         <td>{$_data.money|default=0}</td>
                                         <td>{$_data.registertime|date="Y-m-d H:i:s",###}</td>
                                         <td>{$_data.lastCrossDayTime|date="Y-m-d H:i:s",###}</td>
+                                        <td>{$_data.sealfinishtime}</td>
                                         <td>{$_data.IsOnline}</td>
+                                        <td>{$_data.roomname}</td>
                                     </tr>
                                 </volist>
                                 </tbody>

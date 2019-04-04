@@ -800,6 +800,8 @@ class AgentModel extends AppModel
         $data['password'] = md5($password);
         // $data['agentid'] = $this->get_max_agentid()+1;
         $data['agentid'] = $data['userid'];//$this->get_max_agentid() + 1;
+        //保底金额默认60
+        $data['new_agent_leval_money'] = 60;
         //获取最大的agentid
         //
         $res = DBManager::getMysql()->insert(MysqlConfig::Table_web_agent_member, $data);

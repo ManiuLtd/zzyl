@@ -232,13 +232,13 @@
                    onclick="admin_edit('提取','{:U('User/user_pos',array('userid'=>$user['userid']))}','2','600','500')"
                    style="text-decoration:none">提取</a><br><br>
 
-                <if condition="($user['status'] & 1) eq 1">
+                <!--<if condition="($user['status'] & 1) eq 1">
                     <a href="{:U('User/cancel_supper_user',array('userid'=>$user['userid']))}"
                        onclick="return ajax_get(this)" class="btn btn-danger btn-outline">取消超端</a><br><br>
                     <else/>
                     <a href="{:U('User/set_supper_user',array('userid'=>$user['userid']))}"
                        onclick="return ajax_get(this)" class="btn btn-info btn-outline">添加超端</a><br><br>
-                </if>
+                </if>-->
 
                 <a class="btn btn-info btn-outline"
                    onclick="admin_edit('发送个人邮件','{:U('User/personal_send_email',array('userid'=>$user['userid']))}','2','600','500')"

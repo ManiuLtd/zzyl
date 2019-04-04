@@ -365,7 +365,7 @@ class AgentController extends AdminController
             $data['wechat'] = I('wechat');
             $data['bankcard'] = I('bankcard');
             $data['real_name'] = I('real_name');
-            $data['commission_rate'] = I('commission_rate');
+            $data['new_agent_leval_money'] = I('new_agent_leval_money');
             if (!$data['wechat'] || !$data['bankcard'] || !$data['real_name']) {
                 $this->error('微信和银行卡和姓名必须添加');
             }
@@ -386,8 +386,8 @@ class AgentController extends AdminController
             $upAgent = AgentModel::getInstance()->getUpAgentInfoByUserID($data['userid'], ['id', 'commission_rate']);
             $commissionRateUpAgent = $upAgent ? $upAgent['commission_rate'] : 100;
 
-            if (!is_numeric($data['commission_rate']) || 0 >= $data['commission_rate'] || $data['commission_rate'] >= $commissionRateUpAgent) {
-                $this->error('比率必须为数字，且0到 ' . $commissionRateUpAgent . '之间');
+            if (!is_numeric($data['new_agent_leval_money']) || 60 > $data['new_agent_leval_money'] || $data['new_agent_leval_money'] > 280) {
+                $this->error('保底金额必须为数字，且在60到280之间');
             }
             if (M('agent_member')->where(['userid' => $data['bankcard']])->find()) {
                 $this->error('该银行卡账号已经被使用');
@@ -1149,14 +1149,10 @@ class AgentController extends AdminController
                 }
                 break;
             //验证分佣比率
-            case $arrVerifyYype['commission_rate']:
+            case $arrVerifyYype['new_agent_leval_money']:
 
-                //是否有上级代理，如果有，验证分成比率
-                $upAgent = AgentModel::getInstance()->getUpAgentInfoByUserID(I('userid'), ['id', 'commission_rate']);
-                $commissionRateUpAgent = $upAgent ? $upAgent['commission_rate'] : 100;
-
-                if (!is_numeric($v) || 0 >= $v || $v >= $commissionRateUpAgent) {
-                    $this->error('比率必须为数字，且0到 ' . $commissionRateUpAgent . '之间');
+                if (!is_numeric($v) || $v < 60 || $v > 280) {
+                    $this->error('保底金额必须为数字，且在60到280之间');
                 }
                 break;
         }

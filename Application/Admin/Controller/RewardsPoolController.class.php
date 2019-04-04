@@ -277,7 +277,8 @@ class RewardsPoolController extends AgentController
         $listCommission = $res['_data'];
 
         foreach ($listCommission as $k => &$v) {
-            //$rewsinfo = RedisManager::getGameRedis()->hGetAll("rewardsPool|".$v['roomid']);
+            $rewsinfo = RedisManager::getGameRedis()->hGetAll("rewardsPool|".$v['roomid']);
+            var_dump($rewsinfo);exit;
             $v['gamewinmoney'] = FunctionHelper::MoneyOutput((int)$v['gamewinmoney']); //今日游戏输赢钱
             $v['allgamewinmoney'] = FunctionHelper::MoneyOutput((int)$v['allgamewinmoney']); //今日前累计游戏输赢钱
             $v['platformcompensate'] = FunctionHelper::MoneyOutput((int)$v['platformcompensate']); //平台补偿金币

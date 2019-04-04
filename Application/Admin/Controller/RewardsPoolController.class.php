@@ -115,44 +115,18 @@ class RewardsPoolController extends AgentController
 //        $is_recommend = M()->table(MysqlConfig::Table_roombaseinfo)->where(['roomID' => ['in', implode(',', $arrRoomID)]])->select();
 //         var_export($listCommission);
         foreach ($listCommission as $k => &$v) {
-
             $v['gamewinmoney'] = FunctionHelper::MoneyOutput((int)$v['gamewinmoney']); //今日游戏输赢钱
             $v['allgamewinmoney'] = FunctionHelper::MoneyOutput((int)$v['allgamewinmoney']); //今日前累计游戏输赢钱
             $v['platformcompensate'] = FunctionHelper::MoneyOutput((int)$v['platformcompensate']); //平台补偿金币
-            $v['sumgamewinmoney'] = $v['gamewinmoney'] + $v['allgamewinmoney'] + $v['platformcompensate']; //实时奖池
-            $v['poolmoney'] = FunctionHelper::MoneyOutput((int)$v['poolmoney']);
             $v['percentagewinmoney'] = FunctionHelper::MoneyOutput((int)$v['percentagewinmoney']);
             $v['allpercentagewinmoney'] = FunctionHelper::MoneyOutput((int)$v['allpercentagewinmoney']);
             $v['otherwinmoney'] = FunctionHelper::MoneyOutput((int)$v['otherwinmoney']);
             $v['allotherwinmoney'] = FunctionHelper::MoneyOutput((int)$v['allotherwinmoney']);
-            $v['platformctrlpercent'] = (int)$v['platformctrlpercent'];
-            $v['realpeoplefailpercent'] = (int)$v['realpeoplefailpercent'];
-            $v['realpeoplewinpercent'] = (int)$v['realpeoplewinpercent'];
-            $v['minpondmoney'] = (int)$v['minpondmoney'] /100;
-            $v['maxpondmoney'] = (int)$v['maxpondmoney'] /100;
-            $v['platformbankmoney'] = FunctionHelper::MoneyOutput((int)$v['platformbankmoney']);
-            $v['recoverypoint'] = FunctionHelper::MoneyOutput((int)$v['recoverypoint']);
-            $v['incrementofgoldcoin'] = 0; //平台补偿金币增量
-//            var_export($v);
         }
-//        var_dump($listCommission);
-        // implode(glue, pieces)
+
         $count = $res['_count'];
         $pager = new \Think\Page($count, $limit);
-        // var_export( $pager);exit;
-        //type = ['text', 'option', 'input']
-        // $show_list = [
-        //     'input' => [
-        //         'key' => 'input',
-        //         'title' => '输入测试',
-        //         'type' => ['type' => 'input', 'name' => 'testName']
-        //     ],
-//        'option' => [
-//            'key' => 'option',
-//            'title' => '选项测试',
-//            'type' => ['type' => 'option', 'name' => 'testName', 'options' => [['value' => '1', 'text' => '选项1'],['value' => 2, 'text' => '选项2']]],
-//        ],
-        // ];
+
         //前端显示的字段
         $show_list = [
             'roomid' => [
@@ -186,14 +160,6 @@ class RewardsPoolController extends AgentController
                 'key' => 'platformcompensate',
                 'title' => '平台补偿金币',
             ],
-            'sumgamewinmoney' => [
-                'key' => 'sumgamewinmoney',
-                'title' => '实时奖池',
-            ],
-            'platformbankmoney' => [
-                'key' => 'platformbankmoney',
-                'title' => '平台银行储蓄',
-            ],
             'percentagewinmoney' => [
                 'key' => 'percentagewinmoney',
                 'title' => '今日累计抽水',
@@ -201,6 +167,154 @@ class RewardsPoolController extends AgentController
             'allpercentagewinmoney' => [
                 'key' => 'allpercentagewinmoney',
                 'title' => '今日前累计抽水',
+            ],
+        ];
+        $this->assign([
+            'starttime' => $starttime,
+            'endtime' => $endtime,
+            'formRequest' => U('RewardsPool/rewardsPoolEdit'),
+            'show_list' => $show_list,
+            'show_data' => $listCommission,
+            '_page' => $pager->show(),
+            'searchType' => $searchType,
+            'arrSearchType' => $arrSearchType,
+            'search' => $search,
+            'limit' => $limit,
+            'searchUserType' => $searchUserType,
+            'arrSearchUserType' => $arrSearchUserType,
+            'page_select' => self::ARR_PAGE,
+        ]);
+//    	 var_export($listCommission);
+        $this->display('Commission/commissionChangeRecord');
+    }
+
+    public function getList($where, $page = 1, $limit = 10){
+        $data = M()
+        ->table($this->tableName)->alias('a')->join('left join ' . MysqlConfig::Table_roombaseinfo . ' b on a.roomID = b.roomID')
+        ->where($where)
+        ->field('a.*,b.name')
+        ->page($page)
+        ->limit($limit)
+        ->order('a.roomID desc')
+        ->select();
+        $count = M()
+        ->table($this->tableName)->alias('a')->join('left join ' . MysqlConfig::Table_roombaseinfo . ' b on a.roomID = b.roomID')
+        ->where($where)
+        ->count();
+        return ['_data' => $data, '_count' => $count];
+    }
+
+    //奖池控制
+    public function prizePoolControl() {
+        $page = I('p', 1);
+        $limit = I("limit", self::ARR_PAGE[1]['val']);
+        $searchType = I("searchType");
+        $searchUserType = I("searchUserType");
+        $search = trim(I("search"));
+        $starttime = urldecode(I('starttime'));
+        $endtime = urldecode(I('endtime'));
+
+        $arrSearchType = [
+            0 => [
+                'word' => '请选择',
+                'val' => 0,
+            ],
+            1 => [
+                'word' => 'roomID',
+                'val' => 1,
+            ],
+            2 => [
+                'word' => 'gameID',
+                'val' => 2,
+            ],
+        ];
+
+        $arrSearchUserType = [
+            0 => [
+                'word' => '请选择',
+                'val' => 0,
+            ],
+        ];
+
+        $arrWhere = [];
+
+        $res = validSearchTimeRange($starttime, $endtime);
+        if (ErrorConfig::ERROR_CODE === $res['code']) {
+            $this->error($res['msg']);
+        } else {
+            $where['a.time'] = $res['data'];
+        }
+
+        if (isset($arrSearchType[$searchType])) {
+            switch ($arrSearchType[$searchType]['val']) {
+                case 1:
+                    $arrWhere['a.roomID']  = $search;
+                    break;
+                case 2:
+                    $arrWhere['b.gameID'] = $search;
+                    break;
+                default:
+                    break;
+            }
+        }
+        // $arrWhere['gamewinmoney']  = ['neq',0];
+        //代理或运营商
+        if (isset($arrSearchUserType[$searchUserType])) {
+            switch ($arrSearchUserType[$searchUserType]['val']) {
+                case 1:
+                    $arrWhere['a.get_amount_user_type'] = $searchUserType;
+                    break;
+                case 2:
+                    $arrWhere['a.get_amount_user_type'] = $searchUserType;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $res = $this->getList($arrWhere, $page, $limit);
+        $listCommission = $res['_data'];
+        foreach ($listCommission as $k => &$v) {
+
+            $v['gamewinmoney'] = FunctionHelper::MoneyOutput((int)$v['gamewinmoney']); //今日游戏输赢钱
+            $v['allgamewinmoney'] = FunctionHelper::MoneyOutput((int)$v['allgamewinmoney']); //今日前累计游戏输赢钱
+            $v['platformcompensate'] = FunctionHelper::MoneyOutput((int)$v['platformcompensate']); //平台补偿金币
+            $v['sumgamewinmoney'] = $v['gamewinmoney'] + $v['allgamewinmoney'] + $v['platformcompensate']; //实时奖池
+            $v['poolmoney'] = FunctionHelper::MoneyOutput((int)$v['poolmoney']);
+            $v['percentagewinmoney'] = FunctionHelper::MoneyOutput((int)$v['percentagewinmoney']);
+            $v['allpercentagewinmoney'] = FunctionHelper::MoneyOutput((int)$v['allpercentagewinmoney']);
+            $v['otherwinmoney'] = FunctionHelper::MoneyOutput((int)$v['otherwinmoney']);
+            $v['allotherwinmoney'] = FunctionHelper::MoneyOutput((int)$v['allotherwinmoney']);
+            $v['platformctrlpercent'] = (int)$v['platformctrlpercent'];
+            $v['realpeoplefailpercent'] = (int)$v['realpeoplefailpercent'];
+            $v['realpeoplewinpercent'] = (int)$v['realpeoplewinpercent'];
+            $v['minpondmoney'] = (int)$v['minpondmoney'] /100;
+            $v['maxpondmoney'] = (int)$v['maxpondmoney'] /100;
+            $v['platformbankmoney'] = FunctionHelper::MoneyOutput((int)$v['platformbankmoney']);
+            $v['recoverypoint'] = FunctionHelper::MoneyOutput((int)$v['recoverypoint']);
+            $v['incrementofgoldcoin'] = 0; //平台补偿金币增量
+        }
+
+        $count = $res['_count'];
+        $pager = new \Think\Page($count, $limit);
+        //前端显示的字段
+        $show_list = [
+            'roomid' => [
+                'key' => 'roomid',
+                'title' => 'roomid',
+                'type' => ['type' => 'input', 'attribution' => 'style="width:100px;border:none;" readonly="readonly"', 'name' => 'roomID'],
+            ],
+            'name' => [
+                'key' => 'name',
+                'title' => '游戏名称',
+            ],
+            'sumgamewinmoney' => [
+                'key' => 'sumgamewinmoney',
+                'title' => '实时奖池',
+            ],
+            'platformbankmoney' => [
+                'key' => 'platformbankmoney',
+                'title' => '平台银行储蓄',
             ],
             'recoverypoint' => [
                 'key' => 'recoverypoint',
@@ -237,37 +351,6 @@ class RewardsPoolController extends AgentController
                 'title'=> '奖池金额上限',
                 'type' => ['type' => 'input', 'name' => 'maxPondMoney', 'attribution' => 'style="width:80px;"'],
             ],
-//            'poolmoney' => [
-//                'key' => 'poolmoney',
-//                'title' => '奖池',
-//                'type' => ['type' => 'input', 'name' => 'poolmoney', 'attribution' => 'style="width:100px;"'],
-//            ],
-//            'realpeoplefailpercent' => [
-//                'key' => 'realpeoplefailpercent',
-//                'title' => '真人玩家输概率',
-//            ],
-//            'realpeoplewinpercent' => [
-//                'key' => 'realpeoplewinpercent',
-//                'title' => '真人玩家赢概率',
-//            ],
-            // 'agent_userid' => [
-            //     'key' => 'agent_userid',
-            //     'title' => '代理id',
-            //     'href' => U('User/user_info',array('userid'=>'agent_userid')),
-            //     'replace_href' => 'agent_userid',
-            // ],
-//            'spotcontrolinfo' => [
-//                'key' => 'spotcontrolinfo',
-//                'title' => '多点控制',
-//            ],
-//            'detailinfo' => [
-//                'key' => 'detailinfo',
-//                'title' => '房间控制详情',
-//            ]
-            // 'commission_type' => [
-            //     'key' => 'commission_type',
-            //     'title' => '抽水类型',
-            // ]
         ];
         $this->assign([
             'starttime' => $starttime,
@@ -285,23 +368,7 @@ class RewardsPoolController extends AgentController
             'page_select' => self::ARR_PAGE,
         ]);
 //    	 var_export($listCommission);
-        $this->display('Commission/commissionChangeRecord');
-    }
-
-    public function getList($where, $page = 1, $limit = 10){
-        $data = M()
-        ->table($this->tableName)->alias('a')->join('left join ' . MysqlConfig::Table_roombaseinfo . ' b on a.roomID = b.roomID')
-        ->where($where)
-        ->field('a.*,b.name')
-        ->page($page)
-        ->limit($limit)
-        ->order('a.roomID desc')
-        ->select();
-        $count = M()
-        ->table($this->tableName)->alias('a')->join('left join ' . MysqlConfig::Table_roombaseinfo . ' b on a.roomID = b.roomID')
-        ->where($where)
-        ->count();
-        return ['_data' => $data, '_count' => $count];
+        $this->display();
     }
 
     public function rewardsPoolEdit() {

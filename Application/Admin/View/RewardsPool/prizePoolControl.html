@@ -43,9 +43,9 @@
                             <form action="{:U()}" method="get">
                                 <div class="col-sm-5 m-b-xs" style="width: 200px;">
                                     <select class="input-sm form-control input-s-sm inline" name="searchType">
-                                    <volist name="arrSearchType" id="v">
-                                        <option value="{$v.val}" <if condition="$searchType eq $v['val']"> selected </if>>{$v.word}</option>
-                                    </volist>
+                                        <volist name="arrSearchType" id="v">
+                                            <option value="{$v.val}" <if condition="$searchType eq $v['val']"> selected </if>>{$v.word}</option>
+                                        </volist>
                                     </select>
                                 </div>
                                 <div class="col-sm-3 top-menu t1" style="width: 200px;">
@@ -58,17 +58,17 @@
 
                                 <div class="col-sm-5 m-b-xs" style="width: 200px;">
                                     <select class="input-sm form-control input-s-sm inline" name="limit">
-                                    <volist name="page_select" id="v">
-                                        <option value="{$v.val}" <if condition="$limit eq $v['val']"> selected </if>>{$v.word}</option>
-                                    </volist>
+                                        <volist name="page_select" id="v">
+                                            <option value="{$v.val}" <if condition="$limit eq $v['val']"> selected </if>>{$v.word}</option>
+                                        </volist>
                                     </select>
                                 </div>
 
                                 <div class="col-sm-6 top-menu t1" style="width: 200px;">
                                     <select class="input-sm form-control input-s-sm inline" name="searchUserType">
-                                    <volist name="arrSearchUserType" id="v">
-                                        <option value="{$v.val}" <if condition="$searchUserType eq $v['val']"> selected </if>>{$v.word}</option>
-                                    </volist>
+                                        <volist name="arrSearchUserType" id="v">
+                                            <option value="{$v.val}" <if condition="$searchUserType eq $v['val']"> selected </if>>{$v.word}</option>
+                                        </volist>
                                     </select>
                                 </div>
                                 <div class="col-sm-3 top-menu t3" style="width: 200px;">
@@ -108,7 +108,9 @@
                                     <volist name="show_list" id="v">
                                         <th>{$v.title}</th>
                                     </volist>
-
+                                    <?php if (!empty($formRequest)) { ?>
+                                    <th>修改</th>
+                                    <?php }?>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -116,21 +118,21 @@
                                     <tr>
                                         <form action="{$formRequest}" method="post" onsubmit="return form_ajax_post(this);">
                                             <volist name="show_list" key="k" id="vv">
-                                            <?php if (!empty($vv['href'])){ ?>
-                                            <td>
-                                                <input type="hidden" name="<?php echo $vv['type']['name'];?>" value="<?php echo $v[$vv['key']];?>">
-                                                <a onclick="admin_edit('<?php echo $v[$vv['key']];?>','<?php echo str_replace($vv['replace_href'],$v[$vv['replace_href']],$vv['href']);?>','2','1200','800')"
-                                                   style="text-decoration:none"><font color="#1AB394"><?php echo $v[$vv['key']];?></font></a>
-                                            </td>
-                                            <?php } else { ?>
-                                            <td>
-                                                <?php
+                                                <?php if (!empty($vv['href'])){ ?>
+                                                <td>
+                                                    <input type="hidden" name="<?php echo $vv['type']['name'];?>" value="<?php echo $v[$vv['key']];?>">
+                                                    <a onclick="admin_edit('<?php echo $v[$vv['key']];?>','<?php echo str_replace($vv['replace_href'],$v[$vv['replace_href']],$vv['href']);?>','2','1200','800')"
+                                                       style="text-decoration:none"><font color="#1AB394"><?php echo $v[$vv['key']];?></font></a>
+                                                </td>
+                                                <?php } else { ?>
+                                                <td>
+                                                    <?php
                                                 $type = isset($vv['type']['type']) ? $vv['type']['type'] : '';
                                                 switch($type) {
                                                     case 'input':
                                                 ?>
                                                     <input type="text" name="<?php echo $vv['type']['name'];?>" class="form-control" <?php echo $vv['type']['attribution'];?> value="<?php echo $v[$vv['key']];?>">
-                                                <?php break;
+                                                    <?php break;
                                                     case 'option':
                                                 ?>
                                                     <select name="<?php echo $vv['type']['name'];?>" class="form-control m-b">
@@ -139,17 +141,19 @@
                                                             <option value="{$ov.value}" <?php if ($v[$vv['key']] == $ov['value']) {?>selected="selected"<?php }?>>{$ov.text}</option>
                                                         </volist>
                                                     </select>
-                                                <?php
+                                                    <?php
                                                     break;
                                                     default :
                                                 ?>
-                                                <?php echo $v[$vv['key']];?>
-                                                <?php }?>
-                                                    
-                                            </td>
-                                            <?php } ?>
-                                            </volist>
+                                                    <?php echo $v[$vv['key']];?>
+                                                    <?php }?>
 
+                                                </td>
+                                                <?php } ?>
+                                            </volist>
+                                            <?php if (!empty($formRequest)) { ?>
+                                            <td><button type="submit" class="btn btn-success btn-outline" onclick="">确认修改</button></td>
+                                            <?php }?>
                                         </form>
                                     </tr>
                                 </volist>
@@ -161,42 +165,42 @@
                 </div>
             </div>
         </div>
-            <script type="text/javascript">
-    //ajax post
-        function form_ajax_post(e){
-            // var that = $(e);
-            var $form = $(e);//that.parentsUntil('form');
-            console.log('form', $form.length);
-            layer.confirm('您确定要做此操作吗？', {
-            btn: ['确定','取消'] //按钮
-            }, function(){
-                var form = $form;
-                var url= $form.attr('action');
-                var cs = $form.serialize();
-                 $.ajax({
-                    url:url,
-                    data:cs,
-                    type:'POST',
-                    success:function(data){
-                        if(data.status==1){
-                            layer.msg(data.info, {icon: 1});
-                            var timer = setInterval(function(){
-                                clearInterval(timer);
-                                window.location.href=data.url;
-                            },2000);
-                        }else{
-                            layer.msg(data.info, {icon: 2});
-                        }
+        <script type="text/javascript">
+            //ajax post
+            function form_ajax_post(e){
+                // var that = $(e);
+                var $form = $(e);//that.parentsUntil('form');
+                console.log('form', $form.length);
+                layer.confirm('您确定要做此操作吗？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    var form = $form;
+                    var url= $form.attr('action');
+                    var cs = $form.serialize();
+                    $.ajax({
+                        url:url,
+                        data:cs,
+                        type:'POST',
+                        success:function(data){
+                            if(data.status==1){
+                                layer.msg(data.info, {icon: 1});
+                                var timer = setInterval(function(){
+                                    clearInterval(timer);
+                                    window.location.href=data.url;
+                                },2000);
+                            }else{
+                                layer.msg(data.info, {icon: 2});
+                            }
                         }
                     });
-            }, function(){
-                layer.msg('取消成功', {
-                    time: 1500, //20s后自动关闭
+                }, function(){
+                    layer.msg('取消成功', {
+                        time: 1500, //20s后自动关闭
+                    });
+                    return false;
                 });
                 return false;
-            });
-            return false;
-        }
-</script>
+            }
+        </script>
 </block>
-    
+

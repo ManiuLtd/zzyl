@@ -34,6 +34,7 @@ class UpdateAction extends AppAction
      */
     public function platformVersion($params)
     {
+        LogHelper::printLog('TEST', '平台版本请求参数'.json_encode($params));
         $platformType = (int)$params['platformType'];
         $returnType = (int)$params['returnType'];
         if (!in_array($platformType, EnumConfig::E_PlatformType)) {
@@ -46,11 +47,14 @@ class UpdateAction extends AppAction
         }
         if ($returnType == EnumConfig::E_VersionReturnType['STRING_ADDRESS']) {
             $address = $packetVersionInfo['address'];
+            LogHelper::printLog('TEST', '平台版本返回地址'.json_encode($address));
             AppModel::returnString($address);
         } else if ($returnType == EnumConfig::E_VersionReturnType['STRING_VERSION']) {
             $version = $packetVersionInfo['version'];
+            LogHelper::printLog('TEST', '平台版本返回版本号'.json_encode($version));
             AppModel::returnString($version);
         }
+        LogHelper::printLog('TEST', '平台版本返回json信息'.json_encode($packetVersionInfo));
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $packetVersionInfo);
     }
 
@@ -81,12 +85,12 @@ class UpdateAction extends AppAction
     }
 
     /**
-     * 获取游戏版本信息
+     * 获取游戏版本信息(大厅信息)
      * @param $params
      */
     public function gameVersion($params)
     {
-        LogHelper::printLog('TEST', '版本信息请求参数'.json_encode($params));
+        LogHelper::printLog('TEST', '大厅信息请求参数'.json_encode($params));
         $gameID = (int)$params['gameID'];
         $returnType = (int)$params['returnType'];
         $packet_type = EnumConfig::E_VersionPacketType['GAME'];
@@ -96,12 +100,14 @@ class UpdateAction extends AppAction
         }
         if ($returnType == EnumConfig::E_VersionReturnType['STRING_ADDRESS']) {
             $address = $packetVersionInfo['address'];
+            LogHelper::printLog('TEST', '获取地址'.json_encode($address));
             AppModel::returnString($address);
         } else if ($returnType == EnumConfig::E_VersionReturnType['STRING_VERSION']) {
             $version = $packetVersionInfo['version'];
+            LogHelper::printLog('TEST', '获取版本'.json_encode($version));
             AppModel::returnString($version);
         }
-        LogHelper::printLog('TEST', '版本信息'.json_encode($packetVersionInfo));
+        LogHelper::printLog('TEST', 'JSON版本信息'.json_encode($packetVersionInfo));
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $packetVersionInfo);
     }
 

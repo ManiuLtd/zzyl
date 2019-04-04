@@ -10,6 +10,7 @@ use config\MysqlConfig;
 use config\EnumConfig;
 use helper\FunctionHelper;
 use model\LobbyModel;
+use manager\RedisManager;
 
 class RewardsPoolController extends AgentController
 {
@@ -274,8 +275,9 @@ class RewardsPoolController extends AgentController
 
         $res = $this->getList($arrWhere, $page, $limit);
         $listCommission = $res['_data'];
-        foreach ($listCommission as $k => &$v) {
 
+        foreach ($listCommission as $k => &$v) {
+            //$rewsinfo = RedisManager::getGameRedis()->hGetAll("rewardsPool|".$v['roomid']);
             $v['gamewinmoney'] = FunctionHelper::MoneyOutput((int)$v['gamewinmoney']); //今日游戏输赢钱
             $v['allgamewinmoney'] = FunctionHelper::MoneyOutput((int)$v['allgamewinmoney']); //今日前累计游戏输赢钱
             $v['platformcompensate'] = FunctionHelper::MoneyOutput((int)$v['platformcompensate']); //平台补偿金币
@@ -290,7 +292,7 @@ class RewardsPoolController extends AgentController
             $v['realpeoplewinpercent'] = (int)$v['realpeoplewinpercent'];
             $v['minpondmoney'] = (int)$v['minpondmoney'] /100;
             $v['maxpondmoney'] = (int)$v['maxpondmoney'] /100;
-            $v['platformbankmoney'] = FunctionHelper::MoneyOutput((int)$v['platformbankmoney']);
+            $v['platformbankmoney'] = FunctionHelper::MoneyOutput((int)$v['platformbankmoney']); //平台银行储蓄
             $v['recoverypoint'] = FunctionHelper::MoneyOutput((int)$v['recoverypoint']);
             $v['incrementofgoldcoin'] = 0; //平台补偿金币增量
         }
@@ -318,12 +320,12 @@ class RewardsPoolController extends AgentController
             ],
             'recoverypoint' => [
                 'key' => 'recoverypoint',
-                'title' => '平台回收金币的结点',
+                'title' => "平台回收金币的结点(0表示<br/>默认的800,必须大于0)",
                 'type' => ['type' => 'input', 'name' => 'recoverypoint', 'attribution' => 'style="width:80px;"']
             ],
             'incrementofgoldcoin' => [
                 'key' => 'incrementofgoldcoin',
-                'title' => '平台补偿金币增量',
+                'title' => "实时奖池手动增减量<br/>(正数增加,负数减少)",
                 'type' => ['type' => 'input', 'name' => 'incrementofgoldcoin', 'attribution' => 'style="width:80px;"']
             ],
             'platformctrlpercent' => [

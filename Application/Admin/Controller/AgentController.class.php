@@ -1223,6 +1223,7 @@ class AgentController extends AdminController
                 'wechat' => I('wechat'),
                 'on_trial_day' => I('on_trial_day'),
                 'is_franchisee' => I('is_franchisee'),
+                'new_agent_leval_money' => I('new_agent_leval_money'),
             ];
             $agent_old_info = $this->get_agent_info(I('id'));
             /*

@@ -480,6 +480,10 @@ class   PromotionAction extends AppAction
         }
 
         if($new_agent_leval_money < 60) AppModel::returnJson(ErrorConfig::ERROR_CODE, '玩家保底金额不能小于60!');
+        //查询出当前被编辑玩家的保底金额
+        $current_edit_user_new_agent_leval_money = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_member, ['new_agent_leval_money'], "userid = {$gameplayerid}");
+        //编辑后的保底金额不能小于之前的保底金额
+        if($new_agent_leval_money < $current_edit_user_new_agent_leval_money['new_agent_leval_money']) AppModel::returnJson(ErrorConfig::ERROR_CODE, '编辑后的保底金额不能小于该玩家之前的保底金额!');
 
         //查询出当前用户的保底金额
         $user_new_agent_leval_money = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_member, ['new_agent_leval_money'], "userid = {$userID}");

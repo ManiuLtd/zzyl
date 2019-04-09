@@ -1229,6 +1229,9 @@ class AgentController extends AdminController
 
             if(I('new_agent_leval_money') < 60 || I('new_agent_leval_money') > 280) $this->error('保底金额只能在60到280之间!');
 
+            //不能低于自己之前的保底金额
+            if(I('new_agent_leval_money') < $agent_old_info['new_agent_leval_money']) $this->error('修改后的保底金额不能低于该玩家之前的保底金额!');
+
             //判断是否存在上级代理
             if(!empty($agent_old_info['superior_agentid'])){
                 $new_agent_leval_money = M('agent_member')->where(['userid' => $agent_old_info['superior_agentid']])->getField('new_agent_leval_money');

@@ -1230,16 +1230,16 @@ class AgentController extends AdminController
             if(I('new_agent_leval_money') < 60 || I('new_agent_leval_money') > 280) $this->error('保底金额只能在60到280之间!');
 
                 //判断是否存在上级代理
-            var_dump($agent_old_info['superior_agentid']);
+            //var_dump($agent_old_info['superior_agentid']);
             if(!empty($agent_old_info['superior_agentid'])){
                 $new_agent_leval_money = M('agent_member')->where(['userid' => $agent_old_info['superior_agentid']])->getField('new_agent_leval_money');
-                var_dump($new_agent_leval_money);
+                /*var_dump($new_agent_leval_money);
                 var_dump(I('new_agent_leval_money'));
-                var_dump(I('new_agent_leval_money') >= $new_agent_leval_money);
+                var_dump(I('new_agent_leval_money') >= $new_agent_leval_money);*/
                 if(I('new_agent_leval_money') >= $new_agent_leval_money) $this->error('不能超过上级代理的保底金额!');
             }
-            echo 33;
-            exit;
+            /*echo 33;
+            exit;*/
 
             /*
              *以下字段发生变更后，分佣表  绑定邀请码表  账单详情表都需要同步

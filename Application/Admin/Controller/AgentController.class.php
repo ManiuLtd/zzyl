@@ -386,8 +386,8 @@ class AgentController extends AdminController
             $upAgent = AgentModel::getInstance()->getUpAgentInfoByUserID($data['userid'], ['id', 'commission_rate']);
             $commissionRateUpAgent = $upAgent ? $upAgent['commission_rate'] : 100;
 
-            if (!is_numeric($data['new_agent_leval_money']) || 60 > $data['new_agent_leval_money'] || $data['new_agent_leval_money'] > 280) {
-                $this->error('保底金额必须为数字，且在60到280之间');
+            if (!is_numeric($data['new_agent_leval_money']) || 60 > $data['new_agent_leval_money'] || $data['new_agent_leval_money'] > 350) {
+                $this->error('保底金额必须为数字，且在60到350之间');
             }
             if (M('agent_member')->where(['userid' => $data['bankcard']])->find()) {
                 $this->error('该银行卡账号已经被使用');
@@ -1151,8 +1151,8 @@ class AgentController extends AdminController
             //验证分佣比率
             case $arrVerifyYype['new_agent_leval_money']:
 
-                if (!is_numeric($v) || $v < 60 || $v > 280) {
-                    $this->error('保底金额必须为数字，且在60到280之间');
+                if (!is_numeric($v) || $v < 60 || $v > 350) {
+                    $this->error('保底金额必须为数字，且在60到350之间');
                 }
                 break;
         }
@@ -1227,7 +1227,7 @@ class AgentController extends AdminController
             ];
             $agent_old_info = $this->get_agent_info(I('id'));
 
-            if(I('new_agent_leval_money') < 60 || I('new_agent_leval_money') > 280) $this->error('保底金额只能在60到280之间!');
+            if(I('new_agent_leval_money') < 60 || I('new_agent_leval_money') > 350) $this->error('保底金额只能在60到350之间!');
 
             //不能低于自己之前的保底金额
             if(I('new_agent_leval_money') < $agent_old_info['new_agent_leval_money']) $this->error('修改后的保底金额不能低于该玩家之前的保底金额!');

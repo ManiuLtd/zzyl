@@ -1234,9 +1234,11 @@ class AgentController extends AdminController
             if(!empty($agent_old_info['superior_agentid'])){
                 $new_agent_leval_money = M('agent_member')->where(['userid' => $agent_old_info['superior_agentid']])->getField('new_agent_leval_money');
                 var_dump($new_agent_leval_money);
-                var_dump(new_agent_leval_money);
+                var_dump(I('new_agent_leval_money'));
+                var_dump(I('new_agent_leval_money') >= $new_agent_leval_money);
                 if(I('new_agent_leval_money') >= $new_agent_leval_money) $this->error('不能超过上级代理的保底金额!');
             }
+            echo 33;
             exit;
 
             /*

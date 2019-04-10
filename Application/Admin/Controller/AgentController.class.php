@@ -1249,7 +1249,7 @@ class AgentController extends AdminController
             }
 
             //查询出玩家名称
-            $name = M()->table('userinfo')->where(['userID' => $agent_old_info['userid']])->getField('name');
+            $name = M()->table('userInfo')->where(['userID' => $agent_old_info['userid']])->getField('name');
             //判断保底金额是否有变化，如果有变化存入日志表中
             if(I('new_agent_leval_money') != $agent_old_info['new_agent_leval_money']){
                 $amoutlogdata = [

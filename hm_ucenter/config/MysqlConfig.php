@@ -50,6 +50,7 @@ final class MysqlConfig
     const Table_web_agent_recharge = 'web_agent_recharge'; //
     const Table_web_agent_recharge_config = 'web_agent_recharge_config'; //
     const Table_web_agent_bind_reward = 'web_agent_bind_reward'; // 绑定代理获得的奖励表
+    const Table_web_guarantee_amout_log = 'web_guarantee_amout_log'; // 保底金额变化日志表
 
 
     const Table_web_api_record = 'web_api_record'; //api记录

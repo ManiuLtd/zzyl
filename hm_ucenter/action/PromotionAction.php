@@ -479,7 +479,7 @@ class   PromotionAction extends AppAction
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
         }
 
-        if($new_agent_leval_money < 60) AppModel::returnJson(ErrorConfig::ERROR_CODE, '玩家保底金额不能小于60!');
+        if($new_agent_leval_money < 60 || $new_agent_leval_money > 280) AppModel::returnJson(ErrorConfig::ERROR_CODE, '玩家保底金额只能在60到280之间!');
         //查询出当前被编辑玩家的保底金额
         $current_edit_user_new_agent_leval_money = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_member, ['new_agent_leval_money'], "userid = {$gameplayerid}");
         //编辑后的保底金额不能小于之前的保底金额
@@ -488,6 +488,28 @@ class   PromotionAction extends AppAction
         //查询出当前用户的保底金额
         $user_new_agent_leval_money = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_member, ['new_agent_leval_money'], "userid = {$userID}");
         if($new_agent_leval_money >= $user_new_agent_leval_money['new_agent_leval_money']) AppModel::returnJson(ErrorConfig::ERROR_CODE, '玩家保底金额不能高于本人保底金额!');
+
+        //查询出当前用户的名称和下级用户的名称
+        $operator_name_info = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['name'], "userid = {$userID}");
+        $changed_person_name_info = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['name'], "userid = {$gameplayerid}");
+        //判断保底金额是否有变化，如果有变化存入日志表中
+        if($new_agent_leval_money != $user_new_agent_leval_money['new_agent_leval_money']){
+            $amoutlogdata = [
+                'operator_id' => $userID,
+                'operator_name' => $operator_name_info['name'],
+                'changed_person_id' => $gameplayerid,
+                'changed_person_name' => $changed_person_name_info['name'],
+                'remarks' => '玩家=> '.$changed_person_name_info['name'].' 的保底金额被上级=> '.$operator_name_info['name'].' 更改',
+                'create_time' => time(),
+                'type' => 1,
+                'old_agent_leval_money' => $current_edit_user_new_agent_leval_money['new_agent_leval_money'],
+                'new_agent_leval_money' => $new_agent_leval_money,
+            ];
+            $logres = DBManager::getMysql()->insert(MysqlConfig::Table_web_guarantee_amout_log, $amoutlogdata);
+            if(empty($logres)) AppModel::returnJson(ErrorConfig::ERROR_CODE, '保底变化日志添加失败!');
+        }
+
+        //更改用户的保底金额
         $res = DBManager::getMysql()->update(MysqlConfig::Table_web_agent_member, ['new_agent_leval_money' => $new_agent_leval_money], "userid = {$gameplayerid}");
 
         if(empty($res)) AppModel::returnJson(ErrorConfig::ERROR_CODE, '保底修改失败!');

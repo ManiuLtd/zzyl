@@ -1238,6 +1238,34 @@ class AgentController extends AdminController
                 if(I('new_agent_leval_money') >= $new_agent_leval_money) $this->error('不能超过上级代理的保底金额!');
             }
 
+            $password = I('password', '');
+            $repassword = I('repassword', '');
+            if (!empty($password)) {
+                if ($password != $repassword) {
+                    $this->error('两次输入密码不一致!');
+                }
+
+                $data['password'] = md5($password);
+            }
+
+            //查询出玩家名称
+            $name = M()->table('userinfo')->where(['userID' => $agent_old_info['userid']])->getField('name');
+            //判断保底金额是否有变化，如果有变化存入日志表中
+            if(I('new_agent_leval_money') != $agent_old_info['new_agent_leval_money']){
+                $amoutlogdata = [
+                    'operator_id' => session('admin_user_info.id'),
+                    'operator_name' => session('admin_user_info.username'),
+                    'changed_person_id' => $agent_old_info['userid'],
+                    'changed_person_name' => $name,
+                    'remarks' => '玩家=> '.$name.' 的保底金额被后台管理员=> '.session('admin_user_info.username').' 更改',
+                    'create_time' => time(),
+                    'type' => 2,
+                    'old_agent_leval_money' => $agent_old_info['new_agent_leval_money'],
+                    'new_agent_leval_money' => I('new_agent_leval_money'),
+                ];
+                M('guarantee_amout_log')->add($amoutlogdata);
+            }
+
 
             /*
              *以下字段发生变更后，分佣表  绑定邀请码表  账单详情表都需要同步
@@ -1256,15 +1284,6 @@ class AgentController extends AdminController
                 $this->synchro_change_agentid($data['agentid'], $agent_old_info['agentid']);
             }
 
-            $password = I('password', '');
-            $repassword = I('repassword', '');
-            if (!empty($password)) {
-                if ($password != $repassword) {
-                    $this->error('两次输入密码不一致!');
-                }
-
-                $data['password'] = md5($password);
-            }
             unset($data['agent_level']);
             $res = M('agent_member')->where(['id' => I('id')])->save($data);
             if ($res) {
@@ -1573,6 +1592,37 @@ class AgentController extends AdminController
                 $this->error('操作失败');
             }
         }
+    }
+
+    // 代理保底金额变化列表
+    public function agent_guarantee_amount_list()
+    {
+        $type = I('type');
+        $search = I('search');
+        if ($type && $search) {
+            switch ($type) {
+                case 1:
+                    $where['changed_person_name'] = $search;
+                    break;
+                case 2:
+                    $where['changed_person_id'] = $search;
+                    break;
+            }
+        }
+        $start = urldecode(I('start'));
+        $stop = urldecode(I('stop'));
+
+        $res = validSearchTimeRange($start, $stop);
+        if (ErrorConfig::ERROR_CODE === $res['code']) {
+            $this->error($res['msg']);
+        } else {
+            $where['create_time'] = $res['data'];
+        }
+        $data = D('Data')->get_all_data('guarantee_amout_log', $where, 10, 'id desc');
+
+        $this->assign('_page', $data['_page']);
+        $this->assign('_data', $data['_data']);
+        $this->display();
     }
 
     //代理申请页面

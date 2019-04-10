@@ -87,9 +87,9 @@ class UserController extends AdminController
         foreach ($dbUserList as $key => $dbUser) {
             $userID = $dbUser['userid'];
             $user = UserModel::getInstance()->getUserInfo($userID);
-            if($userID == 122010){
+            /*if($userID == 122010){
                 var_dump($user);exit;
-            }
+            }*/
             $user = array_merge($user, $dbUser);
 //            dump($user);
 //            $user['userid'] = $userID;

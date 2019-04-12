@@ -29,6 +29,7 @@ abstract class AppAction
     {
         $actionClassName = ucfirst($name) . "Action";
         $actionInstance = call_user_func(array($actionClassName, 'getInstance'));
+        LogHelper::printError([$name, $actionClassName, $actionInstance]);
         if (!$actionInstance instanceof self) {
             LogHelper::printError(['AppAction factory call_user_func 失败 name = ', $name]);
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_PARAMETER);

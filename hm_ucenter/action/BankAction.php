@@ -59,13 +59,20 @@ class BankAction extends AppAction
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
         }
 
+        //验证密码格式 包含字母、数字以及下划线，且至少包含2种
+        $myreg = "/^(?![0-9]+$)(?![_]+$)(?![a-zA-Z]+$)[A-Za-z_0-9]{1,}$/";
+        $res1 = preg_match($myreg, $inputpasswd);
+        if (!$res1){
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER_GESHI);
+        }
+
         //两次密码
         if($inputpasswd != $confirmpasswd){
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_REPASSWD_ATYPISM);
         }
 
         // 检测长度
-        if (strlen($inputpasswd) != self::BANK_PASSWD_LEN) {
+        if (strlen($inputpasswd) < 8 || strlen($inputpasswd) > 16) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_PASSWD_ISNUMBER);
         }
 
@@ -74,7 +81,12 @@ class BankAction extends AppAction
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_INCORRECT_MAILBOX_FORMAT);
         }*/
 
-        $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['phone'], "userID = {$userID}");
+        $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['phone','passwd'], "userID = {$userID}");
+
+        //验证密码不能等于登录密码
+        if(md5($inputpasswd) == $resinfo['passwd']){
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_REPASSWD_LOGIN);
+        }
 
         //获取验证码信息
         $phoneCodeInfo = PhoneModel::getInstance()->getPhoneCodeInfo($resinfo['phone'], 4);
@@ -89,7 +101,7 @@ class BankAction extends AppAction
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BIND_PHONE_CODE_TOO);
         }
 
-        BankModel::getInstance()->updateUserInfo($userID, 'bankPasswd',$inputpasswd);
+        BankModel::getInstance()->updateUserInfo($userID, 'bankPasswd',"'".$inputpasswd."'");
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT);
     }
 

@@ -77,7 +77,7 @@ class BankAction extends AppAction
         $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['phone'], "userID = {$userID}");
 
         //获取验证码信息
-        $phoneCodeInfo = PhoneModel::getInstance()->getPhoneCodeInfo($resinfo['phone'], 3);
+        $phoneCodeInfo = PhoneModel::getInstance()->getPhoneCodeInfo($resinfo['phone'], 4);
         $phoneCode = empty($phoneCodeInfo) ? '' : $phoneCodeInfo['code'];
         $phoneTime = empty($phoneCodeInfo) ? 0 : (int)$phoneCodeInfo['time'];
 

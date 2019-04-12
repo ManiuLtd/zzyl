@@ -141,7 +141,7 @@ class PhoneAction extends AppAction
         $phone = $params['phone'];
         $type = (int)$params['type'];
         //如果是提现获取验证码，则判断是否绑定手机号
-        if($type == 3){
+        if($type == 3 || $type == 4){
             //获取绑定的手机号
             $arrayKeyValue = ['phone'];
             $where = "userID = {$userID}";
@@ -152,6 +152,7 @@ class PhoneAction extends AppAction
         if (!in_array($type, EnumConfig::E_PhoneCodeType)) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_CODE_TYPE_NO);
         }
+
 //        $type = (int)$params['type'];
 //        $res = PhoneLogic::getInstance()->sendCode($phone, EnumConfig::E_PhoneCodeType['PASSWORD']);
         $res = PhoneLogic::getInstance()->sendCode($phone, $type, $userID);

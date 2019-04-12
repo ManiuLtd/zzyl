@@ -304,6 +304,7 @@ final class EnumConfig
         'PASSWORD' => 1, //找回密码
         'REGISTER' => 2,//注册
         'CASH' => 3,//提现
+        'BANK' => 4,//设置银行密码
     );
 
     //登录服状态

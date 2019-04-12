@@ -42,7 +42,7 @@ final class ErrorConfig {
 	const ERROR_MSG_BANK_PASSWD_YES = '密码不正确';
 	const ERROR_MSG_BANK_REPASSWD_ATYPISM = '两次密码输入不一致';
 	const ERROR_MSG_BANK_OLDPASSWD_YES = '原密码输入不正确';
-	const ERROR_MSG_BANK_PASSWD_ISNUMBER = '银行密码为6位数字';
+	const ERROR_MSG_BANK_PASSWD_ISNUMBER = '银行密码长度必须为6位字符';
 	const ERROR_MSG_INCORRECT_MAILBOX_FORMAT = '邮箱格式不正确';
 	const ERROR_MSG_EMAIL_DONT_IS = '指定邮箱不存在';
 	const ERROR_MSG_DEPOSIT_GOLD_COSIN_BEYOND_ITS_OWN_LIMITS = '存款金币超出自身金币';

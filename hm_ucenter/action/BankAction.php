@@ -8,6 +8,9 @@ use model\BankModel;
 use model\EmailModel;
 use model\UserModel;
 use notify\CenterNotify;
+use manager\DBManager;
+use config\MysqlConfig;
+use model\PhoneModel;
 
 /**
  * 银行业务
@@ -17,6 +20,12 @@ class BankAction extends AppAction
 {
     const BANK_PASSWD_LEN = 6;
     private static $_instance = null;
+
+    //每个手机每天发送验证码次数
+    const DAY_SEND_CODE_COUNT = 300;
+
+    //验证码有效时间 10 分钟
+    const CODE_INVALID_TIME = 10 * 60;
 
     public static function getInstance()
     {
@@ -40,20 +49,47 @@ class BankAction extends AppAction
     public function setBankPasswd($param)
     {
         $userID = (int)$param['userID'];
-        $passwd = $param['passwd'];
-        $email = $param['email'];
+        $inputpasswd = $param['inputpasswd'];
+        $confirmpasswd = $param['confirmpasswd'];
+        //$email = $param['email'];
+        $code = $param['code'];
+
+        //判断参数不能为空
+        if (empty($param['userID']) || empty($param['inputpasswd']) || empty($param['code']) || empty($param['confirmpasswd'])) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
+        }
+
+        //两次密码
+        if($inputpasswd != $confirmpasswd){
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_REPASSWD_ATYPISM);
+        }
 
         // 检测长度
-        if (strlen($passwd) != self::BANK_PASSWD_LEN) {
+        if (strlen($inputpasswd) != self::BANK_PASSWD_LEN) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_PASSWD_ISNUMBER);
         }
 
         // 检测邮箱
-        if (!preg_match('/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/', $email)) {
+        /*if (!preg_match('/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/', $email)) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_INCORRECT_MAILBOX_FORMAT);
+        }*/
+
+        $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['phone'], "userID = {$userID}");
+
+        //获取验证码信息
+        $phoneCodeInfo = PhoneModel::getInstance()->getPhoneCodeInfo($resinfo['phone'], 3);
+        $phoneCode = empty($phoneCodeInfo) ? '' : $phoneCodeInfo['code'];
+        $phoneTime = empty($phoneCodeInfo) ? 0 : (int)$phoneCodeInfo['time'];
+
+        if ($phoneCode !== $code) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BIND_PHONE_CODE);
+        }
+        // 验证验证码时间
+        if (time() - $phoneTime > self::CODE_INVALID_TIME) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BIND_PHONE_CODE_TOO);
         }
 
-        BankModel::getInstance()->updateUserInfo($userID, ['bankPasswd' => $passwd, 'mail' => $email]);
+        BankModel::getInstance()->updateUserInfo($userID, 'bankPasswd',$inputpasswd);
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT);
     }
 

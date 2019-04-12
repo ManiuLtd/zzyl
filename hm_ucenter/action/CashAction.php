@@ -102,13 +102,13 @@ class CashAction extends AppAction
         $phoneCodeInfo = PhoneModel::getInstance()->getPhoneCodeInfo($resinfo['phone'], 3);
         $phoneCode = empty($phoneCodeInfo) ? '' : $phoneCodeInfo['code'];
         $phoneTime = empty($phoneCodeInfo) ? 0 : (int)$phoneCodeInfo['time'];
-        /*if ($phoneCode !== $code) {
+        if ($phoneCode !== $code) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BIND_PHONE_CODE);
         }
         // 验证验证码时间
         if (time() - $phoneTime > self::CODE_INVALID_TIME) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BIND_PHONE_CODE_TOO);
-        }*/
+        }
 
         //添加该账号之前先判定该账号是否绑定过
         $zfbres = UserCashBank::getInstance()->getCount('bank_number = "'.$param['bank_number'].'" and account_type = '.$param['account_type']);

@@ -91,6 +91,8 @@ class SmsDemo
             $request->setTemplateCode("SMS_151765437"); //注册成为会员
         }elseif ($type == 3){
             $request->setTemplateCode("SMS_160685127"); //绑定支付宝银行卡收款账户
+        }elseif ($type == 4){
+            $request->setTemplateCode("SMS_163430790"); //绑定支付宝银行卡收款账户
         }else{
             $request->setTemplateCode("SMS_151765437");//默认注册成为会员
         }

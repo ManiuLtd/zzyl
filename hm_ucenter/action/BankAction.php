@@ -211,6 +211,18 @@ class BankAction extends AppAction
 
         $money = $money > $userInfo['money'] ? $userInfo['money'] : $money;
 
+        // 存款必须是1000 的倍数
+        /*$y = $money % $config['bankSaveMoneyMuti'];
+
+        if ($y != 0) {
+            $money = $money - $y;
+        }
+
+        // 剩余
+        if ($money < 0) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_DEPOSIT_GOLD_COSIN_BEYOND_ITS_OWN_LIMITS);
+        }*/
+
         //提现金额必须是10的整数倍
         /*$keyword = $money/1000;
         if(!preg_match("/^[1-9][0-9]*$/",$keyword)) AppModel::returnJson(ErrorConfig::ERROR_CODE, '存钱必须是10的整数倍');*/

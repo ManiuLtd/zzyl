@@ -667,10 +667,10 @@ class   PromotionAction extends AppAction
         $putmin_countInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_web_agent_config, ['value'], "id = 7");
         if(empty($put_countInfo['value']) || empty($putmin_countInfo['value'])) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_TURNTABLE_CONFIG);
 
-        //判断用户是否已经添加了银行卡号或者支付宝账号
+        //判断用户是否已经添加了银行卡号
         $adddata = [];
         if($param['withdrawals'] == 2){
-            //提现金额必须是10的整数倍
+            //提现到银行卡则提现金额必须是10的整数倍
             $keyword = $param['apply_amount']/10;
             if(!preg_match("/^[1-9][0-9]*$/",$keyword)) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_KEEP_BOTTOM_TEN);
 

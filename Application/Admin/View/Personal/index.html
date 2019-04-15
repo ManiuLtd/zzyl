@@ -1,0 +1,70 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        .t1{margin-left:-20px;}
+        @media (max-width: 768px){
+            .t1{margin-left:0px;}
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>系统菜单</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+
+                            <div class="col-sm-3" style="width:100px;">
+                                <div class="input-group">
+                                    <a href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('添加收款账户','{:U('account_add')}','2','800','500')"  style="text-decoration:none"> 添加收款账户</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>账户名称</th>
+                                    <th>账户类型</th>
+                                    <th>是否禁用</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="_data" id="_data">
+                                    <tr>
+                                        <td>{$_data.account_name}</td>
+                                        <td>
+                                            <if condition="($_data.type eq 1)">
+                                                微信号
+                                                <elseif condition="($_data.type eq 2)"/>
+                                                QQ号
+                                            </if>
+                                        </td>
+                                        <td>
+                                            <if condition="($_data.status eq 1)">
+                                                未禁用
+                                                <elseif condition="($_data.status eq 2)"/>
+                                                禁用
+                                            </if>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-outline btn-info  dim " href="javascript:;" class="btn btn-sm btn-success" onclick="admin_edit('账号编辑','{:U('account_edit',array('id'=>$_data['id']))}','2','800','500')" class="ml-5" style="text-decoration:none"><i class="fa fa-paste"></i></a>
+
+                                            <if condition="($_data.status eq 1)"> <a title="禁用" href="{:U('Personal/disabled',array('id'=>$_data['id'],'disabled'=>2,'model'=>'collection_account'))}" onclick="return ajax_get_account(this)" class="btn btn-outline btn-warning  dim ">禁用</a></if>
+                                            <if condition="($_data.status eq 2)"><a title="解禁" href="{:U('Personal/disabled',array('id'=>$_data['id'],'disabled'=>1,'model'=>'collection_account'))}" onclick="return ajax_get_account(this)" class="btn btn-outline btn-info  dim ">解禁</a></if>
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

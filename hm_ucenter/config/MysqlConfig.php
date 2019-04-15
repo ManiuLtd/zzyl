@@ -126,6 +126,7 @@ final class MysqlConfig
 
     const Table_user_cash_bank = 'user_cash_bank'; //用户提现银行卡表
     const Table_user_cash_application = 'user_cash_application'; //用户提现申请表
+    const Table_web_collection_account = 'web_collection_account'; //收款账户表
 
     //微信相关
     const Table_web_wechat_article = 'web_wechat_article'; //

@@ -213,6 +213,9 @@ class CashAction extends AppAction
             if($param['cash_money'] < 100) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_LOWER_THAN_MONEY);
             //兑换账户必须留底3元
             if($userinfo['money']/100 - $param['cash_money'] < 3) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_KEEP_BOTTOM_MONEY);
+            //提现金额必须是10的整数倍
+            $keyword = $param['cash_money']/10;
+            if(!preg_match("/^[1-9][0-9]*$/",$keyword)) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_KEEP_BOTTOM_TEN);
 
             $adddata['userID'] = $param['userID'];
             $adddata['cash_account_type'] = $param['cash_account_type'];

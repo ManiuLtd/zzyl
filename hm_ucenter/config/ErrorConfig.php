@@ -95,6 +95,7 @@ final class ErrorConfig {
     const ERROR_MSG_BEYOND_MONEY = '兑换金额超出携带金额';
     const ERROR_MSG_LOWER_THAN_MONEY = '兑换金额不得低于100';
     const ERROR_MSG_KEEP_BOTTOM_MONEY = '账户必须留底3元';
+    const ERROR_MSG_KEEP_BOTTOM_TEN= '提现金额必须是10的整数倍';
     const ERROR_MSG_KEEP_ADD_BANK = '请添加银行账户';
     const ERROR_MSG_KEEP_ADD_ZFB = '请添加支付宝账户';
     const ERROR_MSG_KEEP_ADD_SKZH = '请添加收款账户';

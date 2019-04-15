@@ -670,8 +670,12 @@ class   PromotionAction extends AppAction
         //判断用户是否已经添加了银行卡号或者支付宝账号
         $adddata = [];
         if($param['withdrawals'] == 2){
-            $cashBankInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_user_cash_bank, ['Id','bank_number','real_name'], "userID = {$userID}");
-            if(empty($cashBankInfo)) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_KEEP_ADD_SKZH);
+            //提现金额必须是10的整数倍
+            $keyword = $param['apply_amount']/10;
+            if(!preg_match("/^[1-9][0-9]*$/",$keyword)) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_KEEP_BOTTOM_TEN);
+
+            $cashBankInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_user_cash_bank, ['Id','bank_number','real_name'], "userID = {$userID} and account_type = 1");
+            if(empty($cashBankInfo)) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_KEEP_ADD_BANK);
         }
 
         //查询出今天申请的次数

@@ -194,28 +194,21 @@ class BankAction extends AppAction
         $config = BankModel::getInstance()->getConfig();
 
         // 最低存款
-        if ($money < $config['bankMinSaveMoney']) {
+        if ($money/100 < $config['bankMinSaveMoney']) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, "银行最低存款金币为" . $config['bankMinSaveMoney'] . "金币");
         }
 
         // 账户金币
-        if ($userInfo['money'] < $config['bankMinSaveMoney']) {
+        if ($userInfo['money'] < $money) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_DEPOSIT_GOLD_COSIN_BEYOND_ITS_OWN_LIMITS);
         }
 
         $money = $money > $userInfo['money'] ? $userInfo['money'] : $money;
 
-        // 存款必须是1000 的倍数
-        $y = $money % $config['bankSaveMoneyMuti'];
+        //提现金额必须是10的整数倍
+        $keyword = $money/1000;
+        if(!preg_match("/^[1-9][0-9]*$/",$keyword)) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_KEEP_BOTTOM_TEN);
 
-        if ($y != 0) {
-            $money = $money - $y;
-        }
-
-        // 剩余
-        if ($money < 0) {
-            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_DEPOSIT_GOLD_COSIN_BEYOND_ITS_OWN_LIMITS);
-        }
 
         // 操作记录
         BankModel::getInstance()->addBankOperateRecord($userID, EnumConfig::E_BankOperateType['SAVE'], $money);

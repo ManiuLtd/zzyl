@@ -123,7 +123,7 @@ class BankAction extends AppAction
         }
 
         //$bankPasswd = BankModel::getInstance()->getUserInfo($userID, 'bankPasswd');
-        $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['phone', 'passwd', 'bankpasswd'], "userID = {$userID}");
+        $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['phone', 'phonePasswd', 'bankpasswd'], "userID = {$userID}");
 
         // 原密码不正确
         if ($resinfo['bankpasswd'] != $oldPasswd) {
@@ -159,7 +159,7 @@ class BankAction extends AppAction
         }*/
 
         //验证密码不能等于登录密码
-        if(md5($newPasswd) == $resinfo['passwd']){
+        if(md5($newPasswd) == $resinfo['phonePasswd']){
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_REPASSWD_LOGIN);
         }
 
@@ -351,7 +351,7 @@ class BankAction extends AppAction
         }
 
         //$bankPasswd = BankModel::getInstance()->getUserInfo($userID, 'bankPasswd');
-        $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['phone', 'passwd'], "userID = {$userID}");
+        $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['phone', 'phonePasswd'], "userID = {$userID}");
 
         //验证密码格式 包含字母、数字以及下划线，且至少包含2种
         $myreg = "/^(?![0-9]+$)(?![_]+$)(?![a-zA-Z]+$)[A-Za-z_0-9]{1,}$/";
@@ -376,7 +376,7 @@ class BankAction extends AppAction
         }*/
 
         //验证密码不能等于登录密码
-        if(md5($newPasswd) == $resinfo['passwd']){
+        if(md5($newPasswd) == $resinfo['phonePasswd']){
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_REPASSWD_LOGIN);
         }
 

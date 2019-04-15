@@ -112,22 +112,70 @@ class BankAction extends AppAction
     public function changeBankPasswd($param)
     {
         $userID = (int)$param['userID'];
-        $oldPasswd = $param['oldPasswd'];
-        $newPasswd = $param['newPasswd'];
+        $oldPasswd = $param['oldPasswd']; //原始密码
+        $newPasswd = $param['newPasswd']; //新密码
+        $confirmpasswd = $param['confirmpasswd']; //再次输入新密码
+        $code = $param['code']; //验证码
 
-        $bankPasswd = BankModel::getInstance()->getUserInfo($userID, 'bankPasswd');
+        //判断参数不能为空
+        if (empty($param['userID']) || empty($param['oldPasswd']) || empty($param['code']) || empty($param['confirmpasswd']) || empty($param['newPasswd'])) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
+        }
+
+        //$bankPasswd = BankModel::getInstance()->getUserInfo($userID, 'bankPasswd');
+        $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['phone', 'passwd', 'bankpasswd'], "userID = {$userID}");
 
         // 原密码不正确
-        if ($bankPasswd != $oldPasswd) {
+        if ($resinfo['bankpasswd'] != $oldPasswd) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_OLDPASSWD_YES);
         }
 
+        //验证密码格式 包含字母、数字以及下划线，且至少包含2种
+        $myreg = "/^(?![0-9]+$)(?![_]+$)(?![a-zA-Z]+$)[A-Za-z_0-9]{1,}$/";
+        $res1 = preg_match($myreg, $newPasswd);
+        if (!$res1){
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER_GESHI);
+        }
+
+        //两次密码
+        if($newPasswd != $confirmpasswd){
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_REPASSWD_ATYPISM);
+        }
+
         // 检测长度
-        if (strlen($newPasswd) != self::BANK_PASSWD_LEN) {
+        if (strlen($newPasswd) < 8 || strlen($newPasswd) > 16) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_PASSWD_ISNUMBER);
         }
 
-        BankModel::getInstance()->updateUserInfo($userID, ['bankPasswd' => $newPasswd]);
+        // 检测邮箱
+        /*if (!preg_match('/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/', $email)) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_INCORRECT_MAILBOX_FORMAT);
+        }*/
+
+        //验证密码不能等于登录密码
+        if(md5($newPasswd) == $resinfo['passwd']){
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_REPASSWD_LOGIN);
+        }
+
+        //获取验证码信息
+        $phoneCodeInfo = PhoneModel::getInstance()->getPhoneCodeInfo($resinfo['phone'], 4);
+        $phoneCode = empty($phoneCodeInfo) ? '' : $phoneCodeInfo['code'];
+        $phoneTime = empty($phoneCodeInfo) ? 0 : (int)$phoneCodeInfo['time'];
+
+        if ($phoneCode !== $code) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BIND_PHONE_CODE);
+        }
+        // 验证验证码时间
+        if (time() - $phoneTime > self::CODE_INVALID_TIME) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BIND_PHONE_CODE_TOO);
+        }
+
+        // 检测长度
+        /*if (strlen($newPasswd) != self::BANK_PASSWD_LEN) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_PASSWD_ISNUMBER);
+        }*/
+
+        BankModel::getInstance()->updateUserInfo($userID, 'bankPasswd',"'".$newPasswd."'");
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT);
     }
 
@@ -276,19 +324,73 @@ class BankAction extends AppAction
     }
 
     /**
-     * 发送密码到邮箱
+     * 设置银行密码
      * @param $param
      */
     public function sendBankPasswd($param)
     {
         $userID = (int)$param['userID'];
+        $newPasswd = $param['newPasswd']; //新密码
+        $confirmpasswd = $param['confirmpasswd']; //再次输入新密码
+        $code = $param['code']; //验证码
 
-        $userInfo = BankModel::getInstance()->getUserInfo($userID, ['mail', 'bankPasswd']);
+        //判断参数不能为空
+        if (empty($param['userID']) || empty($param['code']) || empty($param['confirmpasswd']) || empty($param['newPasswd'])) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
+        }
 
-        $result = EmailModel::getInstance()->sendEmail($userInfo['mail'], '找回密码', "您的银行密码是【{$userInfo['bankPasswd']}】");
+        //$bankPasswd = BankModel::getInstance()->getUserInfo($userID, 'bankPasswd');
+        $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['phone', 'passwd'], "userID = {$userID}");
+
+        //验证密码格式 包含字母、数字以及下划线，且至少包含2种
+        $myreg = "/^(?![0-9]+$)(?![_]+$)(?![a-zA-Z]+$)[A-Za-z_0-9]{1,}$/";
+        $res1 = preg_match($myreg, $newPasswd);
+        if (!$res1){
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER_GESHI);
+        }
+
+        //两次密码
+        if($newPasswd != $confirmpasswd){
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_REPASSWD_ATYPISM);
+        }
+
+        // 检测长度
+        if (strlen($newPasswd) < 8 || strlen($newPasswd) > 16) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_PASSWD_ISNUMBER);
+        }
+
+        // 检测邮箱
+        /*if (!preg_match('/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/', $email)) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_INCORRECT_MAILBOX_FORMAT);
+        }*/
+
+        //验证密码不能等于登录密码
+        if(md5($newPasswd) == $resinfo['passwd']){
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_REPASSWD_LOGIN);
+        }
+
+        //获取验证码信息
+        $phoneCodeInfo = PhoneModel::getInstance()->getPhoneCodeInfo($resinfo['phone'], 4);
+        $phoneCode = empty($phoneCodeInfo) ? '' : $phoneCodeInfo['code'];
+        $phoneTime = empty($phoneCodeInfo) ? 0 : (int)$phoneCodeInfo['time'];
+
+        if ($phoneCode !== $code) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BIND_PHONE_CODE);
+        }
+        // 验证验证码时间
+        if (time() - $phoneTime > self::CODE_INVALID_TIME) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BIND_PHONE_CODE_TOO);
+        }
+
+        // 检测长度
+        /*if (strlen($newPasswd) != self::BANK_PASSWD_LEN) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_PASSWD_ISNUMBER);
+        }*/
 
         //银行密码统计信息
         UserModel::getInstance()->addWebUserInfoValue($userID,'passwordBankCount');
-        AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $result);
+
+        BankModel::getInstance()->updateUserInfo($userID, 'bankPasswd',"'".$newPasswd."'");
+        AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT);
     }
 }

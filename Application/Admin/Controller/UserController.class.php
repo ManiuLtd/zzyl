@@ -2161,7 +2161,8 @@ class UserController extends AdminController
         $dbUserList = M()
             ->table('user_cash_application as U')
             ->where($where)
-            ->field('U.Id, U.userID, U.nickname, U.create_time, U.process_time, U.cash_account_type, U.cash_status, U.cash_money, U.cash_withdrawal, U.cash_rate, U.cash_remarks')
+            ->field('U.Id, U.userID, U.transferable_amount, U.remarks, U.nickname, U.create_time, U.process_time, U.cash_account_type, U.cash_status, U.cash_money, U.cash_withdrawal, U.cash_rate, U.cash_remarks')
+            ->order('U.Id desc')
             ->limit($page->firstRow . ',' . $page->listRows)
             ->select();
 

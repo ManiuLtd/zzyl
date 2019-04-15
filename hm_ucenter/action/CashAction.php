@@ -194,12 +194,28 @@ class CashAction extends AppAction
                 $accountInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_user_cash_bank, $arrayKeyValue, $where);
                 if(empty($accountInfo)) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_KEEP_ADD_BANK);
                 $adddata['cash_remarks'] = $accountInfo['real_name'].' -- '.$accountInfo['bank_number'].'['.$accountInfo['opening_bank'].']';
+                //实际应转账金额
+                $adddata['transferable_amount'] = $param['cash_money'];
+                $adddata['remarks'] = '提现到银行卡';
             }elseif ($param['cash_account_type'] == 2){  //提现到支付宝
                 $arrayKeyValue = ['bank_number','opening_bank','real_name'];
                 $where = "userID = {$param['userID']} and account_type = 2";
                 $accountInfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_user_cash_bank, $arrayKeyValue, $where);
                 if(empty($accountInfo)) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_KEEP_ADD_ZFB);
                 $adddata['cash_remarks'] = $accountInfo['real_name'].' -- '.$accountInfo['bank_number'];
+                //查询出用户今天是否有提现到支付宝
+                $start_time = strtotime(date('Y-m-d', time()));
+                $is_cash_id = DBManager::getMysql()->selectRow(MysqlConfig::Table_user_cash_application, ['Id'], "create_time > {$start_time}");
+
+                if(empty($is_cash_id)){ //今天没有提现过
+                    //实际应转账金额
+                    $adddata['transferable_amount'] = $param['cash_money'];
+                    $adddata['remarks'] = '今天首次提现到支付宝,免手续费';
+                }else{
+                    //实际应转账金额
+                    $adddata['transferable_amount'] = $param['cash_money'] * 0.98;
+                    $adddata['remarks'] = '今天非首次提现到支付宝,需收取手续费';
+                }
             }
 
             //获取用户名称
@@ -223,7 +239,7 @@ class CashAction extends AppAction
             $adddata['create_time'] = time();
             $adddata['nickname'] = $userinfo['name'];
             $adddata['cash_withdrawal'] = $param['cash_money'];
-            $adddata['cash_rate'] = 0.03;
+            $adddata['cash_rate'] = 0.02;
 
             //记录日志
             LogHelper::printLog(self::LOG_TAG_NAME, $adddata);

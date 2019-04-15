@@ -68,6 +68,8 @@
                                     <th>提现金额</th>
                                     <th>兑换金币</th>
                                     <th>费率</th>
+                                    <th>实际应转账金额</th>
+                                    <th>备注</th>
                                     <th>提现信息</th>
                                     <th>操作</th>
                                 </tr>
@@ -91,6 +93,8 @@
                                         <td>{$_data.cash_money}</td>
                                         <td>{$_data.cash_withdrawal}</td>
                                         <td>{$_data.cash_rate}</td>
+                                        <td>{$_data.transferable_amount}</td>
+                                        <td>{$_data.remarks}</td>
                                         <td>{$_data.cash_remarks}</td>
                                         <td>
                                           <if condition="$_data.cash_status eq 1">

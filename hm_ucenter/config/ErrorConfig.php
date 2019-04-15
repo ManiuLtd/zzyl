@@ -43,6 +43,7 @@ final class ErrorConfig {
 	const ERROR_MSG_BANK_PASSWD_YES = '密码不正确';
 	const ERROR_MSG_BANK_REPASSWD_ATYPISM = '两次密码输入不一致';
 	const ERROR_MSG_BANK_OLDPASSWD_YES = '原密码输入不正确';
+    const ERROR_MSG_BANK_OLDPASSWD_OLD_NEW = '新密码与原始密码不能一致';
 	const ERROR_MSG_BANK_PASSWD_ISNUMBER = '银行密码长度必须在8到16个字符之间';
     const ERROR_MSG_BANK_REPASSWD_LOGIN = '不能与游戏登录密码的一致';
 	const ERROR_MSG_INCORRECT_MAILBOX_FORMAT = '邮箱格式不正确';

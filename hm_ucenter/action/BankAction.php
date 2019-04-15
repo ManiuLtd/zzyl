@@ -130,6 +130,12 @@ class BankAction extends AppAction
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_OLDPASSWD_YES);
         }
 
+        //新密码和原始密码不能一致
+        if($resinfo['bankpasswd'] == $newPasswd){
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_OLDPASSWD_OLD_NEW);
+        }
+
+
         //验证密码格式 包含字母、数字以及下划线，且至少包含2种
         $myreg = "/^(?![0-9]+$)(?![_]+$)(?![a-zA-Z]+$)[A-Za-z_0-9]{1,}$/";
         $res1 = preg_match($myreg, $newPasswd);
@@ -206,8 +212,8 @@ class BankAction extends AppAction
         $money = $money > $userInfo['money'] ? $userInfo['money'] : $money;
 
         //提现金额必须是10的整数倍
-        $keyword = $money/1000;
-        if(!preg_match("/^[1-9][0-9]*$/",$keyword)) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_KEEP_BOTTOM_TEN);
+        /*$keyword = $money/1000;
+        if(!preg_match("/^[1-9][0-9]*$/",$keyword)) AppModel::returnJson(ErrorConfig::ERROR_CODE, '存钱必须是10的整数倍');*/
 
 
         // 操作记录
@@ -232,13 +238,13 @@ class BankAction extends AppAction
         $config = BankModel::getInstance()->getConfig();
 
         // 最低取款
-        if ($money < $config['bankMinTakeMoney']) {
+        if ($money/100 < $config['bankMinTakeMoney']) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, "取款金额不能低于{$config['bankMinTakeMoney']}金币");
         }
 
         // 银行最低钱
-        if ($userInfo['bankMoney'] < $config['bankMinTakeMoney']) {
-            AppModel::returnJson(ErrorConfig::ERROR_CODE, "取款金额不能低于{$config['bankMinTakeMoney']}金币");
+        if ($userInfo['bankMoney'] < $money) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, "取款金币超出银行存款金币");
         }
 
         $money = $money > $userInfo['bankMoney'] ? $userInfo['bankMoney'] : $money;

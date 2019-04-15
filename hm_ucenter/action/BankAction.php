@@ -115,10 +115,10 @@ class BankAction extends AppAction
         $oldPasswd = $param['oldPasswd']; //原始密码
         $newPasswd = $param['newPasswd']; //新密码
         $confirmpasswd = $param['confirmpasswd']; //再次输入新密码
-        $code = $param['code']; //验证码
+        //$code = $param['code']; //验证码
 
         //判断参数不能为空
-        if (empty($param['userID']) || empty($param['oldPasswd']) || empty($param['code']) || empty($param['confirmpasswd']) || empty($param['newPasswd'])) {
+        if (empty($param['userID']) || empty($param['oldPasswd']) || empty($param['confirmpasswd']) || empty($param['newPasswd'])) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
         }
 
@@ -158,7 +158,7 @@ class BankAction extends AppAction
         }
 
         //获取验证码信息
-        $phoneCodeInfo = PhoneModel::getInstance()->getPhoneCodeInfo($resinfo['phone'], 4);
+        /*$phoneCodeInfo = PhoneModel::getInstance()->getPhoneCodeInfo($resinfo['phone'], 4);
         $phoneCode = empty($phoneCodeInfo) ? '' : $phoneCodeInfo['code'];
         $phoneTime = empty($phoneCodeInfo) ? 0 : (int)$phoneCodeInfo['time'];
 
@@ -168,7 +168,7 @@ class BankAction extends AppAction
         // 验证验证码时间
         if (time() - $phoneTime > self::CODE_INVALID_TIME) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BIND_PHONE_CODE_TOO);
-        }
+        }*/
 
         // 检测长度
         /*if (strlen($newPasswd) != self::BANK_PASSWD_LEN) {

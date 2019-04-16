@@ -404,4 +404,18 @@ class BankAction extends AppAction
         BankModel::getInstance()->updateUserInfo($userID, 'bankPasswd',"'".$newPasswd."'");
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT);
     }
+
+    /**
+     * 银行登录
+     * @param $param
+     */
+    public function banklogin($param)
+    {
+        $userID = (int)$param['userID']; // 用户ID
+        $password = $param['password']; //密码
+        if(empty($userID) || empty($password)) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
+        $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['bankpasswd'], "userID = {$userID}");
+        if($password != $resinfo['bankpasswd']) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_PASSWD_YES);
+        AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT);
+    }
 }

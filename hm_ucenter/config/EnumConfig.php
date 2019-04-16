@@ -74,7 +74,7 @@ final class EnumConfig
         'BACK_CLUB_RECHARGE' => 1019,    // 后台俱乐部充值兑换
         'EXIT_CLUB' => 1020,             // 退出俱乐部
         'SYSTEM_MAIL' => 1021,           // 系统邮件
-        'CASH_WITHDRAWAL' => 1022,           // 金币兑换申请
+        'CASH_WITHDRAWAL' => 1025,           // 金币兑换申请
         'CASH_WITHDRAWAL_JUJUE' => 1023,           // 金币兑换申请审批拒绝
         'CASH_WITHDRAWAL_TXDXXZH' => 1024,           // 代理提现到游戏账户
     );

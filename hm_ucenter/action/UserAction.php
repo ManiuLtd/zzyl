@@ -424,10 +424,8 @@ class UserAction extends AppAction
             AppModel::returnJson(ErrorConfig::ERROR_CODE, '旧密码不正确', $userInfo['phonePasswd']);
         }
         //新密码不能与银行密码相同
-        LogHelper::printLog('PASS_WORD', '参数444'.json_encode($userInfo));
-        LogHelper::printLog('PASS_WORD', '参数444'.json_encode($params));
-        LogHelper::printLog('PASS_WORD', '参数444'.json_encode($password));
-        if($password == md5($userInfo['bankPasswd'])){
+        $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['bankpasswd'], "userID = {$userID}");
+        if($password == md5($resinfo['bankpasswd'])){
             AppModel::returnJson(ErrorConfig::ERROR_CODE, '新密码不能与银行密码相同');
         }
         $data = ['phonePasswd' => $password];

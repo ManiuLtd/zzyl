@@ -431,6 +431,8 @@ class UserAction extends AppAction
         }*/
 
         $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['bankpasswd'], "userID = {$userID}");
+        LogHelper::printLog('PASS_WORD', '参数444'.json_encode($resinfo));
+        LogHelper::printLog('PASS_WORD', '参数444'.json_encode($params));
         LogHelper::printLog('PASS_WORD', '参数555'.$password);
         LogHelper::printLog('PASS_WORD', '参数555'.md5($resinfo['bankpasswd']));
         if($password == md5($resinfo['bankpasswd'])){

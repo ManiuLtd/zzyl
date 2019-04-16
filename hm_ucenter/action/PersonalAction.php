@@ -43,8 +43,8 @@ class PersonalAction extends AppAction
      */
     public function showAccountList()
     {
-        $resinfo['account_weixin'] = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_collection_account, ['account_name'], 'type = 1 and status = 1');
-        $resinfo['account_qq'] = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_collection_account, ['account_name'], 'type = 2 and status = 1');
+        $resinfo['account_weixin'] = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_collection_account, ['account_name','wx_qq_name'], 'type = 1 and status = 1');
+        $resinfo['account_qq'] = DBManager::getMysql()->selectAll(MysqlConfig::Table_web_collection_account, ['account_name','wx_qq_name'], 'type = 2 and status = 1');
 
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT,$resinfo);
 

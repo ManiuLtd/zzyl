@@ -46,13 +46,14 @@ class PersonalController extends AdminController
     public function account_add()
     {
         if (IS_POST) {
-            if(empty(I('account_name')) || empty(I('type'))) $this->error('参数不能为空');
+            if(empty(I('account_name')) || empty(I('type')) || empty(I('wx_qq_name'))) $this->error('参数不能为空');
             //分组名不能重复
             $group = M('collection_account')->where(array('account_name' => I('account_name')))->getField('id');
             if ($group) {
                 $this->error('该收款账户已经存在，不可添加');
             }
 
+            $data['wx_qq_name'] = I('wx_qq_name');
             $data['account_name'] = I('account_name');
             $data['type'] = I('type');
             $data['create_time'] = time();
@@ -72,13 +73,14 @@ class PersonalController extends AdminController
     public function account_edit()
     {
         if (IS_POST) {
-            if(empty(I('account_name')) || empty(I('type'))) $this->error('参数不能为空');
+            if(empty(I('account_name')) || empty(I('type')) || empty(I('wx_qq_name'))) $this->error('参数不能为空');
             //分组名不能重复
             $group = M('collection_account')->where(array('account_name' => I('account_name')))->getField('id');
             if ($group) {
                 $this->error('该收款账户已经存在，不能编辑为该账户名称');
             }
 
+            $data['wx_qq_name'] = I('wx_qq_name');
             $data['account_name'] = I('account_name');
             $data['type'] = I('type');
             $data['id'] = intval(I('id'));

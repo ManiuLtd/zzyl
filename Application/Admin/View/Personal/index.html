@@ -26,6 +26,7 @@
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
+                                    <th>昵称</th>
                                     <th>账户名称</th>
                                     <th>账户类型</th>
                                     <th>是否禁用</th>
@@ -35,6 +36,7 @@
                                 <tbody>
                                 <volist name="_data" id="_data">
                                     <tr>
+                                        <td>{$_data.wx_qq_name}</td>
                                         <td>{$_data.account_name}</td>
                                         <td>
                                             <if condition="($_data.type eq 1)">

@@ -291,6 +291,13 @@ class PhoneAction extends AppAction
         if (time() - $phoneTime > self::CODE_INVALID_TIME) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BIND_PHONE_CODE_TOO);
         }
+
+        //新密码不能与银行密码相同
+        $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['bankpasswd'], "phone = {$phone}");
+        if($password == md5($resinfo['bankpasswd'])){
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, '新密码不能与银行密码相同');
+        }
+        
         PhoneModel::getInstance()->updatePhonePassword($phone, $password);
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::ERROR_MSG_BIND_SUCCESS);
     }

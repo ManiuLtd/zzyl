@@ -427,7 +427,7 @@ class UserAction extends AppAction
         LogHelper::printLog('PASS_WORD', '参数444'.json_encode($userInfo));
         LogHelper::printLog('PASS_WORD', '参数444'.json_encode($params));
         LogHelper::printLog('PASS_WORD', '参数444'.json_encode($password));
-        if($password == md5($userInfo['bankpasswd'])){
+        if($password == md5($userInfo['phonePasswd'])){
             AppModel::returnJson(ErrorConfig::ERROR_CODE, '新密码不能与银行密码相同');
         }
         /*

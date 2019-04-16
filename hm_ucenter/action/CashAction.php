@@ -228,7 +228,7 @@ class CashAction extends AppAction
             $userinfo = UserModel::getInstance()->getUserInfo($userID, $needData);
 
             //判断兑换金额有没有超出携带金额
-            LogHelper::printLog(self::LOG_TAG_NAME, '用户信息'.$userinfo);
+            LogHelper::printLog(self::LOG_TAG_NAME, '用户信息'.json_encode($userinfo));
             LogHelper::printLog(self::LOG_TAG_NAME, '提现金额'.$param['cash_money']);
             if(($param['cash_money'] * 100) > $userinfo['money']) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BEYOND_MONEY);
             //兑换金额100起兑换

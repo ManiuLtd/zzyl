@@ -121,8 +121,9 @@ final class EnumConfig
         self::E_ResourceChangeReason['BACK_CLUB_RECHARGE'] => '后台充值兑换',
         self::E_ResourceChangeReason['EXIT_CLUB'] => '退出俱乐部',
         self::E_ResourceChangeReason['SYSTEM_MAIL'] => '系统邮件',
-        self::E_ResourceChangeReason['CASH_WITHDRAWAL'] => '用户提现申请',
-        self::E_ResourceChangeReason['CASH_WITHDRAWAL_JUJUE'] => '提现申请审批拒绝',
+        self::E_ResourceChangeReason['CASH_WITHDRAWAL'] => '金币兑换申请',
+        self::E_ResourceChangeReason['CASH_WITHDRAWAL_JUJUE'] => '金币兑换审批拒绝',
+        self::E_ResourceChangeReason['CASH_WITHDRAWAL_TXDXXZH'] => '代理提现到游戏账户',
     );
 
     //小红点类型

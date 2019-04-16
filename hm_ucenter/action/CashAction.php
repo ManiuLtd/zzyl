@@ -276,7 +276,7 @@ class CashAction extends AppAction
             }*/
             $changeFireCoin = FunctionHelper::MoneyInput($param['cash_money'], 1);
 
-            $res = UserCashBank::getInstance()->sendMessage($param['userID'], EnumConfig::E_ResourceType['MONEY'], -$changeFireCoin, EnumConfig::E_ResourceChangeReason['GOLD_EXCHANGE']);
+            $res = UserCashBank::getInstance()->sendMessage($param['userID'], EnumConfig::E_ResourceType['MONEY'], -$changeFireCoin, EnumConfig::E_ResourceChangeReason['CASH_WITHDRAWAL']);
             if (empty($res)) {
                 DBManager::getMysql()->rollback();
                 AppModel::returnJson(ErrorConfig::ERROR_CODE, '申请提现失败');

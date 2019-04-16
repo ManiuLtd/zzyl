@@ -273,6 +273,7 @@ class RewardsPoolController extends AgentController
             }
         }
 
+        $arrWhere['a.type'] = 0;
         $res = $this->getList($arrWhere, $page, $limit);
         $listCommission = $res['_data'];
 

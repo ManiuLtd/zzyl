@@ -219,11 +219,17 @@ class CashAction extends AppAction
             }
 
             //获取用户名称
-            $arrayKeyValue = ['name','money'];
+            /*$arrayKeyValue = ['name','money'];
             $where = "userID = {$param['userID']}";
-            $userinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, $arrayKeyValue, $where);
+            $userinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, $arrayKeyValue, $where);*/
+
+            $userID = $param['userID'];
+            $needData = ['name', 'money'];
+            $userinfo = UserModel::getInstance()->getUserInfo($userID, $needData);
 
             //判断兑换金额有没有超出携带金额
+            LogHelper::printLog(self::LOG_TAG_NAME, '用户信息'.$userinfo);
+            LogHelper::printLog(self::LOG_TAG_NAME, '提现金额'.$param['cash_money']);
             if(($param['cash_money'] * 100) > $userinfo['money']) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BEYOND_MONEY);
             //兑换金额100起兑换
             if($param['cash_money'] < 100) AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_LOWER_THAN_MONEY);

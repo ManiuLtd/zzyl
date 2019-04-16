@@ -413,7 +413,7 @@ class UserAction extends AppAction
         if ($password == $oldPassword) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, '新旧密码不能相同');
         }
-        $userInfo = UserModel::getInstance()->getUserInfo($userID, ['userID', 'phone', 'phonePasswd']);
+        $userInfo = UserModel::getInstance()->getUserInfo($userID, ['userID', 'phone', 'phonePasswd', 'bankPasswd']);
         if (empty($userInfo['userID'])) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, '该用户不存在');
         }
@@ -422,6 +422,10 @@ class UserAction extends AppAction
         }
         if ($oldPassword != $userInfo['phonePasswd']) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, '旧密码不正确', $userInfo['phonePasswd']);
+        }
+        //新密码不能与银行密码相同
+        if($password == md5($userInfo['bankPasswd'])){
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, '新密码不能与银行密码相同');
         }
         $data = ['phonePasswd' => $password];
         $res = UserModel::getInstance()->updateUserInfo($userID, $data);

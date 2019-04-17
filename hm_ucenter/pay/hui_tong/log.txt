@@ -1,0 +1,36 @@
+2019-04-17 14:17:26   ==========收银台置单=============
+2019-04-17 14:17:26   需签名报文末尾未加密钥串:Amount=1&MerNo=23049043&NotifyUrl=http://xxx.xxx.com/AsynCallBack.php&PdtName=虚拟金币&Remark=测试&ReqTime=20190417141726&TxCode=setupord&TxSN=20190417141726603977122005&Version=1.0
+2019-04-17 14:17:26   生成的签名:de79e77a348424701da9f8d1c7af2ab2
+2019-04-17 14:17:26   转换请求数据中特殊字段的值为Base64的报文:Amount=1&MerNo=23049043&NotifyUrl=aHR0cDovL3h4eC54eHguY29tL0FzeW5DYWxsQmFjay5waHA=&PdtName=虚拟金币&Remark=测试&ReqTime=20190417141726&SignMethod=MD5&Signature=de79e77a348424701da9f8d1c7af2ab2&TxCode=setupord&TxSN=20190417141726603977122005&Version=1.0
+2019-04-17 14:17:26   Url编码后的请求报文:Version=1.0&SignMethod=MD5&TxCode=setupord&MerNo=23049043&TxSN=20190417141726603977122005&Amount=1&PdtName=%E8%99%9A%E6%8B%9F%E9%87%91%E5%B8%81&Remark=%E6%B5%8B%E8%AF%95&NotifyUrl=aHR0cDovL3h4eC54eHguY29tL0FzeW5DYWxsQmFjay5waHA%3D&ReqTime=20190417141726&Signature=de79e77a348424701da9f8d1c7af2ab2
+2019-04-17 14:17:27   返回数据:Status=1&PlatTxSN=20190417141725113000&RspMsg=%E4%BA%A4%E6%98%93%E6%88%90%E5%8A%9F&Amount=1&Token=135ad1a11e934e1baaeac38857b5aba2&SignMethod=MD5&Remark=%E6%B5%8B%E8%AF%95&ReqTime=20190417141726&PdtName=%E8%99%9A%E6%8B%9F%E9%87%91%E5%B8%81&MerNo=23049043&NotifyUrl=aHR0cDovL3h4eC54eHguY29tL0FzeW5DYWxsQmFjay5waHA%3D&Signature=5a3de9d75026c4aa59b21c7cc96876f3&TxSN=20190417141726603977122005&RspCod=00000
+2019-04-17 14:17:27   URL解码后返回数据:Amount=1&MerNo=23049043&NotifyUrl=aHR0cDovL3h4eC54eHguY29tL0FzeW5DYWxsQmFjay5waHA=&PdtName=虚拟金币&PlatTxSN=20190417141725113000&Remark=测试&ReqTime=20190417141726&RspCod=00000&RspMsg=交易成功&SignMethod=MD5&Signature=5a3de9d75026c4aa59b21c7cc96876f3&Status=1&Token=135ad1a11e934e1baaeac38857b5aba2&TxSN=20190417141726603977122005
+2019-04-17 14:17:27   转换返回数据中Base64的值:Amount=1&MerNo=23049043&NotifyUrl=http://xxx.xxx.com/AsynCallBack.php&PdtName=虚拟金币&PlatTxSN=20190417141725113000&Remark=测试&ReqTime=20190417141726&RspCod=00000&RspMsg=交易成功&SignMethod=MD5&Signature=5a3de9d75026c4aa59b21c7cc96876f3&Status=1&Token=135ad1a11e934e1baaeac38857b5aba2&TxSN=20190417141726603977122005
+2019-04-17 14:17:27   签名字符串未加加密串:Amount=1&MerNo=23049043&NotifyUrl=http://xxx.xxx.com/AsynCallBack.php&PdtName=虚拟金币&PlatTxSN=20190417141725113000&Remark=测试&ReqTime=20190417141726&RspCod=00000&RspMsg=交易成功&Status=1&Token=135ad1a11e934e1baaeac38857b5aba2&TxSN=20190417141726603977122005
+2019-04-17 14:17:27   生成的签名:5a3de9d75026c4aa59b21c7cc96876f3
+2019-04-17 14:17:27   验证签名成功:
+2019-04-17 14:17:27   置单成功 获取token成功
+2019-04-17 14:17:27   需签名报文末尾未加密钥串:ExpireTime=20190417142227&MerNo=23049043&Token=135ad1a11e934e1baaeac38857b5aba2&UserId=00001&UserIdType=USEID&Version=1.0
+2019-04-17 14:17:27   生成的签名:c3900af01b015f57a7686d3447e7ad01
+2019-04-17 14:17:27   转换请求数据中特殊字段的值为Base64的报文:ExpireTime=20190417142227&MerNo=23049043&SignMethod=MD5&Signature=c3900af01b015f57a7686d3447e7ad01&Token=135ad1a11e934e1baaeac38857b5aba2&UserId=00001&UserIdType=USEID&Version=1.0
+2019-04-17 14:17:27   Url编码后的请求报文:Version=1.0&SignMethod=MD5&MerNo=23049043&Token=135ad1a11e934e1baaeac38857b5aba2&ExpireTime=20190417142227&UserId=00001&UserIdType=USEID&Signature=c3900af01b015f57a7686d3447e7ad01
+2019-04-17 14:17:27   支付Url:http://apipay.juheb2b.com/payshow/index?Version=1.0&SignMethod=MD5&MerNo=23049043&Token=135ad1a11e934e1baaeac38857b5aba2&ExpireTime=20190417142227&UserId=00001&UserIdType=USEID&Signature=c3900af01b015f57a7686d3447e7ad01
+2019-04-17 14:17:27   支付链接：http://apipay.juheb2b.com/payshow/index?Version=1.0&SignMethod=MD5&MerNo=23049043&Token=135ad1a11e934e1baaeac38857b5aba2&ExpireTime=20190417142227&UserId=00001&UserIdType=USEID&Signature=c3900af01b015f57a7686d3447e7ad01
+2019-04-17 14:18:07   ==========收银台置单=============
+2019-04-17 14:18:07   需签名报文末尾未加密钥串:Amount=1&MerNo=23049043&NotifyUrl=http://xxx.xxx.com/AsynCallBack.php&PdtName=虚拟金币&Remark=测试&ReqTime=20190417141807&TxCode=setupord&TxSN=20190417141807453314122005&Version=1.0
+2019-04-17 14:18:07   生成的签名:22ac075ad699cd290178507719e7f1ec
+2019-04-17 14:18:07   转换请求数据中特殊字段的值为Base64的报文:Amount=1&MerNo=23049043&NotifyUrl=aHR0cDovL3h4eC54eHguY29tL0FzeW5DYWxsQmFjay5waHA=&PdtName=虚拟金币&Remark=测试&ReqTime=20190417141807&SignMethod=MD5&Signature=22ac075ad699cd290178507719e7f1ec&TxCode=setupord&TxSN=20190417141807453314122005&Version=1.0
+2019-04-17 14:18:07   Url编码后的请求报文:Version=1.0&SignMethod=MD5&TxCode=setupord&MerNo=23049043&TxSN=20190417141807453314122005&Amount=1&PdtName=%E8%99%9A%E6%8B%9F%E9%87%91%E5%B8%81&Remark=%E6%B5%8B%E8%AF%95&NotifyUrl=aHR0cDovL3h4eC54eHguY29tL0FzeW5DYWxsQmFjay5waHA%3D&ReqTime=20190417141807&Signature=22ac075ad699cd290178507719e7f1ec
+2019-04-17 14:18:07   返回数据:Status=1&PlatTxSN=20190417141805136000&RspMsg=%E4%BA%A4%E6%98%93%E6%88%90%E5%8A%9F&Amount=1&Token=483e23e925364c0eb23fab19e32e9e64&SignMethod=MD5&Remark=%E6%B5%8B%E8%AF%95&ReqTime=20190417141807&PdtName=%E8%99%9A%E6%8B%9F%E9%87%91%E5%B8%81&MerNo=23049043&NotifyUrl=aHR0cDovL3h4eC54eHguY29tL0FzeW5DYWxsQmFjay5waHA%3D&Signature=5186f4bd186d0cc31d98f7c5b35e7972&TxSN=20190417141807453314122005&RspCod=00000
+2019-04-17 14:18:07   URL解码后返回数据:Amount=1&MerNo=23049043&NotifyUrl=aHR0cDovL3h4eC54eHguY29tL0FzeW5DYWxsQmFjay5waHA=&PdtName=虚拟金币&PlatTxSN=20190417141805136000&Remark=测试&ReqTime=20190417141807&RspCod=00000&RspMsg=交易成功&SignMethod=MD5&Signature=5186f4bd186d0cc31d98f7c5b35e7972&Status=1&Token=483e23e925364c0eb23fab19e32e9e64&TxSN=20190417141807453314122005
+2019-04-17 14:18:07   转换返回数据中Base64的值:Amount=1&MerNo=23049043&NotifyUrl=http://xxx.xxx.com/AsynCallBack.php&PdtName=虚拟金币&PlatTxSN=20190417141805136000&Remark=测试&ReqTime=20190417141807&RspCod=00000&RspMsg=交易成功&SignMethod=MD5&Signature=5186f4bd186d0cc31d98f7c5b35e7972&Status=1&Token=483e23e925364c0eb23fab19e32e9e64&TxSN=20190417141807453314122005
+2019-04-17 14:18:07   签名字符串未加加密串:Amount=1&MerNo=23049043&NotifyUrl=http://xxx.xxx.com/AsynCallBack.php&PdtName=虚拟金币&PlatTxSN=20190417141805136000&Remark=测试&ReqTime=20190417141807&RspCod=00000&RspMsg=交易成功&Status=1&Token=483e23e925364c0eb23fab19e32e9e64&TxSN=20190417141807453314122005
+2019-04-17 14:18:07   生成的签名:5186f4bd186d0cc31d98f7c5b35e7972
+2019-04-17 14:18:07   验证签名成功:
+2019-04-17 14:18:07   置单成功 获取token成功
+2019-04-17 14:18:07   需签名报文末尾未加密钥串:ExpireTime=20190417142307&MerNo=23049043&Token=483e23e925364c0eb23fab19e32e9e64&UserId=00001&UserIdType=USEID&Version=1.0
+2019-04-17 14:18:07   生成的签名:ddf39933e546162bc538f11cf9d08e62
+2019-04-17 14:18:07   转换请求数据中特殊字段的值为Base64的报文:ExpireTime=20190417142307&MerNo=23049043&SignMethod=MD5&Signature=ddf39933e546162bc538f11cf9d08e62&Token=483e23e925364c0eb23fab19e32e9e64&UserId=00001&UserIdType=USEID&Version=1.0
+2019-04-17 14:18:07   Url编码后的请求报文:Version=1.0&SignMethod=MD5&MerNo=23049043&Token=483e23e925364c0eb23fab19e32e9e64&ExpireTime=20190417142307&UserId=00001&UserIdType=USEID&Signature=ddf39933e546162bc538f11cf9d08e62
+2019-04-17 14:18:07   支付Url:http://apipay.juheb2b.com/payshow/index?Version=1.0&SignMethod=MD5&MerNo=23049043&Token=483e23e925364c0eb23fab19e32e9e64&ExpireTime=20190417142307&UserId=00001&UserIdType=USEID&Signature=ddf39933e546162bc538f11cf9d08e62
+2019-04-17 14:18:07   支付链接：http://apipay.juheb2b.com/payshow/index?Version=1.0&SignMethod=MD5&MerNo=23049043&Token=483e23e925364c0eb23fab19e32e9e64&ExpireTime=20190417142307&UserId=00001&UserIdType=USEID&Signature=ddf39933e546162bc538f11cf9d08e62

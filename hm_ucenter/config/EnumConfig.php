@@ -380,6 +380,7 @@ final class EnumConfig
         'HUI_FU_BAO_ZL' => 7,
         'MA_FU' => 8,
         'ZHI_FU_BAO' => 9,
+        'HUI_TONG' => 10, //汇通支付
     );
     //支付类型名
     const E_PayTypeName = array(

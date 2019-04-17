@@ -1874,7 +1874,7 @@ CREATE TABLE `web_pay_config` (
 
 LOCK TABLES `web_pay_config` WRITE;
 /*!40000 ALTER TABLE `web_pay_config` DISABLE KEYS */;
-INSERT INTO `web_pay_config` VALUES (1,'苹果支付','wx624ff377019b69a1','1487308352','12345678123456781234567812345aab',1,'12311','12','','1',0),(2,'微信支付','wx624ff377019b69a1','1487308352','12345678123456781234567812345aab',1,'','http://ht.szhuomei.com/hm_ucenter/pay/hui_fu_bao/notify.php','','1',0),(3,'汇付宝','2112482','2112482','C53514AFB85F443BAE134E90',0,'','http://ht.szhuomei.com/hm_ucenter/pay/wei_xin/notify.php','http://','1',1),(4,'旺实富','69018071165702','69018071165702','046909094053n7SiSWYr',1,'','http://ht.szhuomei.com/hm_ucenter/pay/wang_shi_fu/notify.php','http://','1',1);
+INSERT INTO `web_pay_config` VALUES (1,'苹果支付','wx624ff377019b69a1','1487308352','12345678123456781234567812345aab',1,'12311','12','','1',0),(2,'微信支付','wx624ff377019b69a1','1487308352','12345678123456781234567812345aab',1,'','http://ht.szhuomei.com/hm_ucenter/pay/hui_fu_bao/Notify.php','','1',0),(3,'汇付宝','2112482','2112482','C53514AFB85F443BAE134E90',0,'','http://ht.szhuomei.com/hm_ucenter/pay/wei_xin/Notify.php','http://','1',1),(4,'旺实富','69018071165702','69018071165702','046909094053n7SiSWYr',1,'','http://ht.szhuomei.com/hm_ucenter/pay/wang_shi_fu/Notify.php','http://','1',1);
 /*!40000 ALTER TABLE `web_pay_config` ENABLE KEYS */;
 UNLOCK TABLES;
 

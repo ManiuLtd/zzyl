@@ -398,6 +398,6 @@ final class LogHelper
         curl_setopt ($ch, CURLOPT_HTTPHEADER, array("Expect:"));
         $return = curl_exec ( $ch );
         curl_close ( $ch );
-        var_export($return);
+        //var_export($return);
     }
 }

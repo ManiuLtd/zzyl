@@ -17,6 +17,8 @@ use pay\wei_xin\WeiXinPay;
 use pay\xin_bao\XinBaoPay;
 use pay\ma_fu\MaFuPay;
 use pay\zhi_fu_bao\ZhiFuBaoPay;
+use pay\hui_tong\HuiTongPay;
+use pay\hui_tong\Notify;
 
 /**
  * 支付业务
@@ -103,6 +105,48 @@ class PayAction extends AppAction
         if (!UserModel::getInstance()->isUserExists($userID)) {
             return ['code' => ErrorConfig::ERROR_CODE, 'msg' => '用户不存在'];
         }
+    }
+
+    /**
+     * 汇通支付
+     * @param $params
+     */
+    public function huitongPay($params)
+    {
+        if (empty($param['userID']) || empty($param['goodsID'])) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
+        }
+        $res = $this->verifyThirdPay($params);
+        if (ErrorConfig::ERROR_CODE == $res['code']) {
+            AppModel::returnJson(ErrorConfig::ERROR_CODE, $res['msg']);
+        }
+
+        $pay_result = $this->doPayPrepare(10, $params);
+        LogHelper::printDebug(['payresult' => $pay_result, 'type' => 10, 'params' => $params]);
+        if ($pay_result['status'] == ErrorConfig::SUCCESS_CODE) {
+            $pay_result['data']['pay_type'] = 10;
+            $this->returnPayResult($pay_result);
+        }
+
+        AppModel::returnJson(ErrorConfig::ERROR_CODE, "支付失败");
+        $this->returnPayResult($pay_result);
+    }
+
+    /**
+     * 汇通支付  回调通知
+     * @param $params
+     */
+    public function huitong_callback()
+    {
+        $result = file_get_contents('php://input');
+        LogHelper::printLog('PAY', '回调返回参数111'.$result);
+        LogHelper::printLog('PAY', '回调返回参数222'.json_encode($result));
+        $callbackObj = Notify::getInstance();
+        $callbackObj->notify_callback();
+        /*$callbackObj = Notify::getInstance();
+        $callbackObj->updata_order('20190417134701811605122005');
+        AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT);*/
+
     }
 
     /**
@@ -200,6 +244,9 @@ class PayAction extends AppAction
                 break;
             case EnumConfig::E_PayType['ZHI_FU_BAO']:
                 $pay_result = $this->doPay($params, ZhiFuBaoPay::getInstance());
+                break;
+            case EnumConfig::E_PayType['HUI_TONG']:
+                $pay_result = $this->doPay($params, HuiTongPay::getInstance());
                 break;
             default:
                 AppModel::returnJson(ErrorConfig::ERROR_CODE, "sdk不存在");

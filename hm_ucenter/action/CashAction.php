@@ -205,7 +205,7 @@ class CashAction extends AppAction
                 $adddata['cash_remarks'] = $accountInfo['real_name'].' -- '.$accountInfo['bank_number'];
                 //查询出用户今天是否有提现到支付宝
                 $start_time = strtotime(date('Y-m-d', time()));
-                $is_cash_id = DBManager::getMysql()->selectRow(MysqlConfig::Table_user_cash_application, ['Id'], "create_time > {$start_time}");
+                $is_cash_id = DBManager::getMysql()->selectRow(MysqlConfig::Table_user_cash_application, ['Id'], "create_time > {$start_time} and userID = {$param['userID']}");
 
                 if(empty($is_cash_id)){ //今天没有提现过
                     //实际应转账金额

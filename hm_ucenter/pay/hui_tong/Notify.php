@@ -48,6 +48,10 @@ class Notify extends AppPay
         $util->writelog ("异步通知参数:" .$util->getURLParam($Params,$merconfig["Url_Param_Connect_Flag"],true,null));
         $this->payLog('-----------------------------huitong----------------:异步通知参数' . $util->getURLParam($Params,$merconfig["Url_Param_Connect_Flag"],true,null));
         //==验签数据
+        $util->writelog ('参数1111'.$Params);
+        $util->writelog ('参数2222'.$merconfig["Url_Param_Connect_Flag"]);
+        $util->writelog ('参数3333'.$removeKeys);
+        $util->writelog ('参数4444'.$merconfig["Md5Key"]);
         if ($util->verifySign($Params, $merconfig["Url_Param_Connect_Flag"], $removeKeys
             , $merconfig["Md5Key"])){
             $util->writelog("异步通知验证签名成功!");

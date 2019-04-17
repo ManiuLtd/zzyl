@@ -28,12 +28,15 @@ class Util{
 	 * @return
 	 */
 	public function verifySign($params,$urlParamConnectFlag,$removeKeys,$md5key) {
-
 		$signMsg = $this->getSignMsg($params,$urlParamConnectFlag,$removeKeys);
 		$signature = $params["Signature"];
 		$this->writelog("签名字符串未加加密串:".$signMsg);
 		$signature_compute = md5($signMsg.$md5key);
 		$this->writelog("生成的签名:".$signature_compute);
+        $this->writelog ('参数5555'.$signMsg);
+        $this->writelog ('参数6666'.$signature);
+        $this->writelog ('参数7777'.$signature_compute);
+        $this->writelog ('参数8888'.strcmp($signature,$signature_compute));
 		if (strcmp($signature,$signature_compute) == 0){
 			return true;
 		}

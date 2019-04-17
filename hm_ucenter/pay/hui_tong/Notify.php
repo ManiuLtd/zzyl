@@ -4,6 +4,7 @@ namespace pay\hui_tong;
 use pay\AppPay;
 use config\EnumConfig;
 use model\PayModel;
+use config\HuitongPayConfig;
 
 /*
  * 230000-机构支付异步通知回调

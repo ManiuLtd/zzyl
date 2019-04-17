@@ -113,7 +113,7 @@ class PayAction extends AppAction
      */
     public function huitongPay($params)
     {
-        if (empty($param['userID']) || empty($param['goodsID'])) {
+        if (empty($params['userID']) || empty($params['goodsID'])) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
         }
         $res = $this->verifyThirdPay($params);

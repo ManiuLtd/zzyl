@@ -167,7 +167,7 @@ class HuiTongPay extends AppPay
         $build["UserIdType"] = "USEID";
         if (!empty($productId)) {
             $build["ProductId"] = $productId;
-            if (strcmp($productId, "0611")) {
+            if($productId == "0611"){
                 if (empty($directBankId)) {
                     $util->writelog("网银跳银行必须传直连银行编码");
                     return null;
@@ -175,6 +175,15 @@ class HuiTongPay extends AppPay
                     $build["DirectBankId"] = $directBankId;
                 }
             }
+            /*if (strcmp($productId, "0611")) {
+                if (empty($directBankId)) {
+                    $util->writelog("网银跳银行必须传直连银行编码");
+                    var_dump($build);exit;
+                    return null;
+                } else {
+                    $build["DirectBankId"] = $directBankId;
+                }
+            }*/
         }
 
         //==设置请求签名

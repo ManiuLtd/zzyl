@@ -327,11 +327,11 @@ class RewardsPoolController extends AgentController
                 'key' => 'platformbankmoney',
                 'title' => '平台银行储蓄',
             ],
-            'recoverypoint' => [
+            /*'recoverypoint' => [
                 'key' => 'recoverypoint',
                 'title' => "平台回收金币的结点(0表示<br/>默认的800,必须大于0)",
                 'type' => ['type' => 'input', 'name' => 'recoverypoint', 'attribution' => 'style="width:80px;"']
-            ],
+            ],*/
             'incrementofgoldcoin' => [
                 'key' => 'incrementofgoldcoin',
                 'title' => "实时奖池手动增减量<br/>(正数增加,负数减少)",

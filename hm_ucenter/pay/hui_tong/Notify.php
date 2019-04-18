@@ -43,17 +43,16 @@ class Notify extends AppPay
         $util->writelog("===========异步通知========");
         $Params = null;
         foreach ( $_REQUEST as $key => $val ) {
+            if($key == 'api' || $key == 'action'){
+                continue;
+            }
             $Params [$key] = urldecode ( $val );
         }
         $util->writelog ("异步通知参数:" .$util->getURLParam($Params,$merconfig["Url_Param_Connect_Flag"],true,null));
         $this->payLog('-----------------------------huitong----------------:异步通知参数' . $util->getURLParam($Params,$merconfig["Url_Param_Connect_Flag"],true,null));
         //==验签数据
-        $util->writelog ('参数1111'.json_encode($Params));
-        $util->writelog ('参数2222'.$merconfig["Url_Param_Connect_Flag"]);
-        $util->writelog ('参数3333'.json_encode($removeKeys));
-        $util->writelog ('参数4444'.$merconfig["Md5Key"]);
-        /*if ($util->verifySign($Params, $merconfig["Url_Param_Connect_Flag"], $removeKeys
-            , $merconfig["Md5Key"])){*/
+        if ($util->verifySign($Params, $merconfig["Url_Param_Connect_Flag"], $removeKeys
+            , $merconfig["Md5Key"])){
             $util->writelog("异步通知验证签名成功!");
             $this->payLog('-----------------------------huitong----------------:异步通知验证签名成功!');
             if (strcmp($Params['Status'],"1") == 0){
@@ -82,12 +81,12 @@ class Notify extends AppPay
                 $util->writelog("支付失败,业务处理!!!");
                 $this->payLog('-----------------------------huitong----------------:支付失败,业务处理!!!');
             }
-        /*}
+        }
         else {
             $util->writelog("异步通知验证失败:");
             $this->payLog('-----------------------------huitong----------------:异步通知验证失败');
 
-        }*/
+        }
         //处理完成后一定返回,不然定时再次发送异步通知
     }
 

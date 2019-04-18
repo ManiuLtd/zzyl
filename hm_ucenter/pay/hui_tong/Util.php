@@ -33,10 +33,6 @@ class Util{
 		$this->writelog("签名字符串未加加密串:".$signMsg);
 		$signature_compute = md5($signMsg.$md5key);
 		$this->writelog("生成的签名:".$signature_compute);
-        $this->writelog ('参数5555'.$signMsg);
-        $this->writelog ('参数6666'.$signature);
-        $this->writelog ('参数7777'.$signature_compute);
-        $this->writelog ('参数8888'.strcmp($signature,$signature_compute));
 		if (strcmp($signature,$signature_compute) == 0){
 			return true;
 		}
@@ -123,8 +119,8 @@ class Util{
 		if ($isSort == true) {
 			ksort($useParams);
 		}
-		//$util->writelog("排序:".'<br/>');
-		//$util->writelog($useParams);
+		$this->writelog("排序:".'<br/>');
+		$this->writelog('排序后的数据'.json_encode($useParams));
 		$sign_str="";
 		foreach ($useParams as $key =>$val){
 			$sign_str .= sprintf ( "%s=%s&", $key, $val );

@@ -395,7 +395,7 @@ class RewardsPoolController extends AgentController
                 'realPeopleFailPercent' => (int)I('realpeoplefailpercent'),
                 'minPondMoney' => (int)I('minPondMoney') *100,
                 'maxPondMoney' => (int)I('maxPondMoney') *100,
-                'recoveryPoint' => (int)I('recoverypoint') * 100,
+                //'recoveryPoint' => (int)I('recoverypoint') * 100,
                 'platformCompensate' => $pmoney,
                 'updateTime' => time(),
             ]);

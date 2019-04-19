@@ -485,7 +485,7 @@ class MallController extends AdminController
     }
 
     /**
-     * 订单管理
+     * 汇通支付订单交易查询
      * @DateTime 2017-12-08
      */
     public function orderTransactionQuery()

@@ -8,6 +8,7 @@ use function foo\func;
 use model\AgentModel;
 use model\UserModel;
 use helper\FunctionHelper;
+use pay\hui_tong\QryOneOrd;
 
 class MallController extends AdminController
 {
@@ -480,6 +481,26 @@ class MallController extends AdminController
         $this->assign('type', $type);
         $this->assign('search', $search);
         $this->assign('status', $status);
+        $this->display();
+    }
+
+    /**
+     * 订单管理
+     * @DateTime 2017-12-08
+     */
+    public function orderTransactionQuery()
+    {
+        $showorderinfo = [];
+        if (!empty(I('search'))) {
+            $payClass = QryOneOrd::getInstance(I('search'));
+            $showorderinfo = $payClass->getOrderInfo(I('search'));
+            if($showorderinfo['RspCod'] != 00000) $this->error($showorderinfo['RspMsg']);
+        }
+
+        $showorderinfo['TxTime'] = strtotime($showorderinfo['TxTime']);
+        $showorderinfo['Amount'] = $showorderinfo['Amount']/100;
+        $showorderinfo['PayFee'] = $showorderinfo['PayFee']/100;
+        $this->assign('_data', $showorderinfo);
         $this->display();
     }
 

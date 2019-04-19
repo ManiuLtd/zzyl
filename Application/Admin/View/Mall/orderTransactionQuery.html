@@ -1,0 +1,97 @@
+<extend name="Public/base"/>
+<block name="body">
+    <style>
+        .t1{margin-left: -17px;}
+        .t2{margin-left: -20px;}
+        .t3{margin-left: -120px;}
+        .t4{margin-left: -10px;}
+        .t5{margin-left: -160px;}
+        .t7{margin-left: -135px;}
+        .t8{margin-left: -125px;}
+        .t9{margin-left: -125px;}
+        .t10{margin-left: -80px;}
+        @media (max-width: 768px){
+            .top-menu{margin-left: 0px;}
+            .t6{margin-top: 5px;}
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight" style="width:100%;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>汇通支付订单交易查询</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="width:100%;line-height: 30px;">
+                            <form action="{:U()}" method="get">
+                                <div class="col-sm-5 m-b-xs" style="width: 200px;">
+                                    <div class="col-sm-3 top-menu t1" style="width: 200px;">
+                                        <div class="input-group">
+                                            <input type="text" placeholder="请输入订单编号" class="input-sm form-control" name="search" value="{$search}"> <span class="input-group-btn">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3 top-menu t6" style="width: 200px;">
+                                    <div class="input-group">
+                                        <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>订单编号</th>
+                                    <th>商户号</th>
+                                    <th>订单金额</th>
+                                    <th>商品名称</th>
+                                    <th>备注</th>
+                                    <th>交易状态</th>
+                                    <th>交易时间</th>
+                                    <th>汇通支付流水号</th>
+                                    <th>银行账户密码</th>
+                                    <th>手续费</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{$_data.TxSN}</td>
+                                        <td>{$_data.MerNo}</td>
+                                        <td>{$_data.Amount}元</td>
+                                        <td>
+                                            {$_data.PdtName}
+                                        </td>
+                                        <td>
+                                            {$_data.Remark}
+                                        </td>
+                                        <td>
+                                            <if condition="($_data.Status eq 0)">
+                                                <font color="red">未处理</font>
+                                            <elseif condition="($_data.Status eq 1)"/>
+                                                <font color="green">成功</font>
+                                            <elseif condition="($_data.Status eq 2)"/>
+                                                <font color="green">处理中</font>
+                                            <elseif condition="($_data.Status eq 3)"/>
+                                                <font color="green">失败</font>
+                                            </if>
+                                        </td>
+                                        <td>{$_data.TxTime|date="Y-m-d H:i:s",###}</td>
+                                        <td>{$_data.PlatTxSN}</td>
+                                        <td>{$_data.BankAccountNumber}</td>
+                                        <td>{$_data.PayFee}元</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <div class="page">{$_page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</block>

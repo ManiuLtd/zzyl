@@ -217,8 +217,6 @@ class ClubAction extends AppAction
      */
     public function joinFriendsGroup($params)
     {
-        var_dump(RedisManager::getGameRedis());
-        var_dump(RedisManager::getRedis());exit;
         $userID = (int)$params['userID'];
         $friendsGroupID = (int)$params['friendsGroupID'];
 

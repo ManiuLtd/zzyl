@@ -73,7 +73,15 @@ class HuiTongPay extends AppPay
         //同步通知URL
         //$req["ReturnUrl"] =$merconfig["ReturnUrl"];
         //异步通知URL
-        $req["NotifyUrl"] = $merconfig["NotifyUrl"];
+        $server_env = $_SERVER['SERVER_NAME'];
+        if ($server_env == 'zzyl.szbchm.com') {
+            $NotifyUrl = "http://zzuls.szbchm.com/hm_ucenter/web/index.php?api=Pay&action=huitong_callback";
+        }elseif ($server_env == 'testzgs.szbchm.com') {
+            $NotifyUrl = "http://testzgs.szbchm.com/hm_ucenter/web/index.php?api=Pay&action=huitong_callback";
+        } else {
+            $NotifyUrl = "http://testzgs.szbchm.com/hm_ucenter/web/index.php?api=Pay&action=huitong_callback";
+        }
+        $req["NotifyUrl"] = $NotifyUrl;
         //请求时间 格式:YmdHis
         $req["ReqTime"] = date('YmdHis', time());
         //订单有效时间，单位分钟，默认24小时,值可不传

@@ -81,6 +81,15 @@ class   PromotionAction extends AppAction
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
         }
 
+        $server_env = $_SERVER['SERVER_NAME'];
+        if ($server_env == 'zzyl.szbchm.com') {
+            $access_domain = "https://zzyl.szbchm.com";
+        }elseif ($server_env == 'testzgs.szbchm.com') {
+            $access_domain = "http://testzgs.szbchm.com";
+        } else {
+            $access_domain = "http://testzgs.szbchm.com";
+        }
+
         //判断是否是代理，如果是不是代理就将该用户生成顶级代理
         $arrayKeyValue = ['id'];
         $where = "userid = {$id}";
@@ -107,7 +116,7 @@ class   PromotionAction extends AppAction
 
         if(empty($userinfo['phone'])) AppModel::returnJson(ErrorConfig::ERROR_CODE, '请先绑定手机号');
 
-        $url = self::ACCESS_DOMAIN.'/home/wechat/share.html?userID='.$id;
+        $url = $access_domain.'/home/wechat/share.html?userID='.$id;
         $img = '';
 
         $value = $url;  //二维码内容;
@@ -131,7 +140,7 @@ class   PromotionAction extends AppAction
             $png = $Path.'/' . md5($id) . '.png';
             $qrimg = '/hm_ucenter/synthesis/'.date('Ymd').'/'.$id.'_agent_qrcode.png';
             $extension = '/hm_ucenter/synthesis/'.date('Ymd').'/' . md5($id) . '.png';
-            $url = self::ACCESS_DOMAIN."/admin.php/Cron/sjImage";
+            $url = $access_domain."/admin.php/Cron/sjImage";
         }
         $imgopj = new \QRcode();
         if(!file_exists($Path))
@@ -200,7 +209,7 @@ class   PromotionAction extends AppAction
         }
         $returnarr['qrimg'] = $qrimg;
         $returnarr['extension'] = $extension;
-        $longUrl = self::ACCESS_DOMAIN.'/home/wechat/share.html?userID='.$id;
+        $longUrl = $access_domain.'/home/wechat/share.html?userID='.$id;
         $returnarr['short_links'] = self::shortUrl($longUrl);
 
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $returnarr);

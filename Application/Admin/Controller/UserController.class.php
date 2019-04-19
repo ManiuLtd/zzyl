@@ -23,8 +23,6 @@ class UserController extends AdminController
     //用户管理
     public function user_list()
     {
-        var_dump(RedisManager::getGameRedis());
-        var_dump(RedisManager::getRedis());exit;
         $type = I('type');
         $search = I('search');
         $is_super = I('is_super', false);

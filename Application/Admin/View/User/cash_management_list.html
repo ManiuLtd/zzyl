@@ -77,7 +77,14 @@
                                 <tbody>
                                 <volist name="_data" id="_data">
                                     <tr>
-                                        <td>{$_data.userid}</td>
+                                        <td>
+                                            <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['userid']))}','2','1200','800')"
+                                               style="text-decoration:none">
+                                                <font color="#1AB394">
+                                                   {$_data.userid}
+                                                </font>
+                                            </a>
+                                        </td>
                                         <td>{$_data.nickname}</td>
                                         <td>{$_data.create_time}</td>
                                         <td>{$_data.process_time}</td>

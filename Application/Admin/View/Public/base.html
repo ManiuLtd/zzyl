@@ -781,31 +781,40 @@
             window.location.href=url
         }
 
-        /*$(function(){
-            setInterval(notifyPayAlert, 20000);
+        $(function(){
+            setInterval(notifyPayAlert, 60000);
             // playAudio()
         })
         function notifyPayAlert(){
-	        $.get('/admin.php/Hall/payAlert',function(data){
-	            if(data.info){
+	        $.get('/admin.php/Public/isExchangeAudit',function(data){
+	            //console.log(data);return false;
+                if(data == "" || data == null || data == undefined){
+
+                } else {
                     playAudio();
                 }
-            })
-        }*/
 
-        /*function playAudio(){
+            })
+        }
+
+        function playAudio(){
 
             var strAudio = "<embed id='audioPlay' src='__PUBLIC__/admin/audio/4204.mp3 ' />";
 
-            if($("#audioPlay").length<=0){
+            $( "body" ).append( strAudio );
+            var audio = document.getElementById( "audioPlay" );
+            //浏览器支持 audio
+            audio.play();
+
+            /*if($("#audioPlay").length<=0){
                 $( "body" ).append( strAudio );
             }
 
             var audio = document.getElementById( "audioPlay" );
 
             //浏览器支持 audio
-            audio.play();
-        }*/
+            audio.play();*/
+        }
     </script>
 </body>
 </html>

@@ -86,6 +86,17 @@ class PublicController extends Controller {
         }
     }
 
+    /*
+     * 判断是否有代理兑换未审核的订单
+     * */
+    public function isExchangeAudit(){
+        $where = [];
+        // 查询提现中
+        $where['U.cash_status'] =1;
+        $id = M()->table('user_cash_application as U')->where(['cash_status' => 1])->getField('Id');
+        echo $id;
+    }
+
     
 
 }

@@ -1084,15 +1084,11 @@ class AgentController extends AdminController
         } else {
             $where['apply_time'] = $res['data'];
         }
-        $status = I('status', 0);
-        if ($status==1){
-            $where['status'] = ['neq',0];
-        }else{
-            $where['status'] = $status;
-        }
+
+        $where['status'] = ['neq',0];
+
 
         $where['withdrawals'] = $withdrawals;
-        var_dump($where);exit;
 
         $data = D('Data')->get_all_data('agent_apply_pos', $where, 10, 'apply_time desc');
         foreach ($data['_data'] as $k => $v) {

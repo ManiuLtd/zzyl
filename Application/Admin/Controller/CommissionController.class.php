@@ -225,23 +225,33 @@ class CommissionController extends AgentController
         $res = M()->query('select sum(changeMoney) as count from statistics_moneychange where reason = ' . EnumConfig::E_ResourceChangeReason['ROOM_PUMP_CONSUME'] . ' and status = 1');
         return FunctionHelper::MoneyOutput(abs($res[0]['count']));
     }*/
-    public function getSumCommission() {
+    /*public function getSumCommission() {
         $res = M()->query('select sum(changeMoney) as count from statistics_moneychange where reason = ' . EnumConfig::E_ResourceChangeReason['ROOM_PUMP_CONSUME'] . ' and status = 1');
         return FunctionHelper::MoneyOutput(abs($res[0]['count']));
-    }
+    }*/
 
     //获取金币兑换总额
+    public function getSumCommission() {
+        $res = M()->query('select sum(cash_withdrawal) as count from user_cash_application where cash_status = 2');
+        return $res[0]['count'];
+    }
 
     //获取代理佣金总额
-    public function getAgentCommission() {
+    /*public function getAgentCommission() {
         $res = M()->query('select sum(agent_commission) as count from ' . MysqlConfig::Table_web_recharge_commission . ' where get_amount_user_type = ' . EnumConfig::E_CommissionUserType['AGENT']);
         return FunctionHelper::MoneyOutput($res[0]['count']);
+    }*/
+
+    //代理奖励兑换金币总额
+    public function getAgentCommission() {
+        $res = M()->query('select sum(apply_amount) as count from ' . MysqlConfig::Table_web_agent_apply_pos . ' where status = 1 and withdrawals = 1');
+        return $res[0]['count']/100;
     }
-    //获得平台抽水
+
+    //代理奖励兑换账户总额
     public function getOperatorCommission() {
-        $res = M()->query('select sum(agent_commission) as count from ' . MysqlConfig::Table_web_recharge_commission . ' where get_amount_user_type = ' . EnumConfig::E_CommissionUserType['OPERATOR']);
-        return FunctionHelper::MoneyOutput($res[0]['count']);
-//        return $this->getSumCommission() - $this->getAgentCommission();
+        $res = M()->query('select sum(apply_amount) as count from ' . MysqlConfig::Table_web_agent_apply_pos . ' where status = 1 and withdrawals = 2');
+        return $res[0]['count']/100;
     }
 
 }

@@ -25,7 +25,7 @@
                                             </a>                                     
                                         </h4>
                                     </td>
-                                    <td style="width:300px;height:50px;text-align: center;"><h4>总抽水(已分佣)：
+                                    <!--<td style="width:300px;height:50px;text-align: center;"><h4>总抽水(已分佣)：
                                             <a class="btn btn-info btn-outline" onclick="admin_edit('金币变化记录','{:U('Commission/moneyChangeRecord',array('isHideNavbar' => $configLeftBar))}','2','1100','700')" style="text-decoration:none"><font color="red">{$sum}</font>
                                             </a>                                     
                                         </h4>
@@ -39,6 +39,21 @@
                                             <a class="btn btn-info btn-outline" onclick="admin_edit('金币变化记录','{:U('Commission/moneyChangeRecord',array('isHideNavbar' => $configLeftBar, 'searchUserType' => 2))}','2','1100','700')" style="text-decoration:none"><font color="red">{$operatorSum}</font>
                                             </a>   
                                         </h4>
+                                    </td>-->
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>金币兑换总额：
+                                        <a class="btn btn-info btn-outline" onclick="admin_edit('金币兑换记录','{:U('Commission/moneyCashRecord',array('isHideNavbar' => $configLeftBar))}','2','1100','700')" style="text-decoration:none"><font color="red">{$sum}</font>
+                                        </a>
+                                    </h4>
+                                    </td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>代理抽水：
+                                        <a class="btn btn-info btn-outline" onclick="admin_edit('金币变化记录','{:U('Commission/moneyChangeRecord',array('isHideNavbar' => $configLeftBar, 'searchUserType' => 1))}','2','1100','700')" style="text-decoration:none"><font color="red">{$agentSum}</font>
+                                        </a>
+                                    </h4>
+                                    </td>
+                                    <td style="width:300px;height:50px;text-align: center;"><h4>平台抽水：
+                                        <a class="btn btn-info btn-outline" onclick="admin_edit('金币变化记录','{:U('Commission/moneyChangeRecord',array('isHideNavbar' => $configLeftBar, 'searchUserType' => 2))}','2','1100','700')" style="text-decoration:none"><font color="red">{$operatorSum}</font>
+                                        </a>
+                                    </h4>
                                     </td>
                                 </tr>
                                 <tr>

@@ -215,7 +215,29 @@ class   PromotionAction extends AppAction
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, $returnarr);
     }
 
-    public static function shortUrl($longUrl){
+    public function shortUrl($long_url) {
+        //apikey需要自己申请  方法见网址：   http://c7.gg/page/apidoc.html
+        $apiUrl = 'http://api.c7.gg/api.php?format=json&url='. $long_url."&apikey=wqtJ3y71xDuzAWI82M@ddd";
+        $curlObj = curl_init();
+        curl_setopt($curlObj, CURLOPT_URL, $apiUrl);
+        curl_setopt($curlObj, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curlObj, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($curlObj, CURLOPT_HEADER, 0);
+        curl_setopt($curlObj, CURLOPT_HTTPHEADER, array(
+            'Content-type:application/json'
+        ));
+        $response = curl_exec($curlObj);
+        curl_close($curlObj);
+        $json = json_decode($response);
+        if(empty($json->error)){
+            $url = $json->url;
+        }else{
+            $url = "Unknown link";
+        }
+        return $json->url;
+    }
+
+    public static function old_shortUrl($longUrl){
         // 免费的短连接，有可能会被封掉
         $url = 'http://api.suolink.cn/api.php?url=' . urlencode($longUrl);
         return self::request($url);

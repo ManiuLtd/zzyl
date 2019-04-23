@@ -217,14 +217,21 @@ class CommissionController extends AgentController
 
     //获取总抽水(包括未分佣)
     public function getSumNotOnlyCommission() {
-        $res = M()->query('select sum(changeMoney) as count from statistics_moneychange where reason = ' . EnumConfig::E_ResourceChangeReason['ROOM_PUMP_CONSUME']);
-        return FunctionHelper::MoneyOutput(abs($res[0]['count']));
+        $res = M()->query('select sum(cash_withdrawal) as count from user_cash_application where cash_status = 2');
+        return $res[0]['count'];
     }
     //获取总抽水
+    /*public function getSumCommission() {
+        $res = M()->query('select sum(changeMoney) as count from statistics_moneychange where reason = ' . EnumConfig::E_ResourceChangeReason['ROOM_PUMP_CONSUME'] . ' and status = 1');
+        return FunctionHelper::MoneyOutput(abs($res[0]['count']));
+    }*/
     public function getSumCommission() {
         $res = M()->query('select sum(changeMoney) as count from statistics_moneychange where reason = ' . EnumConfig::E_ResourceChangeReason['ROOM_PUMP_CONSUME'] . ' and status = 1');
         return FunctionHelper::MoneyOutput(abs($res[0]['count']));
     }
+
+    //获取金币兑换总额
+
     //获取代理佣金总额
     public function getAgentCommission() {
         $res = M()->query('select sum(agent_commission) as count from ' . MysqlConfig::Table_web_recharge_commission . ' where get_amount_user_type = ' . EnumConfig::E_CommissionUserType['AGENT']);

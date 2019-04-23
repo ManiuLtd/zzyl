@@ -1092,6 +1092,7 @@ class AgentController extends AdminController
         }
 
         $where['withdrawals'] = $withdrawals;
+        var_dump($where);exit;
 
         $data = D('Data')->get_all_data('agent_apply_pos', $where, 10, 'apply_time desc');
         foreach ($data['_data'] as $k => $v) {

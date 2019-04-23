@@ -2409,25 +2409,9 @@ class UserController extends AdminController
      * */
     function cash_management_list_old()
     {
-        $is_super = I('is_super', false);
-        $is_online = I('is_online', false);
-        $is_jujue = I('is_jujue', false);
-
         $where = [];
-        // 查询提现中
-        if ($is_super) {
-            $where['U.cash_status'] =1;
-        }
-
         //查寻提现完成
-        if ($is_online) {
-            $where['U.cash_status'] =2;
-        }
-
-        //查询拒绝
-        if ($is_jujue) {
-            $where['U.cash_status'] =3;
-        }
+        $where['U.cash_status'] =2;
 
         $count = M()->table('user_cash_application as U')->where($where)->count();
         $page = new \Think\Page($count, 20);

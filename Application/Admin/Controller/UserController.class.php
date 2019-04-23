@@ -2404,6 +2404,52 @@ class UserController extends AdminController
         $this->display();
     }
 
+    /*
+     * 提现管理列表
+     * */
+    function cash_management_list_old()
+    {
+        $is_super = I('is_super', false);
+        $is_online = I('is_online', false);
+        $is_jujue = I('is_jujue', false);
+
+        $where = [];
+        // 查询提现中
+        if ($is_super) {
+            $where['U.cash_status'] =1;
+        }
+
+        //查寻提现完成
+        if ($is_online) {
+            $where['U.cash_status'] =2;
+        }
+
+        //查询拒绝
+        if ($is_jujue) {
+            $where['U.cash_status'] =3;
+        }
+
+        $count = M()->table('user_cash_application as U')->where($where)->count();
+        $page = new \Think\Page($count, 20);
+        $dbUserList = M()
+            ->table('user_cash_application as U')
+            ->where($where)
+            ->field('U.Id, U.userID, U.transferable_amount, U.remarks, U.nickname, U.create_time, U.process_time, U.cash_account_type, U.cash_status, U.cash_money, U.cash_withdrawal, U.cash_rate, U.cash_remarks')
+            ->order('U.Id desc')
+            ->limit($page->firstRow . ',' . $page->listRows)
+            ->select();
+
+        foreach ($dbUserList as &$dbUser) {
+            $dbUser['create_time'] = date('Y-m-d H:i:s', $dbUser['create_time']);
+            $dbUser['process_time'] = isset($dbUser['process_time']) ? date('Y-m-d H:i:s', $dbUser['process_time']) : '';
+            $dbUser['cash_account_type_text'] = $dbUser['cash_account_type'] == 1 ? '银行卡' : '支付宝';
+        }
+
+        $this->assign('_page', $page->show());
+        $this->assign('_data', $dbUserList);
+        $this->display();
+    }
+
 
 
 

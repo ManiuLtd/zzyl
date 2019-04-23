@@ -1049,6 +1049,62 @@ class AgentController extends AdminController
         $this->display();
     }
 
+    //代理提现申请记录
+    public function apply_pos_old()
+    {
+        $type = I('type');
+        $search = I('search');
+        $withdrawals = I("withdrawals");
+        if ($type && $search) {
+            switch ($type) {
+                case 1:
+                    $where['username'] = $search;
+                    break;
+                case 2:
+                    $where['userid'] = $search;
+                    break;
+                case 3:
+                    $where['agentid'] = $search;
+                    break;
+                case 4:
+                    $where['wechat'] = $search;
+                    break;
+            }
+        }
+        $start = urldecode(I('start'));
+        $stop = urldecode(I('stop'));
+//        if ($start && $stop) {
+//            $start = strtotime($start);
+//            $stop = strtotime($stop);
+//            $where['apply_time'] = ['between', [$start, $stop]];
+//        }
+        $res = validSearchTimeRange($start, $stop);
+        if (ErrorConfig::ERROR_CODE === $res['code']) {
+            $this->error($res['msg']);
+        } else {
+            $where['apply_time'] = $res['data'];
+        }
+        $status = I('status', 0);
+        if ($status==1){
+            $where['status'] = ['neq',0];
+        }else{
+            $where['status'] = $status;
+        }
+
+        $where['withdrawals'] = $withdrawals;
+
+        $data = D('Data')->get_all_data('agent_apply_pos', $where, 10, 'apply_time desc');
+        foreach ($data['_data'] as $k => $v) {
+            $data['_data'][$k]['front_balance'] = sprintf("%.2f", $data['_data'][$k]['front_balance'] / 100);
+            $data['_data'][$k]['apply_amount'] = sprintf("%.2f", $data['_data'][$k]['apply_amount'] / 100);
+            $data['_data'][$k]['after_balance'] = sprintf("%.2f", $data['_data'][$k]['after_balance'] / 100);
+        }
+        $this->assign('status', $status);
+        $this->assign('_data', $data['_data']);
+        $this->assign('_page', $data['_page']);
+        $this->display();
+    }
+
     //审核通过
     public function examine_pass()
     {

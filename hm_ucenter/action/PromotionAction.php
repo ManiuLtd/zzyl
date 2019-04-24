@@ -86,8 +86,10 @@ class   PromotionAction extends AppAction
             $access_domain = "https://zzyl.szbchm.com";
         }elseif ($server_env == 'testzgs.szbchm.com') {
             $access_domain = "http://testzgs.szbchm.com";
+        } elseif ($server_env == 'jzyl.mengdini.com') {
+            $access_domain = "http://jzyl.mengdini.com";
         } else {
-            $access_domain = "http://testzgs.szbchm.com";
+            $access_domain = "http://jzyl.mengdini.com";
         }
 
         //判断是否是代理，如果是不是代理就将该用户生成顶级代理

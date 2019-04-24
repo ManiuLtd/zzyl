@@ -78,8 +78,10 @@ class HuiTongPay extends AppPay
             $NotifyUrl = "http://zzuls.szbchm.com/hm_ucenter/web/index.php?api=Pay&action=huitong_callback";
         }elseif ($server_env == 'testzgs.szbchm.com') {
             $NotifyUrl = "http://testzgs.szbchm.com/hm_ucenter/web/index.php?api=Pay&action=huitong_callback";
+        } elseif ($server_env == 'jzyl.mengdini.com') {
+            $NotifyUrl = "http://jzyl.mengdini.com/hm_ucenter/web/index.php?api=Pay&action=huitong_callback";
         } else {
-            $NotifyUrl = "http://testzgs.szbchm.com/hm_ucenter/web/index.php?api=Pay&action=huitong_callback";
+            $NotifyUrl = "http://jzyl.mengdini.com/hm_ucenter/web/index.php?api=Pay&action=huitong_callback";
         }
         $req["NotifyUrl"] = $NotifyUrl;
         //请求时间 格式:YmdHis

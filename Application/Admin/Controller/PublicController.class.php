@@ -6,6 +6,10 @@ use Think\Controller;
 class PublicController extends Controller {
     //用户登录
     public function login($username=null,$password=null){
+        $server_env = $_SERVER['SERVER_NAME'];
+        if ($server_env == 'jzyl.mengdini.com') {
+            die();
+        }
         if(IS_POST){
             $member = D('Adminmember');
             $data = array('username'=>$username,'password'=>$password);

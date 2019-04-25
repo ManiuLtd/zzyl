@@ -30,6 +30,8 @@ class CashAction extends AppAction
     const CODE_INVALID_TIME = 10 * 60;
     //日志标签名字
     const LOG_TAG_NAME = 'CASH';
+    //每页条数
+    const PAGE_SIZE = 10;
 
     public static function getInstance()
     {
@@ -300,19 +302,27 @@ class CashAction extends AppAction
     public function showCashInfo($param)
     {
         $userID = (int)$param['userID'];
+        $page = empty((int)$param['page']) ? 1 : (int)$param['page'];
+        $pagesize = self::PAGE_SIZE;
+        $startnum = ($page * $pagesize) - $pagesize;
         if (empty($param['userID'])) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_NOT_PARAMETER);
         }
 
         //获取金币
         $arrayKeyValue = ['userID','create_time','cash_money','cash_account_type','cash_status'];
-        $where = "userID = {$userID}";
+        $where = "userID = {$userID} LIMIT {$startnum},{$pagesize}";
         $resinfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_user_cash_application, $arrayKeyValue, $where);
 
         foreach ($resinfo as &$value){
             $value['create_time'] = date('Y-m-d H:i:s', $value['create_time']);
             $value['cash_account_type_text'] = $value['cash_account_type'] == 1 ? '支付宝兑换' : '银行卡兑换';
         }
+
+        $map = "userID = {$userID}";
+        $count = DBManager::getMysql()->getCount(MysqlConfig::Table_user_cash_application, 'Id', $map);
+        $resinfo['count'] = $count;
+        $resinfo['page'] = $page;
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT,$resinfo);
 
     }

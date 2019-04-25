@@ -31,7 +31,7 @@ class CashAction extends AppAction
     //日志标签名字
     const LOG_TAG_NAME = 'CASH';
     //每页条数
-    const PAGE_SIZE = 10;
+    const PAGE_SIZE = 5;
 
     public static function getInstance()
     {

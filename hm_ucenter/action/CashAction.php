@@ -312,9 +312,9 @@ class CashAction extends AppAction
         //获取金币
         $arrayKeyValue = ['userID','create_time','cash_money','cash_account_type','cash_status'];
         $where = "userID = {$userID} LIMIT {$startnum},{$pagesize}";
-        $resinfo = DBManager::getMysql()->selectAll(MysqlConfig::Table_user_cash_application, $arrayKeyValue, $where);
+        $resinfo['res'] = DBManager::getMysql()->selectAll(MysqlConfig::Table_user_cash_application, $arrayKeyValue, $where);
 
-        foreach ($resinfo as &$value){
+        foreach ($resinfo['res'] as &$value){
             $value['create_time'] = date('Y-m-d H:i:s', $value['create_time']);
             $value['cash_account_type_text'] = $value['cash_account_type'] == 1 ? '支付宝兑换' : '银行卡兑换';
         }

@@ -31,11 +31,11 @@
                                     <select class="input-sm form-control input-s-sm inline" name="type">
                                         <option value="0">请选择</option>
                                         <option value="1">
-                                        <if condition="$type eq 1"> selected</if>
-                                        >用户ID</option>
+                                            <if condition="$type eq 1"> selected</if>
+                                            >用户ID</option>
                                         <option value="2">
-                                        <if condition="$type eq 2"> selected</if>
-                                        >用户昵称</option>
+                                            <if condition="$type eq 2"> selected</if>
+                                            >用户昵称</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-3 top-menu t1" style="width: 200px;">
@@ -50,10 +50,38 @@
                                         <button type="submit" class="btn btn-sm btn-primary">搜全部玩家</button>
                                     </div>
                                 </div>
-                                <div class="col-sm-3 top-menu t6" style="width:100px;">
+                                <!-- <div class="col-sm-3 top-menu t6" style="width:100px;">
                                     <div class="input-group">
                                         <button type="submit" name="is_super" value=true
                                                 class="btn btn-sm btn-info"> 搜超端玩家
+                                        </button>
+                                    </div>
+                                </div> -->
+                                <div class="col-sm-3 top-menu t6" style="width:100px;">
+                                    <div class="input-group">
+                                        <button type="submit" name="yinguser" value=true
+                                                class="btn btn-sm btn-info"> 赢玩家
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width:100px;">
+                                    <div class="input-group">
+                                        <button type="submit" name="shuuser" value=true
+                                                class="btn btn-sm btn-info"> 输玩家
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width:100px;">
+                                    <div class="input-group">
+                                        <button type="submit" name="putonguser" value=true
+                                                class="btn btn-sm btn-info"> 普通玩家
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width:100px;">
+                                    <div class="input-group">
+                                        <button type="submit" name="fenghaouser" value=true
+                                                class="btn btn-sm btn-info"> 封号
                                         </button>
                                     </div>
                                 </div>

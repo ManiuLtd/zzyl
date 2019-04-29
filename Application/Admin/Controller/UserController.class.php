@@ -45,7 +45,7 @@ class UserController extends AdminController
         }
 
         // 查超端用户
-        if ($is_super) {
+        /*if ($is_super) {
             //权限最大值 或运算
             $status_length = 0;
             foreach (EnumConfig::E_UserStatusType as $s_key => $s_value) {
@@ -61,6 +61,25 @@ class UserController extends AdminController
             }
             $where['U.status'] = ['in', $super_status_array];
             unset($where['U.registerTime']);
+        }*/
+        //查询赢玩家
+        if (I('yinguser')) {
+            $where['U.status'] = 2;
+        }
+
+        //查询输玩家
+        if (I('shuuser')) {
+            $where['U.status'] = 4;
+        }
+
+        //查询普通玩家
+        if (I('putonguser')) {
+            $where['U.status'] = 0;
+        }
+
+        //查询封号
+        if (I('fenghaouser')) {
+            $where['U.status'] = 8;
         }
 
         //查在线玩家
@@ -2318,7 +2337,7 @@ class UserController extends AdminController
         }
 
         // 查超端用户
-        if ($is_super) {
+        /*if ($is_super) {
             //权限最大值 或运算
             $status_length = 0;
             foreach (EnumConfig::E_UserStatusType as $s_key => $s_value) {
@@ -2334,6 +2353,25 @@ class UserController extends AdminController
             }
             $where['U.status'] = ['in', $super_status_array];
             unset($where['U.registerTime']);
+        }*/
+        //查询赢玩家
+        if (I('yinguser')) {
+            $where['U.status'] = 2;
+        }
+
+        //查询输玩家
+        if (I('shuuser')) {
+            $where['U.status'] = 4;
+        }
+
+        //查询普通玩家
+        if (I('putonguser')) {
+            $where['U.status'] = 0;
+        }
+
+        //查询封号
+        if (I('fenghaouser')) {
+            $where['U.status'] = 8;
         }
 
         //查在线玩家
@@ -2354,6 +2392,7 @@ class UserController extends AdminController
         //var_dump($dbUserList);exit;
 
         foreach ($dbUserList as $key => &$dbUser) {
+            $userID = $dbUser['userid'];
             //后台充值总金额
             $adminRechargeMoney = M()->table('web_admin_action')->where(['actionType' => 1, 'userID' => $dbUser['userid']])->sum('resourceNum');
             //客户端充值总金额
@@ -2378,6 +2417,10 @@ class UserController extends AdminController
 
             //提现次数
             $dbUser['cashCount'] = $adminCash['number'] + $clientCash['number'];
+
+            $where = ['userID' => $userID, 'type' => EnumConfig::E_UserLoginType['LOBBY_IN']];
+            //上次登录时间
+            $dbUser['lastCrossDayTime'] = M()->table('statistics_logonandlogout')->where($where)->order('time desc')->getField('time');
 
             if($dbUser['isonline'] == 1){
                 $dbUser['IsOnline'] = '在线';

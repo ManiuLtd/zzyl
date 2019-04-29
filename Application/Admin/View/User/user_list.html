@@ -45,44 +45,72 @@
 
                                     </div>
                                 </div>
-                               <!-- <div class="col-sm-3 top-menu t2" style="width:100px;">
-                                    <div class="input-group">
-                                        注册时间
-                                    </div>
-                                </div>
-                                <div class="col-sm-3 top-menu t3" style="width: 200px;">
-                                    <div class="input-group">
-                                        <input type="text" class="input-sm form-control" id="datetimepicker1"
-                                               name="start" value="{$start|date='Y-m-d H:i',###}">
-                                    </div>
-                                </div>
-                                <div class="col-sm-3 top-menu t4" style="width:50px;">
-                                    <div class="input-group">
-                                        至
-                                    </div>
-                                </div>
-                                <div class="col-sm-3 top-menu t5" style="width: 200px;">
-                                    <div class="input-group">
-                                        <input type="text" class="input-sm form-control" id="datetimepicker2"
-                                               name="stop" value="{$stop|date='Y-m-d H:i',###}">
-                                    </div>
-                                </div>-->
+                                <!-- <div class="col-sm-3 top-menu t2" style="width:100px;">
+                                     <div class="input-group">
+                                         注册时间
+                                     </div>
+                                 </div>
+                                 <div class="col-sm-3 top-menu t3" style="width: 200px;">
+                                     <div class="input-group">
+                                         <input type="text" class="input-sm form-control" id="datetimepicker1"
+                                                name="start" value="{$start|date='Y-m-d H:i',###}">
+                                     </div>
+                                 </div>
+                                 <div class="col-sm-3 top-menu t4" style="width:50px;">
+                                     <div class="input-group">
+                                         至
+                                     </div>
+                                 </div>
+                                 <div class="col-sm-3 top-menu t5" style="width: 200px;">
+                                     <div class="input-group">
+                                         <input type="text" class="input-sm form-control" id="datetimepicker2"
+                                                name="stop" value="{$stop|date='Y-m-d H:i',###}">
+                                     </div>
+                                 </div>-->
                                 <div class="col-sm-3 top-menu t6" style="width: 100px;">
                                     <div class="input-group">
-                                        <button type="submit" class="btn btn-sm btn-primary">搜全部玩家</button>
+                                        <button type="submit" class="btn btn-sm btn-primary">全部玩家</button>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-sm-3 top-menu t6" style="width:100px;">
+                                    <div class="input-group">
+                                        <button type="submit" name="is_super" value=true
+                                                class="btn btn-sm btn-info"> 搜超端玩家
+                                        </button>
+                                    </div>
+                                </div> -->
+                                <div class="col-sm-3 top-menu t6" style="width:100px;">
+                                    <div class="input-group">
+                                        <button type="submit" name="yinguser" value=true
+                                                class="btn btn-sm btn-info"> 赢玩家
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="col-sm-3 top-menu t6" style="width:100px;">
                                     <div class="input-group">
-                                        <button type="submit" name="is_super" value=true
-                                                class="btn btn-sm btn-info"> 搜超端玩家
+                                        <button type="submit" name="shuuser" value=true
+                                                class="btn btn-sm btn-info"> 输玩家
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width:100px;">
+                                    <div class="input-group">
+                                        <button type="submit" name="putonguser" value=true
+                                                class="btn btn-sm btn-info"> 普通玩家
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 top-menu t6" style="width:100px;">
+                                    <div class="input-group">
+                                        <button type="submit" name="fenghaouser" value=true
+                                                class="btn btn-sm btn-info"> 封号
                                         </button>
                                     </div>
                                 </div>
                                 <div class="col-sm-3 top-menu t6" style="width:100px;">
                                     <div class="input-group">
                                         <button type="submit" name="is_online" value=true
-                                                class="btn btn-sm btn-info"> 搜在线玩家
+                                                class="btn btn-sm btn-info"> 在线玩家
                                         </button>
                                     </div>
                                 </div>
@@ -119,59 +147,59 @@
                                 <volist name="_data" id="_data">
                                     <if condition="($_data.wpoid gt 0 OR $_data.waaaid gt 0) AND ($_data.ucaid elt 0) AND ($_data.wbbbid elt 0) ">
                                         <tr style="background-color: #FF6EB4">
-                                    <else />
+                                            <else />
                                         <tr>
                                     </if>
+                                    <td>
+                                        <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['userid']))}','2','1200','800')"
+                                           style="text-decoration:none">
+                                            <font color="#1AB394">{$_data.userid}</font>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['userid']))}','2','1200','800')"
+                                           style="text-decoration:none">
+                                            <font color="#1AB394">{$_data.name}</font>
+                                        </a>
+                                    </td>
+                                    <td>{$_data.sex_name|default="保密"}</td>
+                                    <if condition="1 == $is_show_jewels">
+                                        <td>{$_data.jewels|default=0}</td>
+                                    </if>
+                                    <td>{$_data.money|default=0}</td>
+                                    <td>{$_data.phone}</td>
+                                    <td>{$_data.bankMoney|default=0}</td>
+                                    <td>{$_data.recharge_money|default=0}</td>
+                                    <td>{$_data.user_type_name|default="普通用户"}</td>
+                                    <if condition="$_data.bind_agent_id neq '无'">
                                         <td>
-                                            <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['userid']))}','2','1200','800')"
+                                            <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['bind_agent_userid']))}','2','1200','800')"
                                                style="text-decoration:none">
-                                                <font color="#1AB394">{$_data.userid}</font>
+                                                <font color="#1AB394">{$_data.bind_agent_userid}</font>
                                             </a>
                                         </td>
                                         <td>
-                                            <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['userid']))}','2','1200','800')"
+                                            <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['bind_agent_userid']))}','2','1200','800')"
                                                style="text-decoration:none">
-                                                <font color="#1AB394">{$_data.name}</font>
+                                                <font color="#1AB394">{$_data.bind_agent_id}</font>
                                             </a>
                                         </td>
-                                        <td>{$_data.sex_name|default="保密"}</td>
-                                        <if condition="1 == $is_show_jewels">
-                                            <td>{$_data.jewels|default=0}</td>
-                                        </if>
-                                        <td>{$_data.money|default=0}</td>
-                                        <td>{$_data.phone}</td>
-                                        <td>{$_data.bankMoney|default=0}</td>
-                                        <td>{$_data.recharge_money|default=0}</td>
-                                        <td>{$_data.user_type_name|default="普通用户"}</td>
-                                        <if condition="$_data.bind_agent_id neq '无'">
-                                            <td>
-                                                <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['bind_agent_userid']))}','2','1200','800')"
-                                                   style="text-decoration:none">
-                                                    <font color="#1AB394">{$_data.bind_agent_userid}</font>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a onclick="admin_edit('用户详情','{:U('user_info',array('userid'=>$_data['bind_agent_userid']))}','2','1200','800')"
-                                                   style="text-decoration:none">
-                                                    <font color="#1AB394">{$_data.bind_agent_id}</font>
-                                                </a>
-                                            </td>
-                                            <else/>
-                                            <td>{$_data.bind_agent_userid|default="无"}</td>
-                                            <td>{$_data.bind_agent_id|default="无"}</td>
-                                        </if>
-                                        <td>{$_data.registerTime|date="Y-m-d H:i:s",###}</td>
-                                        <td>{$_data.bind_time|default=''}</td>
-                                        <td>{$_data.registerIP|default="0.0.0.0"}</td>
-                                        <td>{$_data.last_login_time|date="Y-m-d H:i:s",###}</td>
-                                        <td>{$_data.logonIP|default="0.0.0.0"}</td>
-                                        <td>{$_data.today_online_time|default="0分钟"}</td>
-                                        <td>{$_data.macAddr|default="无"}</td>
-                                        <td>
-                                            <if condition="($_data.phone neq '')">
+                                        <else/>
+                                        <td>{$_data.bind_agent_userid|default="无"}</td>
+                                        <td>{$_data.bind_agent_id|default="无"}</td>
+                                    </if>
+                                    <td>{$_data.registerTime|date="Y-m-d H:i:s",###}</td>
+                                    <td>{$_data.bind_time|default=''}</td>
+                                    <td>{$_data.registerIP|default="0.0.0.0"}</td>
+                                    <td>{$_data.last_login_time|date="Y-m-d H:i:s",###}</td>
+                                    <td>{$_data.logonIP|default="0.0.0.0"}</td>
+                                    <td>{$_data.today_online_time|default="0分钟"}</td>
+                                    <td>{$_data.macAddr|default="无"}</td>
+                                    <td>
+                                        <if condition="($_data.phone neq '')">
                                             <a href="{:U('User/unbindPhone',array('userID'=>$_data['userid']))}" onclick="return ajax_get(this)" class="btn btn-outline btn-success  dim " >解绑手机</i></a>
-                                            </if>
-                                        </td>
+                                        </if>
+                                    </td>
                                     </tr>
                                 </volist>
                                 </tbody>

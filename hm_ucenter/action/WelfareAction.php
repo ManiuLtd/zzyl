@@ -150,7 +150,7 @@ class WelfareAction extends AppAction
         if (!$result) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, "添加转盘数据失败");
         }
-        WelfareModel::getInstance()->changeUserResource($userID, $turntableReward['prizeType'], $turntableReward['num'], EnumConfig::E_ResourceChangeReason['TURNTABLE']);
+        WelfareModel::getInstance()->changeUserResource($userID, $turntableReward['prizetype'], $turntableReward['num'], EnumConfig::E_ResourceChangeReason['TURNTABLE']);
 
         AppModel::returnJson(ErrorConfig::SUCCESS_CODE, ErrorConfig::SUCCESS_MSG_DEFAULT, ['turntableID' => $turntableReward['id']]);
     }

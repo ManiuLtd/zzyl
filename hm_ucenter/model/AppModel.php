@@ -321,11 +321,6 @@ abstract class AppModel
      */
     public function changeUserResource($userID, $resourceType, $change, $changeReason, $roomID = 0, $friendsGroupID = 0, $rateMoney = 0, $isAllowInGame = 1)
     {
-        var_dump($userID);
-        var_dump($resourceType);
-        var_dump($change);
-        var_dump($changeReason);
-        exit;
         if ($change == 0) {
             return false;
         }

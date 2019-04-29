@@ -3,7 +3,7 @@ namespace config;
 
 final class GeneralConfig {
 	const MONEY_TIMES = 100;//金币倍数
-	const OTHER_CONFIG_MONEY = ['registerGiveMoney', 'supportMinLimitMoney', 'useMagicExpressCostMoney', 'logonGiveMoneyEveryDay', 'friendRewardMoney', 'sendGiftMyLimitMoney', 'sendGiftMinMoney','bankMinSaveMoney', 'bankMinTakeMoney', 'bankMinTransfer', 'supportMoneyCount', 'regByPhoneSendMoney'];
+    const OTHER_CONFIG_MONEY = ['registerGiveMoney', 'supportMinLimitMoney', 'useMagicExpressCostMoney', 'logonGiveMoneyEveryDay', 'friendRewardMoney', 'sendGiftMyLimitMoney', 'sendGiftMinMoney','supportMoneyCount', 'regByPhoneSendMoney'];
 	const BILL_DETAIL_MONEY = ['front_balance', 'handle_money', 'after_balance', 'amount', 'commission', 'under_amount', 'under_commission'];
 	const WEB_RECHARGE_COMMISSION = ['recharge_amount', 'agent_commission'];
 	const STATISTICS_MONEYCHANGE_MONEY = ['money', 'changemoney'];

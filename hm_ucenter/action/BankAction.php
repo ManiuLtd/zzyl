@@ -81,10 +81,10 @@ class BankAction extends AppAction
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_INCORRECT_MAILBOX_FORMAT);
         }*/
 
-        $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['phone','passwd'], "userID = {$userID}");
+        $resinfo = DBManager::getMysql()->selectRow(MysqlConfig::Table_userinfo, ['phone','phonePasswd'], "userID = {$userID}");
 
         //验证密码不能等于登录密码
-        if(md5($inputpasswd) == $resinfo['passwd']){
+        if(md5($inputpasswd) == $resinfo['phonePasswd']){
             AppModel::returnJson(ErrorConfig::ERROR_CODE, ErrorConfig::ERROR_MSG_BANK_REPASSWD_LOGIN);
         }
 

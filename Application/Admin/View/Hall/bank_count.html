@@ -35,13 +35,13 @@
                                     <td style="width:300px;height:50px;text-align: center;"><h4>用户取金币最大金币：<font
                                             color="red">{$max_Withdraw_count}</font></h4></td>
                                 </tr>
-                                <!-- <tr>
+                                <tr>
                                     <td style="width:300px;height:50px;text-align: center;"><h4>用户转金币总次数：<font
                                             color="red">{$Transfer_conut}</font></h4></td>
                                     </td>
                                     <td style="width:300px;height:50px;text-align: center;"><h4>用户转金币最大金币：<font
                                             color="red">{$max_Transfer_count}</font></h4></td>
-                                </tr> -->
+                                </tr>
                             </table>
                         </div>
                         <!-- ECharts单文件引入 -->
@@ -64,8 +64,7 @@
                                     trigger: 'axis'
                                 },
                                 legend: {
-                                    // data: ['银行日存金币数', '银行日转金币数', '银行日取金币数']
-                                    data: ['银行日存金币数', '银行日取金币数']
+                                    data: ['银行日存金币数', '银行日取金币数', '银行日转金币数']
                                 },
                                 grid: {
                                     left: '3%',
@@ -102,7 +101,7 @@
                                     },
 
                                     {
-                                        name: '银行日转金币数',
+                                        name: '银行日取金币数',
                                         type: 'line',
                                         stack: '总量',
                                         label: {
@@ -116,7 +115,7 @@
                                     },
 
                                     {
-                                        name: '银行日取金币数',
+                                        name: '银行日转金币数',
                                         type: 'line',
                                         stack: '总量',
                                         label: {
@@ -149,8 +148,7 @@
                                     trigger: 'axis'
                                 },
                                 legend: {
-                                    // data: ['银行月存金币数', '银行月转金币数', '银行月取金币数']
-                                    data: ['银行月存金币数', '银行月取金币数']
+                                    data: ['银行月存金币数', '银行月取金币数', '银行月转金币数']
                                 },
                                 grid: {
                                     left: '3%',
@@ -189,7 +187,7 @@
                                     },
 
                                     {
-                                        name: '银行月转金币数',
+                                        name: '银行月取金币数',
                                         type: 'line',
                                         stack: '总量',
 
@@ -205,7 +203,7 @@
                                     },
 
                                     {
-                                        name: '银行月取金币数',
+                                        name: '银行月转金币数',
                                         type: 'line',
                                         stack: '总量',
 

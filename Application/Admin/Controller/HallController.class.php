@@ -1239,9 +1239,9 @@ class HallController extends AdminController
             $money = M('bank_record')->where(['type' => EnumConfig::E_BankOperateType['SAVE'], 'time' => ['between', [$v, $end]]])->sum('money');
             $c_money = M('bank_record')->where(['type' => EnumConfig::E_BankOperateType['TAKE'], 'time' => ['between', [$v, $end]]])->sum('money');
             $z_money = M('bank_record')->where(['type' => EnumConfig::E_BankOperateType['TRAN'], 'time' => ['between', [$v, $end]]])->sum('money');
-            $bank_data7['money'][] = (int)$money/100 ? $money/100 : 0;
-            $bank_data7['c_money'][] = (int)$c_money/100 ? $c_money/100 : 0;
-            $bank_data7['z_money'][] = (int)$z_money/100 ? $z_money/100 : 0;
+            $bank_data7['money'][] = (int)$money ? $money : 0;
+            $bank_data7['c_money'][] = (int)$c_money ? $c_money : 0;
+            $bank_data7['z_money'][] = (int)$z_money ? $z_money : 0;
             $data7[] = date("m-d", $v);
         }
 
@@ -1254,9 +1254,9 @@ class HallController extends AdminController
             $money = M('bank_record')->where(['type' => EnumConfig::E_BankOperateType['SAVE'], 'time' => ['between', [$year[$k]['begin2'], $year[$k]['end2']]]])->sum('money');
             $c_money = M('bank_record')->where(['type' => EnumConfig::E_BankOperateType['TAKE'], 'time' => ['between', [$year[$k]['begin2'], $year[$k]['end2']]]])->sum('money');
             $z_money = M('bank_record')->where(['type' => EnumConfig::E_BankOperateType['TRAN'], 'time' => ['between', [$year[$k]['begin2'], $year[$k]['end2']]]])->sum('money');
-            $bank_data12['money'][] = (int)$money/100 ? $money/100 : 0;
-            $bank_data12['c_money'][] = (int)$c_money/100 ? $c_money/100 : 0;
-            $bank_data12['z_money'][] = (int)$z_money/100 ? $z_money/100 : 0;
+            $bank_data12['money'][] = (int)$money ? $money : 0;
+            $bank_data12['c_money'][] = (int)$c_money ? $c_money : 0;
+            $bank_data12['z_money'][] = (int)$z_money ? $z_money : 0;
             $data12[] = $year[$k]['month'];
         }
 
@@ -1280,8 +1280,8 @@ class HallController extends AdminController
         $this->assign('Save_count', $Save_count);
         $this->assign('Withdraw_count', $Withdraw_count);
         $this->assign('Transfer_conut', $Transfer_conut);
-        $this->assign('max_Save_count', $max_Save_count/100);
-        $this->assign('max_Withdraw_count', $max_Withdraw_count/100);
+        $this->assign('max_Save_count', $max_Save_count);
+        $this->assign('max_Withdraw_count', $max_Withdraw_count);
         $this->assign('max_Transfer_count', $max_Transfer_count);
         $this->assign('total', $total);
         $this->display();

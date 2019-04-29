@@ -11,6 +11,8 @@ use config\EnumConfig;
 use config\ErrorConfig;
 use helper\LogHelper;
 use model\PhoneModel;
+use helper\NewSms;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 
 class PhoneLogic extends BaseLogic
 {
@@ -89,14 +91,17 @@ class PhoneLogic extends BaseLogic
         // 绑定
         include dirname(dirname(__FILE__)) . '/aliyun-dysms-php-sdk/api_demo/SmsDemo.php';
         $code = rand(111111, 999999);
-        $response = \SmsDemo::sendSms($phone, $code, $type);
+        //$response = \SmsDemo::sendSms($phone, $code, $type);
+        $obj = new NewSms();
+        $response = $obj->send($phone, $code, $type);
+        $response = json_decode($response, true);
         //发送成功
-        if ($response->Code == 'OK') {
+        if ($response['success']) {
             PhoneModel::getInstance()->setPhoneCodeInfo($phone, $type, $count + 1, $code);
             return ['code' => ErrorConfig::SUCCESS_CODE, 'msg' => 'ok', 'data' => ['code' => $code, 'count' => $count, 'downTime' => self::DOWN_TIME]];
         } else {
-            LogHelper::printError('aliCodeResponse:' . serialize($response));
-            return ['code' => ErrorConfig::ERROR_CODE, 'msg' => ErrorConfig::ERROR_MSG_BIND_PHONE];
+            LogHelper::printError('aliCodeResponse:' . $response['r']);
+            return ['code' => ErrorConfig::ERROR_CODE, 'msg' => $response['r']];
         }
     }
 }

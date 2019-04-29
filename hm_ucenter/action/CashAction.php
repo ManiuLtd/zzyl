@@ -316,7 +316,7 @@ class CashAction extends AppAction
 
         foreach ($resinfo['res'] as &$value){
             $value['create_time'] = date('Y-m-d H:i:s', $value['create_time']);
-            $value['cash_account_type_text'] = $value['cash_account_type'] == 1 ? '支付宝兑换' : '银行卡兑换';
+            $value['cash_account_type_text'] = $value['cash_account_type'] == 1 ? '银行卡兑换' : '支付宝兑换';
         }
 
         $map = "userID = {$userID}";

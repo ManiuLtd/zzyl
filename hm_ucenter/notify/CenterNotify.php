@@ -75,7 +75,12 @@ final class CenterNotify
      */
     public static function userStatus($userID, $type, $statusValue, $otherValue, $moneyLimit)
     {
+        var_dump($type);
+        var_dump($statusValue);
+        var_dump($otherValue);
+        var_dump($moneyLimit);
         $struct = StructConfig::userStatus($type, $statusValue, $otherValue, $moneyLimit);
+        var_dump($type);
         return self::send(ProtocolConfig::PLATFORM_MESSAGE_IDENTUSER, $userID, $struct);
     }
 

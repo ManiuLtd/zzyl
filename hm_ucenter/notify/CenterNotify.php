@@ -54,7 +54,7 @@ final class CenterNotify
         $centerMsgHead = self::centerMsgHead($uCenterID, $targetID);
 
         $data = self::packAllMsg($netMsgHead, $centerMsgHead, $struct);
-var_dump($data);
+
         $sendResult = SocketManager::getCenterSocket()->send_data($data);
         LogHelper::printInfo("send uCenterID={$uCenterID},targetID={$targetID},uMainID={$uMainID},uAssistantID={$uAssistantID}");
         //发送是否成功
@@ -75,12 +75,7 @@ var_dump($data);
      */
     public static function userStatus($userID, $type, $statusValue, $otherValue, $moneyLimit)
     {
-        var_dump($type);
-        var_dump($statusValue);
-        var_dump($otherValue);
-        var_dump($moneyLimit);
         $struct = StructConfig::userStatus($type, $statusValue, $otherValue, $moneyLimit);
-        var_dump($struct);
         return self::send(ProtocolConfig::PLATFORM_MESSAGE_IDENTUSER, $userID, $struct);
     }
 

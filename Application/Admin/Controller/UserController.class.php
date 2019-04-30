@@ -64,12 +64,12 @@ class UserController extends AdminController
         }*/
         //查询赢玩家
         if (I('yinguser')) {
-            $where['U.status'] = 2;
+            $where['U.status'] = array('in','2,10');
         }
 
         //查询输玩家
         if (I('shuuser')) {
-            $where['U.status'] = 4;
+            $where['U.status'] = array('in','4,12');
         }
 
         //查询普通玩家
@@ -79,7 +79,7 @@ class UserController extends AdminController
 
         //查询封号
         if (I('fenghaouser')) {
-            $where['U.status'] = 8;
+            $where['U.status'] = array('in','8,10,12');
         }
 
         //查在线玩家

@@ -54,7 +54,7 @@ final class CenterNotify
         $centerMsgHead = self::centerMsgHead($uCenterID, $targetID);
 
         $data = self::packAllMsg($netMsgHead, $centerMsgHead, $struct);
-
+var_dump($data);
         $sendResult = SocketManager::getCenterSocket()->send_data($data);
         LogHelper::printInfo("send uCenterID={$uCenterID},targetID={$targetID},uMainID={$uMainID},uAssistantID={$uAssistantID}");
         //发送是否成功

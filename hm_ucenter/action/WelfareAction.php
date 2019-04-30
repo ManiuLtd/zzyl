@@ -146,7 +146,7 @@ class WelfareAction extends AppAction
         }
         //获得用户信息
         $userInfo = WelfareModel::getInstance()->getUserInfo($userID, ['name']);
-        $result = WelfareModel::getInstance()->addTurntableRecord($userID, $userInfo['name'], $turntableReward['prizeType'], $turntableReward['prize'], $turntableReward['num']);
+        $result = WelfareModel::getInstance()->addTurntableRecord($userID, $userInfo['name'], $turntableReward['prizetype'], $turntableReward['prize'], $turntableReward['num']);
         if (!$result) {
             AppModel::returnJson(ErrorConfig::ERROR_CODE, "添加转盘数据失败");
         }

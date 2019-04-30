@@ -92,8 +92,8 @@ class UserController extends AdminController
         $page = new \Think\Page($count, 20);
         $dbUserList = M()
             ->table('userInfo as U')
-            ->join('left join web_pay_orders as wpo on wpo.userID=U.userID')
-            ->join('left join user_cash_application as uca on uca.userID=U.userID')
+            ->join('left join web_pay_orders as wpo on wpo.userID=U.userID and wpo.status = 1')
+            ->join('left join user_cash_application as uca on uca.userID=U.userID and uca.cash_status = 2')
             ->join('left join web_admin_action as waaa on waaa.userID=U.userID and waaa.actionType = 1')
             ->join('left join web_admin_action as wbbb on wbbb.userID=U.userID and wbbb.actionType = 2')
             ->where($where)

@@ -99,11 +99,11 @@ class AgentController extends AdminController
         $page = new \Think\Page($count,10);
         $data = M('agent_member as a')
             ->join('userInfo as u ON a.userid = u.userid')
-            ->join('left join web_pay_orders as wpo on wpo.userID=u.userID')
-            ->join('left join user_cash_application as uca on uca.userID=u.userID')
+            ->join('left join web_pay_orders as wpo on wpo.userID=u.userID and wpo.status = 1')
+            ->join('left join user_cash_application as uca on uca.userID=u.userID and uca.cash_status = 2')
             ->join('left join web_admin_action as waaa on waaa.userID=u.userID and waaa.actionType = 1')
             ->join('left join web_admin_action as wbbb on wbbb.userID=u.userID and wbbb.actionType = 2')
-            ->field('a.*,u.name, wpo.id as wpoid, waaa.id as waaaid, uca.Id as ucaid, wbbb.id as wbbbid')
+            ->field('a.*,u.name, u.phone, wpo.id as wpoid, waaa.id as waaaid, uca.Id as ucaid, wbbb.id as wbbbid')
             ->group('u.userID')
             ->where($where)->limit($page->firstRow.','.$page->listRows)->order('a.id desc')->select();
         $data = [

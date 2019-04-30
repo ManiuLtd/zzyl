@@ -100,12 +100,13 @@
                                         <th>游戏ID</th>
                                         <th>游戏昵称</th>
                                         <th>后台账号(手机号)</th>
+                                        <th>绑定手机号</th>
                                         <th>邀请码</th>
                                         <th>金币数</th>
                                         <?php if (C('IS_SHOW_JEWELS')) {?>
                                         <th>钻石数</th>
                                         <?php }?>
-                                        <!-- <th>代理等级</th> -->
+                                         <!--<th>代理等级</th>-->
                                         <th>上级邀请码</th>
                                         <th>上级代理(手机号)</th>
                                         <th>直属会员数</th>
@@ -133,6 +134,7 @@
                                             <td><a style="color:#23c6c8" href="javascript:;" onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')" >{$_data.userid}</a></td>
                                             <td><a style="color:#23c6c8" href="javascript:;" onclick="admin_edit('用户详情','{:U('User/user_info',array('userid'=>$_data['userid']))}','2','1200','800')" >{$_data.name}</a></td>
                                             <td>{$_data.username}</td>
+                                            <td>{$_data.phone}</td>
                                             <td>{$_data.agentid}</td>
                                             <td>{$_data.money}</td>
                                             <?php if (C('IS_SHOW_JEWELS')) {?>
